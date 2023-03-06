@@ -6,9 +6,9 @@ import type { UserConfig } from '@unocss/core'
 import { loadConfig } from '@unocss/config'
 
 import postcssNested from 'postcss-nested'
-// @ts-expect-error no type
+// @ts-expect-error missing type
 import postcssCurrentSelector from 'postcss-current-selector'
-// @ts-expect-error no type
+// @ts-expect-error missing type
 import postcssNestedAncestors from 'postcss-nested-ancestors'
 
 export default defineNuxtModule<{}>({
@@ -63,7 +63,6 @@ export default defineNuxtModule<{}>({
     nuxt.hook('vite:extend', ({ config }) => {
       config.plugins = config.plugins || []
       config.plugins.unshift(...VitePlugin({}, unoConfig))
-      console.log(config.css?.postcss)
     })
 
     if (nuxt.options.dev) {
