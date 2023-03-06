@@ -1,0 +1,75 @@
+{
+  "editor.tabCompletion": "off",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+
+  "editor.wrappingStrategy": "advanced",
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 80,
+  "editor.wrappingIndent": "deepIndent",
+
+  "where-am-i.icon": "home",
+  "where-am-i.template": "{icon}  share/nuxt",
+  "where-am-i.colorful": true,
+  "where-am-i.color": "#fff",
+
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "volar.takeOverMode.extension": "Vue.volar",
+  "volar.vueserver.petiteVue.processHtmlFile": true,
+  "volar.completion.normalizeComponentImportName": true,
+  "volar.completion.preferredTagNameCase": "pascal",
+  "volar.completion.preferredAttrNameCase": "kebab",
+  "volar.inlayHints.missingRequiredProps": true,
+  "volar.inlayHints.eventArgumentInInlineHandlers": true,
+  "volar.vueserver.fullCompletionList": true,
+  "volar.vueserver.reverseConfigFilePriority": true,
+  "volar.codeLens.references": true,
+  "volar.doctor.checkVueTsc": true,
+  "volar.doctor.statusBarItem": true,
+  "volar.addSpaceBetweenDoubleCurlyBrackets": true,
+  "volar.autoWrapParentheses": true,
+
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.packageManager": "yarn",
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "vue"
+  ],
+
+  "stylelint.packageManager": "yarn",
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "vue" // necessary for stylelint diagnostics in .vue <style> tag
+  ],
+
+  "browse-lite.startUrl": "http://localhost:3000",
+  "browse-lite.chromeExecutable": "/usr/bin/chromium",
+
+  "i18n-ally.localesPaths": ["./i18n/translations"],
+  "i18n-ally.displayLanguage": "ru",
+  "i18n-ally.keystyle": "nested",
+
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+
+  "[yaml]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format",
+  },
+
+  "[markdown]": {
+    "editor.formatOnSave": false,
+  },
+
+}

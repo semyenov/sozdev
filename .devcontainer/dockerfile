@@ -1,0 +1,49 @@
+FROM debian:buster
+
+ARG NODE_VERSION=15.2.0
+ARG INSTALL_ZSH="true"
+ARG UPGRADE_PACKAGES="true"
+ARG USERNAME=node
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+ENV NVM_DIR=/usr/local/share/nvm
+ENV NPM_GLOBAL=/usr/local/share/npm-global
+
+ENV NVM_SYMLINK_CURRENT=true \ 
+PATH=${NVM_DIR}/current/bin:${NPM_GLOBAL}/bin:${PATH}
+
+# Remove imagemagick due to https://security-tracker.debian.org/tracker/CVE-2019-10131
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
+  apt-get purge -y imagemagick imagemagick-6-common
+
+# Debian common script
+COPY library-scripts/common-debian.sh /tmp/library-scripts/
+RUN bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}"
+
+# Watchman installation
+COPY --from=icalialabs/watchman:buster /usr/local/bin/watchman* /usr/local/bin/
+RUN mkdir -p /usr/local/var/run/watchman && \
+  chown ${USERNAME}:root /usr/local/var/run/watchman && \
+  sudo -u ${USERNAME} touch /usr/local/var/run/watchman/.not-empty
+COPY --from=icalialabs/watchman:buster /usr/local/share/doc/watchman* /usr/local/share/doc/
+
+# Node installation script
+COPY library-scripts/node-debian.sh /tmp/library-scripts/
+RUN bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}" "${NPM_GLOBAL}" "${NODE_VERSION}" "${USERNAME}"
+
+# Clean up
+RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /root/.gnupg /tmp/library-scripts
+
+# [Optional] Uncomment this section to install additional OS packages.
+# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+#     && apt-get -y install --no-install-recommends libstdc++6
+
+# [Optional] Uncomment if you want to install an additional version of node using nvm
+# ARG EXTRA_NODE_VERSION=10
+# RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm install ${EXTRA_NODE_VERSION}"
+
+COPY library-scripts/entrypoint-debian.sh /tmp/library-scripts/
+RUN chmod +x /tmp/library-scripts/entrypoint-debian.sh
+
+ENTRYPOINT [ "/tmp/library-scripts/entrypoint-debian.sh" ]
