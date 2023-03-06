@@ -75,7 +75,7 @@ const inputDatePicker = ref<Date | string>(
         <h4 class="mt-0 font-medium text-default-500 dark:text-default-400">
           Date Picker
         </h4>
-        <div class="flex flex-col flex-wrap items-start justify-start gap-4">
+        <div class="flex flex-col items-start flex-wrap justify-start gap-4">
           selected: {{ inputDatePicker }}
           <UiDatepicker v-model="inputDatePicker" />
         </div>
@@ -140,11 +140,11 @@ const inputDatePicker = ref<Date | string>(
           <div
             v-for="variant in 9"
             :key="`box-${variant}`"
-            class="h-26 w-26 flex flex-col items-center justify-center break-words border p-2"
+            class="flex flex-col items-center justify-center border h-26 w-26 break-words p-2"
             :class="`box-color__${color}--${variant}`"
           >
             <div class="-mt-6">{{ color }}</div>
-            <div class="text-4xl font-bold">{{ variant }}</div>
+            <div class="font-bold text-4xl">{{ variant }}</div>
           </div>
         </div>
 
@@ -168,7 +168,7 @@ const inputDatePicker = ref<Date | string>(
               :color="color"
               :rounded="rounded"
             >
-              <i class="i-carbon:download inline-block" />
+              <i class="inline-block i-carbon:download" />
               <span>{{
                 `${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`
               }}</span>

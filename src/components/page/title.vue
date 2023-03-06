@@ -5,7 +5,7 @@
 
 <template>
   <div
-    class="component-page-title w-full flex flex-row items-center justify-between border-b border-gray-300 border-dashed px-6 py-2 text-gray-700"
+    class="w-full flex flex-row items-center justify-between border-b border-dashed py-2 component-page-title border-gray-300 px-6 text-gray-700"
     un-dark="border-gray-700 text-gray-200"
   >
     <!-- <div
@@ -19,11 +19,11 @@
       <span>{{ mouseStore.y }}</span>
     </div> -->
 
-    <div class="text-xl font-extrabold text-gray-700" un-dark="text-gray-200">
+    <div class="text-gray-700 text-xl font-extrabold" un-dark="text-gray-200">
       <slot />
     </div>
     <button
-      class="i-carbon:sun text-xl text-gray-500"
+      class="text-xl i-carbon:sun text-gray-500"
       un-dark="text-gray-400 i-carbon:moon"
       @click="toggleDark()"
     />

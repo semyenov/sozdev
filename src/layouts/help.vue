@@ -16,7 +16,7 @@ const authorizationStore = useAuthorizationStore()
 
     <div
       id="teleport-layer--20"
-      class="layout-default__teleport fixed relative left-0 right-0 z-20 h-full w-full flex"
+      class="layout-default__teleport fixed left-0 right-0 z-20 w-full flex relative h-full"
     ></div>
 
     <div
@@ -31,13 +31,13 @@ const authorizationStore = useAuthorizationStore()
       <AuthorizationCurrent />
     </div>
     <div
-      class="layout-default__left fixed bottom-0 left-0 top-0 z-3 flex flex-row"
+      class="layout-default__left fixed bottom-0 left-0 top-0 flex flex-row z-3"
     >
       <div class="border-r box-color__default--2">
         <PageSidebar />
       </div>
       <div
-        class="layout-default__page z-0 flex flex-col items-start justify-items-stretch text-left"
+        class="layout-default__page flex flex-col items-start justify-items-stretch text-left z-0"
       >
         <slot />
       </div>

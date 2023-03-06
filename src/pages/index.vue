@@ -36,7 +36,7 @@ const { data } = await useFetch('/api/test', {
     }"
   >
     <div
-      class="page page-index h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-6 scrollbar box-color__default--1 scrollbar-rounded"
+      class="h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-6 scrollbar scrollbar-rounded page page-index box-color__default--1"
     >
       <PageProse
         v-if="data"
@@ -64,11 +64,11 @@ const { data } = await useFetch('/api/test', {
           un-hover="text-blue-400"
         />
         <i
-          class="i-ph:airplane-duotone text-4xl text-blue-600"
+          class="text-4xl i-ph:airplane-duotone text-blue-600"
           un-dark="text-blue-500"
         />
         <i
-          class="i-ph:anchor-simple text-3xl text-gray-600"
+          class="text-3xl i-ph:anchor-simple text-gray-600"
           un-dark="text-gray-400"
         />
       </div>

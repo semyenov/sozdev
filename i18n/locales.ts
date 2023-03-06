@@ -1,17 +1,10 @@
-interface ILocalesOption {
-  name: string
-  code: string
-  iso: string
-  file: string
-  available?: true
-}
-interface ILocales {
-  [key: string]: ILocalesOption
-}
+import type { LocaleObject } from 'vue-i18n-routing'
 
 export const DEFAULT_LANGUAGE = 'ru'
 
-export const LOCALES: ILocales = {
+export const LOCALES: {
+  [key: string]: LocaleObject
+} = {
   en: {
     code: 'en',
     iso: 'en-US',
@@ -22,7 +15,7 @@ export const LOCALES: ILocales = {
   ru: {
     code: 'ru',
     iso: 'ru-RU',
-    name: 'Russia',
+    name: 'Русский',
     file: 'ru.json',
     available: true,
   },
@@ -35,7 +28,7 @@ export const AVIALABLE_LOCALES = [
 export const LOCALES_LIST = [
   ...Object.keys(LOCALES).reduce(
     (prev, cur) => [...prev, LOCALES[cur]],
-    [] as ILocalesOption[]
+    [] as LocaleObject[]
   ),
 ]
 export const DEFAULT_LOCALE = LOCALES[DEFAULT_LANGUAGE]

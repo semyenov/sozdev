@@ -43,7 +43,7 @@ defineExpose({
 })
 
 watch(show, (s) => (s ? open() : close()))
-watch(showFlag, (o) => emit('update:show', o))
+watch(showFlag, (sf) => emit('update:show', sf))
 
 onMounted(() => show.value && open())
 onScopeDispose(close)
@@ -117,7 +117,7 @@ function getWinboxParams(
 <template>
   <Teleport v-if="showFlag" :to="`#${id} .wb-content`">
     <pre
-      class="w-full border-b border-b-dashed px-6 py-2 text-xs box-color__default--2"
+      class="w-full border-b box-color__default--2 p-6 border-b-dashed text-xs"
       >{{ winboxStore.windows.get(id) }}</pre
     >
     <slot name="default" />

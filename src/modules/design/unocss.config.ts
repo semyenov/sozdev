@@ -262,7 +262,6 @@ export default defineConfig<UnoTheme>({
       `hover:${c}`,
       `focus:${c}`,
     ]),
-    ...['p-4'],
   ],
 
   presets: [

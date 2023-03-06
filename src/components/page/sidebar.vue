@@ -4,7 +4,7 @@ const { setLocale, locale } = useI18n()
 </script>
 
 <template>
-  <div class="flex flex-grow flex-col justify-between">
+  <div class="flex justify-between flex-grow flex-col">
     <div class="flex flex-col">
       <RouterLink
         v-slot="{ isActive, navigate }"
@@ -20,7 +20,7 @@ const { setLocale, locale } = useI18n()
           :border="false"
           @click="navigate"
         >
-          <i class="i-carbon:home inline-block h-6.5" />
+          <i class="inline-block i-carbon:home h-6.5" />
         </UiButton>
       </RouterLink>
       <RouterLink

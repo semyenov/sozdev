@@ -1,14 +1,25 @@
 {
   "name": "Nuxt",
 
-  "dockerComposeFile": "docker-compose.yml",
-
-
-  "workspaceFolder": "/workspace",
-  "remoteUser": "node",
-
   "forwardPorts": [3000],
   "onCreateCommand": "yarn",
+
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "automatic",
+      "userUid": "automatic",
+      "userGid": "automatic"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGypDependencies": true,
+      "version": "latest"
+    }
+  },
 
   "customizations": {
     "vscode": {

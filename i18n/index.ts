@@ -1,19 +1,23 @@
 import type { NuxtI18nOptions } from '@nuxtjs/i18n'
-import { DATE_FORMATS } from './date-formats'
+
 import { AVIALABLE_LOCALES, DEFAULT_LANGUAGE, LOCALES_LIST } from './locales'
+import { DATE_FORMATS } from './date-formats'
 import { NUMBER_FORMATS } from './number-formats'
 
 const settingsI18n: NuxtI18nOptions = {
   defaultLocale: DEFAULT_LANGUAGE,
   locales: LOCALES_LIST,
+
   lazy: true,
-  langDir: '../i18n/translations',
   strategy: 'no_prefix',
+  langDir: 'locales',
+
   detectBrowserLanguage: {
     useCookie: true,
-    cookieKey: 'i18n_redirected',
+    cookieKey: 'X-Locale',
     redirectOn: 'root',
   },
+
   vueI18n: {
     legacy: false,
     locale: DEFAULT_LANGUAGE,

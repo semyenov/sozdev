@@ -389,7 +389,7 @@ function documentFocusinEventListener() {
         'flex flex-col w-full',
         props.color && `list-color__${props.color}`,
       ]"
-      class="flex flex-col items-center overflow-auto border absolute left-0 right-0 top-full z-1 max-h-100 rounded-t-none border-t-none scrollbar scrollbar-rounded"
+      class="flex flex-col items-center overflow-auto border left-0 right-0 absolute top-full z-1 max-h-100 rounded-t-none border-t-none scrollbar scrollbar-rounded"
       :class="[
         props.rounded && `box-rounded__${props.rounded}`,
         props.color && `box-color__${props.color}--4`,

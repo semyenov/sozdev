@@ -16,15 +16,15 @@ const item = await objectGetter(id)
 </script>
 
 <template>
-  <div class="page page-objects-id h-full w-full">
-    <div v-if="item" class="sticky flex flex-row box-color__default--2">
+  <div class="page h-full w-full page-objects-id">
+    <div v-if="item" class="flex flex-row box-color__default--2 sticky">
       <PageTitle v-if="item.info.name">
         {{ `# ${item.info.name} Page` }}
       </PageTitle>
     </div>
     <div
       v-if="item"
-      class="h-full max-h-screen max-w-200 w-full flex flex-col items-center gap-8 overflow-y-scroll p-6 scrollbar box-color__default--1 scrollbar-rounded"
+      class="h-full max-h-screen w-full flex flex-col items-center overflow-y-scroll p-6 scrollbar box-color__default--1 scrollbar-rounded max-w-200 gap-8"
     >
       <ObjectsItem :item="item" :index="0" />
     </div>

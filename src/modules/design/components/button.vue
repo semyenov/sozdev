@@ -35,7 +35,7 @@ const attrs = useAttrs()
 <template>
   <button
     v-bind="attrs"
-    class="flex flex-shrink-0 flex-row items-center justify-center transition-200"
+    class="flex flex-row items-center flex-shrink-0 justify-center transition-200"
     :class="[
       props.size && `box-size__${props.size}`,
       props.rounded && `box-rounded__${props.rounded}`,
