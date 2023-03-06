@@ -1,0 +1,44 @@
+{
+  "name": "Nuxt",
+
+  "dockerComposeFile": "docker-compose.yml",
+
+
+  "workspaceFolder": "/workspace",
+  "remoteUser": "node",
+
+  "forwardPorts": [3000],
+  "onCreateCommand": "yarn",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "antfu.vite",
+        "antfu.iconify",
+        "eamodio.gitlens",
+        "alefragnani.bookmarks",
+        "esbenp.prettier-vscode",
+        "cpylua.language-postcss",
+        "dbaeumer.vscode-eslint",
+        "foxundermoon.shell-format",
+        "editorconfig.editorconfig",
+        "aaron-bond.better-comments",
+        "howardzuo.vscode-npm-dependency",
+        "christian-kohler.npm-intellisense",
+        "oderwat.indent-rainbow",
+        "lokalise.i18n-ally",
+        "mikestead.dotenv",
+        "vue.volar",
+        "antfu.unocss",
+        "antfu.auto-npx",
+        "antfu.goto-alias",
+        "stylelint.vscode-stylelint",
+        "ms-vscode.vscode-js-profile-flame",
+        "tombonnike.vscode-status-bar-format-toggle",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "arcanis.vscode-zipfs",
+        "antfu.where-am-i"
+      ]
+    }
+  }
+}
