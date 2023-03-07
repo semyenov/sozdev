@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const { t } = useI18n()
 
-const route = useRoute()
-const contentPath = route.path.replace(/^\/content/s, '/')
+const route = useRoute('content-all')
+const contentPath = route.params.all.join('/')
 </script>
 
 <template>

@@ -1,5 +1,11 @@
 import { resolve } from 'pathe'
-import i18n from './i18n'
+import {
+  availableLocales,
+  datetimeFormats,
+  defaultLocale,
+  locales,
+  numberFormats,
+} from './src/i18n'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
@@ -41,8 +47,6 @@ export default defineNuxtConfig({
     },
   },
 
-  i18n,
-
   imports: {
     dirs: ['store', 'composables', 'utils'],
     addons: { vueTemplate: true },
@@ -81,6 +85,30 @@ export default defineNuxtConfig({
 
     '@nuxt/devtools',
   ],
+
+  i18n: {
+    defaultLocale,
+    locales,
+
+    lazy: true,
+    strategy: 'no_prefix',
+    langDir: 'i18n/locales',
+
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'X-Locale',
+      redirectOn: 'root',
+    },
+
+    vueI18n: {
+      legacy: false,
+      locale: defaultLocale,
+      fallbackLocale: defaultLocale,
+      availableLocales,
+      numberFormats,
+      datetimeFormats,
+    },
+  },
 
   // https://content.nuxtjs.org/api/configuration
   content: {
