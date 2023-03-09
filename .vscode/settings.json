@@ -54,6 +54,7 @@
 
   "i18n-ally.localesPaths": ["src/i18n/locales"],
   "i18n-ally.displayLanguage": "ru",
+  "i18n-ally.sourceLanguage": "ru",
   "i18n-ally.keystyle": "nested",
 
   "[vue]": {
@@ -74,6 +75,5 @@
 
   "[markdown]": {
     "editor.formatOnSave": false
-  },
-  "i18n-ally.sourceLanguage": "ru"
+  }
 }
