@@ -4,7 +4,7 @@
   text:
     not-found: Page not found
 index:
-  title: Welcome Page
+  title: Welcome
 data:
   title: Data Page
 objects:
@@ -106,13 +106,13 @@ diffs:
       dispositions: Orders
       documents: Documentation
       moves: |-
-        Mob. 
+        Mob.
         tasks
       object_resources: Resources
       object_types: Types of organizations and objects
       objects: Organizations and objects
       points: |-
-        Use 
+        Use
         regulations
       positions: Positions
       regulations: Regulations
