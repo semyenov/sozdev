@@ -17,6 +17,13 @@ const localesList: {
     file: 'ru.yaml',
     available: true,
   },
+  ua: {
+    code: 'uk',
+    iso: 'uk-UA',
+    name: 'Українська',
+    file: 'uk.yaml',
+    available: true,
+  },
 }
 
 const dateFormat = {

@@ -74,5 +74,6 @@
 
   "[markdown]": {
     "editor.formatOnSave": false
-  }
+  },
+  "i18n-ally.sourceLanguage": "ru"
 }
