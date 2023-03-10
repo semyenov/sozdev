@@ -38,6 +38,11 @@ const authorizationStore = useAuthorizationStore()
         id="teleport-layer--10"
         class="layout-default__teleport fixed left-0 right-0 z-10 flex"
       ></div>
+
+<!-- <div
+  id="__toasts"
+  class="layout-default__teleport fixed left-0 right-0 z-10 flex"
+></div> -->
     </div>
   </div>
 </template>

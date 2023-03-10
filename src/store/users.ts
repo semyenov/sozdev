@@ -13,6 +13,8 @@ export const usersStoreKey = IMetaScope.USERS as const
 export const useUsersStore = defineStore(usersStoreKey, () => {
   const backendStore = useBackendStore()
 
+  const testCount = ref<number>(0)
+
   const itemGetter = backendStore.itemGetter<IUser>(IMetaScope.USERS)
   const itemsGetter = backendStore
     .itemsGetter<IUser>(IMetaScope.USERS)
@@ -63,6 +65,8 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
 
     getCurrent,
     postCurrent,
+
+    testCount,
   }
 })
 

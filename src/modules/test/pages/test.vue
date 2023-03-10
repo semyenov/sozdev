@@ -6,6 +6,7 @@ import type {
   UIRoundedVariants,
   UISizeVariants,
 } from '~/types/ui'
+import { isClient } from '@vueuse/shared';
 
 const { t, d } = useI18n()
 
@@ -48,6 +49,7 @@ console.log(d(new Date().toISOString()))
 const inputDatePicker = ref<Date | string>(
   d(new Date().toISOString(), 'medium')
 )
+
 </script>
 
 <template>
@@ -73,6 +75,12 @@ const inputDatePicker = ref<Date | string>(
     <div class="flex flex-col items-center p-6">
       <PageProse class="max-w-300">
         <h4 class="mt-0 font-medium text-default-500 dark:text-default-400">
+          Tooltip
+        </h4>
+        <div class="flex flex-col items-start flex-wrap justify-start gap-4">
+            <UiToast/>
+        </div>
+        <h4 class=" font-medium text-default-500 dark:text-default-400">
           Date Picker
         </h4>
         <div class="flex flex-col items-start flex-wrap justify-start gap-4">

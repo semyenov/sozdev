@@ -24,6 +24,9 @@
 
   "customizations": {
     "vscode": {
+      "settings": {
+        "vscode.typescript-language-features": false
+      },
       "extensions": [
         "antfu.vite",
         "antfu.iconify",

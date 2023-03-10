@@ -7,7 +7,6 @@ export default defineNuxtModule({
     const { resolve } = createResolver(import.meta.url)
 
     logger.success('Test module loaded')
-
     nuxt.hooks.hookOnce('nitro:build:before', (config) => {
       logger.info('Nitro preset', config.options.preset)
     })

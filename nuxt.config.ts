@@ -21,7 +21,6 @@ export default defineNuxtConfig({
 
   srcDir: resolve(__dirname, 'src'),
   appDir: resolve(__dirname, 'src', 'app'),
-
   app: {
     head: {
       charset: 'utf-8',
@@ -35,6 +34,7 @@ export default defineNuxtConfig({
         },
       ],
     },
+
     // pageTransition: {
     //   name: 'page',
     //   mode: 'out-in',
