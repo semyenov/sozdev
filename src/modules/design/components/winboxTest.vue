@@ -15,25 +15,33 @@ const props = defineProps({
   },
   show: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   params: {
     type: Object as PropType<WinBoxParams>,
     default: () => ({}),
   },
+  rootEl: {
+    type: Object as PropType<HTMLElement>,
+  },
+
 })
 
 const emit = defineEmits<{
-  (event: 'update:show', value: boolean): void
+  // (event: 'update:show', value: boolean): void
+  (event: 'closeWindow', value?: string): void
 }>()
 
 const winboxStore = useWinboxStore()
 
 const id = ref<string>(props.dataId)
 const winbox = ref<WinBox | null>(null)
-const [showFlag, showToggle] = useToggle(false)
 
-const show = toRef(props, 'show')
+const [showFlag, showFlagToggle] = useToggle(false)
+const [show, showToggle] = useToggle(true)
+
+// const show = toRef(props, 'show')
+
 
 defineExpose({
   id,
@@ -43,7 +51,7 @@ defineExpose({
 })
 
 watch(show, (s) => (s ? open() : close()))
-watch(showFlag, (sf) => emit('update:show', sf))
+watch(showFlag, (sf) => showToggle(sf))
 
 onMounted(() => show.value && open())
 onScopeDispose(close)
@@ -56,7 +64,8 @@ function open() {
     return
   }
 
-  const rootEl = document.getElementById(props.teleportId) || document.body
+  // const rootEl = document.getElementById(props.teleportId) || document.body
+  const rootEl = props.rootEl || document.body
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
 
@@ -68,17 +77,20 @@ function open() {
   winboxStore.register(id.value, winboxParams)
 
   nextTick(() => {
-    showToggle(true)
+    showFlagToggle(true)
   })
+
 }
 
 function close() {
 
   const el = getWinboxEl()
   if (!el || !el.winbox) {
+  nextTick(() => {
+    emit('closeWindow')
+  })
     return
   }
-
   el.winbox.close()
 }
 
@@ -106,7 +118,7 @@ function getWinboxParams(
     id,
 
     onclose(forceFlag = false) {
-      nextTick(() => showToggle(false))
+      nextTick(() => showFlagToggle(false))
       return forceFlag
     },
 

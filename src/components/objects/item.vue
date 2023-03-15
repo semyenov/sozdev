@@ -2,6 +2,7 @@
 import type { PropType } from 'vue'
 
 import type { IObject } from '~/types'
+import { UiWinboxTest } from '#components';
 
 const props = defineProps({
   index: {
@@ -13,18 +14,66 @@ const props = defineProps({
     required: true,
   },
 })
-
-const [showFlag, showToggle] = useToggle(false)
 const item = toRef(props, 'item')
+
+
+const runtime = useRuntime()
+const keyContainer = 'winbox'
+
+const removeComponent = (val?:string) => {
+  return runtime.removeComponent(keyContainer, item.value._id)
+}
+
+const addComponent = () => {
+  const component = h(UiWinboxTest, {
+      show:true,
+      teleportId:"teleport-layer--20",
+      params:{
+        title: `${item.value.info.name}`,
+        top: 0,
+        bottom: 0,
+        left: 44,
+        right: 0,
+        border: 0,
+        width: 550,
+        height: '100%',
+        minwidth: 500,
+        class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
+        tether: ['right', 'top', 'bottom'],
+      },
+      onCloseWindow: (val) => removeComponent(val)
+  }, () => props.item._id
+  )
+  runtime.addComponent({
+    keyContainer: keyContainer,
+    keyComponent: item.value._id,
+    VNode: component
+})
+
+}
+
+// const TemplateTest = runtime.renderComponent<typeof UiWinboxTest>()
+const isAdded = computed(() => runtime.checkComponent(keyContainer,item.value._id))
+
+
+
+const actionComponent = () => {
+  if(isAdded.value) {
+    removeComponent()
+    return
+  }
+  addComponent()
+}
+
 </script>
 
 <template>
   <div class="component-object-item">
     <UiCard
       dashed
-      :color="showFlag ? 'fourth' : 'secondary'"
+      :color="isAdded ? 'fourth' : 'secondary'"
       class="cursor-pointer select-none"
-      @click="showToggle()"
+      @click="actionComponent"
     >
       <template v-if="item" #header>
         <div class="flex flex-row w-full justify-between px-4 py-2">
@@ -44,7 +93,8 @@ const item = toRef(props, 'item')
         </div>
       </template>
     </UiCard>
-    <UiWinbox
+    <!-- <TemplateTest  >asd</TemplateTest> -->
+    <!-- <UiWinboxTest
       v-model:show="showFlag"
       teleport-id="teleport-layer--20"
       :params="{
@@ -62,6 +112,25 @@ const item = toRef(props, 'item')
       }"
     >
       <pre class="p-6 text-sm">{{ item }}</pre>
-    </UiWinbox>
+    </UiWinboxTest> -->
+    <!-- <UiWinbox
+      v-model:show="showFlag"
+      teleport-id="teleport-layer--20"
+      :params="{
+        title: `${item.info.name}`,
+        top: 0,
+        bottom: 0,
+        left: 44,
+        right: 0,
+        border: 0,
+        width: 550,
+        height: '100%',
+        minwidth: 500,
+        class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
+        tether: ['right', 'top', 'bottom'],
+      }"
+    >
+      <pre class="p-6 text-sm">{{ item }}</pre>
+    </UiWinbox> -->
   </div>
 </template>

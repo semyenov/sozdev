@@ -8,9 +8,9 @@ const authorizationStore = useAuthorizationStore()
 
 <template>
   <div
-    class="flex flex-grow layout layout-default overflow-hidden box-color__default--3"
+    class="flex flex-grow layout layout-default relative overflow-hidden box-color__default--3"
   >
-    <div class="layout-default__loading z-100 h-2">
+    <div class="layout-default__loading z-100 h-2 absolute w-full">
       <NuxtLoadingIndicator />
     </div>
 

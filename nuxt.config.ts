@@ -9,6 +9,7 @@ import {
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  vite: {},
   alias: {
     assets: resolve(__dirname, 'src', 'assets'),
     public: resolve(__dirname, 'src', 'public'),

@@ -28,7 +28,7 @@ const props = defineProps({
     default: true,
   },
 })
-
+// const {t} = useI18n()
 const attrs = useAttrs()
 </script>
 
@@ -45,6 +45,7 @@ const attrs = useAttrs()
       props.border && `border`,
     ]"
   >
-    <slot />
+    <slot name="default" />
+    <slot name="foo"></slot>
   </button>
 </template>
