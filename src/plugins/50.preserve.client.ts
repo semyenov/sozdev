@@ -1,16 +1,14 @@
-import { IObject, IUser } from '../types'
+import { IObject, IUser } from '~/types'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.hooks.hookOnce('app:mounted', async () => {
     const runtime = useRuntime()
-    const winboxStore = useWinboxStore()
+    const winboxCompose = useWinbox()
     const nuxtApp = useNuxtApp()
 
     const backendStore = useBackendStore()
 
-    const preserve = usePreserve()
-
-    const items = preserve.itemsGetter()
+    const items = winboxCompose.preserveItemsGetter()
 
     const preserveItems = await Promise.all(
       items.map(async (objectPreserve) => {
@@ -38,9 +36,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           )
         }
 
-        const keyContainer = 'winbox'
+        const keyContainer = winboxCompose.idContainer.value
 
-        const keyComponent = `winbox-${item.value._id}-id`
+        const keyComponent = objectPreserve.componentInfo.id
+        const callbackPreserveDelete = winboxCompose.removePreserveItem
 
         const VNode = h(
           component,
@@ -49,12 +48,16 @@ export default defineNuxtPlugin(async (nuxtApp) => {
             teleportId: 'teleport-layer--20',
             dataId: keyComponent,
             params: {
-              ...winboxStore.winboxParams,
+              ...winboxCompose.winboxParams,
               ...(objectPreserve.componentInfo.params || {}),
-              title: `${item.value.info.name}`,
             },
             onCloseWindow: () =>
-              runtime.removeComponent(keyContainer, keyComponent, true),
+              runtime.removeComponent(
+                keyContainer,
+                keyComponent,
+                true,
+                callbackPreserveDelete
+              ),
           },
           () => child && h(child, {}, () => item.value && item.value.info.name)
         )
@@ -72,6 +75,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         keyComponent: preserveItems.keyComponent,
         VNode: preserveItems.VNode,
         preserveInfo: { ...preserveItems.objectPreserve },
+        setterPreserve: winboxCompose.setPreserveItem,
       })
     })
   })

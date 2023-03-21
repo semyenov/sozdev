@@ -1,61 +1,41 @@
-import { useStorage } from '@vueuse/core'
-import { IMetaScope } from '../types'
+// import { useStorage } from '@vueuse/core'
+// import { IMetaScope } from '../types'
 
-export interface ISettingsWindox {
-  componentInfo: {
-    name: string
-    params?: {
-      [key: string]: string | number | boolean
-    }
-    slot?: {
-      name: string
-    }
-  }
-  item: {
-    scope: IMetaScope
-    id: string
-  }
-}
+// const savedWinboxStorage = useStorage(
+//   'data-saved-winbox',
+//   {} as ISettingsWindoxStorage
+// )
 
-interface ISettingsWindoxStorage {
-  [id: string]: ISettingsWindox
-}
+// function setItem(id: string, data: ISettingsWindox) {
+//   savedWinboxStorage.value[id] = data
+// }
 
-const savedWinboxStorage = useStorage(
-  'data-saved-winbox',
-  {} as ISettingsWindoxStorage
-)
+// function getItem(id: string) {
+//   return savedWinboxStorage.value[id]
+// }
 
-function setItem(id: string, data: ISettingsWindox) {
-  savedWinboxStorage.value[id] = data
-}
+// function removeItem(id: string) {
+//   savedWinboxStorage.value = Object.keys(savedWinboxStorage.value).reduce(
+//     (prev, cur) => {
+//       if (id === cur) {
+//         return prev
+//       }
+//       prev[cur] = savedWinboxStorage.value[cur]
+//       return prev
+//     },
+//     {} as ISettingsWindoxStorage
+//   )
+// }
 
-function getItem(id: string) {
-  return savedWinboxStorage.value[id]
-}
+// function itemsGetter() {
+//   const objects = savedWinboxStorage.value
+//   return Object.keys(objects).reduce((array, key) => {
+//     const item = objects[key]
+//     array.push(item)
+//     return array
+//   }, [] as ISettingsWindox[])
+// }
 
-function removeItem(id: string) {
-  savedWinboxStorage.value = Object.keys(savedWinboxStorage.value).reduce(
-    (prev, cur) => {
-      if (id === cur) {
-        return prev
-      }
-      prev[cur] = savedWinboxStorage.value[cur]
-      return prev
-    },
-    {} as ISettingsWindoxStorage
-  )
-}
-
-function itemsGetter() {
-  const objects = savedWinboxStorage.value
-  return Object.keys(objects).reduce((array, key) => {
-    const item = objects[key]
-    array.push(item)
-    return array
-  }, [] as ISettingsWindox[])
-}
-
-export const usePreserve = () => {
-  return { setItem, itemsGetter, removeItem, getItem }
-}
+// export const usePreserve = () => {
+//   return { setItem, itemsGetter, removeItem, getItem }
+// }

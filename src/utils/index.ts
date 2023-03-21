@@ -64,3 +64,15 @@ export function renderTest(_app: App, count: Ref<number>, text: Ref<string>) {
   childrenApp.set(id, button)
   runtimeMap.value.set('button', childrenApp)
 }
+
+export function convertUnits(
+  type: 'width' | 'height',
+  value?: string | number
+) {
+  return typeof value === 'number'
+    ? value
+    : typeof value === 'string'
+    ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
+      (type === 'width' ? window.innerWidth : window.innerHeight)
+    : 0
+}

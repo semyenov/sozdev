@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { nanoid } from 'nanoid'
+import type { WinBoxParams } from '~~/src/types/winbox';
 
-import type { WinBoxParams } from '~/store/winbox'
+import { nanoid } from 'nanoid'
 
 const props = defineProps({
   teleportId: {
@@ -33,7 +33,7 @@ const emit = defineEmits<{
   (event: 'closeWindow', value?: string): void
 }>()
 
-const winboxStore = useWinboxStore()
+const winboxCompose = useWinbox()
 
 const id = ref<string>(props.dataId)
 const winbox = ref<WinBox | null>(null)
@@ -74,7 +74,7 @@ function open() {
 
   const winboxParams = getWinboxParams(id.value, rootEl, mountEl)
 
-  winboxStore.register(id.value, winboxParams)
+  winboxCompose.register(id.value, winboxParams)
 
   nextTick(() => {
     showFlagToggle(true)
@@ -131,7 +131,7 @@ function getWinboxParams(
   <Teleport v-if="showFlag" :to="`#${id} .wb-content`">
     <pre
       class="w-full border-b box-color__default--2 p-6 border-b-dashed text-xs"
-      >{{ winboxStore.windows.get(id) }}</pre
+      >{{ winboxCompose.windows.value.get(id) }}</pre
     >
     <slot name="default" />
   </Teleport>

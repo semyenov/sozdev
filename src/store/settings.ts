@@ -1,13 +1,18 @@
-import { RemovableRef, useStorage } from '@vueuse/core'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-import type { WinBoxParams } from '~/store/winbox'
+import type { TWinboxParamsKeys, WinBoxParams } from '../types/winbox'
 
-export const settingsStoreKey = 'mouse' as const
+export const settingsStoreKey = 'settings' as const
 
-export const useSettingsStore = defineStore(settingsStoreKey, () => {
-  const winboxParams = ref<WinBoxParams>({
-    title: '123231',
+type TPickWinboxParams = Pick<WinBoxParams, TWinboxParamsKeys>
+
+interface IWinboxParams {
+  page: TPickWinboxParams
+  detail: TPickWinboxParams
+}
+
+const winboxParams: IWinboxParams = {
+  detail: {
     top: 0,
     bottom: 0,
     left: 44,
@@ -19,7 +24,12 @@ export const useSettingsStore = defineStore(settingsStoreKey, () => {
     class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
     tether: ['right', 'top', 'bottom'],
     needSave: true,
-  })
+  },
+  page: {},
+}
+
+export const useSettingsStore = defineStore(settingsStoreKey, () => {
+  function getWinboxParams(type: string) {}
 
   return {
     winboxParams,

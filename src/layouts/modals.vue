@@ -3,8 +3,6 @@
 
 const runtime = useRuntime()
 const apps = runtime.getRuntimeContainers()
-
-
 const refElements = ref<Map<string, Element| ComponentPublicInstance|null>>(new Map)
 
 </script>

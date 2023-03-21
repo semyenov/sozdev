@@ -1,59 +1,59 @@
 import { throttle } from '@antfu/utils'
+import { useStorage } from '@vueuse/core'
+import { nanoid } from 'nanoid'
 
-import { IWindowInfo, WinBoxParams } from '../store/winbox'
-
-function convertUnits(type: 'width' | 'height', value?: string | number) {
-  return typeof value === 'number'
-    ? value
-    : typeof value === 'string'
-    ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
-      (type === 'width' ? window.innerWidth : window.innerHeight)
-    : 0
-}
+import type WinBox from 'winbox'
+import {
+  ISettingsWindox,
+  ISettingsWindoxStorage,
+  IWindowInfo,
+  WinBoxParams,
+} from '~/types/winbox'
 
 const logger = useLogger(`store/${backendStoreKey}`)
 
-export const useWinbox = (
-  windows: Ref<Map<string, IWindowInfo>>,
-  cursor: Ref<string | undefined>
-) => {
-  const keys = useMagicKeys()
-  const shiftLeftArrowKey = keys['Shift+<']
-  const shiftRightArrowKey = keys['Shift+>']
+const preservedWinbox = useStorage(
+  'key-preserved-winbox',
+  {} as ISettingsWindoxStorage
+)
 
-  watch(shiftLeftArrowKey, (flag) => {
-    if (flag) {
-      const ids = [...windows.value.keys()]
-      const currentIndex = ids.findIndex((key) => key === cursor.value) - 1
+export const winboxStoreKey = 'winbox' as const
 
-      if (currentIndex > -2) {
-        cursor.value = ids[currentIndex]
+const windows = ref<Map<string, IWindowInfo>>(new Map())
 
-        return
-      }
+const mouse = useMouse()
 
-      if (ids.length > 0) {
-        cursor.value = ids[ids.length - 1]
-      }
-    }
-  })
+const cursor = ref<string>()
 
-  watch(shiftRightArrowKey, (flag) => {
-    if (flag) {
-      const ids = [...windows.value.keys()]
-      const currentIndex = ids.findIndex((key) => key === cursor.value) + 1
+type TWinboxParamsKeys =
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'border'
+  | 'width'
+  | 'height'
+  | 'minwidth'
+  | 'class'
+  | 'tether'
+  | 'needSave'
 
-      if (currentIndex > 0 && currentIndex < ids.length) {
-        cursor.value = ids[currentIndex]
+const winboxParams: Pick<WinBoxParams, TWinboxParamsKeys> = {
+  top: 0,
+  bottom: 0,
+  left: 44,
+  right: 0,
+  border: 0,
+  width: 550,
+  height: '100%',
+  minwidth: 500,
+  class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
+  tether: ['right', 'top', 'bottom'],
+  needSave: true,
+}
 
-        return
-      }
-
-      if (ids.length > 0) {
-        cursor.value = ids[0]
-      }
-    }
-  })
+export const useWinbox = () => {
+  const idContainer = ref<string>(winboxStoreKey)
 
   function register(id: string, params: WinBoxParams) {
     if (params.tether) {
@@ -169,7 +169,7 @@ export const useWinbox = (
       }
     })
 
-    const preserve = usePreserve()
+    // const preserve = usePreserve()
 
     params.onminimize = function () {
       logger.log('onminimize')
@@ -180,7 +180,7 @@ export const useWinbox = (
 
       w.minimized = true
 
-      const preserveItem = preserve.getItem(id)
+      const preserveItem = getPreserveItem(id)
 
       const params = {
         minimized: true,
@@ -192,7 +192,7 @@ export const useWinbox = (
         ...params,
       }
 
-      preserve.setItem(id, preserveItem)
+      setPreserveItem(id, preserveItem)
       return !!onminimize && onminimize.call(this)
     }
 
@@ -205,7 +205,7 @@ export const useWinbox = (
 
       w.maximized = state
 
-      const preserveItem = preserve.getItem(id)
+      const preserveItem = getPreserveItem(id)
       const params = {
         minimized: false,
         maximized: state,
@@ -216,7 +216,7 @@ export const useWinbox = (
         ...params,
       }
 
-      preserve.setItem(id, preserveItem)
+      setPreserveItem(id, preserveItem)
       return !!onmaximize && onmaximize.call(this, state)
     }
 
@@ -230,7 +230,7 @@ export const useWinbox = (
       w.maximized = false
       w.minimized = false
 
-      const preserveItem = preserve.getItem(id)
+      const preserveItem = getPreserveItem(id)
       const params = {
         minimized: false,
         maximized: false,
@@ -388,5 +388,86 @@ export const useWinbox = (
     return winbox
   }
 
-  return { register }
+  function setPreserveItem(id: string, data: ISettingsWindox) {
+    preservedWinbox.value[id] = data
+  }
+
+  function getPreserveItem(id: string) {
+    return preservedWinbox.value[id]
+  }
+
+  function removePreserveItem(id: string) {
+    preservedWinbox.value = Object.keys(preservedWinbox.value).reduce(
+      (prev, cur) => {
+        if (id === cur) {
+          return prev
+        }
+        prev[cur] = preservedWinbox.value[cur]
+        return prev
+      },
+      {} as ISettingsWindoxStorage
+    )
+  }
+
+  function preserveItemsGetter() {
+    const objects = preservedWinbox.value
+    return Object.keys(objects).reduce((array, key) => {
+      const item = objects[key]
+      array.push(item)
+      return array
+    }, [] as ISettingsWindox[])
+  }
+
+  return {
+    register,
+
+    windows,
+    mouse,
+
+    winboxParams,
+    idContainer,
+
+    setPreserveItem,
+    getPreserveItem,
+    removePreserveItem,
+    preserveItemsGetter,
+  }
 }
+
+const keys = useMagicKeys()
+const shiftLeftArrowKey = keys['Shift+<']
+const shiftRightArrowKey = keys['Shift+>']
+
+watch(shiftLeftArrowKey, (flag) => {
+  if (flag) {
+    const ids = [...windows.value.keys()]
+    const currentIndex = ids.findIndex((key) => key === cursor.value) - 1
+
+    if (currentIndex > -2) {
+      cursor.value = ids[currentIndex]
+
+      return
+    }
+
+    if (ids.length > 0) {
+      cursor.value = ids[ids.length - 1]
+    }
+  }
+})
+
+watch(shiftRightArrowKey, (flag) => {
+  if (flag) {
+    const ids = [...windows.value.keys()]
+    const currentIndex = ids.findIndex((key) => key === cursor.value) + 1
+
+    if (currentIndex > 0 && currentIndex < ids.length) {
+      cursor.value = ids[currentIndex]
+
+      return
+    }
+
+    if (ids.length > 0) {
+      cursor.value = ids[0]
+    }
+  }
+})

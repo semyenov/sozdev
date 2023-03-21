@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { ExtractPropTypes, PropType } from 'vue'
+import type {  PropType } from 'vue'
 
 import { IMetaScope, IObject } from '~/types'
 import { UiWinboxTest, UiButton } from '#components';
+import { nanoid } from 'nanoid';
 
 const props = defineProps({
   index: {
@@ -18,16 +19,15 @@ const item = toRef(props, 'item')
 
 
 const runtime = useRuntime()
-const keyContainer = 'winbox'
-const keyComponent = `winbox-${item.value._id}-id`
+const winboxCompose = useWinbox()
 
-const winboxStore = useWinboxStore()
+const keyContainer = winboxCompose.idContainer.value
+const keyComponent = nanoid(10)
 
-const removeComponent = (val?:string) => {
-  return runtime.removeComponent(keyContainer, item.value._id, true)
+const removeComponent = () => {
+  return runtime.removeComponent(keyContainer, keyComponent, true,
+  winboxCompose.removePreserveItem)
 }
-
-console.log('component',UiButton.__file);
 
 const renderComponent = () => {
   return h(UiWinboxTest, {
@@ -35,10 +35,10 @@ const renderComponent = () => {
       teleportId:"teleport-layer--20",
       dataId: keyComponent,
       params:{
-        ...winboxStore.winboxParams,
+        ...winboxCompose.winboxParams,
         title: `${item.value.info.name}`,
       },
-      onCloseWindow: (val) => removeComponent(val),
+      onCloseWindow: () => removeComponent(),
 
   },
   () => h(UiButton, {}, () => item.value.info.name)
@@ -47,8 +47,6 @@ const renderComponent = () => {
 
 const addComponent = () => {
   const component = renderComponent()
-
-
   runtime.addComponent({
     keyContainer: keyContainer,
     keyComponent: keyComponent,
@@ -56,14 +54,20 @@ const addComponent = () => {
     preserveInfo: {
       componentInfo: {
         name: 'UiWinboxTest',
+        id: keyComponent,
+        params: {
+          title: `${item.value.info.name}`
+        },
         slot: {name: 'UiButton'}
       },
       item: {
         id: item.value._id,
         scope: IMetaScope.OBJECTS
       }
-    }
+    },
+    setterPreserve: winboxCompose.setPreserveItem
   })
+
 }
 
 
