@@ -14,6 +14,7 @@ function setClassAndMount(
   target.appendChild(el)
 }
 
+
 function formatToastFromOptions(
   text: string,
   options: Options,

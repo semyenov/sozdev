@@ -1,6 +1,60 @@
-import { IWindowInfo } from '../store/winbox'
+import { throttle } from '@antfu/utils'
 
-const useWinbox = (windows: Ref<Map<string, IWindowInfo>>) => {
+import { IWindowInfo, WinBoxParams } from '../store/winbox'
+
+function convertUnits(type: 'width' | 'height', value?: string | number) {
+  return typeof value === 'number'
+    ? value
+    : typeof value === 'string'
+    ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
+      (type === 'width' ? window.innerWidth : window.innerHeight)
+    : 0
+}
+
+const logger = useLogger(`store/${backendStoreKey}`)
+
+export const useWinbox = (
+  windows: Ref<Map<string, IWindowInfo>>,
+  cursor: Ref<string | undefined>
+) => {
+  const keys = useMagicKeys()
+  const shiftLeftArrowKey = keys['Shift+<']
+  const shiftRightArrowKey = keys['Shift+>']
+
+  watch(shiftLeftArrowKey, (flag) => {
+    if (flag) {
+      const ids = [...windows.value.keys()]
+      const currentIndex = ids.findIndex((key) => key === cursor.value) - 1
+
+      if (currentIndex > -2) {
+        cursor.value = ids[currentIndex]
+
+        return
+      }
+
+      if (ids.length > 0) {
+        cursor.value = ids[ids.length - 1]
+      }
+    }
+  })
+
+  watch(shiftRightArrowKey, (flag) => {
+    if (flag) {
+      const ids = [...windows.value.keys()]
+      const currentIndex = ids.findIndex((key) => key === cursor.value) + 1
+
+      if (currentIndex > 0 && currentIndex < ids.length) {
+        cursor.value = ids[currentIndex]
+
+        return
+      }
+
+      if (ids.length > 0) {
+        cursor.value = ids[0]
+      }
+    }
+  })
+
   function register(id: string, params: WinBoxParams) {
     if (params.tether) {
       if (params.tether.includes('right')) {
@@ -115,6 +169,8 @@ const useWinbox = (windows: Ref<Map<string, IWindowInfo>>) => {
       }
     })
 
+    const preserve = usePreserve()
+
     params.onminimize = function () {
       logger.log('onminimize')
 
@@ -124,6 +180,19 @@ const useWinbox = (windows: Ref<Map<string, IWindowInfo>>) => {
 
       w.minimized = true
 
+      const preserveItem = preserve.getItem(id)
+
+      const params = {
+        minimized: true,
+        maximized: false,
+      }
+
+      preserveItem.componentInfo.params = {
+        ...preserveItem.componentInfo.params,
+        ...params,
+      }
+
+      preserve.setItem(id, preserveItem)
       return !!onminimize && onminimize.call(this)
     }
 
@@ -136,6 +205,18 @@ const useWinbox = (windows: Ref<Map<string, IWindowInfo>>) => {
 
       w.maximized = state
 
+      const preserveItem = preserve.getItem(id)
+      const params = {
+        minimized: false,
+        maximized: state,
+      }
+
+      preserveItem.componentInfo.params = {
+        ...preserveItem.componentInfo.params,
+        ...params,
+      }
+
+      preserve.setItem(id, preserveItem)
       return !!onmaximize && onmaximize.call(this, state)
     }
 
@@ -148,6 +229,17 @@ const useWinbox = (windows: Ref<Map<string, IWindowInfo>>) => {
 
       w.maximized = false
       w.minimized = false
+
+      const preserveItem = preserve.getItem(id)
+      const params = {
+        minimized: false,
+        maximized: false,
+      }
+
+      preserveItem.componentInfo.params = {
+        ...preserveItem.componentInfo.params,
+        ...params,
+      }
 
       resizeEventListener()
 
@@ -220,16 +312,24 @@ const useWinbox = (windows: Ref<Map<string, IWindowInfo>>) => {
 
     winbox = new window.WinBox(params)
 
+    if (params.maximized && !params.minimized) {
+      winbox.maximize(params.maximized)
+    }
+    if (params.minimized) {
+      winbox.minimize(params.minimized)
+    }
+
     if (!windows.value.has(id)) {
       windows.value.set(id, {
         x: winbox.body.parentElement?.offsetLeft || 0,
         y: winbox.body.parentElement?.offsetTop || 0,
         width: winbox.body.parentElement?.clientWidth || 0,
         height: winbox.body.parentElement?.clientHeight || 0,
-        minimized: false,
+        minimized: params.minimized || false,
         fullscreen: false,
         maximized: winbox.max,
         active: true,
+        needSave: params.needSave || false,
       })
     }
 
@@ -287,5 +387,6 @@ const useWinbox = (windows: Ref<Map<string, IWindowInfo>>) => {
 
     return winbox
   }
+
   return { register }
 }

@@ -1,42 +1,71 @@
-import { Pinia } from 'pinia'
-import type { App, ComponentPropsOptions } from 'vue'
-import { createApp, h, onMounted } from 'vue'
+import type {
+  App,
+  ConcreteComponent,
+  ExtractPropTypes,
+  VNodeNormalizedChildren,
+} from 'vue'
+import { h } from 'vue'
+import { ISettingsWindox } from './preserve'
 
 const logger = useLogger('composable/runtime')
 
-const runtimeContainers = ref<Map<string, Map<string, VNode>>>(new Map())
-const runtimeApps = ref<Map<string, App>>(new Map())
+// interface IRuntimeObject {
+//   preserve?: {}
+//   component: VNode
+// }
 
-function removeComponent(keyContainer: string, keyComponent: string) {
+const runtimeContainers = ref<Map<string, Map<string, VNode>>>(new Map())
+
+function removeComponent(
+  keyContainer: string,
+  keyComponent: string,
+  needDelete?: boolean
+) {
   const runtimeContainer = runtimeContainers.value.get(keyContainer)
   if (!runtimeContainer) {
     return
   }
-  const isDelete = runtimeContainer.delete(keyComponent)
-  if (isDelete) {
-    runtimeContainers.value.set(keyContainer, runtimeContainer)
-    logger.info('component deleted')
+  runtimeContainer.delete(keyComponent)
+  runtimeContainers.value.set(keyContainer, runtimeContainer)
+  logger.info('component deleted')
+  if (!needDelete) {
+    return
   }
+  const preserve = usePreserve()
+  preserve.removeItem(keyComponent)
 }
 interface IRuntimePropsAddComponent {
   keyContainer: string
   keyComponent: string
   VNode: VNode
+  preserveInfo?: ISettingsWindox
 }
 
 function addComponent({
   keyContainer,
   keyComponent,
   VNode,
+  preserveInfo,
 }: IRuntimePropsAddComponent) {
   let runtimeContainer = runtimeContainers.value.get(keyContainer)
+  // const runtimeObject: IRuntimeObject = {
+  //   component: VNode,
+  // }
+
   if (!runtimeContainer) {
     runtimeContainer = new Map()
   }
+
+  if (preserveInfo) {
+    const preserve = usePreserve()
+    preserve.setItem(keyComponent, { ...preserveInfo })
+  }
+
   runtimeContainer.set(keyComponent, VNode)
   runtimeContainers.value.set(keyContainer, runtimeContainer)
   logger.success('component added')
 }
+
 function checkComponent(keyContainer: string, keyComponent: string) {
   const container = runtimeContainers.value.get(keyContainer)
   if (!container) {
@@ -45,22 +74,54 @@ function checkComponent(keyContainer: string, keyComponent: string) {
   return container.has(keyComponent)
 }
 
-function renderComponent<T extends ComponentPublicInstance<Component>>() {
-  const wrapper = defineComponent({
-    props: {
-      component: { type: Object },
-    },
-    render() {
-      h(this.$props.component || {}, {}, this.$slots)
-    },
-  })
+// function renderComponent<T extends ComponentPublicInstance<Component>>() {
+//   const wrapper = defineComponent({
+//     props: {
+//       component: { type: Object },
+//     },
+//     render() {
+//       h(this.$props.component || {}, {}, this.$slots)
+//     },
+//   })
 
-  return wrapper as typeof wrapper & T
+//   return wrapper as typeof wrapper & T
+// }
+type TRenderResolvedComponent<T> = (
+  keyContainer: string,
+  keyComponent: string,
+  props: ExtractPropTypes<T>,
+  slot?: VNodeNormalizedChildren
+) => void
+
+async function renderComponent(
+  nameComponent: string,
+  resolveCallback: (name: string) => ConcreteComponent | string
+) {
+  const resolvedComponent = resolveComponent(nameComponent)
+  // const resolvedComponent = await resolveCallback(nameComponent)
+  console.log(resolvedComponent)
+
+  if (typeof resolvedComponent === 'string') {
+    return
+  }
+
+  return function renderResolvedComponent(
+    keyContainer,
+    keyComponent,
+    props,
+    slot
+  ) {
+    const component = h(resolvedComponent, props, slot ? slot : [])
+    addComponent({
+      keyContainer: keyContainer,
+      keyComponent: keyComponent,
+      VNode: component,
+    })
+  } as TRenderResolvedComponent<typeof resolvedComponent>
 }
 
 export const useRuntime = () => ({
   getRuntimeContainers: () => runtimeContainers,
-  getRuntimeApps: () => runtimeApps,
   removeComponent,
   addComponent,
   checkComponent,

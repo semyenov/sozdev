@@ -5,6 +5,7 @@ import { hasOwnProperty, toArray } from '@antfu/utils'
 
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
+import { isClient } from '@vueuse/core'
 
 export const backendStoreIdentificator = '_id' as const
 export const backendStoreKey = 'backend' as const
@@ -23,7 +24,9 @@ export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
 
 export const useBackendStore = defineStore(backendStoreKey, () => {
   const runtimeConfig = useRuntimeConfig()
-  const baseURL = runtimeConfig.public.apiUri
+  const baseURL = !isClient
+    ? 'http://127.0.0.1:3000/api'
+    : runtimeConfig.public.apiUri
 
   const authorizationStore = useAuthorizationStore()
 
@@ -53,6 +56,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     <T>(scope: IMetaScope) =>
     async (id: string) => {
       const storeScopeMap = store.value.get(scope)!
+
       if (!storeScopeMap.has(id)) {
         await get<T>([scope, 'items', id])
       }

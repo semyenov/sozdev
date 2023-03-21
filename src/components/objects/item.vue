@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { ExtractPropTypes, PropType } from 'vue'
 
-import type { IObject } from '~/types'
-import { UiWinboxTest } from '#components';
+import { IMetaScope, IObject } from '~/types'
+import { UiWinboxTest, UiButton } from '#components';
 
 const props = defineProps({
   index: {
@@ -19,45 +19,60 @@ const item = toRef(props, 'item')
 
 const runtime = useRuntime()
 const keyContainer = 'winbox'
+const keyComponent = `winbox-${item.value._id}-id`
+
+const winboxStore = useWinboxStore()
 
 const removeComponent = (val?:string) => {
-  return runtime.removeComponent(keyContainer, item.value._id)
+  return runtime.removeComponent(keyContainer, item.value._id, true)
+}
+
+console.log('component',UiButton.__file);
+
+const renderComponent = () => {
+  return h(UiWinboxTest, {
+      show:true,
+      teleportId:"teleport-layer--20",
+      dataId: keyComponent,
+      params:{
+        ...winboxStore.winboxParams,
+        title: `${item.value.info.name}`,
+      },
+      onCloseWindow: (val) => removeComponent(val),
+
+  },
+  () => h(UiButton, {}, () => item.value.info.name)
+  )
 }
 
 const addComponent = () => {
-  const component = h(UiWinboxTest, {
-      show:true,
-      teleportId:"teleport-layer--20",
-      params:{
-        title: `${item.value.info.name}`,
-        top: 0,
-        bottom: 0,
-        left: 44,
-        right: 0,
-        border: 0,
-        width: 550,
-        height: '100%',
-        minwidth: 500,
-        class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
-        tether: ['right', 'top', 'bottom'],
-      },
-      onCloseWindow: (val) => removeComponent(val)
-  }, () => props.item._id
-  )
+  const component = renderComponent()
+
+
   runtime.addComponent({
     keyContainer: keyContainer,
-    keyComponent: item.value._id,
-    VNode: component
-})
-
+    keyComponent: keyComponent,
+    VNode: component,
+    preserveInfo: {
+      componentInfo: {
+        name: 'UiWinboxTest',
+        slot: {name: 'UiButton'}
+      },
+      item: {
+        id: item.value._id,
+        scope: IMetaScope.OBJECTS
+      }
+    }
+  })
 }
 
-// const TemplateTest = runtime.renderComponent<typeof UiWinboxTest>()
-const isAdded = computed(() => runtime.checkComponent(keyContainer,item.value._id))
+
+
+const isAdded = computed(() => runtime.checkComponent(keyContainer, keyComponent))
 
 
 
-const actionComponent = () => {
+const clickUser = () => {
   if(isAdded.value) {
     removeComponent()
     return
@@ -73,18 +88,11 @@ const actionComponent = () => {
       dashed
       :color="isAdded ? 'fourth' : 'secondary'"
       class="cursor-pointer select-none"
-      @click="actionComponent"
+      @click="clickUser"
     >
       <template v-if="item" #header>
         <div class="flex flex-row w-full justify-between px-4 py-2">
           {{ `# ${item.info.name}` }}
-
-          <!-- <div
-            v-if="item.feature && item.feature.geometry.coordinates[1]"
-            class="inline-flex flex-row items-center px-2 box-color__default--6 box-rounded__sm border border-dashed font-mono font-light text-sm"
-          >
-            {{ item.feature.geometry.coordinates.join(', ') }}
-          </div> -->
         </div>
       </template>
       <template #footer>
@@ -93,44 +101,5 @@ const actionComponent = () => {
         </div>
       </template>
     </UiCard>
-    <!-- <TemplateTest  >asd</TemplateTest> -->
-    <!-- <UiWinboxTest
-      v-model:show="showFlag"
-      teleport-id="teleport-layer--20"
-      :params="{
-        title: `${item.info.name}`,
-        top: 0,
-        bottom: 0,
-        left: 44,
-        right: 0,
-        border: 0,
-        width: 550,
-        height: '100%',
-        minwidth: 500,
-        class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
-        tether: ['right', 'top', 'bottom'],
-      }"
-    >
-      <pre class="p-6 text-sm">{{ item }}</pre>
-    </UiWinboxTest> -->
-    <!-- <UiWinbox
-      v-model:show="showFlag"
-      teleport-id="teleport-layer--20"
-      :params="{
-        title: `${item.info.name}`,
-        top: 0,
-        bottom: 0,
-        left: 44,
-        right: 0,
-        border: 0,
-        width: 550,
-        height: '100%',
-        minwidth: 500,
-        class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
-        tether: ['right', 'top', 'bottom'],
-      }"
-    >
-      <pre class="p-6 text-sm">{{ item }}</pre>
-    </UiWinbox> -->
   </div>
 </template>

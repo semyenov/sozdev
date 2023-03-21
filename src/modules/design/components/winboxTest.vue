@@ -15,7 +15,8 @@ const props = defineProps({
   },
   show: {
     type: Boolean,
-    default: true,
+    default: false,
+    required: true,
   },
   params: {
     type: Object as PropType<WinBoxParams>,
@@ -28,7 +29,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-  // (event: 'update:show', value: boolean): void
+  (event: 'update:show', value: boolean): void
   (event: 'closeWindow', value?: string): void
 }>()
 
@@ -38,7 +39,7 @@ const id = ref<string>(props.dataId)
 const winbox = ref<WinBox | null>(null)
 
 const [showFlag, showFlagToggle] = useToggle(false)
-const [show, showToggle] = useToggle(true)
+const [show, showToggle] = useToggle(props.show)
 
 // const show = toRef(props, 'show')
 
@@ -64,8 +65,7 @@ function open() {
     return
   }
 
-  // const rootEl = document.getElementById(props.teleportId) || document.body
-  const rootEl = props.rootEl || document.body
+  const rootEl = (props.rootEl || document.getElementById(props.teleportId) || document.body)
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
 

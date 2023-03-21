@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 
+
 definePageMeta({
   layout: 'default',
 })
@@ -35,6 +36,7 @@ const { data } = await useFetch('/api/test', {
       tether: ['left', 'top', 'bottom'],
     }"
   >
+  <LazyUiButton> lazy</LazyUiButton>
     <div
       class="h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-6 scrollbar scrollbar-rounded page page-index box-color__default--1"
     >
