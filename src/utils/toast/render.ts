@@ -1,6 +1,6 @@
 import type { App } from 'vue'
-import type { Options, LocalOptions, TRenderFunction } from './toast.d'
-import { formatCssProperties, animDuration } from './styles'
+import type { LocalOptions, Options, TRenderFunction } from './toast.d'
+import { animDuration, formatCssProperties } from './styles'
 import { validateLocalOptions } from './validate'
 
 const toastQueue: Array<[Element, Element]> = []
@@ -13,7 +13,6 @@ function setClassAndMount(
   el.className = className
   target.appendChild(el)
 }
-
 
 function formatToastFromOptions(
   text: string,
@@ -41,7 +40,9 @@ function formatToastFromOptions(
   toast.className = 'dk__toast'
 
   function classHandler(opt: Options | LocalOptions): void {
-    if (!opt.class) return
+    if (!opt.class) {
+      return
+    }
 
     if (typeof opt.class === 'string') {
       toast.classList.add(opt.class)
@@ -53,7 +54,9 @@ function formatToastFromOptions(
   classHandler(options)
   classHandler(localOptions)
 
-  if (localOptions.type) toast.classList.add(`dk__${localOptions.type}`)
+  if (localOptions.type) {
+    toast.classList.add(`dk__${localOptions.type}`)
+  }
 
   // A11y attributes
   toast.setAttribute('role', 'status')
@@ -61,7 +64,9 @@ function formatToastFromOptions(
   toast.setAttribute('aria-atomic', 'false')
 
   // If text
-  if (text) toast.textContent = text
+  if (text) {
+    toast.textContent = text
+  }
   // If left slot
   if (left) {
     toast.innerHTML = `<div class="dk__icon-left">${left}</div>${toast.innerHTML}`
@@ -71,13 +76,17 @@ function formatToastFromOptions(
     toast.innerHTML += `<div class="dk__icon-right">${right}</div>`
   }
   // If slot only
-  if (!text && (left || right)) toast.classList.add('dk__icon-only')
+  if (!text && (left || right)) {
+    toast.classList.add('dk__icon-only')
+  }
 
   const styles = localOptions.styles || options.styles
   toast.setAttribute('style', formatCssProperties(styles))
 
   // Prevent hover styling
-  if (localOptions.disableClick) toast.classList.add('dk__click-disabled')
+  if (localOptions.disableClick) {
+    toast.classList.add('dk__click-disabled')
+  }
 
   return toast
 }
@@ -85,7 +94,7 @@ function formatToastFromOptions(
 function toastPlugin(
   app: App | null,
   options: Options,
-  isUseApp: boolean = true
+  _isUseApp = true
 ): TRenderFunction {
   const container = document.createElement('div')
   const mobileContainer = document.createElement('div')
@@ -96,7 +105,9 @@ function toastPlugin(
   function renderToast(text: string, passedLocalOptions?: LocalOptions): void {
     const localOptions = passedLocalOptions || {}
 
-    if (!localOptions || !validateLocalOptions(text, localOptions)) return
+    if (!localOptions || !validateLocalOptions(text, localOptions)) {
+      return
+    }
 
     const positions = {
       y: localOptions.positionY || options.positionY,
@@ -148,7 +159,9 @@ function toastPlugin(
     let clicked: boolean
 
     function removeToastPair(e?: Event): void {
-      if (e) clicked = true
+      if (e) {
+        clicked = true
+      }
 
       if ([...section.children].includes(toast)) {
         section.removeChild(toast)
@@ -176,7 +189,9 @@ function toastPlugin(
       mobileClone.classList.remove(animInClass)
     }, animDuration)
 
-    if (!duration) return
+    if (!duration) {
+      return
+    }
 
     const startTime = Date.now()
     const animOutClass = 'dk__toast-anim--out'
@@ -186,7 +201,9 @@ function toastPlugin(
 
     function removeToastPairTimeout(timeoutDuration: number) {
       timeoutId = window.setTimeout(() => {
-        if (clicked) return
+        if (clicked) {
+          return
+        }
 
         toast.classList.add(animOutClass)
         mobileClone.classList.add(animOutClass)

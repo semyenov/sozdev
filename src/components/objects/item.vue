@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type {  PropType } from 'vue'
+import type { PropType } from 'vue'
 
-import { IMetaScope, IObject } from '~/types'
-import { UiWinboxTest, UiButton } from '#components';
-import { nanoid } from 'nanoid';
+import type { IObject } from '~/types'
+import type { IWinboxComposeProps } from '~/types/winbox'
 
 const props = defineProps({
   index: {
@@ -17,82 +16,32 @@ const props = defineProps({
 })
 const item = toRef(props, 'item')
 
+const winboxTitle = `${item.value.info.name}`
 
-const runtime = useRuntime()
-const winboxCompose = useWinbox()
+const componentKey = `winbox-detail-${item.value._id}`
 
-const keyContainer = winboxCompose.idContainer.value
-const keyComponent = nanoid(10)
-
-const removeComponent = () => {
-  return runtime.removeComponent(keyContainer, keyComponent, true,
-  winboxCompose.removePreserveItem)
-}
-
-const renderComponent = () => {
-  return h(UiWinboxTest, {
-      show:true,
-      teleportId:"teleport-layer--20",
-      dataId: keyComponent,
-      params:{
-        ...winboxCompose.winboxParams,
-        title: `${item.value.info.name}`,
-      },
-      onCloseWindow: () => removeComponent(),
-
+const winboxProps: IWinboxComposeProps = {
+  components: {
+    name: 'UiWinboxTest',
+    id: componentKey,
+    slot: { name: 'ObjectsDetailItem' },
   },
-  () => h(UiButton, {}, () => item.value.info.name)
-  )
+  params: {
+    title: winboxTitle,
+  },
+  itemId: item.value._id,
 }
 
-const addComponent = () => {
-  const component = renderComponent()
-  runtime.addComponent({
-    keyContainer: keyContainer,
-    keyComponent: keyComponent,
-    VNode: component,
-    preserveInfo: {
-      componentInfo: {
-        name: 'UiWinboxTest',
-        id: keyComponent,
-        params: {
-          title: `${item.value.info.name}`
-        },
-        slot: {name: 'UiButton'}
-      },
-      item: {
-        id: item.value._id,
-        scope: IMetaScope.OBJECTS
-      }
-    },
-    setterPreserve: winboxCompose.setPreserveItem
-  })
-
-}
-
-
-
-const isAdded = computed(() => runtime.checkComponent(keyContainer, keyComponent))
-
-
-
-const clickUser = () => {
-  if(isAdded.value) {
-    removeComponent()
-    return
-  }
-  addComponent()
-}
-
+const { isOpen, toggleWinbox, windowParams } = useWinbox(winboxProps)
 </script>
 
 <template>
   <div class="component-object-item">
     <UiCard
       dashed
-      :color="isAdded ? 'fourth' : 'secondary'"
+      :color="isOpen ? 'fourth' : 'secondary'"
       class="cursor-pointer select-none"
-      @click="clickUser"
+      @click="toggleWinbox"
     >
       <template v-if="item" #header>
         <div class="flex flex-row w-full justify-between px-4 py-2">
@@ -101,7 +50,9 @@ const clickUser = () => {
       </template>
       <template #footer>
         <div class="px-4 py-1.5">
-          {{ item._id }}
+          {{ item._id }}<br />
+          isOpen: {{ isOpen }} <br />
+          {{ windowParams?.active || false }}
         </div>
       </template>
     </UiCard>

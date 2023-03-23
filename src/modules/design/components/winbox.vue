@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { WinBoxParams } from '~~/src/types/winbox';
-
 import { nanoid } from 'nanoid'
-
+import type { WinBoxParams } from '~/types/winbox'
 
 const props = defineProps({
   teleportId: {
@@ -74,7 +72,6 @@ function open() {
 }
 
 function close() {
-
   const el = getWinboxEl()
   if (!el || !el.winbox) {
     return

@@ -1,23 +1,17 @@
 <script setup lang="ts">
-
-
-const runtime = useRuntime()
-const apps = runtime.getRuntimeContainers()
-const refElements = ref<Map<string, Element| ComponentPublicInstance|null>>(new Map)
-
+const refElements = ref<HTMLElement | null>(null)
 </script>
 
 <template>
-  <div
-    class="layout layout-modals fixed w-full"
-  >
-      <div  v-for="[keyApp, app] of apps.entries()" :key="keyApp" :id="keyApp" :ref="(el) => refElements.set(keyApp, el)">
-          <component
-
-            v-for="[key,component] of app.entries()"
-            :root-el="refElements.get(keyApp)"
-            :key="key" :is="component">
-          </component>
-      </div>
+  <div class="layout fixed w-full layout-modals">
+    <div ref="refElements" class="winbox">
+      <Component
+        :is="vnode"
+        v-for="[key, vnode] of runtimeContainers.entries()"
+        :key="key"
+        :root-el="refElements"
+      >
+      </Component>
+    </div>
   </div>
 </template>

@@ -1,29 +1,15 @@
 <script setup lang="ts">
-// import type { Toast } from '~/utils/toast/toast.d';
-
-import { text } from 'stream/consumers';
-
-
-
 // const toast = inject('$toast') as Toast;
-const app = useNuxtApp()
-const usersStore = useUsersStore()
-const count = ref(0)
-const testCount = toRef(usersStore, 'testCount')
-const testClick = () => {
-  // window.Toast('test')
-  renderTest(app.vueApp, testCount)
-}
-
-
+// const app = useNuxtApp()
+// const usersStore = useUsersStore()
+// const count = ref(0)
+// const testCount = toRef(usersStore, 'testCount')
 </script>
 
 <template>
   <div>
-
-    <button ref="elementRef" @click="testClick" id="create-toast">Create !Toast</button>
+    <!-- <button ref="elementRef" @click="testClick" id="create-toast">Create !Toast</button>
     {{ testCount }}
-    <button  @click="testCount++">Increment</button>
+    <button  @click="testCount++">Increment</button> -->
   </div>
 </template>
-

@@ -1,4 +1,3 @@
-import type { App } from 'vue'
 import type { Options, TRenderFunction } from './toast.d'
 import { validateOptions } from './validate'
 import { appendStylesheet } from './styles'
@@ -26,8 +25,12 @@ const checkOptions = (globalOptions: Options = {}) => {
   if (options.pauseOnHover === undefined) {
     options.pauseOnHover = true
   }
-  if (!options.positionY) options.positionY = 'bottom'
-  if (!options.positionX) options.positionX = 'right'
+  if (!options.positionY) {
+    options.positionY = 'bottom'
+  }
+  if (!options.positionX) {
+    options.positionX = 'right'
+  }
   validateOptions(options)
   appendStylesheet(options)
   return options

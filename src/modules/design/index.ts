@@ -10,7 +10,6 @@ import postcssNested from 'postcss-nested'
 import postcssCurrentSelector from 'postcss-current-selector'
 // @ts-expect-error missing type
 import postcssNestedAncestors from 'postcss-nested-ancestors'
-import useDynamicComponents from '~~/src/composables/dynamicComponents'
 
 export default defineNuxtModule<{}>({
   meta: {
@@ -27,6 +26,12 @@ export default defineNuxtModule<{}>({
       watch: true,
       global: true,
     })
+
+    // await addComponentsDir({
+    //   path: resolve('../../components/objects/detail'),
+    //   watch: true,
+    //   global: true,
+    // })
 
     // console.log(nuxt)
 
@@ -84,7 +89,7 @@ export default defineNuxtModule<{}>({
     }
   },
   hooks: {
-    'components:extend': (components) => {
+    'components:extend': (_components) => {
       // console.log('components', components)
       // const dynamicComponents = useDynamicComponents()
       // console.log('dynamic', dynamicComponents)

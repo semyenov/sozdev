@@ -1,5 +1,3 @@
-import { IMetaScope } from './client'
-
 export interface IWindowInfo {
   x: number
   y: number
@@ -42,16 +40,34 @@ export interface ISettingsWindox {
       [key: string]: string | number | boolean | undefined
       title?: string
     }
-    slot?: {
+    slot: {
       name: string
     }
   }
   item: {
-    scope: IMetaScope
     id: string
   }
 }
 
+export interface IWinboxComposeProps {
+  params: IWinboxParams
+  components: IWinboxComponentInfo
+  itemId: string
+}
+
+export interface IWinboxParams extends WinBoxParams {
+  // [key: string]: string | number | boolean | undefined
+  title: string
+}
+
+export interface IWinboxComponentInfo {
+  name: string
+  id: string
+  slot: {
+    name: string
+  }
+}
+
 export interface ISettingsWindoxStorage {
-  [id: string]: ISettingsWindox
+  [id: string]: IWinboxComposeProps
 }

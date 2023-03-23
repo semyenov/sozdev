@@ -8,9 +8,7 @@ const route = useRoute()
       <NuxtPage :key="route.fullPath" />
     </NuxtLayout>
     <ClientOnly>
-      <NuxtLayout name="modals">
-        jjjj
-      </NuxtLayout>
+      <NuxtLayout name="modals"> jjjj </NuxtLayout>
     </ClientOnly>
   </div>
 </template>

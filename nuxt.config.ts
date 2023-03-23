@@ -9,7 +9,6 @@ import {
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  vite: {},
   alias: {
     assets: resolve(__dirname, 'src', 'assets'),
     public: resolve(__dirname, 'src', 'public'),
@@ -46,6 +45,20 @@ export default defineNuxtConfig({
     public: {
       apiUri: '/api',
     },
+  },
+
+  components: {
+    dirs: [
+      {
+        // path: `~/components/objects/detail/item`,
+        path: resolve(__dirname, 'src', 'components', 'objects', 'detail'),
+        // extensions: ['.vue'],
+        prefix: 'ObjectsDetail',
+        pathPrefix: true,
+        global: true,
+      },
+      `~/components`,
+    ],
   },
 
   imports: {

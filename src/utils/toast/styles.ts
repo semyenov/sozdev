@@ -1,31 +1,37 @@
-import type { Options } from './toast.d';
+import type { Options } from './toast.d'
 
-export const animDuration = 150;
+export const animDuration = 150
 
 /** Minify CSS */
 function minify(styles: string): string {
-  let selector = false;
-  let value = false;
+  let selector = false
+  let value = false
 
   function mapStyleChar(char: string) {
     // Retain spaces between selectors
     // Determine start of selector
     if (/[\.@#]/.test(char) && !value) {
-      selector = true;
+      selector = true
     }
     // Determine end of selector
     if (/[,\{]/.test(char) && selector) {
-      selector = false;
+      selector = false
     }
 
     // Retain spaces between rules with multiple values
-    if (char === ':' && !selector) value = true;
-    if (char === ';' && !selector) value = false;
+    if (char === ':' && !selector) {
+      value = true
+    }
+    if (char === ';' && !selector) {
+      value = false
+    }
 
     // Replace spaces and line-breaks
-    if (/\s/.test(char) && !selector && !value) return '';
+    if (/\s/.test(char) && !selector && !value) {
+      return ''
+    }
 
-    return char;
+    return char
   }
 
   const minified = styles
@@ -33,47 +39,51 @@ function minify(styles: string): string {
     .map(mapStyleChar)
     .join('')
     .replace(' {', '{')
-    .replace(': ', ':');
+    .replace(': ', ':')
 
-  return minified;
+  return minified
 }
 
 /** Format CSS from camelCase */
-export function formatCssProperties(passedStyles?: Record<string, string>): string {
-  const styles = passedStyles || {};
+export function formatCssProperties(
+  passedStyles?: Record<string, string>
+): string {
+  const styles = passedStyles || {}
 
   function formatStyle(style: string) {
     const formattedName = style
       .split('')
       .map((letter, index) => {
-        if (letter === '-') return letter;
-
-        const vendorPrefix = /^(?:webkit|moz|ms)/.test(style) && index === 0;
-
-        if (vendorPrefix || letter === letter.toUpperCase()) {
-          return `-${letter.toLowerCase()}`;
+        if (letter === '-') {
+          return letter
         }
 
-        return letter;
-      })
-      .join('');
+        const vendorPrefix = /^(?:webkit|moz|ms)/.test(style) && index === 0
 
-    return `${formattedName}: ${styles[style]};`;
+        if (vendorPrefix || letter === letter.toUpperCase()) {
+          return `-${letter.toLowerCase()}`
+        }
+
+        return letter
+      })
+      .join('')
+
+    return `${formattedName}: ${styles[style]};`
   }
 
-  return Object.keys(styles).map(formatStyle).join('');
+  return Object.keys(styles).map(formatStyle).join('')
 }
 
 /** Append minified stylesheet to document head */
 export function appendStylesheet(options: Options): void {
-  const { styles, positionY } = options;
+  const { styles, positionY } = options
   // Format style properties/values
-  const properties = formatCssProperties(styles);
-  const animationDefault = `animation: dk__toast-in ${animDuration / 1000}s`;
+  const properties = formatCssProperties(styles)
+  const animationDefault = `animation: dk__toast-in ${animDuration / 1000}s`
 
   // Create stylesheet
-  const stylesheet = document.createElement('style');
-  stylesheet.type = 'text/css';
+  const stylesheet = document.createElement('style')
+  stylesheet.type = 'text/css'
 
   // Stylesheet content
   stylesheet.textContent = minify(`
@@ -251,7 +261,7 @@ export function appendStylesheet(options: Options): void {
         z-index: 10000;
       }
       .dk__toast-mobile-top { grid-area: top; }
-      .dk__toast-mobile-bottom { 
+      .dk__toast-mobile-bottom {
         grid-area: bottom;
         align-self: end;
       }
@@ -272,7 +282,7 @@ export function appendStylesheet(options: Options): void {
         padding: 8px 30px;
       }
     }
-  `);
+  `)
 
-  document.head.appendChild(stylesheet);
+  document.head.appendChild(stylesheet)
 }

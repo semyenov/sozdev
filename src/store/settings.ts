@@ -23,14 +23,11 @@ const winboxParams: IWinboxParams = {
     minwidth: 500,
     class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
     tether: ['right', 'top', 'bottom'],
-    needSave: true,
   },
   page: {},
 }
 
 export const useSettingsStore = defineStore(settingsStoreKey, () => {
-  function getWinboxParams(type: string) {}
-
   return {
     winboxParams,
   }

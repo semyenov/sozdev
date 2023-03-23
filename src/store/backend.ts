@@ -3,9 +3,9 @@ import type { FetchOptions, SearchParameters } from 'ofetch'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { hasOwnProperty, toArray } from '@antfu/utils'
 
+import { isClient } from '@vueuse/core'
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
-import { isClient } from '@vueuse/core'
 
 export const backendStoreIdentificator = '_id' as const
 export const backendStoreKey = 'backend' as const

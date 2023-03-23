@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { WinBoxParams } from '~~/src/types/winbox';
-
 import { nanoid } from 'nanoid'
+
+import type { WinBoxParams } from '~/types/winbox'
 
 const props = defineProps({
   teleportId: {
@@ -25,15 +25,14 @@ const props = defineProps({
   rootEl: {
     type: Object as PropType<HTMLElement>,
   },
-
 })
 
 const emit = defineEmits<{
   (event: 'update:show', value: boolean): void
-  (event: 'closeWindow', value?: string): void
+  (event: 'actionClose', value?: string): void
 }>()
 
-const winboxCompose = useWinbox()
+// const winboxCompose = useWinbox()
 
 const id = ref<string>(props.dataId)
 const winbox = ref<WinBox | null>(null)
@@ -42,7 +41,6 @@ const [showFlag, showFlagToggle] = useToggle(false)
 const [show, showToggle] = useToggle(props.show)
 
 // const show = toRef(props, 'show')
-
 
 defineExpose({
   id,
@@ -65,7 +63,8 @@ function open() {
     return
   }
 
-  const rootEl = (props.rootEl || document.getElementById(props.teleportId) || document.body)
+  const rootEl =
+    props.rootEl || document.getElementById(props.teleportId) || document.body
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
 
@@ -74,21 +73,19 @@ function open() {
 
   const winboxParams = getWinboxParams(id.value, rootEl, mountEl)
 
-  winboxCompose.register(id.value, winboxParams)
+  register(id.value, winboxParams)
 
   nextTick(() => {
     showFlagToggle(true)
   })
-
 }
 
 function close() {
-
   const el = getWinboxEl()
   if (!el || !el.winbox) {
-  nextTick(() => {
-    emit('closeWindow')
-  })
+    nextTick(() => {
+      emit('actionClose')
+    })
     return
   }
   el.winbox.close()
@@ -129,10 +126,10 @@ function getWinboxParams(
 
 <template>
   <Teleport v-if="showFlag" :to="`#${id} .wb-content`">
-    <pre
+    <!-- <pre
       class="w-full border-b box-color__default--2 p-6 border-b-dashed text-xs"
-      >{{ winboxCompose.windows.value.get(id) }}</pre
-    >
+      >{{ winboxCompose.windows.value.get(id) }}</pre -->
+    <!-- > -->
     <slot name="default" />
   </Teleport>
 </template>

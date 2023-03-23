@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 
 import type { IObject } from '~/types'
 
-export const items: IObject[] = range(0, 100000).map((_i) => {
+export const items: IObject[] = range(0, 1000).map((_i) => {
   const id = faker.datatype.uuid()
 
   return {

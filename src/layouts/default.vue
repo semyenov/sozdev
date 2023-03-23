@@ -10,7 +10,7 @@ const authorizationStore = useAuthorizationStore()
   <div
     class="flex flex-grow layout layout-default relative overflow-hidden box-color__default--3"
   >
-    <div class="layout-default__loading z-100 h-2 absolute w-full">
+    <div class="w-full layout-default__loading z-100 h-2 absolute">
       <NuxtLoadingIndicator />
     </div>
 
@@ -39,7 +39,7 @@ const authorizationStore = useAuthorizationStore()
         class="layout-default__teleport fixed left-0 right-0 z-10 flex"
       ></div>
 
-<!-- <div
+      <!-- <div
   id="__toasts"
   class="layout-default__teleport fixed left-0 right-0 z-10 flex"
 ></div> -->

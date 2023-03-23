@@ -1,5 +1,4 @@
 import toaster from '~/utils/toast/toast'
-import { defineComponent, inject } from 'vue'
 import type { Toast } from '~/utils/toast/toast.d'
 declare global {
   interface Window {
@@ -14,7 +13,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     toastElement.setAttribute('id', '__toasts')
     const appRoot = document.querySelector('body')
     appRoot?.insertAdjacentElement('beforeend', toastElement)
-    console.log(appRoot)
 
     window.Toast = toaster.getToastRender()
     logger.success('added toaster')

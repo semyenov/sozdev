@@ -68,7 +68,7 @@ function handleChange(event: Event) {
         tether: ['right', 'top', 'bottom'],
       }"
     >
-      <pre class="p-6 text-sm">{{ item }}</pre>
+      <pre class="text-sm p-6">{{ item }}</pre>
     </UiWinbox>
   </div>
 </template>

@@ -1,6 +1,3 @@
-import { Pinia } from 'pinia'
-import { createApp, App, watch } from 'vue'
-
 export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.hooks.hookOnce('app:mounted', () => {
     // const runtime = useRuntime()
