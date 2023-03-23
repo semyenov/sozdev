@@ -1,3 +1,4 @@
+import type { DateTimeFormat } from '@intlify/core-base'
 import type { LocaleObject } from 'vue-i18n-routing'
 
 const localesList: {
@@ -26,7 +27,7 @@ const localesList: {
   },
 }
 
-const dateFormat = {
+const dateFormat: DateTimeFormat = {
   full: {
     year: 'numeric',
     month: 'numeric',
@@ -128,10 +129,12 @@ export const locales = [
     [] as LocaleObject[]
   ),
 ]
-
-export const datetimeFormats = Object.freeze({
-  ...Object.keys(locales).reduce((acc, l) => ({ ...acc, [l]: dateFormat }), {}),
-})
+export const datetimeFormats = {
+  ...locales.reduce(
+    (acc, l) => ({ ...acc, [l.code]: dateFormat }),
+    {} as { [key: string]: typeof dateFormat }
+  ),
+}
 
 export const numberFormats = Object.freeze({
   ...Object.keys(locales).reduce(
