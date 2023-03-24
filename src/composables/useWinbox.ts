@@ -16,19 +16,18 @@ export const winboxWindows = useStorage<Map<string, IWindowInfo>>(
 // export const winboxWindows = ref<Map<string, IWindowInfo>>(new Map())
 
 export const WinboxRoot = defineComponent({
-  render() {
-    if (winboxWindows.value.size === 0) {
-      return
-    }
-
+  setup() {
     const { vueApp } = useNuxtApp()
+    return { vueApp, winboxWindows }
+  },
+  render() {
+    const { vueApp, winboxWindows } = this
     const childrens: VNodeArrayChildren = []
 
-    for (const [id, info] of winboxWindows.value.entries()) {
+    for (const [id, info] of winboxWindows.entries()) {
       if (!info) {
         return
       }
-
       const component = vueApp.component(
         info.component?.name || 'ObjectsDetailItem'
       )
