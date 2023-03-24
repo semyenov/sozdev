@@ -41,7 +41,7 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
 <template>
   <div class="">
-    {{ winboxWindows }}
+    <pre>{{ winboxWindows }}</pre>
     <UiWinboxTest
       :params="{
         id: 'page-objects',

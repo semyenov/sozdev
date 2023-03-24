@@ -1,29 +1,33 @@
 import type { VNodeArrayChildren } from '@vue/runtime-core'
 
 import { throttle } from '@antfu/utils'
-// import { useStorage } from '@vueuse/core'
 
+import { useStorage } from '@vueuse/core'
 import type { IWindowInfo, WinBoxComponent, WinBoxParams } from '~/types/winbox'
 import { UiWinboxTest } from '#components'
 
 const logger = useLogger(`store/${backendStoreKey}`)
 const winboxCursor = ref<string>()
+export const winboxWindows = useStorage<Map<string, IWindowInfo>>(
+  'winbox-windows',
+  new Map()
+)
 
-// export const winboxWindows = useStorage<Map<string, IWindowInfo>>(
-//   'winbox-windows',
-//   new Map()
-// )
-
-export const winboxWindows = ref<Map<string, IWindowInfo>>(new Map())
+// export const winboxWindows = ref<Map<string, IWindowInfo>>(new Map())
 
 export const WinboxRoot = defineComponent({
   render() {
+    if (winboxWindows.value.size === 0) {
+      return
+    }
+
     const { vueApp } = useNuxtApp()
     const childrens: VNodeArrayChildren = []
+
     for (const [id, info] of winboxWindows.value.entries()) {
-      // if (!info.component) {
-      //   return h(UiWinboxTest, { key: id, params: info.params })
-      // }
+      if (!info) {
+        return
+      }
 
       const component = vueApp.component(
         info.component?.name || 'ObjectsDetailItem'
