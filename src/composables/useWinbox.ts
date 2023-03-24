@@ -1,48 +1,49 @@
+import type { VNodeArrayChildren } from '@vue/runtime-core'
+
 import { throttle } from '@antfu/utils'
-import { useStorage } from '@vueuse/core'
+// import { useStorage } from '@vueuse/core'
 
-import type { Component } from 'vue'
-import type WinBox from 'winbox'
-
-import type { IWindowInfo, WinBoxParams } from '~/types/winbox'
+import type { IWindowInfo, WinBoxComponent, WinBoxParams } from '~/types/winbox'
 import { UiWinboxTest } from '#components'
 
 const logger = useLogger(`store/${backendStoreKey}`)
 const winboxCursor = ref<string>()
 
-export const winboxWindows = useStorage<Map<string, IWindowInfo>>(
-  'winbox-windows',
-  new Map()
-)
+// export const winboxWindows = useStorage<Map<string, IWindowInfo>>(
+//   'winbox-windows',
+//   new Map()
+// )
 
-// export const winboxWindows = ref<Map<string, IWindowInfo>>(new Map())
+export const winboxWindows = ref<Map<string, IWindowInfo>>(new Map())
 
-function getComponent(name: string | undefined): Component | VNode {
-  if (!name) {
-    logger.error(`Empty value component name`)
-    return h('div')
-  }
-  const { vueApp } = useNuxtApp()
-  let component = vueApp.component(name)
+export const WinboxRoot = defineComponent({
+  render() {
+    const { vueApp } = useNuxtApp()
+    const childrens: VNodeArrayChildren = []
+    for (const [id, info] of winboxWindows.value.entries()) {
+      // if (!info.component) {
+      //   return h(UiWinboxTest, { key: id, params: info.params })
+      // }
 
-  if (!component) {
-    logger.error(`Component ${name} not found`)
-    component = h('div')
-  }
+      const component = vueApp.component(
+        info.component?.name || 'ObjectsDetailItem'
+      )
+      if (!component) {
+        logger.error(`Component ${info.component?.name} not found`)
+        return
+      }
 
-  return component
-}
-
-export function getWinboxVNode(info: IWindowInfo): VNode | undefined {
-  if (!info.params.runtime) {
-    return h('div')
-  }
-
-  const component = getComponent(info.params.dataComponent)
-  return h(UiWinboxTest, { params: info.params }, () => [
-    h(component, { id: info.params.dataId }),
-  ])
-}
+      childrens.push(
+        h(
+          UiWinboxTest,
+          { key: id, params: info.params, component: info.component },
+          () => h(component, info.component?.props)
+        )
+      )
+    }
+    return h('div', childrens)
+  },
+})
 
 const keys = useMagicKeys()
 const shiftLeftArrowKey = keys['Shift+<']
@@ -85,7 +86,8 @@ watch(shiftRightArrowKey, (flag) => {
 export function register(
   root: HTMLElement,
   mount: HTMLElement,
-  params: WinBoxParams
+  params: WinBoxParams,
+  component?: WinBoxComponent
 ) {
   if (params.tether) {
     if (params.tether.includes('right')) {
@@ -316,6 +318,7 @@ export function register(
   if (!winboxWindows.value.has(params.id)) {
     winboxWindows.value.set(params.id, {
       params,
+      component,
       state: {
         x: winbox.body.parentElement?.offsetLeft || 0,
         y: winbox.body.parentElement?.offsetTop || 0,

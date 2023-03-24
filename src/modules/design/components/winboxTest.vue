@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { WinBoxParams } from '~/types/winbox'
+import type { WinBoxComponent, WinBoxParams } from '~/types/winbox'
 
 const props = defineProps({
   params: {
     type: Object as PropType<WinBoxParams>,
     default: () => ({}),
   },
-  rootEl: {
-    type: Object as PropType<HTMLElement>,
+  component: {
+    type: Object as PropType<WinBoxComponent>,
+    required: false,
   },
 })
 
@@ -40,9 +41,7 @@ function open() {
   }
 
   const rootEl =
-    props.rootEl ||
-    document.getElementById(props.params.teleportId) ||
-    document.body
+    document.getElementById(props.params.teleportId) || document.body
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
 
@@ -50,7 +49,7 @@ function open() {
   mountEl.appendChild(contentEl)
 
   const winboxParams = getWinboxParams()
-  register(rootEl, mountEl, winboxParams)
+  register(rootEl, mountEl, winboxParams, props.component)
 
   nextTick(() => {
     showToggle(true)

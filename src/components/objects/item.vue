@@ -2,7 +2,6 @@
 import type { PropType } from 'vue'
 
 import type { IObject } from '~/types'
-import type { WinBoxParams } from '~~/src/types/winbox'
 
 const props = defineProps({
   index: {
@@ -20,18 +19,21 @@ const winboxTitle = `${item.value.info.name}`
 
 const winboxId = `winbox-detail-${item.value._id}`
 
-const winboxParams: WinBoxParams = {
-  id: winboxId,
-  teleportId: 'teleport-layer--20',
-  title: winboxTitle,
-  dataComponent: 'ObjectsDetailItem',
-  dataId: item.value._id,
-  runtime: true,
-}
-
 function handleClick() {
   winboxWindows.value.set(winboxId, {
-    params: winboxParams,
+    params: {
+      id: winboxId,
+      teleportId: 'teleport-layer--20',
+      title: winboxTitle,
+      runtime: true,
+    },
+    component: {
+      name: 'ObjectsDetailItem',
+      props: {
+        id: item.value._id,
+      },
+    },
+
     state: {
       x: 44,
       y: 0,

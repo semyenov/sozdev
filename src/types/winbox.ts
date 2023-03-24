@@ -4,13 +4,9 @@ export type WinBoxParams = WinBox.Params & {
   id: string
   teleportId: string
 
-  runtime?: boolean
-
-  dataId?: string
-  dataComponent?: string
-
   tether?: WinBoxParamsTether[]
 
+  runtime?: boolean
   maximized?: boolean
   minimized?: boolean
 }
@@ -26,7 +22,13 @@ export interface WinBoxState {
   active: boolean
 }
 
+export interface WinBoxComponent {
+  name: string
+  props: object
+}
+
 export interface IWindowInfo {
   params: WinBoxParams
   state: WinBoxState
+  component?: WinBoxComponent
 }
