@@ -4,149 +4,44 @@ import { useStorage } from '@vueuse/core'
 import type { Component } from 'vue'
 import type WinBox from 'winbox'
 
-import type {
-  ISettingsWindoxStorage,
-  IWinboxComposeProps,
-  IWindowInfo,
-  TWinboxParamsKeys,
-  WinBoxParams,
-} from '~/types/winbox'
+import type { IWindowInfo, WinBoxParams } from '~/types/winbox'
+import { UiWinboxTest } from '#components'
 
 const logger = useLogger(`store/${backendStoreKey}`)
+const winboxCursor = ref<string>()
 
-const preservedWinbox = useStorage(
-  'key-preserved-winbox',
-  {} as ISettingsWindoxStorage
+export const winboxWindows = useStorage<Map<string, IWindowInfo>>(
+  'winbox-windows',
+  new Map()
 )
 
-const windows = ref<Map<string, IWindowInfo>>(new Map())
+// export const winboxWindows = ref<Map<string, IWindowInfo>>(new Map())
 
-export const runtimeContainers = ref<Map<string, VNode>>(new Map())
-
-const mouse = useMouse()
-const cursor = ref<string>()
-
-const winboxParams: Pick<WinBoxParams, TWinboxParamsKeys> = {
-  top: 0,
-  bottom: 0,
-  left: 44,
-  right: 0,
-  border: 0,
-  width: 550,
-  height: '100%',
-  minwidth: 500,
-  class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
-  tether: ['right', 'top', 'bottom'],
-}
-
-function removeComponent(keyComponent: string) {
-  runtimeContainers.value.delete(keyComponent)
-  removePreserveItem(keyComponent)
-  logger.info(`component deleted`)
-}
-
-function setPreserveItem(id: string, data: IWinboxComposeProps) {
-  preservedWinbox.value[id] = data
-}
-
-function getPreserveItem(id: string) {
-  return preservedWinbox.value[id]
-}
-
-function removePreserveItem(id: string) {
-  preservedWinbox.value = Object.keys(preservedWinbox.value).reduce(
-    (prev, cur) => {
-      if (id === cur) {
-        return prev
-      }
-      prev[cur] = preservedWinbox.value[cur]
-      return prev
-    },
-    {} as ISettingsWindoxStorage
-  )
-}
-
-export function preservedItemsGetter() {
-  const objects = preservedWinbox.value
-  return Object.keys(objects).reduce((array, key) => {
-    const item = objects[key]
-    array.push(item)
-    return array
-  }, [] as IWinboxComposeProps[])
-}
-
-function getComponent(name: string): Component | undefined {
+function getComponent(name: string | undefined): Component | VNode {
+  if (!name) {
+    logger.error(`Empty value component name`)
+    return h('div')
+  }
   const { vueApp } = useNuxtApp()
-  const component = vueApp.component(name)
+  let component = vueApp.component(name)
+
   if (!component) {
     logger.error(`Component ${name} not found`)
+    component = h('div')
   }
+
   return component
 }
 
-function renderVNode(
-  props: IWinboxComposeProps,
-  keyComponent: string
-): VNode | undefined {
-  const component = getComponent(props.components.name)
-  const child = getComponent(props.components.slot.name)
-  if (!component || !child) {
-    return
-  }
-  const VNode = h(
-    component,
-    {
-      show: true,
-      teleportId: 'teleport-layer--20',
-      dataId: keyComponent,
-      params: {
-        ...winboxParams,
-        ...(props.params || {}),
-      },
-      onActionClose: () => removeComponent(keyComponent),
-    },
-    () => child && h(child, { id: props.itemId })
-  )
-  return VNode
-}
-
-function addComponent(keyComponent: string, props: IWinboxComposeProps) {
-  const component = renderVNode(props, keyComponent)
-  if (!component) {
-    return
-  }
-  runtimeContainers.value.set(keyComponent, component)
-  setPreserveItem(keyComponent, props)
-}
-
-export const useWinbox = (props: IWinboxComposeProps) => {
-  const isOpen = computed(() => {
-    return runtimeContainers.value.has(props.components.id)
-  })
-  const windowParams = computed(() => {
-    return windows.value.get(props.components.id)
-  })
-
-  function toggleWinbox() {
-    if (isOpen.value) {
-      removeComponent(props.components.id)
-    } else {
-      addComponent(props.components.id, props)
-    }
+export function getWinboxVNode(info: IWindowInfo): VNode | undefined {
+  if (!info.params.runtime) {
+    return h('div')
   }
 
-  return {
-    register,
-
-    windows,
-    mouse,
-
-    winboxParams,
-
-    isOpen,
-    toggleWinbox,
-    windowParams,
-  }
+  const component = getComponent(info.params.dataComponent)
+  return h(UiWinboxTest, { params: info.params }, () => [
+    h(component, { id: info.params.dataId }),
+  ])
 }
 
 const keys = useMagicKeys()
@@ -155,39 +50,43 @@ const shiftRightArrowKey = keys['Shift+>']
 
 watch(shiftLeftArrowKey, (flag) => {
   if (flag) {
-    const ids = [...windows.value.keys()]
-    const currentIndex = ids.findIndex((key) => key === cursor.value) - 1
+    const ids = [...winboxWindows.value.keys()]
+    const currentIndex = ids.findIndex((key) => key === winboxCursor.value) - 1
 
     if (currentIndex > -2) {
-      cursor.value = ids[currentIndex]
+      winboxCursor.value = ids[currentIndex]
 
       return
     }
 
     if (ids.length > 0) {
-      cursor.value = ids[ids.length - 1]
+      winboxCursor.value = ids[ids.length - 1]
     }
   }
 })
 
 watch(shiftRightArrowKey, (flag) => {
   if (flag) {
-    const ids = [...windows.value.keys()]
-    const currentIndex = ids.findIndex((key) => key === cursor.value) + 1
+    const ids = [...winboxWindows.value.keys()]
+    const currentIndex = ids.findIndex((key) => key === winboxCursor.value) + 1
 
     if (currentIndex > 0 && currentIndex < ids.length) {
-      cursor.value = ids[currentIndex]
+      winboxCursor.value = ids[currentIndex]
 
       return
     }
 
     if (ids.length > 0) {
-      cursor.value = ids[0]
+      winboxCursor.value = ids[0]
     }
   }
 })
 
-export function register(id: string, params: WinBoxParams) {
+export function register(
+  root: HTMLElement,
+  mount: HTMLElement,
+  params: WinBoxParams
+) {
   if (params.tether) {
     if (params.tether.includes('right')) {
       params.x = window.innerWidth
@@ -208,29 +107,30 @@ export function register(id: string, params: WinBoxParams) {
 
   let w: IWindowInfo
   let winbox: WinBox
-  // let winboxDrag: HTMLElement | undefined
-  let winboxElem: HTMLElement & {
+  let winboxEl: HTMLElement & {
     winbox?: WinBox
   }
 
-  const onclose = params.onclose
-  const onresize = params.onresize
-  const onmove = params.onmove
-  const onfocus = params.onfocus
-  const onblur = params.onblur
-  const onminimize = params.onminimize
-  const onmaximize = params.onmaximize
-  const onrestore = params.onrestore
+  const {
+    onclose,
+    onresize,
+    onmove,
+    onfocus,
+    onblur,
+    onminimize,
+    onmaximize,
+    onrestore,
+  } = params
 
   const fullscreenEventListener = (event: Event) => {
     const target = event.target as HTMLElement
     if (target.isEqualNode(winbox.body)) {
-      w.fullscreen = !w.fullscreen
+      w.state.fullscreen = !w.state.fullscreen
     }
   }
 
   const resizeEventListener = throttle(50, () => {
-    if (!w || w.minimized || w.fullscreen) {
+    if (!w || w.state.minimized || w.state.fullscreen) {
       return
     }
 
@@ -247,18 +147,18 @@ export function register(id: string, params: WinBoxParams) {
     const minWidth = convertUnits('width', params.minwidth)
     const minHeight = convertUnits('height', params.minheight)
 
-    if (w.maximized) {
+    if (w.state.maximized) {
       nextTick(() => {
-        if (!winboxElem || !winboxElem.winbox) {
+        if (!winboxEl || !winboxEl.winbox) {
           return
         }
 
-        winboxElem.winbox.resize(
+        winboxEl.winbox.resize(
           Math.max(maxWidth, minWidth),
           Math.max(maxHeight, minHeight),
           true
         )
-        winboxElem.winbox.maximize(true)
+        winboxEl.winbox.maximize(true)
       })
 
       return
@@ -269,35 +169,37 @@ export function register(id: string, params: WinBoxParams) {
     }
 
     if (params.tether.includes('left')) {
-      w.x = convertUnits('width', params.left)
+      w.state.x = convertUnits('width', params.left)
 
       if (params.tether.includes('top')) {
-        w.y = convertUnits('height', params.top)
+        w.state.y = convertUnits('height', params.top)
 
         if (params.tether.includes('bottom')) {
-          w.height = window.innerHeight
-          winbox.resize(undefined, w.height)
+          w.state.height = window.innerHeight
+          winbox.resize(undefined, w.state.height)
         }
       }
 
-      winbox.move(w.x, w.y)
+      winbox.move(w.state.x, w.state.y)
 
       return
     }
 
     if (params.tether.includes('right')) {
-      w.x = window.innerWidth - w.width - convertUnits('width', params.right)
+      w.state.x =
+        window.innerWidth - w.state.width - convertUnits('width', params.right)
 
       if (params.tether.includes('top')) {
-        w.y = typeof params.top === 'number' ? params.top : 0
+        w.state.y = typeof params.top === 'number' ? params.top : 0
 
         if (params.tether.includes('bottom')) {
-          w.height = window.innerHeight
-          winbox.resize(undefined, w.height)
+          w.state.height = window.innerHeight
+          winbox.resize(undefined, w.state.height)
         }
       }
 
-      winbox.move(w.x, w.y)
+      logger.info('before move')
+      winbox.move(w.state.x, w.state.y)
     }
   })
 
@@ -308,21 +210,7 @@ export function register(id: string, params: WinBoxParams) {
       return
     }
 
-    w.minimized = true
-
-    const preserveItem = getPreserveItem(id)
-
-    const params = {
-      minimized: true,
-      maximized: false,
-    }
-
-    preserveItem.params = {
-      ...preserveItem.params,
-      ...params,
-    }
-
-    setPreserveItem(id, preserveItem)
+    w.state.minimized = true
     return !!onminimize && onminimize.call(this)
   }
 
@@ -333,20 +221,7 @@ export function register(id: string, params: WinBoxParams) {
       return
     }
 
-    w.maximized = state
-
-    const preserveItem = getPreserveItem(id)
-    const params = {
-      minimized: false,
-      maximized: state,
-    }
-
-    preserveItem.params = {
-      ...preserveItem.params,
-      ...params,
-    }
-
-    setPreserveItem(id, preserveItem)
+    w.state.maximized = state
     return !!onmaximize && onmaximize.call(this, state)
   }
 
@@ -357,19 +232,8 @@ export function register(id: string, params: WinBoxParams) {
       return
     }
 
-    w.maximized = false
-    w.minimized = false
-
-    const preserveItem = getPreserveItem(id)
-    const params = {
-      minimized: false,
-      maximized: false,
-    }
-
-    preserveItem.params = {
-      ...preserveItem.params,
-      ...params,
-    }
+    w.state.maximized = false
+    w.state.minimized = false
 
     resizeEventListener()
 
@@ -379,7 +243,7 @@ export function register(id: string, params: WinBoxParams) {
   params.onclose = function (forceFlag = false) {
     logger.log('onclose')
 
-    windows.value.delete(id)
+    winboxWindows.value.delete(params.id)
     window.removeEventListener('resize', resizeEventListener)
     document.removeEventListener('fullscreenchange', fullscreenEventListener)
 
@@ -396,10 +260,10 @@ export function register(id: string, params: WinBoxParams) {
     const minWidth = convertUnits('width', params.minwidth)
     const minHeight = convertUnits('height', params.minheight)
 
-    w.height = Math.max(height, minHeight)
-    w.width = Math.max(width, minWidth)
+    w.state.height = Math.max(height, minHeight)
+    w.state.width = Math.max(width, minWidth)
 
-    return !!onresize && onresize.call(this, w.width, w.height)
+    return !!onresize && onresize.call(this, w.state.width, w.state.height)
   }
 
   params.onmove = function (x, y) {
@@ -409,10 +273,10 @@ export function register(id: string, params: WinBoxParams) {
       return
     }
 
-    w.x = x
-    w.y = y
+    w.state.x = x
+    w.state.y = y
 
-    return !!onmove && onmove.call(this, w.x, w.y)
+    return !!onmove && onmove.call(this, w.state.x, w.state.y)
   }
 
   params.onfocus = function () {
@@ -422,8 +286,8 @@ export function register(id: string, params: WinBoxParams) {
       return
     }
 
-    w.minimized = false
-    w.active = true
+    w.state.minimized = false
+    w.state.active = true
 
     return !!onfocus && onfocus.call(this)
   }
@@ -435,12 +299,12 @@ export function register(id: string, params: WinBoxParams) {
       return
     }
 
-    w.active = false
+    w.state.active = false
 
     return !!onblur && onblur.call(this)
   }
 
-  winbox = new window.WinBox(params)
+  winbox = new window.WinBox({ ...params, root, mount })
 
   if (params.maximized && !params.minimized) {
     winbox.maximize(params.maximized)
@@ -449,67 +313,70 @@ export function register(id: string, params: WinBoxParams) {
     winbox.minimize(params.minimized)
   }
 
-  if (!windows.value.has(id)) {
-    windows.value.set(id, {
-      x: winbox.body.parentElement?.offsetLeft || 0,
-      y: winbox.body.parentElement?.offsetTop || 0,
-      width: winbox.body.parentElement?.clientWidth || 0,
-      height: winbox.body.parentElement?.clientHeight || 0,
-      minimized: params.minimized || false,
-      fullscreen: false,
-      maximized: winbox.max,
-      active: true,
+  if (!winboxWindows.value.has(params.id)) {
+    winboxWindows.value.set(params.id, {
+      params,
+      state: {
+        x: winbox.body.parentElement?.offsetLeft || 0,
+        y: winbox.body.parentElement?.offsetTop || 0,
+        width: winbox.body.parentElement?.clientWidth || 0,
+        height: winbox.body.parentElement?.clientHeight || 0,
+        minimized: params.minimized || false,
+        fullscreen: false,
+        maximized: winbox.max,
+        active: true,
+      },
     })
   }
 
-  w = windows.value.get(id)!
+  w = winboxWindows.value.get(params.id)!
 
   window.addEventListener('resize', resizeEventListener)
   document.addEventListener('fullscreenchange', fullscreenEventListener)
 
-  winboxElem = document.getElementById(id) as HTMLElement & {
+  winboxEl = document.getElementById(params.id) as HTMLElement & {
     winbox?: WinBox
   }
 
-  const { isDragging, position } = useDraggable(winboxElem, {
+  const { isDragging, position } = useDraggable(winboxEl, {
     preventDefault: false,
   })
 
   watch([isDragging, position], ([flag, { x, y }]) => {
-    if (!w || !winboxElem || !winboxElem.winbox || flag) {
+    if (!w || !winboxEl || !winboxEl.winbox || flag) {
       return
     }
 
-    w.x = x
-    w.y = y
+    w.state.x = x
+    w.state.y = y
 
     if (!params.tether) {
-      winboxElem.winbox.move(w.x, w.y)
+      winboxEl.winbox.move(w.state.x, w.state.y)
 
       return
     }
 
     if (params.tether.includes('right')) {
-      w.x = window.innerWidth - w.width
+      w.state.x = window.innerWidth - w.state.width
     }
 
     if (params.tether.includes('left')) {
-      w.x = convertUnits('width', params.left)
+      w.state.x = convertUnits('width', params.left)
     }
 
     if (params.tether.includes('top')) {
-      w.y = convertUnits('height', params.top)
+      w.state.y = convertUnits('height', params.top)
     }
 
-    winboxElem.winbox.move(w.x, w.y)
+    winboxEl.winbox.move(w.state.x, w.state.y)
   })
 
-  watch(cursor, (cursor) => {
-    if (!winboxElem || !winboxElem.winbox || cursor !== id) {
+  watch(winboxCursor, (cursor) => {
+    if (!winboxEl || !winboxEl.winbox || cursor !== params.id) {
       return
     }
 
-    winboxElem.winbox.focus()
+    winboxEl.winbox.focus()
   })
 
   resizeEventListener()

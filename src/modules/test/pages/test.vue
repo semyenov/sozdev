@@ -51,8 +51,9 @@ const inputDatePicker = ref<Date | string>(
 <template>
   <UiWinbox
     show
-    teleport-id="teleport-layer--10"
     :params="{
+      id: 'page-test',
+      teleportId: 'teleport-layer--10',
       title: t('test.title'),
       class: ['simple', 'wb-left', 'no-move', 'no-close', 'border-l-none'],
       index: 10,

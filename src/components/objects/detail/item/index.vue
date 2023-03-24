@@ -10,7 +10,7 @@ const item = await objectsStore.itemGetter(props.id)
 </script>
 
 <template>
-  <div class="objects-item">
+  <div class="objects-item p-6">
     {{ item }}
   </div>
 </template>

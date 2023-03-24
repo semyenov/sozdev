@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 
 import type { IObject } from '~/types'
-import type { IWinboxComposeProps } from '~/types/winbox'
+import type { WinBoxParams } from '~~/src/types/winbox'
 
 const props = defineProps({
   index: {
@@ -18,42 +18,50 @@ const item = toRef(props, 'item')
 
 const winboxTitle = `${item.value.info.name}`
 
-const componentKey = `winbox-detail-${item.value._id}`
+const winboxId = `winbox-detail-${item.value._id}`
 
-const winboxProps: IWinboxComposeProps = {
-  components: {
-    name: 'UiWinboxTest',
-    id: componentKey,
-    slot: { name: 'ObjectsDetailItem' },
-  },
-  params: {
-    title: winboxTitle,
-  },
-  itemId: item.value._id,
+const winboxParams: WinBoxParams = {
+  id: winboxId,
+  teleportId: 'teleport-layer--20',
+  title: winboxTitle,
+  dataComponent: 'ObjectsDetailItem',
+  dataId: item.value._id,
+  runtime: true,
 }
 
-const { isOpen, toggleWinbox, windowParams } = useWinbox(winboxProps)
+function handleClick() {
+  winboxWindows.value.set(winboxId, {
+    params: winboxParams,
+    state: {
+      x: 44,
+      y: 0,
+      width: 550,
+      height: 787,
+      minimized: false,
+      fullscreen: false,
+      maximized: false,
+      active: false,
+    },
+  })
+}
+
+// const { isOpen, toggleWinbox, windowParams } = useWinbox(winboxProps)
 </script>
 
 <template>
   <div class="component-object-item">
-    <UiCard
-      dashed
-      :color="isOpen ? 'fourth' : 'secondary'"
-      class="cursor-pointer select-none"
-      @click="toggleWinbox"
-    >
+    <UiCard dashed class="cursor-pointer select-none" @click="handleClick">
       <template v-if="item" #header>
         <div class="flex flex-row w-full justify-between px-4 py-2">
           {{ `# ${item.info.name}` }}
         </div>
       </template>
       <template #footer>
-        <div class="px-4 py-1.5">
+        <!-- <div class="px-4 py-1.5">
           {{ item._id }}<br />
           isOpen: {{ isOpen }} <br />
           {{ windowParams?.active || false }}
-        </div>
+        </div> -->
       </template>
     </UiCard>
   </div>

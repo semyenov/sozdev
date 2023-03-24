@@ -1,17 +1,13 @@
 <script setup lang="ts">
-const refElements = ref<HTMLElement | null>(null)
+const rootRef = ref<HTMLElement | null>(null)
 </script>
 
 <template>
-  <div class="layout fixed w-full layout-modals">
-    <div ref="refElements" class="winbox">
-      <Component
-        :is="vnode"
-        v-for="[key, vnode] of runtimeContainers.entries()"
-        :key="key"
-        :root-el="refElements"
-      >
-      </Component>
+  <div class="w-full layout fixed layout-modals">
+    <div ref="rootRef" class="winbox">
+      <template v-for="[id, info] of winboxWindows.entries()" :key="id">
+        <Component :is="getWinboxVNode(info)" :root-el="rootRef"> </Component>
+      </template>
     </div>
   </div>
 </template>
