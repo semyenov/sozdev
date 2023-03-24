@@ -33,7 +33,6 @@ function handleClick() {
         id: item.value._id,
       },
     },
-
     state: {
       x: 44,
       y: 0,
