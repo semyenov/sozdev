@@ -49,9 +49,9 @@ function open() {
   mountEl.appendChild(contentEl)
 
   const winboxParams = getWinboxParams()
+  register(rootEl, mountEl, winboxParams, props.component)
 
   nextTick(() => {
-    register(rootEl, mountEl, winboxParams, props.component)
     showToggle(true)
   })
 }
