@@ -13,10 +13,10 @@ const props = defineProps({
     required: true,
   },
 })
+
 const item = toRef(props, 'item')
 
 const winboxTitle = `${item.value.info.name}`
-
 const winboxId = `winbox-detail-${item.value._id}`
 
 function handleClick() {
