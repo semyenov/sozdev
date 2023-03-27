@@ -4,7 +4,7 @@ import type { WinBoxComponent, WinBoxParams } from '../types'
 import { winboxCursor, winboxWindows } from '../utils/winbox'
 
 export function useWinbox(id: string) {
-  const window = computed(() => {
+  const winboxWindow = computed(() => {
     if (!winboxWindows.value.has(id)) {
       return
     }
@@ -20,8 +20,8 @@ export function useWinbox(id: string) {
   })
 
   return {
-    window,
-    open: (params: WinBoxParams, component: WinBoxComponent) =>
+    winboxWindow,
+    createWindow: (params: WinBoxParams, component: WinBoxComponent) =>
       winboxWindows.value.set(id, {
         component,
         params,

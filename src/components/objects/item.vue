@@ -19,32 +19,34 @@ const item = toRef(props, 'item')
 const winboxTitle = `${item.value.info.name}`
 const winboxId = `winbox-detail-${item.value._id}`
 
-const { window, open } = useWinbox(winboxId)
+const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
-  if (window.value && window.value.winbox) {
-    if (window.value.state?.minimized) {
-      window.value.winbox.minimize(false).focus()
-      return
-    }
+  const w = winboxWindow.value
+  if (!w || !w.state || !w.winbox) {
+    createWindow(
+      {
+        id: winboxId,
+        title: winboxTitle,
+        teleportId: 'teleport-layer--20',
+      },
+      {
+        name: 'LazyObjectsDetailItem',
+        props: {
+          id: item.value._id,
+        },
+      }
+    )
 
-    window.value.winbox.close()
     return
   }
 
-  open(
-    {
-      id: winboxId,
-      title: winboxTitle,
-      teleportId: 'teleport-layer--20',
-    },
-    {
-      name: 'LazyObjectsDetailItem',
-      props: {
-        id: item.value._id,
-      },
-    }
-  )
+  if (w.state.minimized) {
+    w.winbox.minimize(false).focus()
+    return
+  }
+
+  w.winbox.close()
 }
 </script>
 
@@ -61,9 +63,9 @@ function handleClick() {
           {{ item }}
         </div>
       </template>
-      <template v-if="window" #footer>
-        <div v-if="window?.state" class="px-4 py-1.5">
-          {{ window?.state }}
+      <template v-if="winboxWindow" #footer>
+        <div v-if="winboxWindow?.state" class="px-4 py-1.5">
+          {{ winboxWindow?.state }}
         </div>
       </template>
     </UiCard>

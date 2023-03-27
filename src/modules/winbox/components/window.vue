@@ -19,7 +19,7 @@ const props = defineProps({
 const component = toRef(props, 'component')
 const params = toRef(props, 'params')
 
-const { window } = useWinbox(params.value.id)
+const { winboxWindow: window } = useWinbox(params.value.id)
 
 const [show, showToggle] = useToggle(false)
 
