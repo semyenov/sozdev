@@ -247,7 +247,7 @@ export function register(
     return !!onrestore && onrestore.call(this)
   }
 
-  params.onclose = function (forceFlag = false) {
+  params.onclose = function (forceFlag = false): boolean {
     logger.log('onclose')
 
     winboxWindows.value.delete(params.id)

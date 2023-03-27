@@ -12,18 +12,19 @@ const WinboxRoot = defineComponent({
   },
   render() {
     return this.windows.map(([id, info]) => {
-        const component = this.app.component(info.component?.name || '')
-        if (!component) {
-          logger.error(`Component ${info.component?.name} not found`)
-          return
-        }
+      const component = this.app.component(info.component?.name || '')
+      if (!component) {
+        logger.error(`Component ${info.component?.name} not found`)
 
-        return h(
-          UiWinboxTest,
-          { key: id, params: info.params, component: info.component },
-          () => h(component, info.component?.props)
-        )
-      })
+        return null
+      }
+
+      return h(
+        UiWinboxTest,
+        { key: id, params: info.params, component: info.component },
+        () => h(component, info.component?.props)
+      )
+    })
   },
 })
 

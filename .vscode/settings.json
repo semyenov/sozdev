@@ -59,6 +59,11 @@
   "i18n-ally.sourceLanguage": "ru",
   "i18n-ally.keystyle": "nested",
 
+  "remote.extensionKind": {
+    "GitHub.copilot": ["ui", "workspace"],
+    "GitHub.copilot-labs": ["ui", "workspace"]
+  },
+
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
@@ -77,5 +82,9 @@
 
   "[markdown]": {
     "editor.formatOnSave": false
+  },
+
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }
