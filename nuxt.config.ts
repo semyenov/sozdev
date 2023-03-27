@@ -94,6 +94,7 @@ export default defineNuxtConfig({
 
   modules: [
     '~/modules/test/index',
+    '~/modules/winbox/index',
     '~/modules/design/index',
 
     '@nuxt/content',

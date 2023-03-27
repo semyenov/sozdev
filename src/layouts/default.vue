@@ -20,18 +20,18 @@ const authorizationStore = useAuthorizationStore()
     >
       <AuthorizationCurrent />
     </div>
-    <div class="fixed bottom-0 flex flex-row layout-default__left left-0 top-0">
-      <div class="layout-default__sidebar z-30 border-r box-color__default--2">
+    <div class="fixed flex flex-row bottom-0 layout-default__left left-0 top-0">
+      <div class="box-color__default--2 layout-default__sidebar z-30 border-r">
         <PageSidebar />
       </div>
       <div
-        class="flex flex-col text-left layout-default__page z-z-30 items-start justify-items-stretch"
+        class="flex flex-col items-start text-left layout-default__page z-z-30 justify-items-stretch"
       >
         <slot />
       </div>
       <div
         id="teleport-layer--20"
-        class="fixed left-0 right-0 flex layout-default__teleport z-20"
+        class="fixed left-0 flex right-0 layout-default__teleport z-20"
       ></div>
 
       <div
@@ -43,6 +43,7 @@ const authorizationStore = useAuthorizationStore()
   id="__toasts"
   class="layout-default__teleport fixed left-0 right-0 z-10 flex"
 ></div> -->
+      <div class="winbox-root"><WinboxRoot /></div>
     </div>
   </div>
 </template>

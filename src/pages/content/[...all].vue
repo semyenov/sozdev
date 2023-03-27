@@ -6,10 +6,10 @@ const contentPath = route.params.all.join('/')
 </script>
 
 <template>
-  <UiWinbox
-    show
-    teleport-id="teleport-layer--10"
+  <WinboxWindow
     :params="{
+      id: 'page-content-all',
+      teleportId: 'teleport-layer--10',
       title: t('content.title'),
       class: ['simple', 'wb-left', 'no-move', 'no-close', 'border-l-none'],
       index: 10,
@@ -30,5 +30,5 @@ const contentPath = route.params.all.join('/')
     >
       <ContentDoc :path="contentPath" />
     </div>
-  </UiWinbox>
+  </WinboxWindow>
 </template>

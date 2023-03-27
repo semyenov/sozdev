@@ -19,6 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const winbox = ref<WinBox | null>(null)
+const component = toRef(props, 'component')
 
 const [show, showToggle] = useToggle(false)
 
@@ -48,8 +49,18 @@ function open() {
   contentEl.classList.add('wb-content')
   mountEl.appendChild(contentEl)
 
-  const winboxParams = getWinboxParams()
-  register(rootEl, mountEl, winboxParams, props.component)
+  winboxRegister(
+    rootEl,
+    mountEl,
+    {
+      ...props.params,
+      onclose(forceFlag = false) {
+        nextTick(() => showToggle(false))
+        return forceFlag
+      },
+    },
+    component.value
+  )
 
   nextTick(() => {
     showToggle(true)
@@ -75,29 +86,6 @@ function getWinboxEl() {
     | null
 
   return el
-}
-
-function getWinboxParams(): WinBoxParams {
-  return {
-    top: 0,
-    bottom: 0,
-    left: 44,
-    right: 0,
-    border: 0,
-    width: 550,
-    header: 45,
-    height: '100%',
-    minwidth: 500,
-    class: ['simple', 'wb-right', 'no-move', 'border-r-none'],
-    tether: ['right', 'top', 'bottom'],
-
-    onclose(forceFlag = false) {
-      nextTick(() => showToggle(false))
-      return forceFlag
-    },
-
-    ...props.params,
-  }
 }
 </script>
 

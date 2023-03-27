@@ -41,8 +41,7 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
 <template>
   <div class="">
-    <pre>{{ winboxWindows }}</pre>
-    <UiWinboxTest
+    <WinboxWindow
       :params="{
         id: 'page-objects',
         teleportId: 'teleport-layer--10',
@@ -99,6 +98,6 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
           </div>
         </template> -->
       </UiVirtualList>
-    </UiWinboxTest>
+    </WinboxWindow>
   </div>
 </template>

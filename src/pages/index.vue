@@ -16,7 +16,7 @@ const { data } = await useFetch('/api/test', {
 </script>
 
 <template>
-  <UiWinboxTest
+  <WinboxWindow
     :params="{
       id: 'page-index',
       teleportId: 'teleport-layer--10',
@@ -35,7 +35,6 @@ const { data } = await useFetch('/api/test', {
       tether: ['left', 'top', 'bottom'],
     }"
   >
-    <LazyUiButton> lazy</LazyUiButton>
     <div
       class="h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-6 scrollbar scrollbar-rounded page page-index box-color__default--1"
     >
@@ -74,5 +73,5 @@ const { data } = await useFetch('/api/test', {
         />
       </div>
     </div>
-  </UiWinboxTest>
+  </WinboxWindow>
 </template>

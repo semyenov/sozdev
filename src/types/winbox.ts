@@ -29,6 +29,6 @@ export interface WinBoxComponent {
 
 export interface IWindowInfo {
   params: WinBoxParams
-  state: WinBoxState
   component?: WinBoxComponent
+  state?: WinBoxState
 }

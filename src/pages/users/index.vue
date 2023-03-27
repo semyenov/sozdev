@@ -37,9 +37,7 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 </script>
 
 <template>
-  <UiWinboxTest
-    show
-    teleport-id="teleport-layer--10"
+  <WinboxWindow
     :params="{
       id: 'page-users',
       teleportId: 'teleport-layer--10',
@@ -87,5 +85,5 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         </div>
       </template> -->
     </UiVirtualList>
-  </UiWinboxTest>
+  </WinboxWindow>
 </template>

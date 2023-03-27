@@ -49,8 +49,7 @@ const inputDatePicker = ref<Date | string>(
 </script>
 
 <template>
-  <UiWinbox
-    show
+  <WinboxWindow
     :params="{
       id: 'page-test',
       teleportId: 'teleport-layer--10',
@@ -224,5 +223,5 @@ const inputDatePicker = ref<Date | string>(
         </template>
       </PageProse>
     </div>
-  </UiWinbox>
+  </WinboxWindow>
 </template>

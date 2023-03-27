@@ -74,7 +74,6 @@ export default defineNuxtModule<{}>({
     })
 
     if (nuxt.options.dev) {
-      // @ts-expect-error missing type
       nuxt.hook('devtools:customTabs', (tabs) => {
         tabs.push({
           title: 'UnoCSS',
