@@ -9,10 +9,10 @@ declare global {
   }
 }
 
-export default defineNuxtPlugin(async (_nuxtApp) => {
+export default defineNuxtPlugin(async (nuxtApp) => {
   const backendStore = useBackendStore()
 
-  _nuxtApp.hooks.hookOnce('app:mounted', () => {
+  nuxtApp.hooks.hookOnce('app:mounted', () => {
     window.UsersIndex = new Document<IUser>({
       document: {
         id: '_id',

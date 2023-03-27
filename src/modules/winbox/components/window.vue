@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { WinBoxComponent, WinBoxParams } from '~/types/winbox'
+
+import type { WinBoxComponent, WinBoxParams } from '../types'
+import { winboxRegister } from '../utils/winbox'
+import { useWinbox } from '../composables/useWinbox'
 
 const props = defineProps({
   params: {
@@ -13,84 +16,49 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits<{
-  (event: 'update:show', value: boolean): void
-  (event: 'close', value?: string): void
-}>()
-
-const winbox = ref<WinBox | null>(null)
 const component = toRef(props, 'component')
+const params = toRef(props, 'params')
+
+const { window } = useWinbox(params.value.id)
 
 const [show, showToggle] = useToggle(false)
 
 defineExpose({
   open,
-  winbox,
+  window,
 })
 
-watch(show, (s) => (s ? open() : close()))
+watch(show, (s) => (s ? open() : window.value?.winbox?.close()))
 
 onMounted(() => open())
-onScopeDispose(close)
+onScopeDispose(() => window.value?.winbox?.close())
 
 function open() {
-  const el = getWinboxEl()
-  if (el && el.winbox) {
-    el.winbox.minimize(false).focus()
-
+  if (window.value?.winbox) {
     return
   }
 
   const rootEl =
     document.getElementById(props.params.teleportId) || document.body
-  const mountEl = document.createElement('div')
-  const contentEl = document.createElement('div')
 
+  const mountEl = document.createElement('div')
+  mountEl.classList.add('wb-wrapper')
+
+  const contentEl = document.createElement('div')
   contentEl.classList.add('wb-content')
+
   mountEl.appendChild(contentEl)
 
-  winboxRegister(
-    rootEl,
-    mountEl,
-    {
-      ...props.params,
-      onclose(forceFlag = false) {
-        nextTick(() => showToggle(false))
-        return forceFlag
-      },
-    },
-    component.value
-  )
+  winboxRegister(rootEl, mountEl, params.value, component.value)
 
   nextTick(() => {
     showToggle(true)
   })
 }
-
-function close() {
-  const el = getWinboxEl()
-  if (!el || !el.winbox) {
-    nextTick(() => {
-      emit('close')
-    })
-    return
-  }
-  el.winbox.close()
-}
-
-function getWinboxEl() {
-  const el = document.getElementById(props.params.id) as
-    | (HTMLElement & {
-        winbox?: WinBox
-      })
-    | null
-
-  return el
-}
 </script>
 
 <template>
-  <Teleport v-if="show" :to="`#${props.params.id} .wb-content`">
+  <Teleport v-if="show" :to="`#${params.id} .wb-content`">
     <slot name="default" />
   </Teleport>
 </template>

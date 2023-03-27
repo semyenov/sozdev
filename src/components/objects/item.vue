@@ -19,7 +19,7 @@ const item = toRef(props, 'item')
 const winboxTitle = `${item.value.info.name}`
 const winboxId = `winbox-detail-${item.value._id}`
 
-const { window, open } = useWinboxWindow(winboxId)
+const { window, open } = useWinbox(winboxId)
 
 function handleClick() {
   if (window.value && window.value.winbox) {

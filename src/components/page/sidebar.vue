@@ -6,7 +6,7 @@ const { setLocale, locale } = useI18n()
 <template>
   <div class="flex justify-between flex-grow flex-col">
     <div class="flex flex-col">
-      <RouterLink
+      <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'index' })"
         custom
@@ -22,8 +22,8 @@ const { setLocale, locale } = useI18n()
         >
           <i class="inline-block i-carbon:home h-6.5" />
         </UiButton>
-      </RouterLink>
-      <RouterLink
+      </NuxtLink>
+      <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'objects' })"
         custom
@@ -39,8 +39,8 @@ const { setLocale, locale } = useI18n()
         >
           <i class="inline-block h-6.5 i-carbon:data-blob" />
         </UiButton>
-      </RouterLink>
-      <RouterLink
+      </NuxtLink>
+      <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'users' })"
         custom
@@ -56,8 +56,8 @@ const { setLocale, locale } = useI18n()
         >
           <i class="inline-block h-6.5 i-carbon:user" />
         </UiButton>
-      </RouterLink>
-      <RouterLink
+      </NuxtLink>
+      <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'test' })"
         custom
@@ -73,8 +73,8 @@ const { setLocale, locale } = useI18n()
         >
           <i class="inline-block h-6.5 i-carbon:text-scale" />
         </UiButton>
-      </RouterLink>
-      <RouterLink
+      </NuxtLink>
+      <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'content-all', params: { all: ['test'] } })"
         custom
@@ -90,7 +90,7 @@ const { setLocale, locale } = useI18n()
         >
           <i class="inline-block h-6.5 i-carbon:book" />
         </UiButton>
-      </RouterLink>
+      </NuxtLink>
     </div>
 
     <div class="flex flex-col mt-8">

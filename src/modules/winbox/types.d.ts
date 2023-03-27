@@ -27,8 +27,13 @@ export interface WinBoxComponent {
   props: object
 }
 
-export interface IWindowInfo {
+export type WinBoxElement = HTMLElement & {
+  winbox?: WinBox
+}
+
+export interface WinBoxWindow {
   params: WinBoxParams
   component?: WinBoxComponent
   state?: WinBoxState
+  winbox?: WinBox
 }

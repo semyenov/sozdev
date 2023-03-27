@@ -1,4 +1,7 @@
-import { ClientOnly, WinboxWindow } from '#components'
+import { winboxWindows } from '../utils/winbox'
+import WinboxWindow from './window.vue'
+
+import { ClientOnly } from '#components'
 
 const logger = useLogger(`winboxRoot`)
 
@@ -6,15 +9,15 @@ const WinboxRoot = defineComponent({
   setup() {
     const { vueApp: app } = useNuxtApp()
     const windows = computed(() => {
-      return [...winboxWindows.value.values()]
+      return [...winboxWindows.value.entries()]
     })
     return { app, windows }
   },
   render() {
     return h(ClientOnly, () =>
       this.windows
-        .filter((window) => window.component && window.component.name)
-        .map((info) => {
+        .filter(([id, info]) => info.component)
+        .map(([id, info]) => {
           const component = this.app.component(info.component!.name)
           if (!component) {
             logger.error(`Component ${info.component!.name} not found`)
@@ -25,8 +28,8 @@ const WinboxRoot = defineComponent({
           return h(
             WinboxWindow,
             {
-              key: info.params.id,
-              params: info.params,
+              key: `${id}`,
+              params: { ...info.params, ...info.state },
               component: info.component,
             },
             () => h(component, info.component?.props)
