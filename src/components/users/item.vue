@@ -14,31 +14,51 @@ const props = defineProps({
   },
 })
 
-const [showFlag, showToggle] = useToggle(false)
 const item = toRef(props, 'item')
 
-function handleChange(event: Event) {
-  event.preventDefault()
+const winboxTitle = `${item.value.info.first_name} ${item.value.info.last_name}`
+const winboxId = `winbox-detail-${item.value._id}`
 
-  item.value.mandate =
-    item.value.mandate !== undefined ? item.value.mandate + 1 : 0
+function handleClick() {
+  winboxWindows.value.set(winboxId, {
+    params: {
+      id: winboxId,
+      teleportId: 'teleport-layer--20',
+      title: winboxTitle,
+      runtime: true,
+    },
+    component: {
+      name: 'UsersDetailItem',
+      props: {
+        id: item.value._id,
+      },
+    },
+    state: {
+      x: 44,
+      y: 0,
+      width: 550,
+      height: 787,
+      minimized: false,
+      fullscreen: false,
+      maximized: false,
+      active: false,
+    },
+  })
 }
 </script>
 
 <template>
   <div class="component-user-item">
     <UiCard
-      :color="showFlag ? 'third' : 'default'"
       class="cursor-pointer select-none"
       dashed
-      @click="showToggle()"
+      @click="handleClick()"
     >
       <template v-if="item" #header>
         <div class="w-full flex flex-row justify-between px-4 py-2">
           {{ `# ${item.info.first_name} ${item.info.last_name}` }}
           <div
             class="inline-flex border text-sm box-rounded__sm px-2 font-mono font-light box-color__default--6"
-            @click="handleChange"
           >
             {{ item.email }}
           </div>
@@ -50,25 +70,5 @@ function handleChange(event: Event) {
         </div>
       </template>
     </UiCard>
-
-    <UiWinbox
-      v-model:show="showFlag"
-      teleport-id="teleport-layer--20"
-      :params="{
-        title: `${item.info.first_name} ${item.info.last_name}`,
-        top: 0,
-        bottom: 0,
-        left: 44,
-        right: 0,
-        border: 0,
-        width: 550,
-        height: '100%',
-        minwidth: 500,
-        class: ['simple', 'wb-right', 'border-r-none'],
-        tether: ['right', 'top', 'bottom'],
-      }"
-    >
-      <pre class="text-sm p-6">{{ item }}</pre>
-    </UiWinbox>
   </div>
 </template>

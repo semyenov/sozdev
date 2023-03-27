@@ -21,6 +21,7 @@ export default defineNuxtConfig({
 
   srcDir: resolve(__dirname, 'src'),
   appDir: resolve(__dirname, 'src', 'app'),
+
   app: {
     head: {
       charset: 'utf-8',
@@ -54,6 +55,14 @@ export default defineNuxtConfig({
         path: resolve(__dirname, 'src', 'components', 'objects', 'detail'),
         // extensions: ['.vue'],
         prefix: 'ObjectsDetail',
+        pathPrefix: true,
+        global: true,
+      },
+      {
+        // path: `~/components/objects/detail/item`,
+        path: resolve(__dirname, 'src', 'components', 'users', 'detail'),
+        // extensions: ['.vue'],
+        prefix: 'UsersDetail',
         pathPrefix: true,
         global: true,
       },

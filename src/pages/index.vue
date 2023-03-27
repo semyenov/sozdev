@@ -16,10 +16,10 @@ const { data } = await useFetch('/api/test', {
 </script>
 
 <template>
-  <UiWinbox
-    show
-    teleport-id="teleport-layer--10"
+  <UiWinboxTest
     :params="{
+      id: 'page-index',
+      teleportId: 'teleport-layer--10',
       title: t('index.title'),
       class: ['simple', 'wb-left', 'no-close', 'border-l-none'],
       index: 10,
@@ -74,5 +74,5 @@ const { data } = await useFetch('/api/test', {
         />
       </div>
     </div>
-  </UiWinbox>
+  </UiWinboxTest>
 </template>
