@@ -1,10 +1,10 @@
-import type { VNodeArrayChildren } from '@vue/runtime-core'
+// import type { VNodeArrayChildren } from '@vue/runtime-core'
 
 import { throttle } from '@antfu/utils'
 
 import { useStorage } from '@vueuse/core'
 import type { IWindowInfo, WinBoxComponent, WinBoxParams } from '~/types/winbox'
-import { UiWinboxTest } from '#components'
+// import { UiWinboxTest } from '#components'
 
 const logger = useLogger(`store/${backendStoreKey}`)
 const winboxCursor = ref<string>()
@@ -15,38 +15,40 @@ export const winboxWindows = useStorage<Map<string, IWindowInfo>>(
 
 // export const winboxWindows = ref<Map<string, IWindowInfo>>(new Map())
 
-export const WinboxRoot = defineComponent({
-  setup() {
-    const { vueApp } = useNuxtApp()
-    return { vueApp, winboxWindows }
-  },
-  render() {
-    const { vueApp, winboxWindows } = this
-    const childrens: VNodeArrayChildren = []
+// export const WinboxRoot = defineComponent({
+//   setup() {
+//     const { vueApp } = useNuxtApp()
+//     return { vueApp, winboxWindows }
+//   },
+//   render() {
+//     // const { vueApp, winboxWindows } = this
+//     const winboxWindows = this.winboxWindows
+//     const vueApp = this.vueApp
 
-    for (const [id, info] of winboxWindows.entries()) {
-      if (!info) {
-        return
-      }
-      const component = vueApp.component(
-        info.component?.name || 'ObjectsDetailItem'
-      )
-      if (!component) {
-        logger.error(`Component ${info.component?.name} not found`)
-        return
-      }
+//     const childrens: VNodeArrayChildren = []
 
-      childrens.push(
-        h(
-          UiWinboxTest,
-          { key: id, params: info.params, component: info.component },
-          () => h(component, info.component?.props)
-        )
-      )
-    }
-    return h('div', childrens)
-  },
-})
+//     for (const [id, info] of winboxWindows.entries()) {
+//       if (!info) {
+//         return
+//       }
+//       logger.info('info', info)
+//       const component = vueApp.component(info.component?.name || '321')
+//       if (!component) {
+//         logger.error(`Component ${info.component?.name} not found`)
+//         return
+//       }
+
+//       childrens.push(
+//         h(
+//           UiWinboxTest,
+//           { key: id, params: info.params, component: info.component },
+//           () => h(component, info.component?.props)
+//         )
+//       )
+//     }
+//     return h('div', childrens)
+//   },
+// })
 
 const keys = useMagicKeys()
 const shiftLeftArrowKey = keys['Shift+<']

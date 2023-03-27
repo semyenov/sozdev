@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WinboxRoot } from '~/composables/useWinbox'
+// import { WinboxRoot } from '~/composables/useWinbox'
 </script>
 
 <template>
