@@ -22,36 +22,37 @@ const winboxId = `winbox-detail-${item.value._id}`
 const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
-  if (winboxWindow.value && winboxWindow.value.winbox) {
-    if (winboxWindow.value.state?.min) {
-      winboxWindow.value.winbox.minimize(false).focus()
-      return
-    }
+  const w = winboxWindow.value
+  if (!w || !w.state || !w.winbox) {
+    createWindow({
+      id: winboxId,
+      title: winboxTitle,
 
-    winboxWindow.value.winbox.close()
+      teleportId: 'teleport-layer--20',
+
+      dataComponent: 'WinboxUsersDetailItem',
+      dataProps: {
+        id: item.value._id,
+      },
+
+      tether: [],
+      class: ['simple'],
+
+      width: 400,
+      height: 400,
+
+      x: (window.innerWidth - 400) / 2,
+      y: (window.innerHeight - 400) / 2,
+    })
+
     return
   }
 
-  createWindow({
-    id: winboxId,
-    title: winboxTitle,
+  if (w.state.min) {
+    w.winbox.minimize(false)
+  }
 
-    teleportId: 'teleport-layer--20',
-
-    dataComponent: 'WinboxUsersDetailItem',
-    dataProps: {
-      id: item.value._id,
-    },
-
-    tether: [],
-    class: ['simple'],
-
-    width: 400,
-    height: 400,
-
-    x: (window.innerWidth - 400) / 2,
-    y: (window.innerHeight - 400) / 2,
-  })
+  w.winbox.focus()
 }
 </script>
 

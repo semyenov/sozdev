@@ -38,17 +38,21 @@ function handleClick() {
   }
 
   if (w.state.min) {
-    w.winbox.minimize(false).focus()
-    return
+    w.winbox.minimize(false)
   }
 
-  w.winbox.close()
+  w.winbox.focus()
 }
 </script>
 
 <template>
   <div class="component-object-item">
-    <UiCard dashed class="cursor-pointer select-none" @click="handleClick">
+    <UiCard
+      dashed
+      class="cursor-pointer select-none"
+      :color="winboxWindow ? 'fourth' : 'primary'"
+      @click="handleClick"
+    >
       <template v-if="item" #header>
         <div class="flex flex-row w-full justify-between px-4 py-2">
           {{ `# ${item.info.name}` }}
