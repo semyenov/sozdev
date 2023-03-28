@@ -93,16 +93,14 @@ export function winboxRegister(
     }
 
     const state = winboxWindow.value.state
-    if (!state.min && !state.max) {
-      winbox.resize()
-      winbox.move()
-    }
 
     if (state.min) {
       winbox.minimize(state.min)
+      return
     }
     if (state.max) {
       winbox.maximize(state.max)
+      return
     }
 
     if (winboxParams.tether && winboxParams.tether.length > 0) {
@@ -151,7 +149,7 @@ export function winboxRegister(
     const state = winboxWindow.value.state
     state.min = true
 
-    return !!onminimize && onmaximminimize.call(this)
+    return !!onminimize && onminimize.call(this)
   }
 
   winboxParams.onmaximize = function (flag = true) {
@@ -174,8 +172,6 @@ export function winboxRegister(
     state.max = false
     state.min = false
 
-    nextTick(resizeEventListener)
-
     return !!onrestore && onrestore.call(this)
   }
 
@@ -188,33 +184,38 @@ export function winboxRegister(
   }
 
   winboxParams.onresize = function (width, height) {
+    if (!winboxWindow.value || !winboxWindow.value.state) {
+      return
+    }
+
+    const state = winboxWindow.value.state
+
     nextTick(() => {
-      if (!winboxWindow.value || !winboxWindow.value.state) {
+      if (state.min || state.max) {
         return
       }
 
-      const state = winboxWindow.value.state
-      if (!state.min && !state.max) {
-        state.height = height
-        state.width = width
-      }
+      state.height = height
+      state.width = width
     })
 
-    return !!onresize && onresize.call(this, height, width)
+    return !!onresize && onresize.call(this, width, height)
   }
 
   winboxParams.onmove = function (x, y) {
+    if (!winboxWindow.value || !winboxWindow.value.state) {
+      return
+    }
+
+    const state = winboxWindow.value.state
+
     nextTick(() => {
-      if (!winboxWindow.value || !winboxWindow.value.state) {
+      if (state.min || state.max) {
         return
       }
 
-      const state = winboxWindow.value.state
-
-      if (!state.min && !state.max) {
-        state.x = x
-        state.y = y
-      }
+      state.x = x
+      state.y = y
     })
 
     return !!onmove && onmove.call(this, x, y)
@@ -228,7 +229,6 @@ export function winboxRegister(
     const state = winboxWindow.value.state
 
     state.min = false
-    state.active = true
 
     return !!onfocus && onfocus.call(this)
   }
@@ -237,9 +237,6 @@ export function winboxRegister(
     if (!winboxWindow.value || !winboxWindow.value.state) {
       return
     }
-
-    const state = winboxWindow.value.state
-    state.active = false
 
     return !!onblur && onblur.call(this)
   }
@@ -253,14 +250,14 @@ export function winboxRegister(
   winboxWindows.value.set(winboxParams.id, {
     params,
     state: {
-      x: winbox.body.parentElement?.offsetLeft || 0,
-      y: winbox.body.parentElement?.offsetTop || 0,
-      width: winbox.body.parentElement?.clientWidth || 0,
-      height: winbox.body.parentElement?.clientHeight || 0,
+      x: winboxParams.x || 0,
+      y: winboxParams.y || 0,
+      width: typeof winboxParams.width === 'number' ? winboxParams.width : 0,
+      height: typeof winboxParams.height === 'number' ? winboxParams.height : 0,
       max: winboxParams.max || false,
       min: winboxParams.min || false,
-      fullscreen: false,
-      active: true,
+      fullscreen: winboxParams.fullscreen,
+      hidden: winboxParams.hidden || false,
     },
   })
 
@@ -275,42 +272,36 @@ export function winboxRegister(
   })
 
   watch([isDragging], ([flag]) => {
-    if (
-      flag ||
-      !winboxWindow.value ||
-      !winboxWindow.value.state ||
-      !winboxEl ||
-      !winboxEl.winbox
-    ) {
+    if (flag || !winboxWindow.value || !winboxWindow.value.state) {
       return
     }
 
     const state = winboxWindow.value.state
-    if (!state.min && !state.max) {
-      if (winboxParams.tether && winboxParams.tether.length > 0) {
-        if (winboxParams.tether.includes('right')) {
-          state.x = window.innerWidth - state.width
-        }
+    if (state.min || state.max) {
+      return
+    }
 
-        if (winboxParams.tether.includes('left')) {
-          state.x = convertUnits('width', winboxParams.left)
-        }
-
-        if (winboxParams.tether.includes('top')) {
-          state.y = convertUnits('height', winboxParams.top)
-        }
+    if (winboxParams.tether && winboxParams.tether.length > 0) {
+      if (winboxParams.tether.includes('right')) {
+        state.x = window.innerWidth - state.width
       }
 
-      winboxEl.winbox.move(state.x, state.y)
+      if (winboxParams.tether.includes('left')) {
+        state.x = convertUnits('width', winboxParams.left)
+      }
+
+      if (winboxParams.tether.includes('top')) {
+        state.y = convertUnits('height', winboxParams.top)
+      }
     }
+
+    winbox.move(state.x, state.y)
   })
 
   watch(winboxCursor, (cursor) => {
     if (
       !winboxWindow.value ||
       !winboxWindow.value.state ||
-      !winboxEl ||
-      !winboxEl.winbox ||
       cursor !== winboxParams.id
     ) {
       return
@@ -319,10 +310,10 @@ export function winboxRegister(
     const state = winboxWindow.value.state
 
     if (state.min) {
-      winboxEl.winbox.minimize(false)
+      winbox.minimize(false)
     }
 
-    winboxEl.winbox.focus()
+    winbox.focus()
   })
 
   resizeEventListener()
