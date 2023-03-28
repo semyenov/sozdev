@@ -26,7 +26,6 @@ export function winboxRegister(
     border: 0,
     width: 550,
     header: 45,
-    height: '100%',
     minwidth: 500,
     class: ['simple'],
     tether: ['right', 'top', 'bottom'],
@@ -55,6 +54,20 @@ export function winboxRegister(
   delete params.onminimize
   delete params.onmaximize
   delete params.onrestore
+
+  winboxParams.maxwidth =
+    window.innerWidth -
+    convertUnits('width', winboxParams.right) -
+    convertUnits('width', winboxParams.left)
+
+  winboxParams.maxheight =
+    window.innerHeight -
+    convertUnits('height', winboxParams.top) -
+    convertUnits('height', winboxParams.bottom)
+
+  winboxParams.minwidth = convertUnits('width', winboxParams.minwidth)
+
+  winboxParams.minheight = convertUnits('height', winboxParams.minheight)
 
   if (winboxParams.tether && winboxParams.tether.length > 0) {
     if (winboxParams.tether.includes('right')) {
@@ -102,6 +115,9 @@ export function winboxRegister(
       winbox.maximize(state.max)
       return
     }
+
+    winbox.move(state.x, state.y)
+    winbox.resize(state.width, state.height)
 
     if (winboxParams.tether && winboxParams.tether.length > 0) {
       if (winboxParams.tether.includes('left')) {
@@ -227,7 +243,6 @@ export function winboxRegister(
     }
 
     const state = winboxWindow.value.state
-
     state.min = false
 
     return !!onfocus && onfocus.call(this)
