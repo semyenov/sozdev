@@ -1,7 +1,7 @@
 import { throttle } from '@antfu/utils'
-import { useStorage } from '@vueuse/core'
+import { useDraggable, useStorage } from '@vueuse/core'
 
-import type { WinBoxElement, WinBoxParams, WinBoxWindow } from '../types'
+import type { WinBoxElement, WinBoxParams, WinBoxWindow } from '../../types'
 
 export const winboxWindowsStorageKey = 'winbox-windows' as const
 export const winboxWindows = useStorage<Map<string, WinBoxWindow>>(
@@ -16,8 +16,6 @@ export function winboxRegister(
   mount: HTMLElement,
   params: WinBoxParams
 ) {
-  let winbox: WinBox
-
   const winboxParams = {
     top: 0,
     bottom: 0,
@@ -256,7 +254,7 @@ export function winboxRegister(
     return !!onblur && onblur.call(this)
   }
 
-  winbox = new window.WinBox({
+  const winbox = new window.WinBox({
     ...winboxParams,
     root,
     mount,
@@ -334,4 +332,16 @@ export function winboxRegister(
   resizeEventListener()
 
   return winbox
+}
+
+export function convertUnits(
+  type: 'width' | 'height',
+  value?: string | number
+) {
+  return typeof value === 'number'
+    ? value
+    : typeof value === 'string'
+    ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
+      (type === 'width' ? window.innerWidth : window.innerHeight)
+    : 0
 }

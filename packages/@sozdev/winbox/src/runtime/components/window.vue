@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 
-import type { WinBoxParams } from '../types'
+import type { WinBoxParams } from '../../types'
 
 import { winboxRegister } from '../utils/winbox'
-import { useWinbox } from '../composables/useWinbox'
 
 const props = defineProps({
   params: {
@@ -62,7 +61,10 @@ function closeWindow() {
 </script>
 
 <template>
-  <Teleport v-if="showFlag" :to="`#${params.id} .wb-wrapper .wb-content`">
+  <Teleport
+    v-if="showFlag"
+    :to="`#${params.id} .wb-wrapper .wb-content`"
+  >
     <pre class="py-4 text-xs px-6 border-b box-color__default--2">{{
       winboxWindow?.state
     }}</pre>

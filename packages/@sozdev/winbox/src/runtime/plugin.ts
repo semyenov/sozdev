@@ -1,5 +1,15 @@
-import { defineNuxtPlugin } from '#app'
+import 'winbox'
 
-export default defineNuxtPlugin((nuxtApp) => {
-  console.log('Plugin injected by my-module!')
+import type { WinBoxConstructor } from 'winbox'
+
+declare global {
+  interface Window {
+    WinBox: WinBoxConstructor
+  }
+}
+
+export default defineNuxtPlugin(async (nuxtApp) => {
+  nuxtApp.hooks.hookOnce('app:mounted', () => {
+    // window.WinBox = WinBox
+  })
 })
