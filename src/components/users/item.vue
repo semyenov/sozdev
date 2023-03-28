@@ -19,32 +19,39 @@ const item = toRef(props, 'item')
 const winboxTitle = `${item.value.info.first_name} ${item.value.info.last_name}`
 const winboxId = `winbox-detail-${item.value._id}`
 
-const { winboxWindow: window, createWindow: open } = useWinbox(winboxId)
+const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
-  if (window.value && window.value.winbox) {
-    if (window.value.state?.minimized) {
-      window.value.winbox.minimize(false).focus()
+  if (winboxWindow.value && winboxWindow.value.winbox) {
+    if (winboxWindow.value.state?.min) {
+      winboxWindow.value.winbox.minimize(false).focus()
       return
     }
 
-    window.value.winbox.close()
+    winboxWindow.value.winbox.close()
     return
   }
 
-  open(
-    {
-      id: winboxId,
-      teleportId: 'teleport-layer--20',
-      title: winboxTitle,
+  createWindow({
+    id: winboxId,
+    title: winboxTitle,
+
+    teleportId: 'teleport-layer--20',
+
+    dataComponent: 'WinboxUsersDetailItem',
+    dataProps: {
+      id: item.value._id,
     },
-    {
-      name: 'LazyUsersDetailItem',
-      props: {
-        id: item.value._id,
-      },
-    }
-  )
+
+    tether: [],
+    class: ['simple'],
+
+    width: 400,
+    height: 400,
+
+    x: (window.innerWidth - 400) / 2,
+    y: (window.innerHeight - 400) / 2,
+  })
 }
 </script>
 
@@ -53,7 +60,7 @@ function handleClick() {
     <UiCard
       class="cursor-pointer select-none"
       dashed
-      color="third"
+      :color="winboxWindow ? 'secondary' : 'third'"
       @click="handleClick()"
     >
       <template v-if="item" #header>
@@ -71,9 +78,9 @@ function handleClick() {
           {{ item }}
         </div>
       </template>
-      <template v-if="window" #footer>
-        <div v-if="window?.state" class="px-4 py-1.5">
-          {{ window?.state }}
+      <template v-if="winboxWindow" #footer>
+        <div v-if="winboxWindow?.state" class="px-4 py-1.5">
+          {{ winboxWindow?.state }}
         </div>
       </template>
     </UiCard>

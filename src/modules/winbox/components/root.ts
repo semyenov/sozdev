@@ -1,26 +1,36 @@
 import { winboxWindows } from '../utils/winbox'
-import WinboxWindow from './window.vue'
 
-import { ClientOnly } from '#components'
+import { ClientOnly, WinboxWindow } from '#components'
 
-const logger = useLogger(`winboxRoot`)
+const logger = useLogger(`modules/winbox/components/root`)
 
 const WinboxRoot = defineComponent({
   setup() {
-    const { vueApp: app } = useNuxtApp()
+    const { vueApp } = useNuxtApp()
     const windows = computed(() => {
       return [...winboxWindows.value.entries()]
     })
-    return { app, windows }
+
+    return {
+      app: vueApp,
+      windows,
+    }
   },
+
   render() {
+    const { app, windows } = this
+
     return h(ClientOnly, () =>
-      this.windows
-        .filter(([id, info]) => info.component)
-        .map(([id, info]) => {
-          const component = this.app.component(info.component!.name)
+      windows
+        .filter(([_, window]) => {
+          return (
+            window.params.dataComponent && window.params.dataComponent !== ''
+          )
+        })
+        .map(([id, window]) => {
+          const component = app.component(window.params.dataComponent!)
           if (!component) {
-            logger.error(`Component ${info.component!.name} not found`)
+            logger.error(`Component ${window.params.dataComponent!} not found`)
 
             return null
           }
@@ -29,10 +39,12 @@ const WinboxRoot = defineComponent({
             WinboxWindow,
             {
               key: `${id}`,
-              params: { ...info.params, ...info.state },
-              component: info.component,
+              params: {
+                ...window.params,
+                ...window.state,
+              },
             },
-            () => h(component, info.component?.props)
+            () => h(component, window.params?.dataProps)
           )
         })
     )

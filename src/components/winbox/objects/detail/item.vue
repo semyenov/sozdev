@@ -5,12 +5,12 @@ const props = defineProps({
     required: true,
   },
 })
-const usersStore = useUsersStore()
-const item = await usersStore.itemGetter(props.id)
+const objectsStore = useObjectsStore()
+const item = await objectsStore.itemGetter(props.id)
 </script>
 
 <template>
-  <div class="objects-item p-6">
+  <div class="p-6 objects-detail-item">
     {{ item }}
   </div>
 </template>

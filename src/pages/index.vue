@@ -36,7 +36,7 @@ const { data } = await useFetch('/api/test', {
     }"
   >
     <div
-      class="h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-6 scrollbar scrollbar-rounded page page-index box-color__default--1"
+      class="w-full flex h-full max-h-screen flex-col items-start overflow-y-scroll p-6 scrollbar scrollbar-rounded page page-index box-color__default--1"
     >
       <PageProse
         v-if="data"

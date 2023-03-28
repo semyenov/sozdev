@@ -1,14 +1,13 @@
 export type WinBoxParamsTether = 'right' | 'left' | 'top' | 'bottom'
 
-export type WinBoxParams = WinBox.Params & {
+export interface WinBoxParams extends WinBox.Params {
   id: string
   teleportId: string
 
-  tether?: WinBoxParamsTether[]
+  dataComponent?: string
+  dataProps?: object
 
-  runtime?: boolean
-  maximized?: boolean
-  minimized?: boolean
+  tether?: WinBoxParamsTether[]
 }
 
 export interface WinBoxState {
@@ -17,14 +16,9 @@ export interface WinBoxState {
   width: number
   height: number
   fullscreen: boolean
-  minimized: boolean
-  maximized: boolean
   active: boolean
-}
-
-export interface WinBoxComponent {
-  name: string
-  props: object
+  min: boolean
+  max: boolean
 }
 
 export type WinBoxElement = HTMLElement & {
@@ -32,8 +26,7 @@ export type WinBoxElement = HTMLElement & {
 }
 
 export interface WinBoxWindow {
-  params: WinBoxParams
-  component?: WinBoxComponent
-  state?: WinBoxState
   winbox?: WinBox
+  state?: WinBoxState
+  params: WinBoxParams
 }

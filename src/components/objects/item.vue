@@ -24,24 +24,20 @@ const { winboxWindow, createWindow } = useWinbox(winboxId)
 function handleClick() {
   const w = winboxWindow.value
   if (!w || !w.state || !w.winbox) {
-    createWindow(
-      {
-        id: winboxId,
-        title: winboxTitle,
-        teleportId: 'teleport-layer--20',
+    createWindow({
+      id: winboxId,
+      title: winboxTitle,
+      teleportId: 'teleport-layer--20',
+      dataComponent: 'WinboxObjectsDetailItem',
+      dataProps: {
+        id: item.value._id,
       },
-      {
-        name: 'LazyObjectsDetailItem',
-        props: {
-          id: item.value._id,
-        },
-      }
-    )
+    })
 
     return
   }
 
-  if (w.state.minimized) {
+  if (w.state.min) {
     w.winbox.minimize(false).focus()
     return
   }

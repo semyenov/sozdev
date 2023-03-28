@@ -1,6 +1,6 @@
 import { isClient } from '@vueuse/core'
 
-import type { WinBoxComponent, WinBoxParams } from '../types'
+import type { WinBoxParams } from '../types'
 import { winboxCursor, winboxWindows } from '../utils/winbox'
 
 export function useWinbox(id: string) {
@@ -21,9 +21,8 @@ export function useWinbox(id: string) {
 
   return {
     winboxWindow,
-    createWindow: (params: WinBoxParams, component: WinBoxComponent) =>
+    createWindow: (params: WinBoxParams) =>
       winboxWindows.value.set(id, {
-        component,
         params,
       }),
   }

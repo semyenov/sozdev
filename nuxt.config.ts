@@ -7,20 +7,28 @@ import {
   numberFormats,
 } from './src/i18n'
 
+const rootDir = resolve(__dirname)
+const srcDir = resolve(rootDir, 'src')
+
+const appDir = resolve(srcDir, 'app')
+const assetsDir = resolve(srcDir, 'assets')
+const publicDir = resolve(srcDir, 'public')
+const componentsDir = resolve(srcDir, 'components')
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  alias: {
-    assets: resolve(__dirname, 'src', 'assets'),
-    public: resolve(__dirname, 'src', 'public'),
+  srcDir,
+  appDir,
 
-    '~': resolve(__dirname, 'src'),
-    '~~': resolve(__dirname),
+  alias: {
+    assets: assetsDir,
+    public: publicDir,
+
+    '~~': rootDir,
+    '~': srcDir,
   },
 
   telemetry: false,
-
-  srcDir: resolve(__dirname, 'src'),
-  appDir: resolve(__dirname, 'src', 'app'),
 
   app: {
     head: {
@@ -51,29 +59,29 @@ export default defineNuxtConfig({
   components: {
     dirs: [
       {
-        // path: `~/components/objects/detail/item`,
-        path: resolve(__dirname, 'src', 'components', 'objects', 'detail'),
-        // extensions: ['.vue'],
-        prefix: 'ObjectsDetail',
-        pathPrefix: true,
+        enabled: true,
         global: true,
+        isAsync: true,
+
+        pathPrefix: true,
+        prefix: 'winbox',
+
+        path: resolve(componentsDir, 'winbox'),
       },
       {
-        // path: `~/components/objects/detail/item`,
-        path: resolve(__dirname, 'src', 'components', 'users', 'detail'),
-        // extensions: ['.vue'],
-        prefix: 'UsersDetail',
+        enabled: true,
         pathPrefix: true,
-        global: true,
+        path: componentsDir,
       },
-      `~/components`,
     ],
   },
 
   imports: {
     dirs: ['store', 'composables', 'utils'],
-    addons: { vueTemplate: true },
     collectMeta: true,
+    addons: {
+      vueTemplate: true,
+    },
   },
 
   build: {

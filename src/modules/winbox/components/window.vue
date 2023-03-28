@@ -1,40 +1,36 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 
-import type { WinBoxComponent, WinBoxParams } from '../types'
+import type { WinBoxParams } from '../types'
+
 import { winboxRegister } from '../utils/winbox'
 import { useWinbox } from '../composables/useWinbox'
 
 const props = defineProps({
   params: {
     type: Object as PropType<WinBoxParams>,
-    default: () => ({}),
-  },
-  component: {
-    type: Object as PropType<WinBoxComponent>,
-    required: false,
+    required: true,
   },
 })
 
-const component = toRef(props, 'component')
 const params = toRef(props, 'params')
+const [showFlag, showToggle] = useToggle(false)
 
-const { winboxWindow: window } = useWinbox(params.value.id)
-
-const [show, showToggle] = useToggle(false)
+const { winboxWindow } = useWinbox(params.value.id)
 
 defineExpose({
-  open,
-  window,
+  open: openWindow,
+  close: closeWindow,
+  window: winboxWindow,
 })
 
-watch(show, (s) => (s ? open() : window.value?.winbox?.close()))
+onMounted(openWindow)
+onScopeDispose(closeWindow)
 
-onMounted(() => open())
-onScopeDispose(() => window.value?.winbox?.close())
+watch(showFlag, (flag) => (flag ? openWindow() : closeWindow()))
 
-function open() {
-  if (window.value?.winbox) {
+function openWindow() {
+  if (winboxWindow.value && winboxWindow.value.winbox) {
     return
   }
 
@@ -42,23 +38,31 @@ function open() {
     document.getElementById(props.params.teleportId) || document.body
 
   const mountEl = document.createElement('div')
-  mountEl.classList.add('wb-wrapper')
-
   const contentEl = document.createElement('div')
+
+  mountEl.classList.add('wb-wrapper')
   contentEl.classList.add('wb-content')
 
   mountEl.appendChild(contentEl)
 
-  winboxRegister(rootEl, mountEl, params.value, component.value)
+  winboxRegister(rootEl, mountEl, params.value)
 
   nextTick(() => {
     showToggle(true)
   })
 }
+
+function closeWindow() {
+  if (!winboxWindow.value || !winboxWindow.value.winbox) {
+    return
+  }
+
+  winboxWindow.value.winbox.close()
+}
 </script>
 
 <template>
-  <Teleport v-if="show" :to="`#${params.id} .wb-content`">
+  <Teleport v-if="showFlag" :to="`#${params.id} .wb-wrapper .wb-content`">
     <slot name="default" />
   </Teleport>
 </template>
