@@ -1,6 +1,6 @@
-import { isClient } from '@vueuse/core'
+import { isClient, useMagicKeys } from '@vueuse/core'
 
-import type { WinBoxParams } from '../../types'
+import type { WinBoxParams } from '#build/winbox'
 import { winboxCursor, winboxWindows } from '../utils/winbox'
 
 export function useWinbox(id: string) {
@@ -34,7 +34,7 @@ const shiftRightArrowKey = keys['Shift+>']
 
 watch(shiftLeftArrowKey, (flag) => {
   if (flag) {
-    const ids = [...winboxWindows.value.keys()]
+    const ids = Array.from(winboxWindows.value.keys())
     const currentIndex = ids.findIndex((key) => key === winboxCursor.value) - 1
 
     if (currentIndex > -2) {
@@ -51,7 +51,7 @@ watch(shiftLeftArrowKey, (flag) => {
 
 watch(shiftRightArrowKey, (flag) => {
   if (flag) {
-    const ids = [...winboxWindows.value.keys()]
+    const ids = Array.from(winboxWindows.value.keys())
     const currentIndex = ids.findIndex((key) => key === winboxCursor.value) + 1
 
     if (currentIndex > 0 && currentIndex < ids.length) {

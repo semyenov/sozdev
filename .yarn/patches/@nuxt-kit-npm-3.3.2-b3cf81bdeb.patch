@@ -1,0 +1,12 @@
+diff --git a/LICENSE b/LICENSE
+index 363f513455fc8d788f5dbbe5851d311e8306efe4..9bccde6011416434de017a0a780bcc56b88e3593 100644
+--- a/LICENSE
++++ b/LICENSE
+@@ -1,5 +1,7 @@
+ The MIT License (MIT)
+ 
++TEST
++
+ Copyright (c) 2016-present - Nuxt Team
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy

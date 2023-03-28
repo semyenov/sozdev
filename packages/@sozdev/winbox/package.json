@@ -28,7 +28,7 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.3.2",
+    "@antfu/utils": "^0.7.2",
     "winbox": "^0.2.6"
   },
   "devDependencies": {
@@ -43,6 +43,11 @@
     "vitest": "^0.29.7"
   },
   "peerDependencies": {
+    "@nuxt/kit": "*",
     "@vueuse/core": "*"
+  },
+  "resolutions": {
+    "@types/winbox@^0.2.1": "patch:@types/winbox@npm%3A0.2.1#./.yarn/patches/@types-winbox-npm-0.2.1-37c4030f07.patch",
+    "winbox@^0.2.6": "patch:winbox@npm%3A0.2.6#./.yarn/patches/winbox-npm-0.2.6-437212b13a.patch"
   }
 }

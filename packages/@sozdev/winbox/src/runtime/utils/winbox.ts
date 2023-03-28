@@ -1,7 +1,8 @@
 import { throttle } from '@antfu/utils'
 import { useDraggable, useStorage } from '@vueuse/core'
 
-import type { WinBoxElement, WinBoxParams, WinBoxWindow } from '../../types'
+import type WinBox from 'winbox'
+import type { WinBoxElement, WinBoxParams, WinBoxWindow } from '#build/winbox'
 
 export const winboxWindowsStorageKey = 'winbox-windows' as const
 export const winboxWindows = useStorage<Map<string, WinBoxWindow>>(
@@ -32,6 +33,7 @@ export function winboxRegister(
   }
 
   const winboxWindow = computed(() => winboxWindows.value.get(winboxParams.id))
+  let winbox: WinBox
 
   const {
     onclose,
@@ -254,7 +256,7 @@ export function winboxRegister(
     return !!onblur && onblur.call(this)
   }
 
-  const winbox = new window.WinBox({
+  winbox = new window.WinBox({
     ...winboxParams,
     root,
     mount,
@@ -284,7 +286,7 @@ export function winboxRegister(
     preventDefault: false,
   })
 
-  watch([isDragging], ([flag]) => {
+  watch(isDragging, (flag) => {
     if (flag || !winboxWindow.value || !winboxWindow.value.state) {
       return
     }

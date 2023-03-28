@@ -1,27 +1,38 @@
 import {
-  defineNuxtModule,
-  addPlugin,
-  createResolver,
   addComponentsDir,
   addImportsDir,
+  addPlugin,
+  addTemplate,
+  createResolver,
+  defineNuxtModule,
+  useLogger,
 } from '@nuxt/kit'
 
-export * from './types.d'
-
-import { logger } from './runtime/utils/logger'
+const logger = useLogger('@sozdev/winbox')
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: '@sozdev/winbox',
+    name: 'winbox',
     configKey: 'winbox',
   },
   // Default configuration options of the Nuxt module
   defaults: {},
-  async setup(_options, _nuxt) {
+  async setup(_, nuxt) {
     const { resolve } = createResolver(import.meta.url)
+
+    addTemplate({
+      filename: 'winbox.d.ts',
+      src: resolve('./winbox.d.ts'),
+    })
+
+    nuxt.hooks.hook('prepare:types', ({ references }) => {
+      references.push({
+        path: resolve(nuxt.options.buildDir, 'winbox.d.ts'),
+      })
+    })
 
     try {
       addPlugin({
@@ -40,9 +51,8 @@ export default defineNuxtModule<ModuleOptions>({
 
     try {
       await addComponentsDir({
-        path: resolve('./runtime/components'),
-        prefix: 'winbox',
         global: true,
+        path: resolve('./runtime/components'),
       })
     } catch (e) {
       logger.error('Failed to add components', e)

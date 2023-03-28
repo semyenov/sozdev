@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-
-import type { WinBoxParams } from '../../types'
-
+import { nextTick, onMounted, onScopeDispose, toRef, watch } from 'vue'
+import { useToggle } from '@vueuse/core'
 import { winboxRegister } from '../utils/winbox'
 
 const props = defineProps({
@@ -34,7 +33,9 @@ function openWindow() {
   }
 
   const rootEl =
-    document.getElementById(props.params.teleportId) || document.body
+    (props.params.teleportId &&
+      document.getElementById(props.params.teleportId)) ||
+    document.body
 
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
@@ -61,13 +62,7 @@ function closeWindow() {
 </script>
 
 <template>
-  <Teleport
-    v-if="showFlag"
-    :to="`#${params.id} .wb-wrapper .wb-content`"
-  >
-    <pre class="py-4 text-xs px-6 border-b box-color__default--2">{{
-      winboxWindow?.state
-    }}</pre>
+  <Teleport v-if="showFlag" :to="`#${params.id} .wb-wrapper .wb-content`">
     <slot name="default" />
   </Teleport>
 </template>

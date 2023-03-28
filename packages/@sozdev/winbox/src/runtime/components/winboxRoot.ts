@@ -1,6 +1,6 @@
+// import { winboxWindows } from '../utils/winbox'
+import { WinboxWindow } from '#components'
 import { winboxWindows } from '../utils/winbox'
-
-import WinboxWindow from './window.vue'
 
 const WinboxRoot = defineComponent({
   render() {
@@ -11,7 +11,7 @@ const WinboxRoot = defineComponent({
     })
 
     return windows.value
-      .filter(([_, window]) => {
+      .filter(([, window]) => {
         return window.params.dataComponent && window.params.dataComponent !== ''
       })
       .map(([id, window]) => {
