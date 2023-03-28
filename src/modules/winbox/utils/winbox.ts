@@ -271,7 +271,7 @@ export function winboxRegister(
       height: typeof winboxParams.height === 'number' ? winboxParams.height : 0,
       max: winboxParams.max || false,
       min: winboxParams.min || false,
-      fullscreen: winboxParams.fullscreen,
+      fullscreen: winboxParams.fullscreen || false,
       hidden: winboxParams.hidden || false,
     },
   })

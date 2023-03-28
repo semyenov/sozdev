@@ -25,7 +25,7 @@ const authorizationStore = useAuthorizationStore()
         <PageSidebar />
       </div>
       <div
-        class="flex flex-col items-start text-left layout-default__page z-z-30 justify-items-stretch"
+        class="flex flex-col items-start text-left layout-default__page z-30 justify-items-stretch"
       >
         <slot />
       </div>

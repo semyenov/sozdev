@@ -8,7 +8,7 @@ export interface WinBoxParams extends WinBox.Params {
   dataProps?: object
 
   tether?: WinBoxParamsTether[]
-  fullscreen: boolean
+  fullscreen?: boolean
 }
 
 export interface WinBoxState {
