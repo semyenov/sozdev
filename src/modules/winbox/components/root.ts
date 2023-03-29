@@ -1,27 +1,18 @@
-import { winboxWindows } from '../utils/winbox'
+import { Suspense } from '@vue/runtime-core'
 
-import { ClientOnly, WinboxWindow } from '#components'
+import { winboxWindows } from '../utils/winbox'
+import WinboxWindow from './window.vue'
+
+import { ClientOnly } from '#components'
 
 const logger = useLogger(`modules/winbox/components/root`)
 
 const WinboxRoot = defineComponent({
-  setup() {
-    const { vueApp } = useNuxtApp()
-    const windows = computed(() => {
-      return [...winboxWindows.value.entries()]
-    })
-
-    return {
-      app: vueApp,
-      windows,
-    }
-  },
-
   render() {
-    const { app, windows } = this
+    const { vueApp: app } = useNuxtApp()
 
-    return h(ClientOnly, () =>
-      windows
+    return h(ClientOnly, { key: 'winbox-root--client-only' }, () =>
+      Array.from(winboxWindows.value.entries())
         .filter(([_, window]) => {
           return (
             window.params.dataComponent && window.params.dataComponent !== ''
@@ -38,13 +29,18 @@ const WinboxRoot = defineComponent({
           return h(
             WinboxWindow,
             {
-              key: `${id}`,
+              key: `${id}--winbox`,
               params: {
                 ...window.params,
                 ...window.state,
               },
             },
-            () => h(component, window.params?.dataProps)
+            h(Suspense, { key: `${id}--suspence` }, () =>
+              h(component, {
+                key: `${id}--component`,
+                ...window.params?.dataProps,
+              })
+            )
           )
         })
     )

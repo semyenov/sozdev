@@ -4,7 +4,9 @@ const { setLocale, locale } = useI18n()
 </script>
 
 <template>
-  <div class="flex justify-between flex-grow flex-col">
+  <div
+    class="flex justify-between flex-grow flex-col box-color__default--2 border-r"
+  >
     <div class="flex flex-col">
       <NuxtLink
         v-slot="{ isActive, navigate }"

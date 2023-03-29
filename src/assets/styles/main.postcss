@@ -2,9 +2,12 @@ html {
   scrollbar-gutter: auto;
 }
 
-html,
-body,
 #__nuxt {
+  @apply flex flex-grow w-screen h-screen overflow-hidden;
+}
+
+html,
+body {
   display: flex;
   @apply w-full h-full;
 }

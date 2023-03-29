@@ -1,7 +1,7 @@
-import { throttle } from '@antfu/utils'
+import { objectPick } from '@antfu/utils'
 import { useStorage } from '@vueuse/core'
 
-import type { WinBoxElement, WinBoxParams, WinBoxWindow } from '../types'
+import type { WinBoxParams, WinBoxState, WinBoxWindow } from '../types'
 
 export const winboxWindowsStorageKey = 'winbox-windows' as const
 export const winboxWindows = useStorage<Map<string, WinBoxWindow>>(
@@ -17,6 +17,18 @@ export function winboxRegister(
   params: WinBoxParams
 ) {
   let winbox: WinBox
+  let winboxDragEl: HTMLElement
+
+  const {
+    onclose,
+    onresize,
+    onmove,
+    onfocus,
+    onblur,
+    onminimize,
+    onmaximize,
+    onrestore,
+  } = params
 
   const winboxParams = {
     top: 0,
@@ -29,309 +41,190 @@ export function winboxRegister(
     minwidth: 500,
     class: ['simple'],
     tether: ['right', 'top', 'bottom'],
+    min: false,
+    max: false,
+    hidden: false,
+    fullscreen: false,
 
     ...params,
-  }
+  } as WinBoxParams
 
-  const winboxWindow = computed(() => winboxWindows.value.get(winboxParams.id))
-
-  const {
-    onclose,
-    onresize,
-    onmove,
-    onfocus,
-    onblur,
-    onminimize,
-    onmaximize,
-    onrestore,
-  } = winboxParams
-
-  delete params.onclose
-  delete params.onresize
-  delete params.onmove
-  delete params.onfocus
-  delete params.onblur
-  delete params.onminimize
-  delete params.onmaximize
-  delete params.onrestore
-
-  winboxParams.maxwidth =
-    window.innerWidth -
-    convertUnits('width', winboxParams.right) -
-    convertUnits('width', winboxParams.left)
-
-  winboxParams.maxheight =
-    window.innerHeight -
-    convertUnits('height', winboxParams.top) -
-    convertUnits('height', winboxParams.bottom)
-
-  winboxParams.minwidth = convertUnits('width', winboxParams.minwidth)
-
-  winboxParams.minheight = convertUnits('height', winboxParams.minheight)
-
-  if (winboxParams.tether && winboxParams.tether.length > 0) {
-    if (winboxParams.tether.includes('right')) {
-      winboxParams.x = window.innerWidth
-    }
-
-    if (winboxParams.tether.includes('left')) {
-      winboxParams.x = -convertUnits('width', winboxParams.width)
-    }
-
-    if (winboxParams.tether.includes('bottom')) {
-      winboxParams.y = window.innerHeight
-    }
-
-    if (winboxParams.tether.includes('top')) {
-      winboxParams.y = 0
-    }
-  }
-
-  const fullscreenEventListener = (event: Event) => {
-    const target = event.target as HTMLElement
-    if (
-      !winboxWindow.value ||
-      !winboxWindow.value.state ||
-      !target.isEqualNode(winbox.body)
-    ) {
-      return
-    }
-
-    winboxWindow.value.state.fullscreen = !winboxWindow.value.state.fullscreen
-  }
-
-  const resizeEventListener = throttle(50, () => {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
-    const state = winboxWindow.value.state
-
-    if (state.min) {
-      winbox.minimize(state.min)
-      return
-    }
-    if (state.max) {
-      winbox.maximize(state.max)
-      return
-    }
-
-    winbox.move(state.x, state.y)
-    winbox.resize(state.width, state.height)
-
-    if (winboxParams.tether && winboxParams.tether.length > 0) {
-      if (winboxParams.tether.includes('left')) {
-        state.x = convertUnits('width', winboxParams.left)
-
-        if (winboxParams.tether.includes('top')) {
-          state.y = convertUnits('height', winboxParams.top)
-
-          if (winboxParams.tether.includes('bottom')) {
-            state.height = window.innerHeight
-            winbox.resize(state.width, state.height)
-          }
-        }
-
-        winbox.move(state.x, state.y)
-
-        return
-      }
-
-      if (winboxParams.tether.includes('right')) {
-        state.x =
-          window.innerWidth -
-          state.width -
-          convertUnits('width', winboxParams.right)
-
-        if (winboxParams.tether.includes('top')) {
-          state.y = convertUnits('height', winboxParams.top)
-
-          if (winboxParams.tether.includes('bottom')) {
-            state.height = window.innerHeight
-            winbox.resize(state.width, state.height)
-          }
-        }
-
-        winbox.move(state.x, state.y)
-      }
-    }
+  winboxWindows.value.set(winboxParams.id, {
+    params: winboxParams,
+    state: {
+      x: convertUnits('width', winboxParams.x),
+      y: convertUnits('height', winboxParams.y),
+      width: convertUnits('width', winboxParams.width),
+      height: convertUnits('height', winboxParams.height),
+      ...objectPick(winboxParams, ['max', 'min', 'hidden', 'fullscreen']),
+    } as WinBoxState,
   })
 
-  winboxParams.onminimize = function () {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
+  const winboxWindow = computed(() => winboxWindows.value.get(winboxParams.id)!)
+
+  const s = computed(() => winboxWindow.value.state!)
+  const p = computed(() => winboxWindow.value.params!)
+
+  const fullscreenEventListener = (event: Event) => {
+    const t = event.target as HTMLElement
+
+    if (!t.isEqualNode(winbox.body)) {
       return
     }
 
-    const state = winboxWindow.value.state
-    state.min = true
+    s.value.fullscreen = !s.value.fullscreen
+  }
 
-    return !!onminimize && onminimize.call(this)
+  const resizeEventListener = () => {
+    if (s.value.min) {
+      winbox.minimize(s.value.min)
+      return
+    }
+    if (s.value.max) {
+      winbox.maximize(s.value.max)
+      return
+    }
+
+    p.value.top = convertUnits('height', winboxParams.top)
+    p.value.bottom = convertUnits('height', winboxParams.bottom)
+    p.value.left = convertUnits('width', winboxParams.left)
+    p.value.right = convertUnits('width', winboxParams.right)
+
+    p.value.minwidth = convertUnits('width', p.value.minwidth)
+    p.value.minheight = convertUnits('height', p.value.minheight)
+
+    p.value.maxwidth = window.innerWidth - p.value.right - p.value.left
+    p.value.maxheight = window.innerHeight - p.value.top - p.value.bottom
+
+    if (!winbox) {
+      return
+    }
+
+    winbox.maxwidth = p.value.maxwidth
+    winbox.maxheight = p.value.maxheight
+    winbox.minwidth = p.value.minwidth
+    winbox.minheight = p.value.minheight
+
+    if (p.value.tether && p.value.tether.length > 0) {
+      if (p.value.tether.includes('left')) {
+        s.value.x = p.value.left
+        if (p.value.tether.includes('top')) {
+          s.value.y = p.value.top
+          if (p.value.tether.includes('bottom')) {
+            s.value.height = p.value.maxheight
+            winbox.resize(s.value.width, s.value.height)
+          }
+        }
+      } else if (p.value.tether.includes('right')) {
+        s.value.x = window.innerWidth - p.value.right - s.value.width
+        if (p.value.tether.includes('top')) {
+          s.value.y = p.value.top
+          if (p.value.tether.includes('bottom')) {
+            s.value.height = p.value.maxheight
+            winbox.resize(s.value.width, s.value.height)
+          }
+        }
+      }
+
+      winbox.move(s.value.x, s.value.y)
+    }
+  }
+
+  const mousedownEventListener = (event: MouseEvent) => {
+    if (event.type === 'mousedown') {
+      window.addEventListener('mouseup', resizeEventListener)
+      return
+    }
+
+    window.removeEventListener('mouseup', resizeEventListener)
+  }
+
+  winboxParams.onminimize = function (flag = true) {
+    s.value.min = flag
+    return !!onminimize && onminimize.call(this, flag)
   }
 
   winboxParams.onmaximize = function (flag = true) {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
-    const state = winboxWindow.value.state
-    state.max = flag
-
+    s.value.max = flag
     return !!onmaximize && onmaximize.call(this, flag)
   }
 
   winboxParams.onrestore = function () {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
-    const state = winboxWindow.value.state
-    state.max = false
-    state.min = false
-
+    s.value.max = false
+    s.value.min = false
     return !!onrestore && onrestore.call(this)
   }
 
   winboxParams.onclose = function (forceFlag = false): boolean {
-    winboxWindows.value.delete(winboxParams.id)
     window.removeEventListener('resize', resizeEventListener)
     document.removeEventListener('fullscreenchange', fullscreenEventListener)
+    winboxDragEl.removeEventListener('mousedown', mousedownEventListener)
+
+    winboxWindows.value.delete(winboxParams.id)
 
     return !!onclose && onclose.call(this, forceFlag)
   }
 
   winboxParams.onresize = function (width, height) {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
-    const state = winboxWindow.value.state
-
     nextTick(() => {
-      if (state.min || state.max) {
+      if (s.value.min || s.value.max) {
         return
       }
 
-      state.height = height
-      state.width = width
+      s.value.height = height
+      s.value.width = width
     })
 
     return !!onresize && onresize.call(this, width, height)
   }
 
   winboxParams.onmove = function (x, y) {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
-    const state = winboxWindow.value.state
-
     nextTick(() => {
-      if (state.min || state.max) {
+      if (s.value.min || s.value.max) {
         return
       }
 
-      state.x = x
-      state.y = y
+      s.value.x = x
+      s.value.y = y
     })
-
     return !!onmove && onmove.call(this, x, y)
   }
 
   winboxParams.onfocus = function () {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
-    const state = winboxWindow.value.state
-    state.min = false
-
+    s.value.min = false
     return !!onfocus && onfocus.call(this)
   }
 
   winboxParams.onblur = function () {
-    if (!winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
     return !!onblur && onblur.call(this)
   }
 
   winbox = new window.WinBox({
     ...winboxParams,
-    root,
+    ...p.value,
     mount,
-  })
-
-  winboxWindows.value.set(winboxParams.id, {
-    params,
-    state: {
-      x: winboxParams.x || 0,
-      y: winboxParams.y || 0,
-      width: typeof winboxParams.width === 'number' ? winboxParams.width : 0,
-      height: typeof winboxParams.height === 'number' ? winboxParams.height : 0,
-      max: winboxParams.max || false,
-      min: winboxParams.min || false,
-      fullscreen: winboxParams.fullscreen,
-      hidden: winboxParams.hidden || false,
-    },
+    root,
   })
 
   window.addEventListener('resize', resizeEventListener)
   document.addEventListener('fullscreenchange', fullscreenEventListener)
 
-  const winboxEl = document.getElementById(winboxParams.id) as WinBoxElement
-  const winboxHeaderEl = winboxEl.querySelector('.wb-drag')!.parentElement!
+  winboxDragEl = document
+    .getElementById(winboxParams.id)!
+    .querySelector('.wb-drag')!
+  winboxDragEl.addEventListener('mousedown', mousedownEventListener)
 
-  const { isDragging } = useDraggable(winboxHeaderEl, {
-    preventDefault: false,
-  })
-
-  watch([isDragging], ([flag]) => {
-    if (flag || !winboxWindow.value || !winboxWindow.value.state) {
-      return
-    }
-
-    const state = winboxWindow.value.state
-    if (state.min || state.max) {
-      return
-    }
-
-    if (winboxParams.tether && winboxParams.tether.length > 0) {
-      if (winboxParams.tether.includes('right')) {
-        state.x = window.innerWidth - state.width
-      }
-
-      if (winboxParams.tether.includes('left')) {
-        state.x = convertUnits('width', winboxParams.left)
-      }
-
-      if (winboxParams.tether.includes('top')) {
-        state.y = convertUnits('height', winboxParams.top)
-      }
-    }
-
-    winbox.move(state.x, state.y)
-  })
+  resizeEventListener()
 
   watch(winboxCursor, (cursor) => {
-    if (
-      !winboxWindow.value ||
-      !winboxWindow.value.state ||
-      cursor !== winboxParams.id
-    ) {
+    if (!winbox || cursor !== winboxParams.id) {
       return
     }
 
-    const state = winboxWindow.value.state
-
-    if (state.min) {
+    if (s.value.min) {
       winbox.minimize(false)
     }
 
     winbox.focus()
   })
-
-  resizeEventListener()
-
-  return winbox
 }

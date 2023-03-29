@@ -23,7 +23,8 @@ const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
   const w = winboxWindow.value
-  if (!w || !w.state || !w.winbox) {
+
+  if (!w?.winbox) {
     createWindow({
       id: winboxId,
       title: winboxTitle,
@@ -37,7 +38,7 @@ function handleClick() {
     return
   }
 
-  if (w.state.min) {
+  if (w.state?.min) {
     w.winbox.minimize(false)
   }
 

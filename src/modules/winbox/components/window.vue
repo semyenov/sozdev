@@ -4,7 +4,6 @@ import type { PropType } from 'vue'
 import type { WinBoxParams } from '../types'
 
 import { winboxRegister } from '../utils/winbox'
-import { useWinbox } from '../composables/useWinbox'
 
 const props = defineProps({
   params: {
@@ -62,9 +61,9 @@ function closeWindow() {
 </script>
 
 <template>
-  <Teleport v-if="showFlag" :to="`#${params.id} .wb-wrapper .wb-content`">
-    <pre class="py-4 text-xs px-6 border-b box-color__default--2">{{
-      winboxWindow.state
+  <Teleport v-if="showFlag" :to="`#${params.id} .wb-content`">
+    <pre class="px-6 border-b box-color__default--2 py-4 text-xs">{{
+      winboxWindow?.state
     }}</pre>
     <slot name="default" />
   </Teleport>

@@ -11,7 +11,7 @@ const contentPath = route.params.all.join('/')
       id: 'page-content-all',
       teleportId: 'teleport-layer--10',
       title: t('content.title'),
-      class: ['simple', 'wb-left', 'no-move', 'no-close', 'border-l-none'],
+      class: ['simple', 'wb-left', 'no-close'],
       index: 10,
       border: 0,
       top: 0,
