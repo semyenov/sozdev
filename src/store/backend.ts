@@ -41,7 +41,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     new Map(backendScopeTypes.map((scope) => [scope, new Map()]))
   )
 
-  const itemGetterByIds = async <T>(scope: IMetaScope, ids: string[]) => {
+  const itemsGetterByIds = async <T>(scope: IMetaScope, ids: string[]) => {
     const storeScopeMap = store.value.get(scope)!
     const missingIds = ids.filter((id) => !storeScopeMap.has(id))
 
@@ -168,7 +168,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
       if (hasOwnProperty(item, backendStoreIdentificator)) {
-        storeScopeMap.set(item[backendStoreIdentificator], item)
+        storeScopeMap.set(item[backendStoreIdentificator], { ...item })
       }
     }
 
@@ -181,7 +181,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     setStoreItems,
 
     itemsGetter,
-    itemGetterByIds,
+    itemsGetterByIds,
 
     itemGetter,
 

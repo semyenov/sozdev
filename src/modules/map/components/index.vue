@@ -14,19 +14,17 @@ const objectsStore = useObjectsStore()
 const backendStore = useBackendStore()
 
 const objectsIds = await objectsStore.itemsGetter
-const objects = await backendStore.itemsGetterByIds(
+
+const objects = await backendStore.itemsGetterByIds<IObject>(
   IMetaScope.OBJECTS,
-  objectsIds
+  objectsIds.value
 )
 
 const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)!
 
 const objectsFeatures = computed<FeatureCollection<Point>>(
   () => {
-    const features = objectsIds.value.map((id) => {
-      const object = objectsStoreMap.get(id) as IObject
-      return object && object.feature
-    })
+    const features = objects.value.map((object) => object.feature)
 
     return {
       type: 'FeatureCollection',
