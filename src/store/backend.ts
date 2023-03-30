@@ -3,11 +3,10 @@ import type { FetchOptions, SearchParameters } from 'ofetch'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { hasOwnProperty, toArray } from '@antfu/utils'
 
-import { isClient } from '@vueuse/core'
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
 
-export const backendStoreIdentificator = '_id' as const
+export const backendStoreIdField = '_id' as const
 export const backendStoreKey = 'backend' as const
 
 const logger = useLogger(`store/${backendStoreKey}`)
@@ -24,9 +23,7 @@ export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
 
 export const useBackendStore = defineStore(backendStoreKey, () => {
   const runtimeConfig = useRuntimeConfig()
-  const baseURL = !isClient
-    ? 'http://127.0.0.1:3000/api'
-    : runtimeConfig.public.apiUri
+  const baseURL = runtimeConfig.apiUri || runtimeConfig.public.apiUri
 
   const authorizationStore = useAuthorizationStore()
 
@@ -41,18 +38,23 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     new Map(backendScopeTypes.map((scope) => [scope, new Map()]))
   )
 
-  const itemsGetterByIds = async <T>(scope: IMetaScope, ids: string[]) => {
-    const storeScopeMap = store.value.get(scope)!
-    const missingIds = ids.filter((id) => !storeScopeMap.has(id))
+  const itemsGetterByIds =
+    <T>(scope: IMetaScope) =>
+    async (ids: string[]) => {
+      const storeScopeMap = store.value.get(scope)!
 
-    if (missingIds.length > 0) {
-      await get<T[]>([scope, 'items'], { ids: missingIds })
+      const missingIds = ids.filter((id) => !storeScopeMap.has(id))
+      if (missingIds.length > 0) {
+        for (const id of missingIds) {
+          await get<T>([scope, 'items', id])
+        }
+      }
+
+      return computed(() => {
+        const storeScopeMap = store.value.get(scope)!
+        return ids.map((id) => storeScopeMap.get(id)) as T[]
+      })
     }
-
-    return computed(() => {
-      return ids.map((id) => storeScopeMap.get(id)) as T[]
-    })
-  }
 
   const itemsGetter = async <T>(scope: IMetaScope) => {
     const storeScopeMap = store.value.get(scope)!
@@ -61,6 +63,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     }
 
     return computed(() => {
+      const storeScopeMap = store.value.get(scope)!
       return Array.from(storeScopeMap.values()) as T[]
     })
   }
@@ -69,12 +72,12 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     <T>(scope: IMetaScope) =>
     async (id: string) => {
       const storeScopeMap = store.value.get(scope)!
-
       if (!storeScopeMap.has(id)) {
         await get<T>([scope, 'items', id])
       }
 
       return computed(() => {
+        const storeScopeMap = store.value.get(scope)!
         return storeScopeMap.get(id) as T | undefined
       })
     }
@@ -166,13 +169,13 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   function setStoreItems<T>(scope: IMetaScope, items: T[]) {
     const storeScopeMap = store.value.get(scope)!
     for (const i in items) {
-      const item = items[i] as T & { [backendStoreIdentificator]: string }
-      if (hasOwnProperty(item, backendStoreIdentificator)) {
-        storeScopeMap.set(item[backendStoreIdentificator], { ...item })
+      const item = items[i] as T & { [backendStoreIdField]: string }
+      if (hasOwnProperty(item, backendStoreIdField)) {
+        storeScopeMap.set(item[backendStoreIdField], {
+          ...item,
+        })
       }
     }
-
-    return true
   }
 
   return {

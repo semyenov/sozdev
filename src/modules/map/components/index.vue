@@ -14,11 +14,7 @@ const objectsStore = useObjectsStore()
 const backendStore = useBackendStore()
 
 const objectsIds = await objectsStore.itemsGetter
-
-const objects = await backendStore.itemsGetterByIds<IObject>(
-  IMetaScope.OBJECTS,
-  objectsIds.value
-)
+const objects = await objectsStore.itemsGetterByIds(objectsIds.value)
 
 const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)!
 

@@ -51,6 +51,8 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    apiUri: 'http://127.0.0.1:3000/api',
+
     public: {
       apiUri: '/api',
     },
