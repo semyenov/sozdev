@@ -3,5 +3,5 @@ import { items } from '~/server/objects'
 import { sendData } from '~/server'
 
 export default defineEventHandler((_event) => {
-  return sendData(items.slice(0, 10000))
+  return sendData(items.slice(0, 1000))
 })

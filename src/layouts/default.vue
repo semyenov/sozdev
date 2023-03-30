@@ -20,8 +20,10 @@ const authorizationStore = useAuthorizationStore()
     >
       <AuthorizationCurrent />
     </div>
-    <div class="fixed flex flex-row bottom-0 layout-default__left left-0 top-0">
-      <div class="box-color__default--2 layout-default__sidebar z-30 border-r">
+    <div
+      class="fixed flex flex-row bottom-0 layout-default__left left-0 top-0 right-0"
+    >
+      <div class="box-color__default--2 border-r layout-default__sidebar z-30">
         <PageSidebar />
       </div>
       <div
@@ -43,6 +45,9 @@ const authorizationStore = useAuthorizationStore()
   id="__toasts"
   class="layout-default__teleport fixed left-0 right-0 z-10 flex"
 ></div> -->
+      <div class="layout-default__map flex flex-grow">
+        <MapLibre />
+      </div>
       <div class="winbox-root"><WinboxRoot /></div>
     </div>
   </div>

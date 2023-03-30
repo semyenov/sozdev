@@ -1,3 +1,4 @@
+import type { Feature, Point } from 'geojson'
 import z from 'zod'
 
 export const ValidationMap = {
@@ -190,7 +191,7 @@ export type IObjectInfo = z.infer<typeof IObjectInfoSchema>
 
 export const IObjectSchema = z.object({
   _id: z.string(),
-  feature: z.any().nullable(),
+  feature: z.unknown().nullable(),
   fields: z.record(z.any()),
   info: IObjectInfoSchema,
   level: z.number(),
@@ -200,7 +201,9 @@ export const IObjectSchema = z.object({
   type: z.string(),
   meta: IMetaSchema.optional().nullable(),
 })
-export type IObject = z.infer<typeof IObjectSchema>
+export type IObject = z.infer<typeof IObjectSchema> & {
+  feature: Feature<Point>
+}
 
 export const IObjectCreateInputSchema = z.object({
   code: z.string().optional(),
@@ -255,3 +258,17 @@ export const IChangeSchema = z.object({
   diffs: IDiffSchema.array().nullable(),
 })
 export type IChange = z.infer<typeof IChangeSchema>
+
+export interface IPointMap {
+  type: string
+  geometry: {
+    type: string
+    coordinates: number[]
+  }
+  // properties: {}
+}
+export interface IObjectMap {
+  _id: string
+  name: string
+  map: IPointMap
+}

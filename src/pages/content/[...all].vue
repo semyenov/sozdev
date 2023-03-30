@@ -20,8 +20,8 @@ const contentPath = route.params.all.join('/')
       right: '50%',
       height: '100%',
       minheight: '100%',
-      width: 550,
-      minwidth: 500,
+      width: 300,
+      minwidth: 300,
       tether: ['left', 'top', 'bottom'],
     }"
   >

@@ -41,6 +41,19 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     new Map(backendScopeTypes.map((scope) => [scope, new Map()]))
   )
 
+  const itemGetterByIds = async <T>(scope: IMetaScope, ids: string[]) => {
+    const storeScopeMap = store.value.get(scope)!
+    const missingIds = ids.filter((id) => !storeScopeMap.has(id))
+
+    if (missingIds.length > 0) {
+      await get<T[]>([scope, 'items'], { ids: missingIds })
+    }
+
+    return computed(() => {
+      return ids.map((id) => storeScopeMap.get(id)) as T[]
+    })
+  }
+
   const itemsGetter = async <T>(scope: IMetaScope) => {
     const storeScopeMap = store.value.get(scope)!
     if (storeScopeMap.size === 0) {
@@ -165,7 +178,11 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   return {
     store,
 
+    setStoreItems,
+
     itemsGetter,
+    itemGetterByIds,
+
     itemGetter,
 
     get,

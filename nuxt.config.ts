@@ -103,6 +103,7 @@ export default defineNuxtConfig({
   modules: [
     '~/modules/test/index',
     '~/modules/winbox/index',
+    '~/modules/map/index',
     '~/modules/design/index',
 
     '@nuxt/content',
