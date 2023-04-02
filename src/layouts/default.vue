@@ -15,11 +15,9 @@ watch(tildaKey, (v) => v && toggleDark())
       <div id="teleport-layer--20" class="z-20" />
     </div>
 
-    <div class="flex flex-col">
-      <ClientOnly>
-        <WinboxRoot />
-      </ClientOnly>
-    </div>
+    <!-- <div class="flex flex-col"> -->
+    <WinboxRoot />
+    <!-- </div> -->
     <div
       class="flex flex-grow flex-col text-left items-start justify-items-stretch"
     >
