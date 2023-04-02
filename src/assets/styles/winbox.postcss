@@ -4,7 +4,7 @@
   @apply flex flex-col bg-transparent border border-default-300 dark:border-default-700 shadow-none;
 
   .wb-header {
-    @apply flex flex-row box-color__default--2 px-0 h-auto border-default-300 dark:border-default-700 dark:text-default-400 border-b border-b-dashed text-default-800 justify-center relative;
+    @apply flex flex-row box-color__default--2 px-0 h-auto border-default-300 dark:border-default-700 dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative;
 
     .wb-drag {
       @apply flex flex-grow py-2 pl-6 pr-4 overflow-hidden;
@@ -31,23 +31,23 @@
     @apply shadow-xl shadow-default dark:shadow-default-900;
 
     .wb-header {
-      @apply flex flex-row box-color__default--3 border-default-300 dark:border-default-700 text-default-600 dark:text-default-300;
+      @apply flex flex-row box-color__default--3 border-default-300 dark:border-default-700 text-default-700 dark:text-default-300;
     }
   }
 
   &.min {
-    @apply font-normal border-r-solid bottom-60px h-60px;
+    @apply font-normal border-r-solid -bottom-60px! h-60px;
 
     .wb-header {
       @apply flex relative! box-color__default--3 py-0;
 
       .wb-title {
-        @apply inline !text-base;
+        @apply inline text-base!;
       }
     }
 
     &:hover {
-      @apply !h-70px !bottom-70px;
+      @apply h-70px! -bottom-70px!;
     }
   }
 

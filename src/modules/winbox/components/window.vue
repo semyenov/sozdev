@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-
 import type { WinBoxParams } from '../types'
-
 import { winboxRegister } from '../utils/winbox'
 
 const props = defineProps({
@@ -43,7 +41,6 @@ function openWindow() {
   contentEl.classList.add('wb-content')
 
   mountEl.appendChild(contentEl)
-
   winboxRegister(rootEl, mountEl, params.value)
 
   nextTick(() => {
