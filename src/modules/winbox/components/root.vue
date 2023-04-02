@@ -13,11 +13,24 @@ const windowsParams = computed(() =>
 
 <template>
   <ClientOnly>
-    <WinboxWindow v-for="p in windowsParams" :key="p.id" :params="p">
-      <component
-        :is="vueApp.component(p.dataComponent!)"
-        v-bind="p.dataProps"
-      />
+    <WinboxWindow
+      v-for="p in windowsParams"
+      :key="`${p.id}--window`"
+      :params="p"
+    >
+      <Suspense :key="`${p.id}--suspense`">
+        <!-- main content -->
+        <component
+          :is="vueApp.component(p.dataComponent!)"
+          :key="`${p.id}--component`"
+          v-bind="p.dataProps"
+        />
+
+        <!-- loading state -->
+        <template #fallback>
+          <div class="text-sm m-auto">LOADING</div>
+        </template>
+      </Suspense>
     </WinboxWindow>
   </ClientOnly>
 </template>
