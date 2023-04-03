@@ -87,7 +87,11 @@ export default defineNuxtConfig({
   },
 
   build: {
-    transpile: [({ isDev }) => !isDev && 'flexsearch'],
+    transpile: [
+      ({ isDev }) => !isDev && 'flexsearch',
+      ({ isDev }) => isDev && '@deck.gl/layers',
+      ({ isDev }) => isDev && '@deck.gl/mapbox',
+    ],
   },
 
   css: [

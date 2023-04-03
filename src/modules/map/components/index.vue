@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import maplibregl from 'maplibre-gl'
-
 import type { FeatureCollection, Point } from 'geojson'
-import { ArcLayer } from '@deck.gl/layers'
+import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
+import { ArcLayer } from '@deck.gl/layers/typed'
+import MapboxDraw from '@mapbox/mapbox-gl-draw'
+
+import type { TMapboxDraw, TMapboxOverlay } from '../types'
 import jsonData from '../geojson/voronezh.json'
 import type { IObject } from '~/types'
 import { IMetaScope } from '~/types'
 
-// maplibregl
-// const maplibreglRef = ref<HTMLElement | null>(null)
 let maplibreglMap: maplibregl.Map
 
 const objectsStore = useObjectsStore()
@@ -55,10 +56,6 @@ function handleClick() {
 // setInterval(handleClick, 5000)
 
 function createMaplibreglMap() {
-  // if (!maplibreglRef.value) {
-  //   return
-  // }
-
   maplibreglMap = new maplibregl.Map({
     container: 'mapContainer',
     style:
@@ -67,6 +64,28 @@ function createMaplibreglMap() {
     maxZoom: 18,
     minZoom: 0,
   })
+  maplibreglMap.addControl(
+    new maplibregl.NavigationControl({
+      showCompass: true,
+      visualizePitch: true,
+    }),
+    'bottom-right'
+  )
+
+  maplibreglMap.addControl(new maplibregl.FullscreenControl({}), 'bottom-right')
+
+  const drawControl = new MapboxDraw({
+    controls: {
+      point: true,
+      line_string: true,
+      combine_features: false,
+      polygon: false,
+      uncombine_features: false,
+      trash: false,
+    },
+  }) as TMapboxDraw
+
+  maplibreglMap.addControl(drawControl, 'bottom-right')
 
   maplibreglMap.on('load', () => {
     maplibreglMap.addSource('test-source-layer', {
@@ -136,36 +155,9 @@ function createMaplibreglMap() {
         'circle-stroke-color': '#fff',
       },
     })
-    // const deck = new Deck({
-    //   map: maplibreglMap,
-    //   initialViewState: {
-    //     longitude: 0,
-    //     latitude: 0,
-    //     zoom: 0,
-    //   },
-    //   controller: true,
-    // })
-    // const arcLayer = new Layer({
-    //   id: 'deckgl-arc',
-    //   map: maplibreglMap,
-    //   type: ArcLayer,
-
-    //   data: [
-    //     {
-    //       source: [39.29009860000001, 51.33351280000001],
-    //       target: [42.947337399999995, 51.26721980000001],
-    //     },
-    //   ],
-    //   getSourcePosition: (d) => d.source,
-    //   getTargetPosition: (d) => d.target,
-    //   getSourceColor: [255, 0, 128],
-    //   getTargetColor: [0, 200, 255],
-    //   getWidth: 8,
-    // })
 
     const arcLayer = new ArcLayer({
       id: 'deckgl-arc',
-      map: maplibreglMap,
 
       data: [
         {
@@ -173,14 +165,21 @@ function createMaplibreglMap() {
           target: [42.947337399999995, 51.26721980000001],
         },
       ],
+
+      pickable: true,
+      getWidth: 3,
+      getTilt: (_d) => (Math.random() < 0.5 ? -1 : 1) * Math.random() * 30,
       getSourcePosition: (d) => d.source,
       getTargetPosition: (d) => d.target,
       getSourceColor: [255, 0, 128],
       getTargetColor: [0, 200, 255],
-      getWidth: 8,
     })
 
-    maplibreglMap.addLayer(arcLayer)
+    const deck = new DeckOverlay({
+      layers: [arcLayer],
+    }) as TMapboxOverlay
+
+    maplibreglMap.addControl(deck)
 
     maplibreglMap.on('click', 'clusters', (e) => {
       const features = maplibreglMap.queryRenderedFeatures(e.point, {

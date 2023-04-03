@@ -1,12 +1,8 @@
-// export declare class GeoJSONFeature {
-//   _geometry: GeoJSON.Geometry
-//   geometry: GeoJSON.Geometry
-// import type MapGeoJSONFeature from './types.d.ts'
+import { MapboxOverlay } from '@deck.gl/mapbox/typed'
+import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
-// interface PluginsInjections {
-//   $order: ReturnType<typeof order>
-// }
+import type { IControl } from 'maplibre-gl'
 
-// declare module 'nuxt/types' {
-//   type GeoJSONFeature extends PluginsInjections
-// }
+export type TMapboxOverlay = MapboxOverlay & IControl
+
+export type TMapboxDraw = MapboxDraw & IControl
