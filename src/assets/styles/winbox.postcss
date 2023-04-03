@@ -16,6 +16,9 @@
 
     .wb-control {
       @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pr-4 opacity-60;
+      * {
+        @apply w-7 h-11;
+      }
     }
   }
 
@@ -36,16 +39,21 @@
   }
 
   &.min {
-    @apply font-normal border-r-solid! border-l-none! border-b-none! border-t-solid!;
+    @apply font-normal border-solid! transform;
 
     .wb-header {
       @apply flex relative! box-color__default--3 p-0;
 
       .wb-control {
-        @apply hidden;
+        @apply hidden px-2;
+        * {
+          @apply h-10;
+        }
       }
 
       .wb-drag {
+        @apply px-4;
+
         .wb-title {
           @apply inline text-base!;
         }
@@ -53,9 +61,7 @@
     }
 
     &:hover {
-      @apply border-solid! min-w-70 h-70px!;
-      top: calc(100vh - 70px) !important;
-
+      @apply min-w-70 z-200!;
       .wb-header {
         .wb-control {
           @apply flex;

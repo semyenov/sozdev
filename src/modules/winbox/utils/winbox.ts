@@ -219,8 +219,10 @@ export function convertUnits(
     ? value
     : typeof value === 'string'
     ? value.endsWith('%')
-      ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
-        (type === 'width' ? window.innerWidth : window.innerHeight)
-      : parseFloat(value.slice(0, value.length - 2))
+      ? Math.floor(
+          (parseFloat(value.slice(0, value.length - 1)) / 100) *
+            (type === 'width' ? window.innerWidth : window.innerHeight)
+        )
+      : parseInt(value.slice(0, value.length - 2))
     : 0
 }
