@@ -17,7 +17,6 @@ export function winboxRegister(
   params: WinBoxParams
 ) {
   let winbox: WinBox
-  winboxWindowsParamsStorage.value.set(params.id, params)
 
   const setState = (state: WinBoxState) =>
     winboxWindowsStateStorage.value.set(params.id, state)
@@ -141,7 +140,6 @@ export function winboxRegister(
 
       const s = getState()
 
-      s.index = ss.index
       s.hidden = ss.hidden
       s.min = ss.min
       s.full = ss.full

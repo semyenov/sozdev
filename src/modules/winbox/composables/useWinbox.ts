@@ -9,11 +9,7 @@ import {
 export function useWinbox(id: string) {
   return {
     winboxWindow: computed(() => {
-      if (
-        !isClient ||
-        !winboxWindowsParamsStorage.value.has(id) ||
-        !winboxWindowsStateStorage.value.has(id)
-      ) {
+      if (!isClient || !winboxWindowsStateStorage.value.has(id)) {
         return
       }
 
@@ -22,7 +18,6 @@ export function useWinbox(id: string) {
       }
 
       return {
-        params: winboxWindowsParamsStorage.value.get(id),
         state: winboxWindowsStateStorage.value.get(id),
         winbox: winboxEl ? winboxEl.winbox : undefined,
       }
