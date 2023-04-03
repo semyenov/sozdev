@@ -1,4 +1,4 @@
-@import 'winbox/dist/css/winbox.min.css';
+@import url('winbox/dist/css/winbox.min.css');
 
 .winbox.simple {
   @apply flex flex-col bg-transparent border border-default-300 dark:border-default-700 shadow-none;
@@ -16,6 +16,7 @@
 
     .wb-control {
       @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pr-4 opacity-60;
+
       * {
         @apply w-7 h-11;
       }
@@ -46,6 +47,7 @@
 
       .wb-control {
         @apply px-2;
+
         * {
           @apply h-10;
         }
@@ -62,9 +64,11 @@
 
     &:hover {
       @apply z-200!;
+
       .wb-header {
         .wb-control {
           @apply flex;
+
           * {
             @apply h-10;
           }

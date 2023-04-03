@@ -2,6 +2,7 @@ html {
   scrollbar-gutter: auto;
 }
 
+/* stylelint-disable-next-line selector-id-pattern */
 #__nuxt {
   @apply flex flex-grow w-screen h-screen overflow-hidden;
 }
@@ -9,6 +10,7 @@ html {
 html,
 body {
   display: flex;
+
   @apply w-full h-full;
 }
 
@@ -16,6 +18,7 @@ body {
 .page-leave-active {
   transition: all cubic-bezier(0.23, 1, 0.32, 1) 0.3s;
 }
+
 .page-enter-from,
 .page-leave-to {
   opacity: 0.5;
