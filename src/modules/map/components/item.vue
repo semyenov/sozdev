@@ -5,6 +5,7 @@ import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
+import type { Feature } from '@turf/helpers'
 import type { TMapboxDraw, TMapboxOverlay } from '../types'
 import jsonData from '../geojson/voronezh.json'
 import type { IObject } from '~/types'
@@ -20,20 +21,16 @@ const objects = await objectsStore.itemsGetterByIds(objectsIds.value)
 
 const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)!
 
-const objectsFeatures = computed<FeatureCollection<Point>>(
-  () => {
-    const features = objects.value.map((object) => object.feature)
+const objectsFeatures = computed<
+  FeatureCollection<Point, { color: [number, number, number] }>
+>(() => {
+  const features = objects.value.map((object) => object.feature)
 
-    return {
-      type: 'FeatureCollection',
-      features,
-    }
+  return {
+    type: 'FeatureCollection',
+    features,
   }
-  // {
-  //   onTrack: console.log,
-  //   // onTrigger: console.log,
-  // }
-)
+})
 
 onMounted(createMaplibreglMap)
 
@@ -63,7 +60,10 @@ function createMaplibreglMap() {
     center: [0, 0], // starting position [lng, lat]
     maxZoom: 18,
     minZoom: 0,
+    attributionControl: false,
+    trackResize: true,
   })
+
   maplibreglMap.addControl(
     new maplibregl.NavigationControl({
       showCompass: true,
@@ -156,23 +156,29 @@ function createMaplibreglMap() {
       },
     })
 
-    const arcLayer = new ArcLayer({
+    const arcLayer = new ArcLayer<
+      Feature<Point, { color: [number, number, number] }>
+    >({
       id: 'deckgl-arc',
 
-      data: [
-        {
-          source: [39.29009860000001, 51.33351280000001],
-          target: [42.947337399999995, 51.26721980000001],
-        },
-      ],
+      data: objectsFeatures.value.features.filter(() => Math.random() < 0.05),
 
       pickable: true,
       getWidth: 3,
       getTilt: (_d) => (Math.random() < 0.5 ? -1 : 1) * Math.random() * 30,
-      getSourcePosition: (d) => d.source,
-      getTargetPosition: (d) => d.target,
-      getSourceColor: [255, 0, 128],
-      getTargetColor: [0, 200, 255],
+      getSourcePosition: (d) => [
+        d.geometry.coordinates[0],
+        d.geometry.coordinates[1],
+      ],
+      getTargetPosition: (d) => {
+        const coordinates =
+          objectsFeatures.value.features[
+            Math.floor(Math.random() * objectsFeatures.value.features.length)
+          ].geometry.coordinates
+        return [coordinates[0], coordinates[1]]
+      },
+      getSourceColor: (d) => d.properties.color,
+      getTargetColor: (d) => d.properties.color,
     })
 
     const deck = new DeckOverlay({
@@ -209,6 +215,7 @@ function createMaplibreglMap() {
     maplibreglMap.on('mouseenter', 'clusters', () => {
       maplibreglMap.getCanvas().style.cursor = 'pointer'
     })
+
     maplibreglMap.on('mouseleave', 'clusters', () => {
       maplibreglMap.getCanvas().style.cursor = 'default'
     })
@@ -233,6 +240,6 @@ function createMaplibreglMap() {
 </script>
 
 <template>
-  <UiButton @click="handleClick">Move -> 10</UiButton>
+  <!-- <UiButton @click="handleClick">Move -> 10</UiButton> -->
   <div id="mapContainer" class="flex flex-col layout-default__map z-0"></div>
 </template>

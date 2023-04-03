@@ -202,7 +202,7 @@ export const IObjectSchema = z.object({
   meta: IMetaSchema.optional().nullable(),
 })
 export type IObject = z.infer<typeof IObjectSchema> & {
-  feature: Feature<Point>
+  feature: Feature<Point, { color: [number, number, number] }>
 }
 
 export const IObjectCreateInputSchema = z.object({
@@ -229,6 +229,59 @@ export const IObjectUpdateInputSchema = z.object({
   demands: z.record(z.any()).optional().nullable(),
 })
 export type IObjectUpdateInput = z.infer<typeof IObjectUpdateInputSchema>
+
+export const IMoveInfoSchema = z.object({
+  code: z.string().optional(),
+  name: z.string(),
+  notes: z.string().optional(),
+})
+export type IMoveInfo = z.infer<typeof IMoveInfoSchema>
+
+export const IMoveSchema = z.object({
+  _id: z.string(),
+  document: z.string(),
+  feature: z.any().nullable(),
+  group: z.string(),
+  info: IMoveInfoSchema,
+  public: z.boolean(),
+  receiver: z.string(),
+  resource: z.string(),
+  sender: z.string(),
+  type: IMoveTypeSchema,
+  value: z.number(),
+  meta: IMetaSchema.optional().nullable(),
+})
+export type IMove = z.infer<typeof IMoveSchema>
+
+export const IMoveCreateInputSchema = z.object({
+  code: z.string().optional(),
+  document: z.string().optional().nullable(),
+  feature: z.any().nullable(),
+  group: z.string(),
+  name: z.string(),
+  notes: z.string().optional(),
+  receiver: z.string(),
+  resource: z.string(),
+  sender: z.string(),
+  type: IMoveTypeSchema,
+  value: z.number(),
+})
+export type IMoveCreateInput = z.infer<typeof IMoveCreateInputSchema>
+
+export const IMoveUpdateInputSchema = z.object({
+  code: z.string().optional(),
+  document: z.string().optional().nullable(),
+  feature: z.any().nullable(),
+  group: z.string(),
+  name: z.string().optional(),
+  notes: z.string().optional(),
+  receiver: z.string().optional(),
+  resource: z.string().optional(),
+  sender: z.string().optional(),
+  type: IMoveTypeSchema,
+  value: z.number().optional(),
+})
+export type IMoveUpdateInput = z.infer<typeof IMoveUpdateInputSchema>
 
 export const IDeltaSchema = z.object({
   pt: z.string().array().nullable(),

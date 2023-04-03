@@ -10,7 +10,7 @@ watch(tildaKey, (v) => v && toggleDark())
   <div class="flex flex-grow box-color__default--3">
     <NuxtLoadingIndicator class="w-full absolute z-100 h-2" />
 
-    <div class="flex flex-col flex w-full fixed right-0 relative left-0 h-0">
+    <div class="flex-col flex w-full fixed right-0 relative left-0 h-0">
       <div id="teleport-layer--10" class="z-10" />
       <div id="teleport-layer--20" class="z-20" />
     </div>
