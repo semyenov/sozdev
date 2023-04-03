@@ -19,7 +19,7 @@ export function useWinbox(id: string) {
 
       return {
         state: winboxWindowsStateStorage.value.get(id),
-        winbox: winboxEl ? winboxEl.winbox : undefined,
+        winbox: winboxEl?.winbox,
       }
     }),
     createWindow: (params: WinBoxParams) => {
