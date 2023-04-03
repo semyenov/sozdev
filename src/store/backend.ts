@@ -1,8 +1,9 @@
-import type { FetchOptions, SearchParameters } from 'ofetch'
 import { hasOwnProperty, toArray } from '@antfu/utils'
 
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
+
+import type { FetchOptions, SearchParameters } from 'ofetch'
 
 export const backendStoreIdentificator = '_id' as const
 export const backendStoreKey = 'backend' as const

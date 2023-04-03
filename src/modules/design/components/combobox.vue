@@ -2,7 +2,8 @@
 import { clamp, objectPick } from '@antfu/utils'
 import { Document } from 'flexsearch'
 
-import type { PropType } from 'vue'
+import { UiInput, UiVirtualList } from '#components'
+
 import type { IUser } from '~/types'
 import type {
   UIColorVariants,
@@ -10,7 +11,7 @@ import type {
   UISizeVariants,
 } from '~/types/ui'
 
-import { UiInput, UiVirtualList } from '#components'
+import type { PropType } from 'vue'
 
 const props = defineProps({
   modelValue: {

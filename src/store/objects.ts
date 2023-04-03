@@ -1,5 +1,5 @@
-import type { IObject, IObjectUpdateInput } from '~/types'
 import { IMetaScope } from '~/types'
+import type { IObject, IObjectUpdateInput } from '~/types'
 
 export const objectsStoreKey = IMetaScope.OBJECTS as const
 

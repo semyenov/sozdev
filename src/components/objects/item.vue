@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import type { IObject } from '~/types'
+
+import type { PropType } from 'vue'
 
 const props = defineProps({
   index: {

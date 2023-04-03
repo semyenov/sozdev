@@ -1,10 +1,11 @@
 import { isClient } from '@vueuse/core'
-import type { WinBoxParams } from '../types'
 
 import {
   winboxWindowsParamsStorage,
   winboxWindowsStateStorage,
 } from '../utils/winbox'
+
+import type { WinBoxParams } from '../types'
 
 export function useWinbox(id: string) {
   return {

@@ -1,7 +1,8 @@
-import type { Options, TRenderFunction } from './toast.d'
 import { validateOptions } from './validate'
 import { appendStylesheet } from './styles'
 import renderToast from './render'
+
+import type { Options, TRenderFunction } from './toast.d'
 
 /**
  * **Options:**

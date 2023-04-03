@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { ComponentInternalInstance } from 'vue'
 import type { TabsListState } from '~/types/tabs'
+
+import type { ComponentInternalInstance } from 'vue'
 
 const props = defineProps({
   modelValue: {

@@ -1,7 +1,7 @@
 import { Document } from 'flexsearch'
 
-import type { IUser } from '~/types'
 import { IMetaScope } from '~/types'
+import type { IUser } from '~/types'
 
 declare global {
   interface Window {

@@ -1,5 +1,6 @@
-import type { $Fetch, FetchOptions, FetchResponse } from 'ofetch'
 import { ofetch } from 'ofetch'
+
+import type { $Fetch, FetchOptions, FetchResponse } from 'ofetch'
 
 export type ApiResponseStatus = 'success' | 'fail'
 export type ApiRequestMethod =

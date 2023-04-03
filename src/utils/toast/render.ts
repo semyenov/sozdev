@@ -1,7 +1,8 @@
-import type { App } from 'vue'
-import type { LocalOptions, Options, TRenderFunction } from './toast.d'
 import { animDuration, formatCssProperties } from './styles'
 import { validateLocalOptions } from './validate'
+
+import type { App } from 'vue'
+import type { LocalOptions, Options, TRenderFunction } from './toast.d'
 
 const toastQueue: Array<[Element, Element]> = []
 

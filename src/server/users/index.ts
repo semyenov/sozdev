@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { range } from '@antfu/utils'
 
-import type { IUser } from '~/types'
 import { IMetaScope } from '~/types'
+import type { IUser } from '~/types'
 
 export const items: IUser[] = range(0, 10000).map(_i => ({
   _id: faker.datatype.uuid(),

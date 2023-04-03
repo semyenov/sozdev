@@ -1,5 +1,6 @@
-import type { WinBoxConstructor } from 'winbox'
 import WinBox from 'winbox'
+
+import type { WinBoxConstructor } from 'winbox'
 
 declare global {
   interface Window {

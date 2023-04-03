@@ -1,5 +1,6 @@
-import type { AllowedComponentProps, VNode, VNodeProps } from 'vue'
 import { defineComponent, h } from 'vue'
+
+import type { AllowedComponentProps, VNode, VNodeProps } from 'vue'
 
 export type ComponentProps<C extends Component> = C extends new (
   ...args: any

@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { winboxRegister } from '../utils/winbox'
+
 import type { PropType } from 'vue'
 import type { WinBoxParams } from '../types'
-import { winboxRegister } from '../utils/winbox'
 
 const props = defineProps({
   params: {

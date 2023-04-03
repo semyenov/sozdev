@@ -1,10 +1,10 @@
+import { IMetaScope } from '~/types'
 import type {
   IUser,
   IUserLoginInput,
   IUserTokensData,
   IUserUpdateInput,
 } from '~/types'
-import { IMetaScope } from '~/types'
 
 export const usersStoreKey = IMetaScope.USERS as const
 

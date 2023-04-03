@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { ComputedRef, PropType } from 'vue'
 import { range } from '@antfu/utils'
 
 import type { VirtualRange } from '~/utils'
+
+import type { ComputedRef, PropType } from 'vue'
 
 const props = defineProps({
   dataIds: {

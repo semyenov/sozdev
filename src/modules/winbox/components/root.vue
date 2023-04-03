@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { winboxWindowsParamsStorage } from '../utils/winbox'
+
 import { ClientOnly } from '#components'
 
 const { vueApp } = useNuxtApp()

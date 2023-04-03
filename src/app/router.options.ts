@@ -1,10 +1,11 @@
-import qs from 'qs'
+import { parse, stringify } from 'qs'
+
 import type { RouterOptions } from '@nuxt/schema'
 
 // https://router.vuejs.org/api/interfaces/routeroptions.html
 export default <RouterOptions>{
-  parseQuery: qs.parse,
-  stringifyQuery: qs.stringify,
+  parseQuery: parse,
+  stringifyQuery: stringify,
 
   scrollBehavior(_from, _to, savedPosition) {
     if (savedPosition)

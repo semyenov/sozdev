@@ -1,4 +1,5 @@
 import { clamp, useStorage } from '@vueuse/core'
+
 import type { WinBoxBBox, WinBoxParams, WinBoxState } from '../types'
 
 export const winboxWindowsStorageKey = 'winbox-windows' as const

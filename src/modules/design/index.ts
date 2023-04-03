@@ -1,15 +1,13 @@
 import { addComponentsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
-
 import VitePlugin from '@unocss/vite'
-
-import type { UserConfig } from '@unocss/core'
 import { loadConfig } from '@unocss/config'
-
 import postcssNested from 'postcss-nested'
 // @ts-expect-error missing type
 import postcssCurrentSelector from 'postcss-current-selector'
 // @ts-expect-error missing type
 import postcssNestedAncestors from 'postcss-nested-ancestors'
+
+import type { UserConfig } from '@unocss/core'
 
 export default defineNuxtModule<{}>({
   meta: {
