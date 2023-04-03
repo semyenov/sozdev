@@ -22,7 +22,7 @@ const slots = useSlots()
 
 <template>
   <div
-    class="flex flex-col relative w-full border text-left component-card divide-y dark:bg-gray-900 bg-white shadow-xl shadow-opacity-30 dark:shadow-opacity-30"
+    class="flex flex-col w-full relative border text-left component-card divide-y dark:bg-gray-900 bg-white shadow-xl shadow-opacity-30 dark:shadow-opacity-30"
     :class="[
       props.color && `list-color__${props.color}`,
       props.rounded && `box-rounded__${props.rounded}`,
