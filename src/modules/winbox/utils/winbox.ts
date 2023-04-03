@@ -16,23 +16,24 @@ export function winboxRegister(
   mount: HTMLElement,
   params: WinBoxParams
 ) {
-  let winbox: WinBox
+  if (!winboxWindowsStateStorage.value.get(params.id)) {
+    winboxWindowsStateStorage.value.set(params.id, {
+      x: convertUnits('width', params.x),
+      y: convertUnits('height', params.y),
+      width: convertUnits('width', params.width),
+      height: convertUnits('height', params.height),
+      max: params.max || false,
+      min: params.min || false,
+      hidden: params.hidden || false,
+      full: params.full || false,
+    })
+  }
 
   const setState = (state: WinBoxState) =>
     winboxWindowsStateStorage.value.set(params.id, state)
-  const getState = () =>
-    winboxWindowsStateStorage.value.has(params.id)
-      ? ({ ...winboxWindowsStateStorage.value.get(params.id) } as WinBoxState)
-      : ({
-          x: convertUnits('width', params.x),
-          y: convertUnits('height', params.y),
-          width: convertUnits('width', params.width),
-          height: convertUnits('height', params.height),
-          max: params.max || false,
-          min: params.min || false,
-          hidden: params.hidden || false,
-          full: params.full || false,
-        } as WinBoxState)
+  const getState = (): WinBoxState => ({
+    ...winboxWindowsStateStorage.value.get(params.id)!,
+  })
 
   const s = ref(getState())
 
@@ -55,20 +56,10 @@ export function winboxRegister(
     minheight: convertUnits('height', params.minheight),
   })
 
-  const fullscreenEventListener = (event: Event) => {
-    const t = event.target as HTMLElement
-
-    if (!t.isEqualNode(winbox.body)) {
-      return
-    }
-
-    s.value.full = !s.value.full
-  }
-
   const b = ref<WinBoxBbox>(calcBbox())
   const updateBbox = () => (b.value = calcBbox())
 
-  winbox = new window.WinBox({
+  const winbox = new window.WinBox({
     ...params,
     ...s.value,
 
@@ -92,7 +83,6 @@ export function winboxRegister(
 
     onclose(forceFlag = false): boolean {
       window.removeEventListener('resize', updateBbox)
-      document.removeEventListener('fullscreenchange', fullscreenEventListener)
 
       winboxWindowsParamsStorage.value.delete(params.id)
       winboxWindowsStateStorage.value.delete(params.id)
@@ -122,12 +112,16 @@ export function winboxRegister(
       return !!params.onblur && params.onblur.call(this)
     },
 
+    onfullscreen() {
+      s.value.full = !s.value.full
+      return !!params.onfullscreen && params.onfullscreen.call(this)
+    },
+
     mount,
     root,
   })
 
   window.addEventListener('resize', updateBbox)
-  document.addEventListener('fullscreenchange', fullscreenEventListener)
 
   watch(
     [s, b],
@@ -224,7 +218,9 @@ export function convertUnits(
   return typeof value === 'number'
     ? value
     : typeof value === 'string'
-    ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
-      (type === 'width' ? window.innerWidth : window.innerHeight)
+    ? value.endsWith('%')
+      ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
+        (type === 'width' ? window.innerWidth : window.innerHeight)
+      : parseFloat(value.slice(0, value.length - 2))
     : 0
 }

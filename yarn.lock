@@ -2629,8 +2629,8 @@ __metadata:
 
 "@types/winbox@patch:@types/winbox@npm%3A0.2.1#./.yarn/patches/@types-winbox-npm-0.2.1-37c4030f07.patch::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.2.1
-  resolution: "@types/winbox@patch:@types/winbox@npm%3A0.2.1#./.yarn/patches/@types-winbox-npm-0.2.1-37c4030f07.patch::version=0.2.1&hash=148ab5&locator=root-workspace-0b6124%40workspace%3A."
-  checksum: cbe242fce27868602ea93221bfc1a341b0ff45cb4fd53cd7ee525873ed63fac458b257df7bd14db593a9502e7c856280fc72818f6fc89478f6830168e94db007
+  resolution: "@types/winbox@patch:@types/winbox@npm%3A0.2.1#./.yarn/patches/@types-winbox-npm-0.2.1-37c4030f07.patch::version=0.2.1&hash=ba148e&locator=root-workspace-0b6124%40workspace%3A."
+  checksum: 3f75580d5a987beea9844cd5fd7d3c6712c6d81e6ff3aa6451319a1c3e5dc31491531bb7df7915f1533d884fda9e09cd4683672561c7f3e7d1204989aa351ce4
   languageName: node
   linkType: hard
 
