@@ -57,7 +57,16 @@ export function winboxRegister(
   })
 
   const b = ref<WinBoxBbox>(calcBbox())
-  const updateBbox = () => (b.value = calcBbox())
+
+  const resizeEventListener = () => {
+    b.value = calcBbox()
+  }
+  const fullscreenEventListener = (event: Event) => {
+    const t = event.target as HTMLElement
+    if (!t.isEqualNode(root.children[0])) {
+      s.value.full = !s.value.full
+    }
+  }
 
   const winbox = new window.WinBox({
     ...params,
@@ -75,17 +84,20 @@ export function winboxRegister(
 
     onrestore() {
       s.value = getState()
+
       s.value.max = false
       s.value.min = false
+      s.value.full = false
 
       return !!params.onrestore && params.onrestore.call(this)
     },
 
     onclose(forceFlag = false): boolean {
-      window.removeEventListener('resize', updateBbox)
-
       winboxWindowsParamsStorage.value.delete(params.id)
       winboxWindowsStateStorage.value.delete(params.id)
+
+      window.removeEventListener('resize', resizeEventListener)
+      window.removeEventListener('fullscreenchange', fullscreenEventListener)
 
       return !!params.onclose && params.onclose.call(this, forceFlag)
     },
@@ -113,15 +125,19 @@ export function winboxRegister(
     },
 
     onfullscreen() {
-      s.value.full = !s.value.full
+      s.value.full = false
       return !!params.onfullscreen && params.onfullscreen.call(this)
+    },
+
+    oncreate() {
+      window.addEventListener('resize', resizeEventListener)
+      window.addEventListener('fullscreenchange', fullscreenEventListener)
+      return !!params.oncreate && params.oncreate.call(this, params)
     },
 
     mount,
     root,
   })
-
-  window.addEventListener('resize', updateBbox)
 
   watch(
     [s, b],
@@ -134,10 +150,10 @@ export function winboxRegister(
 
       const s = getState()
 
-      s.hidden = ss.hidden
       s.min = ss.min
-      s.full = ss.full
       s.max = ss.max
+      s.full = ss.full
+      s.hidden = ss.hidden
 
       setState(s)
 
@@ -145,18 +161,15 @@ export function winboxRegister(
         return
       }
 
+      if (ss.max) {
+        winbox.resize(bb.maxwidth, bb.maxheight)
+        return
+      }
+
       let x: number = ss.x
       let y: number = ss.y
       let width: number = ss.width
       let height: number = ss.height
-
-      if (ss.max) {
-        width = bb.maxwidth
-        height = bb.maxheight
-
-        winbox.resize(width, height)
-        return
-      }
 
       if (params.tether) {
         if (params.tether.includes('left')) {

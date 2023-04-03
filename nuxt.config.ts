@@ -24,8 +24,8 @@ export default defineNuxtConfig({
     assets: assetsDir,
     public: publicDir,
 
-    '~~': rootDir,
     '~': srcDir,
+    '~~': rootDir,
   },
 
   telemetry: false,
@@ -44,13 +44,15 @@ export default defineNuxtConfig({
       ],
     },
 
-    // pageTransition: {
-    //   name: 'page',
-    //   mode: 'out-in',
-    // },
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
   },
 
   runtimeConfig: {
+    apiUri: 'http://localhost:3000/api',
+
     public: {
       apiUri: '/api',
     },
@@ -90,11 +92,9 @@ export default defineNuxtConfig({
 
   css: [
     '@unocss/reset/antfu.css',
-
     'uno.css',
 
     'assets/styles/main.postcss',
-    'assets/styles/winbox.postcss',
     'assets/styles/datepicker.postcss',
   ],
 

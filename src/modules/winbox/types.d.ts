@@ -25,8 +25,8 @@ export interface WinBoxBbox {
 export interface WinBoxState {
   max: boolean
   min: boolean
-  hidden: boolean
   full: boolean
+  hidden: boolean
 
   x: number
   y: number

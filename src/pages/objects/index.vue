@@ -15,32 +15,32 @@ const objectGetter = objectsStore.itemGetter
 
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
-// const listScrollStep = 10
-// const listScrollIndex = ref(listScrollStep)
+const listScrollStep = 10
+const listScrollIndex = ref(listScrollStep)
 
-// function scrollClickHandler() {
-//   if (!listComponent.value) {
-//     return
-//   }
+function scrollClickHandler() {
+  if (!listComponent.value) {
+    return
+  }
 
-//   if (listScrollIndex.value > objectsIds.value.length) {
-//     listComponent.value.scrollToBottom()
-//     listScrollIndex.value = 0
+  if (listScrollIndex.value > objectsIds.value.length) {
+    listComponent.value.scrollToBottom()
+    listScrollIndex.value = 0
 
-//     return
-//   }
+    return
+  }
 
-//   listComponent.value.scrollToIndex(listScrollIndex.value)
-//   listScrollIndex.value += listScrollStep
-// }
+  listComponent.value.scrollToIndex(listScrollIndex.value)
+  listScrollIndex.value += listScrollStep
+}
 
-// async function loadOthersHandler() {
-//   await objectsStore.getOthers()
-// }
+async function loadOthersHandler() {
+  await objectsStore.getOthers()
+}
 </script>
 
 <template>
-  <div class="">
+  <div class="page">
     <WinboxWindow
       :params="{
         id: 'page-objects',
@@ -69,35 +69,31 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
         wrap-class="flex flex-col w-full"
-        class="flex page flex-grow flex-col items-center gap-8 overflow-y-scroll p-6 scrollbar scrollbar-rounded h-auto max-h-full page-objects-index"
+        class="flex flex-grow flex-col items-center gap-8 overflow-y-scroll p-6 scrollbar scrollbar-rounded h-auto max-h-full"
         :estimate-size="70"
         item-class="mb-6"
-      >
-        <!-- <template #header>
-          <div class="absolute flex flex-col gap-2 right-16 bottom-20 z-10">
-            <Button
-              class="h-11"
-              color="default"
-              outline
-              rounded="md"
-              size="md"
-              @click.prevent="loadOthersHandler"
-            >
-              <i class="i-carbon:download inline-block" />
-            </Button>
-            <Button
-              class="h-11"
-              color="default"
-              outline
-              rounded="md"
-              size="md"
-              @click.prevent="scrollClickHandler"
-            >
-              <i class="i-carbon:arrow-down inline-block" />
-            </Button>
-          </div>
-        </template> -->
-      </UiVirtualList>
+      />
     </WinboxWindow>
+
+    <div class="absolute flex flex-col gap-2 right-8 bottom-8 z-10">
+      <UiButton
+        class="h-11"
+        color="default"
+        outline
+        size="md"
+        @click.prevent="loadOthersHandler"
+      >
+        <i class="i-carbon:download inline-block" />
+      </UiButton>
+      <UiButton
+        class="h-11"
+        color="default"
+        outline
+        size="md"
+        @click.prevent="scrollClickHandler"
+      >
+        <i class="i-carbon:arrow-down inline-block" />
+      </UiButton>
+    </div>
   </div>
 </template>

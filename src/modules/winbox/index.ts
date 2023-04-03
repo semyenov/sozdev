@@ -10,8 +10,10 @@ import {
 const logger = useLogger('winbox')
 
 export default defineNuxtModule({
-  async setup(_options, _nuxt) {
+  async setup(_options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
+
+    nuxt.options.css.push(resolve('assets/styles/winbox.postcss'))
 
     logger.info('Adding plugin')
     try {

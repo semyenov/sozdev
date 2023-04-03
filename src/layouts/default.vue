@@ -24,7 +24,7 @@ watch(tildaKey, (v) => v && toggleDark())
       <div class="flex flex-grow flex-row">
         <PageSidebar class="z-30" />
         <div class="flex flex-col flex-grow">
-          <slot />
+          <NuxtPage />
         </div>
       </div>
     </div>
