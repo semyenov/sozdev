@@ -29,7 +29,6 @@ export function winboxRegister(
           y: convertUnits('height', params.y),
           width: convertUnits('width', params.width),
           height: convertUnits('height', params.height),
-          index: winboxWindowsParamsStorage.value.size,
           max: params.max || false,
           min: params.min || false,
           hidden: params.hidden || false,
@@ -117,12 +116,10 @@ export function winboxRegister(
     },
 
     onfocus() {
-      s.value.index = 0
       return !!params.onfocus && params.onfocus.call(this)
     },
 
     onblur() {
-      s.value.index -= 1
       return !!params.onblur && params.onblur.call(this)
     },
 

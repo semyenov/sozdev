@@ -23,17 +23,15 @@ export interface WinBoxBbox {
 }
 
 export interface WinBoxState {
-  x: number
-  y: number
-  width: number
-  height: number
-
-  index: number
-
   max: boolean
   min: boolean
   hidden: boolean
   full: boolean
+
+  x: number
+  y: number
+  width: number
+  height: number
 }
 
 export type WinBoxElement = HTMLElement & {
