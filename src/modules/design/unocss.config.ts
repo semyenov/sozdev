@@ -11,6 +11,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+import transformerCompileClass from '@unocss/transformer-compile-class'
 
 import type {
   UIColorVariants,
@@ -279,7 +280,7 @@ export default defineConfig<UnoTheme>({
     }),
   ],
 
-  transformers: [transformerDirectives(), transformerVariantGroup()],
+  transformers: [transformerDirectives(), transformerVariantGroup(), transformerCompileClass()],
 
   shortcuts,
 })

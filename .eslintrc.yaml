@@ -22,6 +22,7 @@ extends:
   - '@nuxtjs'
   - '@nuxtjs/eslint-config-typescript'
   - '@antfu'
+  - 'plugin:unocss/recommended'
   - '@unocss'
 
 settings:
@@ -31,12 +32,16 @@ settings:
 
 rules:
   'no-console': 'warn'
+  '@unocss/order': 'error'
+  'unocss/classnames-order': 'error'
+  'unocss/no-excessive-whitespaces': 'error'
+  'unocss/no-duplicated-classnames': 'error'
+  'vue/multi-word-component-names': 'off'
   'import/no-unresolved': 'error'
-  'import/named': 'error'
   'import/namespace': 'error'
   'import/default': 'error'
   'import/export': 'error'
-  'vue/multi-word-component-names': 'off'
+  'import/named': 'error'
   'import/order':
     - 'error'
     - 'groups':

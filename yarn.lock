@@ -3116,10 +3116,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@unocss/config@npm:^0.49.4":
+  version: 0.49.8
+  resolution: "@unocss/config@npm:0.49.8"
+  dependencies:
+    "@unocss/core": 0.49.8
+    unconfig: ^0.3.7
+  checksum: 61c6ff439b8f6c8885d5cda728b5ef9d58e35f4cc662ae5f36301b5e77d07ca344526b4436e78afb317ec51775b52865ceb5914fd19bd8ec9788633adcb95de4
+  languageName: node
+  linkType: hard
+
 "@unocss/core@npm:0.31.17":
   version: 0.31.17
   resolution: "@unocss/core@npm:0.31.17"
   checksum: 99a07be656827b8775e1834f175d8c656111b860b044ce0ace0900cffef712624c62e8ccb1069716de805853a1451f6b59bebccd86150a6517d0a788d4fae7d0
+  languageName: node
+  linkType: hard
+
+"@unocss/core@npm:0.49.8, @unocss/core@npm:^0.49.4":
+  version: 0.49.8
+  resolution: "@unocss/core@npm:0.49.8"
+  checksum: fd381406a53ad5ef30f9ba3928a625f0adfcfed5f3e43bcb0e0f23f34ede9e9706433b911585723c965eb65103ade618a7b8ba34b7c86cf5b8ae7f0848932293
   languageName: node
   linkType: hard
 
@@ -3311,7 +3328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unocss/transformer-compile-class@npm:0.50.6":
+"@unocss/transformer-compile-class@npm:0.50.6, @unocss/transformer-compile-class@npm:^0.50.6":
   version: 0.50.6
   resolution: "@unocss/transformer-compile-class@npm:0.50.6"
   dependencies:
@@ -6683,6 +6700,19 @@ __metadata:
   peerDependencies:
     eslint: ">=8.28.0"
   checksum: 30f9c67b9f94e42ae9917601ce203aa89a33c5fb821a1f45db389c8a143d3887c6b3316a74f0de7edc5e6cdac7a54d9e527cd109b96426cf2eca8f37478d0021
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-unocss@npm:^0.0.1-alpha.3":
+  version: 0.0.1-alpha.3
+  resolution: "eslint-plugin-unocss@npm:0.0.1-alpha.3"
+  dependencies:
+    "@unocss/config": ^0.49.4
+    "@unocss/core": ^0.49.4
+    synckit: ^0.8.5
+  peerDependencies:
+    eslint: ^8.0.0
+  checksum: 6580f971fa8fcd521224f9b9f738280b50279a6b93c0a27a45df49297745bb54ac12ae84b99a6a709d746bcd59f51ca2f1256eca27ec95930959df5e665b6b18
   languageName: node
   linkType: hard
 
@@ -12755,6 +12785,7 @@ __metadata:
     "@unocss/eslint-config": ^0.50.6
     "@unocss/nuxt": ^0.50.6
     "@unocss/reset": ^0.50.6
+    "@unocss/transformer-compile-class": ^0.50.6
     "@vue-macros/nuxt": ^1.2.8
     "@vuepic/vue-datepicker": ^4.3.0
     "@vueuse/core": ^9.13.0
@@ -12764,6 +12795,7 @@ __metadata:
     eslint: ^8.37.0
     eslint-import-resolver-typescript: ^3.5.4
     eslint-plugin-import: ^2.27.5
+    eslint-plugin-unocss: ^0.0.1-alpha.3
     eslint-plugin-vue: ^9.10.0
     flexsearch: ^0.7.31
     h3: ^1.6.4
