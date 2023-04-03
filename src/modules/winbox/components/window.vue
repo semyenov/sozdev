@@ -33,15 +33,30 @@ function openWindow() {
 
   const rootEl =
     document.getElementById(props.params.teleportId) || document.body
-
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
 
   mountEl.classList.add('wb-wrapper')
   contentEl.classList.add('wb-content')
-
   mountEl.appendChild(contentEl)
-  winboxRegister(rootEl, mountEl, params.value)
+
+  winboxRegister(rootEl, mountEl, {
+    top: 0,
+    bottom: 0,
+    left: 44,
+    right: 0,
+    border: 0,
+    width: 550,
+    header: 45,
+    minwidth: 500,
+    class: ['simple'],
+    min: false,
+    max: false,
+    full: false,
+    hidden: false,
+
+    ...params.value,
+  })
 
   nextTick(() => {
     showToggle(true)

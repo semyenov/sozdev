@@ -11,30 +11,14 @@ export const winboxWindowsStateStorage = useStorage<Map<string, WinBoxState>>(
   new Map()
 )
 
-const winboxDefaultParams = {
-  top: 0,
-  bottom: 0,
-  left: 44,
-  right: 0,
-  border: 0,
-  width: 550,
-  header: 45,
-  minwidth: 500,
-  class: ['simple'],
-  min: false,
-  max: false,
-  full: false,
-  hidden: false,
-} as WinBoxParams
-
 export function winboxRegister(
   root: HTMLElement,
   mount: HTMLElement,
   params: WinBoxParams
 ) {
   let winbox: WinBox
-
   winboxWindowsParamsStorage.value.set(params.id, params)
+
   const setState = (state: WinBoxState) =>
     winboxWindowsStateStorage.value.set(params.id, state)
   const getState = () =>
@@ -45,32 +29,32 @@ export function winboxRegister(
           y: convertUnits('height', params.y),
           width: convertUnits('width', params.width),
           height: convertUnits('height', params.height),
+          index: winboxWindowsParamsStorage.value.size,
           max: params.max || false,
           min: params.min || false,
           hidden: params.hidden || false,
           full: params.full || false,
         } as WinBoxState)
 
-  const p = computed(() => winboxWindowsParamsStorage.value.get(params.id)!)
   const s = ref(getState())
 
   const calcBbox = (): WinBoxBbox => ({
-    left: convertUnits('width', p.value.left),
-    right: convertUnits('width', p.value.right),
-    top: convertUnits('width', p.value.top),
-    bottom: convertUnits('width', p.value.bottom),
+    left: convertUnits('width', params.left),
+    right: convertUnits('width', params.right),
+    top: convertUnits('width', params.top),
+    bottom: convertUnits('width', params.bottom),
 
     maxwidth:
       window.innerWidth -
-      convertUnits('width', p.value.left) -
-      convertUnits('width', p.value.right),
+      convertUnits('width', params.left) -
+      convertUnits('width', params.right),
     maxheight:
       window.innerHeight -
-      convertUnits('height', p.value.top) -
-      convertUnits('height', p.value.bottom),
+      convertUnits('height', params.top) -
+      convertUnits('height', params.bottom),
 
-    minwidth: convertUnits('width', p.value.minwidth),
-    minheight: convertUnits('height', p.value.minheight),
+    minwidth: convertUnits('width', params.minwidth),
+    minheight: convertUnits('height', params.minheight),
   })
 
   const fullscreenEventListener = (event: Event) => {
@@ -87,8 +71,7 @@ export function winboxRegister(
   const updateBbox = () => (b.value = calcBbox())
 
   winbox = new window.WinBox({
-    ...winboxDefaultParams,
-    ...p.value,
+    ...params,
     ...s.value,
 
     onminimize(flag = true) {
@@ -134,10 +117,12 @@ export function winboxRegister(
     },
 
     onfocus() {
+      s.value.index = 0
       return !!params.onfocus && params.onfocus.call(this)
     },
 
     onblur() {
+      s.value.index -= 1
       return !!params.onblur && params.onblur.call(this)
     },
 
@@ -159,10 +144,12 @@ export function winboxRegister(
 
       const s = getState()
 
+      s.index = ss.index
       s.hidden = ss.hidden
       s.min = ss.min
       s.full = ss.full
       s.max = ss.max
+
       setState(s)
 
       if (ss.hidden || ss.min || ss.full) {
@@ -182,24 +169,24 @@ export function winboxRegister(
         return
       }
 
-      if (p.value.tether) {
-        if (p.value.tether.includes('left')) {
+      if (params.tether) {
+        if (params.tether.includes('left')) {
           x = bb.left
         }
-        if (p.value.tether.includes('top')) {
+        if (params.tether.includes('top')) {
           y = bb.top
         }
-        if (p.value.tether.includes('right')) {
+        if (params.tether.includes('right')) {
           x = window.innerWidth - bb.right - width
 
-          if (p.value.tether.includes('left')) {
+          if (params.tether.includes('left')) {
             width = bb.maxwidth
           }
         }
-        if (p.value.tether.includes('bottom')) {
+        if (params.tether.includes('bottom')) {
           y = window.innerWidth - bb.bottom - height
 
-          if (p.value.tether.includes('top')) {
+          if (params.tether.includes('top')) {
             height = bb.maxheight
           }
         }
@@ -225,6 +212,7 @@ export function winboxRegister(
       s.y = y
       s.height = height
       s.width = width
+
       setState(s)
     },
     {

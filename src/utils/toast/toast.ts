@@ -15,7 +15,7 @@ import renderToast from './render'
  * @property `positionY` - 'top' or 'bottom'.
  * @property `styles` - CSS key/value pairs.
  */
-const checkOptions = (globalOptions: Options = {}) => {
+function checkOptions(globalOptions: Options = {}) {
   const options = globalOptions
 
   // Set defaults

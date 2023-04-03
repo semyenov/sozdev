@@ -120,8 +120,9 @@ const dataIds = asyncComputed(async () => {
   return ids.length > 0 ? ids : options.value.map((item) => item._id)
 })
 
-const dataGetter = async (id: string) =>
-  computed(() => options.value.find((item) => item._id === id))
+async function dataGetter(id: string) {
+  return computed(() => options.value.find((item) => item._id === id))
+}
 
 const showFlag = computed(() => focusFlag.value && dataIds.value.length > 0)
 const cursor = ref(

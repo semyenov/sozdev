@@ -28,6 +28,8 @@ export interface WinBoxState {
   width: number
   height: number
 
+  index: number
+
   max: boolean
   min: boolean
   hidden: boolean
