@@ -51,10 +51,10 @@
     }
   }
 
-  .wb-left {
-    @apply border-l-none;
+  &.wb-left {
+    @apply border-l-none border-t-none border-b-none;
 
-    .wb-n,
+    /* .wb-n,
     .wb-s,
     .wb-w,
     .wb-nw,
@@ -62,13 +62,13 @@
     .wb-ne,
     .wb-se {
       @apply hidden;
-    }
+    } */
   }
 
-  .wb-right {
-    @apply border-r-none;
+  &.wb-right {
+    @apply border-r-none border-t-none border-b-none;
 
-    .wb-n,
+    /* .wb-n,
     .wb-s,
     .wb-e,
     .wb-ne,
@@ -76,6 +76,6 @@
     .wb-nw,
     .wb-sw {
       @apply hidden;
-    }
+    } */
   }
 }

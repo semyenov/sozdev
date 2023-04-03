@@ -28,12 +28,16 @@ function handleClick() {
     createWindow({
       id: winboxId,
       title: winboxTitle,
+
       teleportId: 'teleport-layer--20',
+
       dataComponent: 'WinboxObjectsDetailItem',
-      tether: ['top', 'right', 'bottom'],
       dataProps: {
         id: item.value._id,
       },
+
+      tether: ['top', 'right', 'bottom'],
+      class: ['simple', 'wb-right'],
     })
 
     return
