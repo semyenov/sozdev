@@ -23,7 +23,8 @@ const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
   const w = winboxWindow.value
-  if (!w || !w.state || !w.winbox) {
+
+  if (!w?.winbox) {
     createWindow({
       id: winboxId,
       title: winboxTitle,
@@ -48,7 +49,7 @@ function handleClick() {
     return
   }
 
-  if (w.state.min) {
+  if (w.state?.min) {
     w.winbox.minimize(false)
   }
 
@@ -61,6 +62,7 @@ function handleClick() {
     <UiCard
       class="cursor-pointer select-none"
       dashed
+      rounded="none"
       :color="winboxWindow ? 'secondary' : 'third'"
       @click="handleClick()"
     >

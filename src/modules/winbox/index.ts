@@ -1,15 +1,27 @@
 import {
   addComponentsDir,
   addImportsDir,
+  addPlugin,
   createResolver,
   defineNuxtModule,
+  useLogger,
 } from '@nuxt/kit'
 
-import { logger } from './utils/logger'
+const logger = useLogger('winbox')
 
 export default defineNuxtModule({
   async setup(_options, _nuxt) {
     const { resolve } = createResolver(import.meta.url)
+
+    logger.info('Adding plugin')
+    try {
+      addPlugin({
+        src: resolve('plugins/winbox.ts'),
+        mode: 'client',
+      })
+    } catch (e) {
+      logger.error('Failed to add plugin', e)
+    }
 
     logger.info('Adding composables')
     try {

@@ -31,15 +31,3 @@ export function validateUuid(str: string) {
 export function castArray<T>(arr: T | T[]) {
   return Array.isArray(arr) ? arr : [arr]
 }
-
-export function convertUnits(
-  type: 'width' | 'height',
-  value?: string | number
-) {
-  return typeof value === 'number'
-    ? value
-    : typeof value === 'string'
-    ? (parseFloat(value.slice(0, value.length - 1)) / 100) *
-      (type === 'width' ? window.innerWidth : window.innerHeight)
-    : 0
-}

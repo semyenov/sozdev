@@ -20,7 +20,7 @@ const item = toRef(props, 'item')
 <template>
   <div
     v-if="item"
-    class="flex-row items-center box-size__md flex cursor-pointer text-left"
+    class="flex-row items-center flex cursor-pointer text-left box-size__md"
   >
     <i class="i-carbon:building inline-block" />
     {{ item.info.name }}

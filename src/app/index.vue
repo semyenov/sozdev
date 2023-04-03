@@ -3,9 +3,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <div>
-    <NuxtLayout>
-      <NuxtPage :key="route.fullPath" />
-    </NuxtLayout>
-  </div>
+  <NuxtLayout>
+    <NuxtPage :key="route.fullPath" />
+  </NuxtLayout>
 </template>

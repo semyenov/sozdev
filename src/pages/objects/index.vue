@@ -46,7 +46,7 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         id: 'page-objects',
         teleportId: 'teleport-layer--10',
         title: t('objects.title'),
-        class: ['simple', 'wb-left', 'no-move', 'no-close', 'border-l-none'],
+        class: ['simple', 'wb-left', 'no-close'],
         index: 10,
         top: 0,
         border: 0,

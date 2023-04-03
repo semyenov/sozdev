@@ -1,7 +1,11 @@
 import type { LocalOptions, Options } from './toast.d'
 
-const logErr = (msg: string) => console.error(`vue-dk-toast [Error]: ${msg}`)
-const logWarn = (msg: string) => console.warn(`vue-dk-toast [Warn]: ${msg}`)
+function logErr(msg: string) {
+  return console.error(`vue-dk-toast [Error]: ${msg}`)
+}
+function logWarn(msg: string) {
+  return console.warn(`vue-dk-toast [Warn]: ${msg}`)
+}
 
 export function validateOptions(options: Options): void {
   // Invalid position error-handling

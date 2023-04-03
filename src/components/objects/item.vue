@@ -23,21 +23,27 @@ const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
   const w = winboxWindow.value
-  if (!w || !w.state || !w.winbox) {
+
+  if (!w?.winbox) {
     createWindow({
       id: winboxId,
       title: winboxTitle,
+
       teleportId: 'teleport-layer--20',
+
       dataComponent: 'WinboxObjectsDetailItem',
       dataProps: {
         id: item.value._id,
       },
+
+      tether: ['top', 'right', 'bottom'],
+      class: ['simple', 'wb-right'],
     })
 
     return
   }
 
-  if (w.state.min) {
+  if (w.state?.min) {
     w.winbox.minimize(false)
   }
 
@@ -50,6 +56,7 @@ function handleClick() {
     <UiCard
       dashed
       class="cursor-pointer select-none"
+      rounded="none"
       :color="winboxWindow ? 'fourth' : 'primary'"
       @click="handleClick"
     >
