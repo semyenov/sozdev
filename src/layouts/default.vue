@@ -18,6 +18,9 @@ watch(tildaKey, (v) => v && toggleDark())
     <!-- <div class="flex flex-col"> -->
     <WinboxRoot />
     <!-- </div> -->
+
+    <MapLibre />
+
     <div
       class="flex flex-grow flex-col text-left items-start justify-items-stretch"
     >
