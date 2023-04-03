@@ -2,6 +2,7 @@
 import maplibregl from 'maplibre-gl'
 
 import type { FeatureCollection, Point } from 'geojson'
+import { ArcLayer } from '@deck.gl/layers'
 import jsonData from '../geojson/voronezh.json'
 import type { IObject } from '~/types'
 import { IMetaScope } from '~/types'
@@ -26,11 +27,11 @@ const objectsFeatures = computed<FeatureCollection<Point>>(
       type: 'FeatureCollection',
       features,
     }
-  },
-  {
-    onTrack: console.log,
-    // onTrigger: console.log,
   }
+  // {
+  //   onTrack: console.log,
+  //   // onTrigger: console.log,
+  // }
 )
 
 onMounted(createMaplibreglMap)
@@ -51,7 +52,7 @@ function handleClick() {
   )
 }
 
-setInterval(handleClick, 5000)
+// setInterval(handleClick, 5000)
 
 function createMaplibreglMap() {
   // if (!maplibreglRef.value) {
@@ -135,6 +136,51 @@ function createMaplibreglMap() {
         'circle-stroke-color': '#fff',
       },
     })
+    // const deck = new Deck({
+    //   map: maplibreglMap,
+    //   initialViewState: {
+    //     longitude: 0,
+    //     latitude: 0,
+    //     zoom: 0,
+    //   },
+    //   controller: true,
+    // })
+    // const arcLayer = new Layer({
+    //   id: 'deckgl-arc',
+    //   map: maplibreglMap,
+    //   type: ArcLayer,
+
+    //   data: [
+    //     {
+    //       source: [39.29009860000001, 51.33351280000001],
+    //       target: [42.947337399999995, 51.26721980000001],
+    //     },
+    //   ],
+    //   getSourcePosition: (d) => d.source,
+    //   getTargetPosition: (d) => d.target,
+    //   getSourceColor: [255, 0, 128],
+    //   getTargetColor: [0, 200, 255],
+    //   getWidth: 8,
+    // })
+
+    const arcLayer = new ArcLayer({
+      id: 'deckgl-arc',
+      map: maplibreglMap,
+
+      data: [
+        {
+          source: [39.29009860000001, 51.33351280000001],
+          target: [42.947337399999995, 51.26721980000001],
+        },
+      ],
+      getSourcePosition: (d) => d.source,
+      getTargetPosition: (d) => d.target,
+      getSourceColor: [255, 0, 128],
+      getTargetColor: [0, 200, 255],
+      getWidth: 8,
+    })
+
+    maplibreglMap.addLayer(arcLayer)
 
     maplibreglMap.on('click', 'clusters', (e) => {
       const features = maplibreglMap.queryRenderedFeatures(e.point, {

@@ -1,7 +1,7 @@
 import { range } from '@antfu/utils'
 import { faker } from '@faker-js/faker'
 
-import type { Feature } from 'geojson'
+import type { Feature, Point } from 'geojson'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -31,7 +31,7 @@ export const items: IObject[] = range(0, 1000).map((_i) => {
         id,
         name: 'Dinagat Islands',
       },
-    },
+    } as Feature<Point>,
     type: 'test',
     level: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
     fields: {},

@@ -19,7 +19,7 @@ const componentsDir = resolve(srcDir, 'components')
 export default defineNuxtConfig({
   srcDir,
   appDir,
-
+  typescript: {},
   alias: {
     assets: assetsDir,
     public: publicDir,
