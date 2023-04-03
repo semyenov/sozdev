@@ -36,18 +36,31 @@
   }
 
   &.min {
-    @apply font-normal border-r-solid -bottom-60px! h-60px;
+    @apply font-normal border-r-solid! border-l-none! border-b-none! border-t-solid!;
 
     .wb-header {
-      @apply flex relative! box-color__default--3 py-0 border-b-none;
+      @apply flex relative! box-color__default--3 p-0;
 
-      .wb-title {
-        @apply inline text-base!;
+      .wb-control {
+        @apply hidden;
+      }
+
+      .wb-drag {
+        .wb-title {
+          @apply inline text-base!;
+        }
       }
     }
 
     &:hover {
-      @apply h-70px! -bottom-70px!;
+      @apply border-solid! min-w-70 h-70px!;
+      top: calc(100vh - 70px) !important;
+
+      .wb-header {
+        .wb-control {
+          @apply flex;
+        }
+      }
     }
   }
 
