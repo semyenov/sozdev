@@ -1,5 +1,5 @@
 import { clamp, useStorage } from '@vueuse/core'
-import type { WinBoxBbox, WinBoxParams, WinBoxState } from '../types'
+import type { WinBoxBBox, WinBoxParams, WinBoxState } from '../types'
 
 export const winboxWindowsStorageKey = 'winbox-windows' as const
 export const winboxWindowsParamsStorage = useStorage<Map<string, WinBoxParams>>(
@@ -36,30 +36,10 @@ export function winboxRegister(
   })
 
   const s = ref(getState())
-
-  const calcBbox = (): WinBoxBbox => ({
-    left: convertUnits('width', params.left),
-    right: convertUnits('width', params.right),
-    top: convertUnits('width', params.top),
-    bottom: convertUnits('width', params.bottom),
-
-    maxwidth:
-      window.innerWidth -
-      convertUnits('width', params.left) -
-      convertUnits('width', params.right),
-    maxheight:
-      window.innerHeight -
-      convertUnits('height', params.top) -
-      convertUnits('height', params.bottom),
-
-    minwidth: convertUnits('width', params.minwidth),
-    minheight: convertUnits('height', params.minheight),
-  })
-
-  const b = ref<WinBoxBbox>(calcBbox())
+  const b = ref<WinBoxBBox>(calcBBox(params))
 
   const resizeEventListener = () => {
-    b.value = calcBbox()
+    b.value = calcBBox(params)
   }
   const fullscreenEventListener = (event: Event) => {
     const t = event.target as HTMLElement
@@ -142,19 +122,23 @@ export function winboxRegister(
   watch(
     [s, b],
     ([ss, bb]) => {
+      // update winbox params
       winbox.maxheight = bb.maxheight
       winbox.minheight = bb.minheight
 
       winbox.maxwidth = bb.maxwidth
       winbox.minwidth = bb.minwidth
 
+      // get current state
       const s = getState()
 
+      // update boolean states
       s.min = ss.min
       s.max = ss.max
       s.full = ss.full
       s.hidden = ss.hidden
 
+      // save state
       setState(s)
 
       if (ss.hidden || ss.min || ss.full) {
@@ -171,6 +155,7 @@ export function winboxRegister(
       let width: number = ss.width
       let height: number = ss.height
 
+      // calculate tether position
       if (params.tether) {
         if (params.tether.includes('left')) {
           x = bb.left
@@ -194,6 +179,7 @@ export function winboxRegister(
         }
       }
 
+      // clamp values
       width = clamp(width, bb.minwidth, bb.maxwidth)
       height = clamp(height, bb.minheight, bb.maxheight)
       x = clamp(
@@ -207,6 +193,7 @@ export function winboxRegister(
         Math.max(0, window.innerHeight - bb.bottom - height)
       )
 
+      // update winbox params
       winbox.move(x, y)
       winbox.resize(width, height)
 
@@ -222,6 +209,27 @@ export function winboxRegister(
       immediate: true,
     }
   )
+}
+
+function calcBBox(params: WinBoxParams): WinBoxBBox {
+  return {
+    left: convertUnits('width', params.left),
+    right: convertUnits('width', params.right),
+    top: convertUnits('width', params.top),
+    bottom: convertUnits('width', params.bottom),
+
+    maxwidth:
+      window.innerWidth -
+      convertUnits('width', params.left) -
+      convertUnits('width', params.right),
+    maxheight:
+      window.innerHeight -
+      convertUnits('height', params.top) -
+      convertUnits('height', params.bottom),
+
+    minwidth: convertUnits('width', params.minwidth),
+    minheight: convertUnits('height', params.minheight),
+  }
 }
 
 export function convertUnits(

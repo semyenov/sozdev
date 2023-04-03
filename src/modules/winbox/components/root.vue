@@ -3,18 +3,12 @@ import { winboxWindowsParamsStorage } from '../utils/winbox'
 import { ClientOnly } from '#components'
 
 const { vueApp } = useNuxtApp()
-
-const windowsParams = computed(() =>
-  [...winboxWindowsParamsStorage.value.values()].filter(
-    (params) => !!params.dataComponent
-  )
-)
 </script>
 
 <template>
   <ClientOnly>
     <WinboxWindow
-      v-for="p in windowsParams"
+      v-for="p in winboxWindowsParamsStorage.values()"
       :key="`${p.id}--window`"
       :params="p"
     >
