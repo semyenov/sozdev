@@ -56,6 +56,7 @@ function handleClick() {
     <UiCard
       dashed
       class="cursor-pointer select-none"
+      rounded="none"
       :color="winboxWindow ? 'fourth' : 'primary'"
       @click="handleClick"
     >
