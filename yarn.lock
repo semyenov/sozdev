@@ -1804,33 +1804,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:3.2.3, @nuxt/kit@npm:^3.0.0, @nuxt/kit@npm:^3.1.1, @nuxt/kit@npm:^3.1.2, @nuxt/kit@npm:^3.2.0, @nuxt/kit@npm:^3.2.2":
-  version: 3.2.3
-  resolution: "@nuxt/kit@npm:3.2.3"
-  dependencies:
-    "@nuxt/schema": 3.2.3
-    c12: ^1.1.2
-    consola: ^2.15.3
-    defu: ^6.1.2
-    globby: ^13.1.3
-    hash-sum: ^2.0.0
-    ignore: ^5.2.4
-    jiti: ^1.17.1
-    knitwork: ^1.0.0
-    lodash.template: ^4.5.0
-    mlly: ^1.1.1
-    pathe: ^1.1.0
-    pkg-types: ^1.0.2
-    scule: ^1.0.0
-    semver: ^7.3.8
-    unctx: ^2.1.2
-    unimport: ^2.2.4
-    untyped: ^1.2.2
-  checksum: e52482e84c1117c1dad1a93af2a8521341d810855e0e5aa7a1189020f603212e76bd95fc266148112701d140993d71556ba92f6886f87840125c53096eaaf58d
-  languageName: node
-  linkType: hard
-
-"@nuxt/kit@npm:3.3.2, @nuxt/kit@npm:^3.3.1, @nuxt/kit@npm:^3.3.2":
+"@nuxt/kit@npm:3.3.2":
   version: 3.3.2
   resolution: "@nuxt/kit@npm:3.3.2"
   dependencies:
@@ -1856,6 +1830,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nuxt/kit@patch:@nuxt/kit@npm%3A3.3.2#./.yarn/patches/@nuxt-kit-npm-3.3.2-b3cf81bdeb.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 3.3.2
+  resolution: "@nuxt/kit@patch:@nuxt/kit@npm%3A3.3.2#./.yarn/patches/@nuxt-kit-npm-3.3.2-b3cf81bdeb.patch::version=3.3.2&hash=ad2277&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@nuxt/schema": 3.3.2
+    c12: ^1.2.0
+    consola: ^2.15.3
+    defu: ^6.1.2
+    globby: ^13.1.3
+    hash-sum: ^2.0.0
+    ignore: ^5.2.4
+    jiti: ^1.18.2
+    knitwork: ^1.0.0
+    lodash.template: ^4.5.0
+    mlly: ^1.2.0
+    pathe: ^1.1.0
+    pkg-types: ^1.0.2
+    scule: ^1.0.0
+    semver: ^7.3.8
+    unctx: ^2.1.2
+    unimport: ^3.0.4
+    untyped: ^1.2.2
+  checksum: f0464fac65fb3e316d4e19e2ee440ae173490948ba52aaf684cb54fe611823a661d27cc2a265c9e258d711eba0e31516bece5f19e4ec6e2f5d03c556486baf28
+  languageName: node
+  linkType: hard
+
 "@nuxt/module-builder@npm:^0.2.1":
   version: 0.2.1
   resolution: "@nuxt/module-builder@npm:0.2.1"
@@ -1869,27 +1869,6 @@ __metadata:
     nuxt-build-module: dist/cli.mjs
     nuxt-module-build: dist/cli.mjs
   checksum: 47b800768026d0bc1ab30231d71c9519eb225d69c608da3a96bbd96c886577288cba113ea122d57d3fa61d2070d205cfc8cdb7be153f88350927d3f3d4833b47
-  languageName: node
-  linkType: hard
-
-"@nuxt/schema@npm:3.2.3":
-  version: 3.2.3
-  resolution: "@nuxt/schema@npm:3.2.3"
-  dependencies:
-    c12: ^1.1.2
-    create-require: ^1.1.1
-    defu: ^6.1.2
-    hookable: ^5.4.2
-    jiti: ^1.17.1
-    pathe: ^1.1.0
-    pkg-types: ^1.0.2
-    postcss-import-resolver: ^2.0.0
-    scule: ^1.0.0
-    std-env: ^3.3.2
-    ufo: ^1.1.1
-    unimport: ^2.2.4
-    untyped: ^1.2.2
-  checksum: 3cf137a0038af5b185ea3af2594f21798b7c821e24bd42f51da972d6ffb73ebde6b9fd44febc3b833aa669f535031e26d6a459ffcf211a6ba9ba9504bfefee5d
   languageName: node
   linkType: hard
 
@@ -13708,25 +13687,6 @@ __metadata:
     trough: ^2.0.0
     vfile: ^5.0.0
   checksum: 053e7c65ede644607f87bd625a299e4b709869d2f76ec8138569e6e886903b6988b21cd9699e471eda42bee189527be0a9dac05936f1d069a5e65d0125d5d756
-  languageName: node
-  linkType: hard
-
-"unimport@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "unimport@npm:2.2.4"
-  dependencies:
-    "@rollup/pluginutils": ^5.0.2
-    escape-string-regexp: ^5.0.0
-    fast-glob: ^3.2.12
-    local-pkg: ^0.4.3
-    magic-string: ^0.27.0
-    mlly: ^1.1.0
-    pathe: ^1.1.0
-    pkg-types: ^1.0.1
-    scule: ^1.0.0
-    strip-literal: ^1.0.0
-    unplugin: ^1.0.1
-  checksum: a5bc5379989279ed56b59ddad8e0b78bcad8da8c8d0b11f4e6841779e3a45b00712442462fbfcbd08c7558f99aa50d05660715ba25c5b750e9bebf212db979e3
   languageName: node
   linkType: hard
 
