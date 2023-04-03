@@ -1,3 +1,4 @@
+import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
 import {
   availableLocales,
@@ -5,6 +6,7 @@ import {
   defaultLocale,
   locales,
   numberFormats,
+  onLanguageSwitched,
 } from './src/i18n'
 
 const rootDir = resolve(__dirname)
@@ -21,8 +23,8 @@ export default defineNuxtConfig({
   appDir,
 
   alias: {
-    assets: assetsDir,
-    public: publicDir,
+    'assets': assetsDir,
+    'public': publicDir,
 
     '~': srcDir,
     '~~': rootDir,
@@ -86,6 +88,19 @@ export default defineNuxtConfig({
     },
   },
 
+  typescript: {
+    shim: false,
+    strict: true,
+  },
+
+  vue: {
+    compilerOptions: {
+      nodeTransforms: [
+        transformShortVmodel({ prefix: '::' }),
+      ],
+    },
+  },
+
   build: {
     transpile: [({ isDev }) => !isDev && 'flexsearch'],
   },
@@ -105,6 +120,7 @@ export default defineNuxtConfig({
     '~/modules/winbox/index',
     '~/modules/design/index',
 
+    '@nuxt/image-edge',
     '@nuxt/content',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
@@ -118,6 +134,51 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
   ],
 
+  image: {
+    provider: 'unsplash',
+    unsplash: {
+      // baseURL: 'https://source.unsplash.com',
+      // preset: 'default',
+      modifiers: {
+        width: (value: number) => `w:${value}`,
+        height: (value: number) => `h:${value}`,
+        format: (value: string) => `fm:${value}`,
+        quality: (value: number) => `q:${value}`,
+        fit: (value: string) => `fit:${value}`,
+        dpr: (value: number) => `dpr:${value}`,
+      },
+    },
+    screens: {
+      'xs': 320,
+      'sm': 640,
+      'md': 768,
+      'lg': 1024,
+      'xl': 1280,
+      'xxl': 1536,
+      '2xl': 1536,
+    },
+    // presets: {
+    //   default: {
+    //     modifiers: {
+    //       width: 500,
+    //       height: 500,
+    //       format: 'jpg',
+    //       quality: 75,
+    //       fit: 'cover',
+    //       dpr: 2,
+    //     },
+    //   },
+    // },
+  },
+
+  pinia: {
+    autoImports: [
+      'defineStore',
+      ['defineStore', 'definePiniaStore'],
+      'storeToRefs',
+    ],
+  },
+
   i18n: {
     defaultLocale,
     locales,
@@ -125,6 +186,7 @@ export default defineNuxtConfig({
     lazy: true,
     strategy: 'no_prefix',
     langDir: 'i18n/locales',
+    onLanguageSwitched,
 
     detectBrowserLanguage: {
       useCookie: true,

@@ -8,7 +8,7 @@ const toastQueue: Array<[Element, Element]> = []
 function setClassAndMount(
   el: Element,
   className: string,
-  target: Element
+  target: Element,
 ): void {
   el.className = className
   target.appendChild(el)
@@ -17,7 +17,7 @@ function setClassAndMount(
 function formatToastFromOptions(
   text: string,
   options: Options,
-  localOptions: LocalOptions
+  localOptions: LocalOptions,
 ): HTMLAnchorElement | HTMLDivElement {
   const toast = localOptions.link?.href
     ? document.createElement('a')
@@ -31,32 +31,28 @@ function formatToastFromOptions(
     anchor.href = localOptions.link.href
     anchor.rel = 'noopener'
 
-    if (localOptions.link.targetBlank) {
+    if (localOptions.link.targetBlank)
       anchor.target = '_blank'
-    }
   }
 
   // Add classes
   toast.className = 'dk__toast'
 
   function classHandler(opt: Options | LocalOptions): void {
-    if (!opt.class) {
+    if (!opt.class)
       return
-    }
 
-    if (typeof opt.class === 'string') {
+    if (typeof opt.class === 'string')
       toast.classList.add(opt.class)
-    } else if (Array.isArray(opt.class)) {
+    else if (Array.isArray(opt.class))
       toast.classList.add(...opt.class)
-    }
   }
 
   classHandler(options)
   classHandler(localOptions)
 
-  if (localOptions.type) {
+  if (localOptions.type)
     toast.classList.add(`dk__${localOptions.type}`)
-  }
 
   // A11y attributes
   toast.setAttribute('role', 'status')
@@ -64,29 +60,27 @@ function formatToastFromOptions(
   toast.setAttribute('aria-atomic', 'false')
 
   // If text
-  if (text) {
+  if (text)
     toast.textContent = text
-  }
+
   // If left slot
-  if (left) {
+  if (left)
     toast.innerHTML = `<div class="dk__icon-left">${left}</div>${toast.innerHTML}`
-  }
+
   // If right slot
-  if (right) {
+  if (right)
     toast.innerHTML += `<div class="dk__icon-right">${right}</div>`
-  }
+
   // If slot only
-  if (!text && (left || right)) {
+  if (!text && (left || right))
     toast.classList.add('dk__icon-only')
-  }
 
   const styles = localOptions.styles || options.styles
   toast.setAttribute('style', formatCssProperties(styles))
 
   // Prevent hover styling
-  if (localOptions.disableClick) {
+  if (localOptions.disableClick)
     toast.classList.add('dk__click-disabled')
-  }
 
   return toast
 }
@@ -94,7 +88,7 @@ function formatToastFromOptions(
 function toastPlugin(
   app: App | null,
   options: Options,
-  _isUseApp = true
+  _isUseApp = true,
 ): TRenderFunction {
   const container = document.createElement('div')
   const mobileContainer = document.createElement('div')
@@ -105,21 +99,20 @@ function toastPlugin(
   function renderToast(text: string, passedLocalOptions?: LocalOptions): void {
     const localOptions = passedLocalOptions || {}
 
-    if (!localOptions || !validateLocalOptions(text, localOptions)) {
+    if (!localOptions || !validateLocalOptions(text, localOptions))
       return
-    }
 
     const positions = {
       y: localOptions.positionY || options.positionY,
       x: localOptions.positionX || options.positionX,
     }
 
-    const section =
-      document.querySelector(`.dk__toast-${positions.y}-${positions.x}`) ||
-      document.createElement('div')
-    const mobileSection =
-      document.querySelector(`.dk__toast-mobile-${positions.y}`) ||
-      document.createElement('div')
+    const section
+      = document.querySelector(`.dk__toast-${positions.y}-${positions.x}`)
+      || document.createElement('div')
+    const mobileSection
+      = document.querySelector(`.dk__toast-mobile-${positions.y}`)
+      || document.createElement('div')
     const toastCount = document.querySelectorAll('.dk__toast').length / 2
 
     // Remove oldest toast if max limit is reached
@@ -159,16 +152,14 @@ function toastPlugin(
     let clicked: boolean
 
     function removeToastPair(e?: Event): void {
-      if (e) {
+      if (e)
         clicked = true
-      }
 
-      if ([...section.children].includes(toast)) {
+      if ([...section.children].includes(toast))
         section.removeChild(toast)
-      }
-      if ([...mobileSection.children].includes(mobileClone)) {
+
+      if ([...mobileSection.children].includes(mobileClone))
         mobileSection.removeChild(mobileClone)
-      }
 
       toastQueue.shift()
     }
@@ -189,9 +180,8 @@ function toastPlugin(
       mobileClone.classList.remove(animInClass)
     }, animDuration)
 
-    if (!duration) {
+    if (!duration)
       return
-    }
 
     const startTime = Date.now()
     const animOutClass = 'dk__toast-anim--out'
@@ -201,9 +191,8 @@ function toastPlugin(
 
     function removeToastPairTimeout(timeoutDuration: number) {
       timeoutId = window.setTimeout(() => {
-        if (clicked) {
+        if (clicked)
           return
-        }
 
         toast.classList.add(animOutClass)
         mobileClone.classList.add(animOutClass)

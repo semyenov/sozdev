@@ -9,6 +9,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const route = useRoute('users')
 
 const usersStore = useUsersStore()
 const usersIds = await usersStore.itemsGetter
@@ -20,9 +21,8 @@ const listScrollStep = 10
 const listScrollIndex = ref(listScrollStep)
 
 function scrollClickHandler() {
-  if (!listComponent.value) {
+  if (!listComponent.value)
     return
-  }
 
   if (listScrollIndex.value > usersIds.value.length) {
     listComponent.value.scrollToBottom()
@@ -37,7 +37,7 @@ function scrollClickHandler() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page" :class="`page__${route.name}`">
     <WinboxWindow
       :params="{
         id: 'page-users',
@@ -66,11 +66,10 @@ function scrollClickHandler() {
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
         wrap-class="flex flex-col w-full"
-        class="flex flex-col overflow-y-scroll p-6 scrollbar scrollbar-rounded h-auto max-h-full flex-grow items-center gap-8"
+        class="flex flex-col overflow-y-scroll p-6 scrollbar scrollbar-rounded flex-grow items-center gap-8 h-auto max-h-full"
         :estimate-size="70"
         item-class="mb-6"
-      >
-      </UiVirtualList>
+      />
     </WinboxWindow>
 
     <div class="absolute flex flex-col z-10 gap-4 bottom-8 right-8">
@@ -81,7 +80,7 @@ function scrollClickHandler() {
         color="default"
         @click="scrollClickHandler"
       >
-        <i class="i-carbon:arrow-down inline-block" />
+        <i class="inline-block i-carbon:arrow-down" />
       </UiButton>
     </div>
   </div>

@@ -1,5 +1,3 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
-
 import type {
   IUser,
   IUserLoginInput,
@@ -18,7 +16,7 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
   const itemGetter = backendStore.itemGetter<IUser>(IMetaScope.USERS)
   const itemsGetter = backendStore
     .itemsGetter<IUser>(IMetaScope.USERS)
-    .then((items) =>
+    .then(items =>
       computed(() =>
         items.value
           .filter((item) => {
@@ -28,14 +26,13 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
             const ah = a.info.first_name.trimStart()
             const bh = b.info.first_name.trimStart()
 
-            if (ah === bh) {
+            if (ah === bh)
               return 0
-            }
 
             return ah > bh ? 1 : -1
           })
-          .map((item) => item._id)
-      )
+          .map(item => item._id),
+      ),
     )
 
   const getItems = () => backendStore.get<IUser>([IMetaScope.USERS, 'items'])
@@ -44,7 +41,7 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
   const putItem = (id: string, input: IUserUpdateInput) =>
     backendStore.put<IUser, IUserUpdateInput>(
       [IMetaScope.USERS, 'items', id],
-      input
+      input,
     )
 
   const getCurrent = () =>
@@ -52,7 +49,7 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
   const postCurrent = (body: IUserLoginInput) =>
     backendStore.post<IUserTokensData, IUserLoginInput>(
       [IMetaScope.USERS, 'current'],
-      body
+      body,
     )
 
   return {
@@ -69,7 +66,3 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
     testCount,
   }
 })
-
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useUsersStore, import.meta.hot))
-}

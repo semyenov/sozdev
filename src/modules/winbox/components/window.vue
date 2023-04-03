@@ -24,15 +24,14 @@ defineExpose({
 onMounted(openWindow)
 onScopeDispose(closeWindow)
 
-watch(showFlag, (flag) => (flag ? openWindow() : closeWindow()))
+watch(showFlag, flag => (flag ? openWindow() : closeWindow()))
 
 function openWindow() {
-  if (winboxWindow.value && winboxWindow.value.winbox) {
+  if (winboxWindow.value && winboxWindow.value.winbox)
     return
-  }
 
-  const rootEl =
-    document.getElementById(props.params.teleportId) || document.body
+  const rootEl
+    = document.getElementById(props.params.teleportId) || document.body
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
 
@@ -64,9 +63,8 @@ function openWindow() {
 }
 
 function closeWindow() {
-  if (!winboxWindow.value || !winboxWindow.value.winbox) {
+  if (!winboxWindow.value || !winboxWindow.value.winbox)
     return
-  }
 
   winboxWindow.value.winbox.close()
 }

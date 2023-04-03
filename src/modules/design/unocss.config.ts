@@ -167,7 +167,7 @@ const shortcuts = {
         dark:bg-gray-900
       `,
     }),
-    {} as Record<string, string>
+    {} as Record<string, string>,
   ),
 
   ...[...uiRoundedVariants].reduce(
@@ -178,7 +178,7 @@ const shortcuts = {
         first-rounded-t-${c}
       `,
     }),
-    {} as Record<string, string>
+    {} as Record<string, string>,
   ),
 
   'box-rounded__xs': 'rounded-sm',
@@ -200,15 +200,13 @@ const darkThemeBg = '#1c1b22'
 
 function createColorScale(
   color: UnoColors | string,
-  steps = 18
+  steps = 18,
 ): UnoColors | string {
-  if (!color) {
+  if (!color)
     return '#ff00ff'
-  }
 
-  if (typeof color === 'string') {
+  if (typeof color === 'string')
     return color
-  }
 
   const start = color[300] as string
   const base = color[500] as string
@@ -227,19 +225,17 @@ function createColorScale(
           .darken(0.05 * i - 0.5)
           .hex(),
       }),
-      {} as UnoColors
+      {} as UnoColors,
     )
 }
 
 export default defineConfig<UnoTheme>({
   extendTheme: (theme) => {
-    if (!theme.colors) {
+    if (!theme.colors)
       return
-    }
 
-    if (typeof theme.colors === 'string') {
+    if (typeof theme.colors === 'string')
       return theme.colors
-    }
 
     theme.colors = objectMap(theme.colors, (key, color) => {
       return [key, createColorScale(color)]
@@ -255,8 +251,8 @@ export default defineConfig<UnoTheme>({
   },
   // rules: [['custom-rule', { color: 'red' }]],
   safelist: [
-    ...range(12).map((i) => `gap-${i / 2}`),
-    ...Object.keys(shortcuts).flatMap((c) => [
+    ...range(12).map(i => `gap-${i / 2}`),
+    ...Object.keys(shortcuts).flatMap(c => [
       `${c}`,
       `!${c}`,
       `hover:${c}`,

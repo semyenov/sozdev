@@ -9,9 +9,8 @@ import {
 export function useWinbox(id: string) {
   return {
     winboxWindow: computed(() => {
-      if (!isClient || !winboxWindowsStateStorage.value.has(id)) {
+      if (!isClient || !winboxWindowsStateStorage.value.has(id))
         return
-      }
 
       const winboxEl = document.getElementById(id) as HTMLElement & {
         winbox?: WinBox

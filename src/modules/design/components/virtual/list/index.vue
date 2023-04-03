@@ -167,7 +167,7 @@ const v = new Virtual(
     buffer: Math.round(props.keeps / 3),
     uniqueIds: dataIds.value.slice(),
   },
-  onRangeChanged
+  onRangeChanged,
 )
 
 defineExpose({
@@ -195,9 +195,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (props.pageMode) {
+  if (props.pageMode)
     document.removeEventListener('scroll', onScroll)
-  }
 })
 
 // set back offset when awake from keep-alive
@@ -214,9 +213,8 @@ onActivated(() => {
 })
 
 onDeactivated(() => {
-  if (props.pageMode) {
+  if (props.pageMode)
     document.removeEventListener('scroll', onScroll)
-  }
 })
 
 watch(
@@ -227,34 +225,34 @@ watch(
 
     const offset = getOffsetSize()
     scrollToOffset(offset + 1)
-  }
+  },
 )
 watch(
   () => props.keeps,
   (keeps) => {
     v.updateParam('keeps', keeps)
     v.handleSlotSizeChange()
-  }
+  },
 )
 watch(
   () => props.start,
   (start) => {
     scrollToIndex(start)
-  }
+  },
 )
 watch(
   () => props.offset,
   (offset) => {
     scrollToOffset(offset)
-  }
+  },
 )
 
 // return current scroll offset
 function getOffsetSize() {
   if (props.pageMode) {
     return (
-      document.documentElement[offsetSizeKey.value] ||
-      document.body[offsetSizeKey.value]
+      document.documentElement[offsetSizeKey.value]
+      || document.body[offsetSizeKey.value]
     )
   }
 
@@ -265,8 +263,8 @@ function getOffsetSize() {
 function getClientSize() {
   if (props.pageMode) {
     return (
-      document.documentElement[clientSizeKey.value] ||
-      document.body[clientSizeKey.value]
+      document.documentElement[clientSizeKey.value]
+      || document.body[clientSizeKey.value]
     )
   }
 
@@ -277,8 +275,8 @@ function getClientSize() {
 function getScrollSize() {
   if (props.pageMode) {
     return (
-      document.documentElement[scrollSizeKey.value] ||
-      document.body[scrollSizeKey.value]
+      document.documentElement[scrollSizeKey.value]
+      || document.body[scrollSizeKey.value]
     )
   }
 
@@ -294,9 +292,8 @@ function scrollToOffset(offset: number) {
     return
   }
 
-  if (rootRef.value) {
+  if (rootRef.value)
     rootRef.value[offsetSizeKey.value] = offset
-  }
 }
 
 // set current scroll position to a expectant index
@@ -313,35 +310,31 @@ function scrollToIndex(index: number) {
 
 // set current scroll position to bottom
 function scrollToBottom() {
-  if (!shepherdRef.value) {
+  if (!shepherdRef.value)
     return
-  }
 
-  const offset =
-    shepherdRef.value[isHorizontal.value ? 'offsetLeft' : 'offsetTop']
+  const offset
+    = shepherdRef.value[isHorizontal.value ? 'offsetLeft' : 'offsetTop']
   scrollToOffset(offset)
 
   // check if it's really scrolled to the bottom
   // maybe list doesn't render and calculate to last range
   // so we need retry in next event loop until it really at bottom
   setTimeout(() => {
-    if (getOffsetSize() + getClientSize() < getScrollSize()) {
+    if (getOffsetSize() + getClientSize() < getScrollSize())
       scrollToBottom()
-    }
   }, 30)
 }
 
 // when using page mode we need update slot header size manually
 // taking root offset relative to the browser as slot header size
 function updatePageModeFront() {
-  if (!rootRef.value) {
+  if (!rootRef.value)
     return
-  }
 
   const { defaultView } = rootRef.value.ownerDocument
-  if (!defaultView) {
+  if (!defaultView)
     return
-  }
 
   const rect = rootRef.value.getBoundingClientRect()
   const offsetFront = isHorizontal.value
@@ -368,9 +361,8 @@ function onSlotResized(type: string, size: number, init: boolean) {
       break
   }
 
-  if (init) {
+  if (init)
     v.handleSlotSizeChange()
-  }
 }
 
 // here is the rerendering entry
@@ -386,12 +378,11 @@ function onScroll(evt?: Event) {
 
   // iOS scroll-spring-back behavior will make direction mistake
   if (
-    offsetSize < 0 ||
-    offsetSize + clientSize > scrollSize + 1 ||
-    !scrollSize
-  ) {
+    offsetSize < 0
+    || offsetSize + clientSize > scrollSize + 1
+    || !scrollSize
+  )
     return
-  }
 
   emitScrollEvent(offsetSize, clientSize, scrollSize, evt)
   v.handleScroll(Math.max(0, offsetSize - clientSize / 2))
@@ -402,14 +393,14 @@ function emitScrollEvent(
   offsetSize: number,
   clientSize: number,
   scrollSize: number,
-  evt?: Event
+  evt?: Event,
 ) {
   emit('scroll', evt as UIEvent, v.getRange())
 
   if (
-    v.isFront() &&
-    dataIds.value.length > 0 &&
-    offsetSize - props.topThreshold <= 0
+    v.isFront()
+    && dataIds.value.length > 0
+    && offsetSize - props.topThreshold <= 0
   ) {
     emit('totop')
 
@@ -417,16 +408,15 @@ function emitScrollEvent(
   }
 
   if (
-    v.isBehind() &&
-    offsetSize + clientSize + props.bottomThreshold >= scrollSize
-  ) {
+    v.isBehind()
+    && offsetSize + clientSize + props.bottomThreshold >= scrollSize
+  )
     emit('tobottom')
-  }
 }
 
 function getWrapperStyle(
   padBehind: number,
-  padFront: number
+  padFront: number,
 ): Record<string, any> {
   return {
     ...props.wrapStyle,
@@ -484,8 +474,8 @@ function getWrapperStyle(
           :slot-component="slots && slots.item"
           :scoped-slots="props.itemScopedSlots"
           :item-class="
-            props.itemClass +
-            (props.itemClassAdd ? ` ${props.itemClassAdd(i)}` : '')
+            props.itemClass
+              + (props.itemClassAdd ? ` ${props.itemClassAdd(i)}` : '')
           "
           @resize="onItemResized"
           @click="emit('itemClick', i)"

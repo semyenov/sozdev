@@ -21,14 +21,16 @@ export default defineNuxtModule({
         src: resolve('plugins/winbox.ts'),
         mode: 'client',
       })
-    } catch (e) {
+    }
+    catch (e) {
       logger.error('Failed to add plugin', e)
     }
 
     logger.info('Adding composables')
     try {
       addImportsDir(resolve('composables'))
-    } catch (e) {
+    }
+    catch (e) {
       logger.error('Failed to add composables', e)
     }
 
@@ -39,7 +41,8 @@ export default defineNuxtModule({
         prefix: 'winbox',
         global: true,
       })
-    } catch (e) {
+    }
+    catch (e) {
       logger.error('Failed to add components', e)
     }
   },

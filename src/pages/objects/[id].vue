@@ -2,7 +2,7 @@
 definePageMeta({
   layout: 'default',
   middleware: 'authorization',
-  validate: (r) =>
+  validate: r =>
     r.name === 'objects-id' ? validateUuid(r.params.id) : false,
 })
 

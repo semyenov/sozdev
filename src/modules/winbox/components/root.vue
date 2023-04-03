@@ -22,7 +22,9 @@ const { vueApp } = useNuxtApp()
 
         <!-- loading state -->
         <template #fallback>
-          <div class="text-sm m-auto">LOADING</div>
+          <div class="text-sm m-auto">
+            LOADING
+          </div>
         </template>
       </Suspense>
     </WinboxWindow>

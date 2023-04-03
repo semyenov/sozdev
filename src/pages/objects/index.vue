@@ -8,6 +8,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const route = useRoute('objects')
 
 const objectsStore = useObjectsStore()
 const objectsIds = await objectsStore.itemsGetter
@@ -19,9 +20,8 @@ const listScrollStep = 10
 const listScrollIndex = ref(listScrollStep)
 
 function scrollClickHandler() {
-  if (!listComponent.value) {
+  if (!listComponent.value)
     return
-  }
 
   if (listScrollIndex.value > objectsIds.value.length) {
     listComponent.value.scrollToBottom()
@@ -40,14 +40,13 @@ async function loadOthersHandler() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page" :class="`page__${route.name}`">
     <WinboxWindow
       :params="{
         id: 'page-objects',
         teleportId: 'teleport-layer--10',
         title: t('objects.title'),
         class: ['simple', 'wb-left', 'no-close'],
-        index: 10,
         top: 0,
         border: 0,
         left: 44,
@@ -75,7 +74,7 @@ async function loadOthersHandler() {
       />
     </WinboxWindow>
 
-    <div class="absolute flex flex-col gap-2 right-8 bottom-8 z-10">
+    <div class="absolute flex flex-col gap-2 z-10 right-8 bottom-8">
       <UiButton
         class="h-11"
         color="default"
@@ -92,7 +91,7 @@ async function loadOthersHandler() {
         size="md"
         @click.prevent="scrollClickHandler"
       >
-        <i class="i-carbon:arrow-down inline-block" />
+        <i class="inline-block i-carbon:arrow-down" />
       </UiButton>
     </div>
   </div>

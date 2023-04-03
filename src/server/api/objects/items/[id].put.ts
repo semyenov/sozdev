@@ -10,10 +10,9 @@ export default defineEventHandler(async (event) => {
   const body = await useSafeValidatedBody(event, IObjectSchema)
 
   if (body.success) {
-    const index = items.findIndex((item) => item._id === params.id)
-    if (index < 0) {
+    const index = items.findIndex(item => item._id === params.id)
+    if (index < 0)
       return 404
-    }
 
     items.splice(index, 1, body.data)
   }

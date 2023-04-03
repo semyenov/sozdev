@@ -2,7 +2,7 @@
 const keys = useMagicKeys()
 const tildaKey = keys['\\']
 
-watch(tildaKey, (v) => v && toggleDark())
+watch(tildaKey, v => v && toggleDark())
 const authorizationStore = useAuthorizationStore()
 </script>
 
@@ -17,12 +17,12 @@ const authorizationStore = useAuthorizationStore()
     <div
       id="teleport-layer--20"
       class="fixed left-0 right-0 z-20 w-full flex relative layout-default__teleport h-full"
-    ></div>
+    />
 
     <div
       id="teleport-layer--10"
       class="layout-default__teleport fixed relative left-0 right-0 z-10 h-full w-full flex"
-    ></div>
+    />
 
     <div
       v-if="authorizationStore.current"

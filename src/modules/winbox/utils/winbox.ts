@@ -4,17 +4,17 @@ import type { WinBoxBBox, WinBoxParams, WinBoxState } from '../types'
 export const winboxWindowsStorageKey = 'winbox-windows' as const
 export const winboxWindowsParamsStorage = useStorage<Map<string, WinBoxParams>>(
   `${winboxWindowsStorageKey}--params`,
-  new Map()
+  new Map(),
 )
 export const winboxWindowsStateStorage = useStorage<Map<string, WinBoxState>>(
   `${winboxWindowsStorageKey}--state`,
-  new Map()
+  new Map(),
 )
 
 export function winboxRegister(
   root: HTMLElement,
   mount: HTMLElement,
-  params: WinBoxParams
+  params: WinBoxParams,
 ) {
   if (!winboxWindowsStateStorage.value.get(params.id)) {
     winboxWindowsStateStorage.value.set(params.id, {
@@ -43,9 +43,8 @@ export function winboxRegister(
   }
   const fullscreenEventListener = (event: Event) => {
     const t = event.target as HTMLElement
-    if (!t.isEqualNode(root.children[0])) {
+    if (!t.isEqualNode(root.children[0]))
       s.value.full = !s.value.full
-    }
   }
 
   const winbox = new window.WinBox({
@@ -141,9 +140,8 @@ export function winboxRegister(
       // save state
       setState(s)
 
-      if (ss.hidden || ss.min || ss.full) {
+      if (ss.hidden || ss.min || ss.full)
         return
-      }
 
       if (ss.max) {
         winbox.resize(bb.maxwidth, bb.maxheight)
@@ -157,25 +155,23 @@ export function winboxRegister(
 
       // calculate tether position
       if (params.tether) {
-        if (params.tether.includes('left')) {
+        if (params.tether.includes('left'))
           x = bb.left
-        }
-        if (params.tether.includes('top')) {
+
+        if (params.tether.includes('top'))
           y = bb.top
-        }
+
         if (params.tether.includes('right')) {
           x = window.innerWidth - bb.right - width
 
-          if (params.tether.includes('left')) {
+          if (params.tether.includes('left'))
             width = bb.maxwidth
-          }
         }
         if (params.tether.includes('bottom')) {
           y = window.innerWidth - bb.bottom - height
 
-          if (params.tether.includes('top')) {
+          if (params.tether.includes('top'))
             height = bb.maxheight
-          }
         }
       }
 
@@ -185,12 +181,12 @@ export function winboxRegister(
       x = clamp(
         x,
         Math.max(0, bb.left),
-        Math.max(0, window.innerWidth - bb.right - width)
+        Math.max(0, window.innerWidth - bb.right - width),
       )
       y = clamp(
         y,
         Math.max(0, bb.top),
-        Math.max(0, window.innerHeight - bb.bottom - height)
+        Math.max(0, window.innerHeight - bb.bottom - height),
       )
 
       // update winbox params
@@ -207,7 +203,7 @@ export function winboxRegister(
     {
       deep: true,
       immediate: true,
-    }
+    },
   )
 }
 
@@ -219,13 +215,13 @@ function calcBBox(params: WinBoxParams): WinBoxBBox {
     bottom: convertUnits('width', params.bottom),
 
     maxwidth:
-      window.innerWidth -
-      convertUnits('width', params.left) -
-      convertUnits('width', params.right),
+      window.innerWidth
+      - convertUnits('width', params.left)
+      - convertUnits('width', params.right),
     maxheight:
-      window.innerHeight -
-      convertUnits('height', params.top) -
-      convertUnits('height', params.bottom),
+      window.innerHeight
+      - convertUnits('height', params.top)
+      - convertUnits('height', params.bottom),
 
     minwidth: convertUnits('width', params.minwidth),
     minheight: convertUnits('height', params.minheight),
@@ -234,16 +230,16 @@ function calcBBox(params: WinBoxParams): WinBoxBBox {
 
 export function convertUnits(
   type: 'width' | 'height',
-  value?: string | number
+  value?: string | number,
 ) {
   return typeof value === 'number'
     ? value
     : typeof value === 'string'
-    ? value.endsWith('%')
-      ? Math.floor(
-          (parseFloat(value.slice(0, value.length - 1)) / 100) *
-            (type === 'width' ? window.innerWidth : window.innerHeight)
+      ? value.endsWith('%')
+        ? Math.floor(
+          (parseFloat(value.slice(0, value.length - 1)) / 100)
+            * (type === 'width' ? window.innerWidth : window.innerHeight),
         )
-      : parseInt(value.slice(0, value.length - 2))
-    : 0
+        : parseInt(value.slice(0, value.length - 2))
+      : 0
 }

@@ -49,9 +49,8 @@ function handleClick() {
     return
   }
 
-  if (w.state?.min) {
+  if (w.state?.min)
     w.winbox.minimize(false)
-  }
 
   w.winbox.focus()
 }

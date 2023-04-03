@@ -15,14 +15,14 @@ interface GenericSlots<T> {
 }
 
 export function useGenericComponent<T = unknown>(
-  BaseGenericComponent: Component
+  BaseGenericComponent: Component,
 ) {
   const wrapper = defineComponent(
     (props: ComponentProps<typeof BaseGenericComponent>, { slots }) => {
       return () => {
         return h(BaseGenericComponent, props, slots)
       }
-    }
+    },
   )
 
   return wrapper as typeof wrapper & {

@@ -24,7 +24,7 @@ const item = toRef(props, 'item')
     <i class="i-carbon:building inline-block" />
     {{ item.info.first_name }}
     {{ item.info.last_name }}
-    <br />
+    <br>
     {{ item.email }}
   </div>
 </template>

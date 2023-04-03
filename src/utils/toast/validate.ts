@@ -11,19 +11,19 @@ export function validateOptions(options: Options): void {
   // Invalid position error-handling
   if (!/^(?:left|right|center)$/.test(options.positionX ?? '')) {
     logErr(
-      `positionX must be either "left", "right" or "center", received "${options.positionX}"`
+      `positionX must be either "left", "right" or "center", received "${options.positionX}"`,
     )
   }
   if (!/^(?:top|bottom)$/.test(options.positionY ?? '')) {
     logErr(
-      `positionY must be either "top" or "bottom", received "${options.positionY}"`
+      `positionY must be either "top" or "bottom", received "${options.positionY}"`,
     )
   }
 }
 
 export function validateLocalOptions(
   text: string,
-  options: LocalOptions
+  options: LocalOptions,
 ): boolean {
   let valid = true
 
@@ -33,9 +33,8 @@ export function validateLocalOptions(
     valid = false
   }
   // Slot deprecation warning
-  if (options.slot) {
+  if (options.slot)
     logWarn('slot is now deprecated. Use slotRight instead')
-  }
 
   return valid
 }

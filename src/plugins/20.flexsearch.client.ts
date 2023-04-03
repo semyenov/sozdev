@@ -20,9 +20,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       },
     })
 
-    for (const item of backendStore.store.get(IMetaScope.USERS)!.entries()) {
+    for (const item of backendStore.store.get(IMetaScope.USERS)!.entries())
       window.UsersIndex.add(item[0], item[1])
-    }
 
     // console.log('Flexsearch', window.UsersIndex.export(console.log))
   })

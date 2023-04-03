@@ -7,9 +7,8 @@ export default <RouterOptions>{
   stringifyQuery: qs.stringify,
 
   scrollBehavior(_from, _to, savedPosition) {
-    if (savedPosition) {
+    if (savedPosition)
       return savedPosition
-    }
 
     return {
       top: 0,
