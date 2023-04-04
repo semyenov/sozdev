@@ -233,7 +233,7 @@ export function convertUnits(
   type: 'width' | 'height',
   value?: string | number,
 ) {
-  return typeof value === 'number'
+  return (typeof value === 'number'
     ? value
     : typeof value === 'string'
       ? value.endsWith('%')
@@ -242,5 +242,5 @@ export function convertUnits(
             * (type === 'width' ? window.innerWidth : window.innerHeight),
         )
         : parseInt(value.slice(0, value.length - 2))
-      : 0
+      : 0)
 }

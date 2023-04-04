@@ -70,7 +70,7 @@ function scrollClickHandler() {
       />
     </WinboxWindow>
 
-    <div class="absolute flex flex-col z-10 gap-4 bottom-8 right-8">
+    <div class="absolute flex flex-col z-10 bottom-8 right-8 gap-4">
       <UiButton
         outline
         size="md"

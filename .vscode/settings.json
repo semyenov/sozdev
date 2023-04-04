@@ -59,7 +59,7 @@
   "i18n-ally.sourceLanguage": "ru",
   "i18n-ally.keystyle": "nested",
 
-  "unocss.root": ["./", "./src/modules/design/"],
+  "unocss.root": ["/workspaces/new/src/modules/design"],
 
   "remote.extensionKind": {
     "GitHub.copilot": ["ui", "workspace"],

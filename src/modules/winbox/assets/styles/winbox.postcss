@@ -1,13 +1,13 @@
 @import url('winbox/dist/css/winbox.min.css');
 
 .winbox.simple {
-  @apply flex flex-col bg-transparent border border-default-300 dark:border-default-700 shadow-none;
+  @apply flex flex-col bg-transparent border border-default-300 dark:border-default-700 shadow-none min-h-50;
 
   .wb-header {
-    @apply flex flex-row box-color__default--2 px-0 h-auto dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative;
+    @apply flex flex-row box-color__default--2 px-0 h-auto dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative h-auto!;
 
     .wb-drag {
-      @apply flex flex-grow py-2 pl-6 pr-4 overflow-hidden;
+      @apply flex flex-grow py-2 pl-6 pr-0 overflow-hidden;
 
       .wb-title {
         @apply inline text-xl font-extrabold font-sans justify-center text-ellipsis w-full;
@@ -15,19 +15,19 @@
     }
 
     .wb-control {
-      @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pr-4 opacity-60;
+      @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pl-0 pr-4 opacity-60 py-2;
 
       * {
-        @apply w-7 h-11;
+        @apply h-full max-w-6;
       }
     }
   }
 
   .wb-body {
-    @apply flex flex-grow box-color__default--1 w-full h-auto overflow-auto scrollbar scrollbar-rounded;
+    @apply flex flex-grow box-color__default--1 w-full h-auto overflow-auto scrollbar scrollbar-rounded top-0! relative;
 
     .wb-content {
-      @apply absolute top-0 left-0 right-0 top-0 w-full h-full m-auto;
+      @apply top-0 right-0 left-0 w-full h-full m-auto absolute;
     }
   }
 
@@ -46,15 +46,15 @@
       @apply flex relative! box-color__default--3 p-0;
 
       .wb-control {
-        @apply px-2;
+        @apply px-2 py-2;
 
         * {
-          @apply h-10;
+          @apply h-full;
         }
       }
 
       .wb-drag {
-        @apply px-4;
+        @apply pl-4;
 
         .wb-title {
           @apply inline text-base!;
@@ -70,7 +70,7 @@
           @apply flex;
 
           * {
-            @apply h-10;
+            @apply h-full;
           }
         }
       }
