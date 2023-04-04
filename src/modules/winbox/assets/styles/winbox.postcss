@@ -81,42 +81,42 @@
   .wb-s,
   .wb-w,
   .wb-n {
-    /* @apply cursor-e-resize; */
+    @apply bg-default-400 border-default-800 opacity-5 dark:bg-default-500 dark:border-default-300/10;
 
     &:hover {
-      @apply bg-default-400 border-default-800 opacity-15 dark:bg-default-500 dark:border-default-300;
+      @apply dark:bg-default-600 opacity-40 bg-default-300 transition-all duration-500 border-default-400 dark:border-default-600;
     }
   }
 
   .wb-e {
-    @apply -right-2 top-0 bottom-0 w-2;
+    @apply -right-2 top-0 bottom-0 border-l w-2;
 
     &:hover {
-      @apply -right-1.9  border-l rounded-r-xl;
+      @apply -right-1.9 rounded-r-full;
     }
   }
 
   .wb-w {
-    @apply -left-2 top-0 bottom-0 w-2;
+    @apply -left-2 top-0 bottom-0 w-2  border-r;
 
     &:hover {
-      @apply -left-1.9  border-r rounded-l-xl;
+      @apply -left-1.9 rounded-l-full;
     }
   }
 
   .wb-n {
-    @apply -top-2 right-0 left-0 h-2;
+    @apply -top-2 right-0 left-0 h-2 border-b;
 
     &:hover {
-      @apply -top-1.9 border-b  rounded-t-xl;
+      @apply -top-1.9  rounded-t-full;
     }
   }
 
   .wb-s {
-    @apply -bottom-2 right-0 left-0 h-2;
+    @apply -bottom-2 right-0 left-0 h-2 border-t;
 
     &:hover {
-      @apply -bottom-1.9 border-t rounded-b-xl;
+      @apply -bottom-1.9 rounded-b-full;
     }
   }
 
