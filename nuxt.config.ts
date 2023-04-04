@@ -1,5 +1,6 @@
 import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
+
 import {
   availableLocales,
   datetimeFormats,
@@ -21,7 +22,6 @@ const componentsDir = resolve(srcDir, 'components')
 export default defineNuxtConfig({
   srcDir,
   appDir,
-  typescript: {},
   alias: {
     'assets': assetsDir,
     'public': publicDir,

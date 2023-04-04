@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import maplibregl from 'maplibre-gl'
-import type { FeatureCollection, Point } from 'geojson'
 import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
-import type { TMapboxDraw, TMapboxOverlay } from '../types'
 import jsonData from '../geojson/voronezh.json'
+
 import type { IMove, IObject } from '~/types'
 import { IMetaScope } from '~/types'
 
+import type { TMapboxDraw, TMapboxOverlay } from '../types'
+import type { FeatureCollection, Point } from 'geojson'
+
 let maplibreglMap: maplibregl.Map
 let maplibreglPopup: maplibregl.Popup
+let deckOverlay: TMapboxOverlay
 
 const objectsStore = useObjectsStore()
 const backendStore = useBackendStore()
@@ -22,14 +25,15 @@ const objects = await objectsStore.itemsGetterByIds(objectsIds.value)
 const movesId = await movesStore.itemsGetter
 const moves = await movesStore.itemsGetterByIds(movesId.value)
 
-const filter = ref<string>('')
+const moveFilter = ref<string>('')
+const hoveredStateId = ref<string | number >('')
 
 const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)!
 
 const objectsFeatures = computed<
   FeatureCollection<Point, { color: [number, number, number] }>
 >(() => {
-  const features = objects.value.map((object) => object.feature)
+  const features = objects.value.map(object => object.feature)
 
   return {
     type: 'FeatureCollection',
@@ -38,21 +42,11 @@ const objectsFeatures = computed<
 })
 
 const movesFiltered = computed<IMove[]>(() => {
-  if (!filter.value) {
+  if (!moveFilter.value)
     return moves.value
-  }
 
-  return moves.value.filter((move) => move._id === filter.value)
+  return moves.value.filter(move => move._id === moveFilter.value)
 })
-
-// const movesFeatures = computed<IMove[]>(() => {
-//   const features = moves.value.map((object) => object.feature)
-
-//   return {
-//     type: 'FeatureCollection',
-//     features,
-//   }
-// })
 
 onMounted(createMaplibreglMap)
 
@@ -68,7 +62,7 @@ function handleClick() {
       ]
 
       return object
-    })
+    }),
   )
 }
 
@@ -78,7 +72,7 @@ function getMoveTooltip(
   res: string,
   value: string,
   from: string,
-  to: string
+  to: string,
 ): string {
   return `
   <div class="custom-tooltip custom-tooltip--move">
@@ -114,7 +108,7 @@ function createMaplibreglMap() {
       showCompass: true,
       visualizePitch: true,
     }),
-    'bottom-right'
+    'bottom-right',
   )
 
   maplibreglMap.addControl(new maplibregl.FullscreenControl({}), 'bottom-right')
@@ -141,6 +135,7 @@ function createMaplibreglMap() {
     maplibreglMap.addSource('test-source-layer-2', {
       type: 'geojson',
       data: null,
+
       // cluster: true,
       // clusterMaxZoom: 14, // Max zoom to cluster points on
       // clusterRadius: 50,
@@ -152,8 +147,13 @@ function createMaplibreglMap() {
       source: 'test-source-layer',
 
       paint: {
-        'fill-color': '#088',
-        'fill-opacity': 0.8,
+        'fill-color': '#627BC1',
+        'fill-opacity': [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          1,
+          0.5,
+        ],
       },
     })
 
@@ -192,17 +192,18 @@ function createMaplibreglMap() {
       closeOnClick: false,
     })
 
-    maplibreglMap.addLayer({
-      id: 'cluster-count',
-      type: 'symbol',
-      source: 'test-source-layer-2',
-      filter: ['has', 'point_count'],
-      layout: {
-        'text-field': '{point_count_abbreviated}',
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-        'text-size': 12,
-      },
-    })
+    // maplibreglMap.addLayer({
+    //   id: 'cluster-count',
+    //   type: 'symbol',
+    //   source: 'test-source-layer-2',
+    //   filter: ['has', 'point_count'],
+
+    //   layout: {
+    //     'text-field': '{point_count_abbreviated}',
+    //     'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+    //     'text-size': 12,
+    //   },
+    // })
 
     maplibreglMap.addLayer({
       id: 'unclustered-point',
@@ -215,76 +216,13 @@ function createMaplibreglMap() {
         'circle-stroke-width': 1,
         'circle-stroke-color': '#fff',
       },
+
     })
 
-    const arcLayer = new ArcLayer<IMove>({
-      id: 'deckgl-arc',
-
-      data: movesFiltered.value,
-
-      pickable: true,
-      getWidth: 3,
-      greatCircle: true,
-      getTilt: (_d) => (Math.random() < 0.5 ? -1 : 1) * Math.random() * 30,
-      getSourcePosition: (d) => {
-        const coordinates = d.feature.sender.geometry.coordinates
-        return [coordinates[0], coordinates[1]]
-      },
-      getTargetPosition: (d) => {
-        const coordinates = d.feature.receiver.geometry.coordinates
-        return [coordinates[0], coordinates[1]]
-      },
-
-      getSourceColor: (d) => {
-        return d.feature.sender.properties.color
-      },
-      getTargetColor: (d) => {
-        return d.feature.receiver.properties.color
-      },
-      autoHighlight: true,
-      // transitions: {
-      //   getSourcePosition: {},
-      //   getTargetPosition: 1000,
-      // },
-      onClick(pickingInfo, event) {
-        if (!pickingInfo.object) {
-          return
-        }
-        filter.value = pickingInfo.object._id
-        // pickingInfo.layer?.updateState({})
-
-        console.log({ pickingInfo, event })
-      },
-      updateTriggers: {
-        data: movesFiltered.value,
-      },
-      onHover(pickingInfo, _event) {
-        if (pickingInfo.object && pickingInfo.coordinate) {
-          // console.log({ pickingInfo, event })
-          maplibreglMap.getCanvas().style.cursor = 'pointer'
-          maplibreglPopup
-            .setLngLat([pickingInfo.coordinate[0], pickingInfo.coordinate[1]])
-            .setHTML(
-              'test'
-              // getMoveTooltip(
-              //   pickingInfo.object.resource,
-              //   pickingInfo.object.value,
-              //   pickingInfo.object.sender,
-              //   pickingInfo.object.receiver
-              // )
-            )
-            .addTo(maplibreglMap)
-        } else {
-          // maplibreglMap.getCanvas().style.cursor = 'default'
-          // maplibreglPopup.remove()
-        }
-      },
-    })
-
-    const deck = new DeckOverlay({
-      layers: [arcLayer],
+    deckOverlay = new DeckOverlay({
     }) as TMapboxOverlay
-    maplibreglMap.addControl(deck)
+
+    maplibreglMap.addControl(deckOverlay)
 
     maplibreglMap.on('click', 'clusters', (e) => {
       const features = maplibreglMap.queryRenderedFeatures(e.point, {
@@ -292,16 +230,15 @@ function createMaplibreglMap() {
       })
       const clusterId = features[0].properties.cluster_id
       const source = maplibreglMap.getSource(
-        'test-source-layer-2'
+        'test-source-layer-2',
       ) as maplibregl.GeoJSONSource
-      if (!source) {
+      if (!source)
         return
-      }
 
       source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-        if (err || !zoom) {
+        if (err || !zoom)
           return
-        }
+
         if (features[0].geometry.type === 'Point') {
           maplibreglMap.easeTo({
             center: features[0].geometry.coordinates as [number, number],
@@ -319,26 +256,128 @@ function createMaplibreglMap() {
       maplibreglMap.getCanvas().style.cursor = 'default'
     })
 
+    maplibreglMap.on('mousemove', 'test-layer', (_e) => {
+      if (!_e.features || !_e.features[0].id)
+        return
+
+      // Do nothing if the feature has not changed
+      if (hoveredStateId.value === _e.features[0].id)
+        return
+
+      // Change hover state prev feature
+      maplibreglMap.setFeatureState(
+        { source: 'test-source-layer', id: hoveredStateId.value },
+        { hover: false },
+      )
+      // Change hover state on current feature
+      maplibreglMap.setFeatureState(
+        { source: 'test-source-layer', id: _e.features[0].id },
+        { hover: true },
+      )
+
+      hoveredStateId.value = _e.features[0].id
+    })
+
+    maplibreglMap.on('mouseleave', 'test-layer', (_e) => {
+      if (hoveredStateId.value) {
+        maplibreglMap.setFeatureState(
+          { source: 'test-source-layer', id: hoveredStateId.value },
+          { hover: false },
+        )
+        hoveredStateId.value = ''
+      }
+    })
+
     watch(
       objectsFeatures,
       (of) => {
         const source = maplibreglMap.getSource(
-          'test-source-layer-2'
+          'test-source-layer-2',
         ) as maplibregl.GeoJSONSource
 
-        if (!source) {
+        if (!source)
           return
-        }
 
         source.setData(of)
       },
-      { immediate: true }
+      { immediate: true },
     )
+    watch(
+      movesFiltered,
+      (mf) => {
+        const arcLayer = getArcLayer(mf)
+        deckOverlay.setProps({
+          layers: [arcLayer],
+        })
+      },
+      { immediate: true },
+    )
+  })
+}
+
+function getArcLayer(data: IMove[]) {
+  return new ArcLayer<IMove>({
+    id: 'deckgl-arc',
+    data,
+
+    pickable: true,
+    getWidth: 3,
+    greatCircle: true,
+    getTilt: _d => (Math.random() < 0.5 ? -1 : 1) * Math.random() * 30,
+    getSourcePosition: (d) => {
+      const coordinates = d.feature.sender.geometry.coordinates
+      return [coordinates[0], coordinates[1]]
+    },
+    getTargetPosition: (d) => {
+      const coordinates = d.feature.receiver.geometry.coordinates
+      return [coordinates[0], coordinates[1]]
+    },
+
+    getSourceColor: (d) => {
+      return d.feature.sender.properties.color
+    },
+    getTargetColor: (d) => {
+      return d.feature.receiver.properties.color
+    },
+    autoHighlight: true,
+    onClick(pickingInfo, _event) {
+      if (!pickingInfo.object)
+        return
+      if (moveFilter.value === pickingInfo.object._id)
+        moveFilter.value = ''
+      else
+        moveFilter.value = pickingInfo.object._id
+    },
+    updateTriggers: {
+      data: movesFiltered.value,
+    },
+    onHover(pickingInfo, _event) {
+      if (pickingInfo.object && pickingInfo.coordinate) {
+        console.log({ pickingInfo, event })
+        maplibreglMap.getCanvas().style.cursor = 'pointer'
+        maplibreglPopup
+          .setLngLat([pickingInfo.coordinate[0], pickingInfo.coordinate[1]])
+          .setHTML(
+            'test',
+            // getMoveTooltip(
+            //   pickingInfo.object.resource,
+            //   pickingInfo.object.value,
+            //   pickingInfo.object.sender,
+            //   pickingInfo.object.receiver
+            // )
+          )
+          .addTo(maplibreglMap)
+      }
+      else {
+        maplibreglMap.getCanvas().style.cursor = 'default'
+        // maplibreglPopup.remove()
+      }
+    },
   })
 }
 </script>
 
 <template>
   <!-- <UiButton @click="handleClick">Move -> 10</UiButton> -->
-  <div id="mapContainer" class="flex flex-col layout-default__map z-0"></div>
+  <div id="mapContainer" class="flex flex-col layout-default__map z-0" />
 </template>

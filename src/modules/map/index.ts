@@ -4,6 +4,7 @@ import {
   createResolver,
   defineNuxtModule,
 } from '@nuxt/kit'
+
 import { logger } from './utils/logger'
 
 export default defineNuxtModule({
@@ -13,7 +14,8 @@ export default defineNuxtModule({
     logger.info('Adding composables')
     try {
       addImportsDir(resolve('composables'))
-    } catch (e) {
+    }
+    catch (e) {
       logger.error('Failed to add composables', e)
     }
 
@@ -24,7 +26,8 @@ export default defineNuxtModule({
         prefix: 'mapLibre',
         global: true,
       })
-    } catch (e) {
+    }
+    catch (e) {
       logger.error('Failed to add components', e)
     }
   },
