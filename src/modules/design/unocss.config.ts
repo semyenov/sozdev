@@ -273,10 +273,12 @@ export default defineConfig<UnoTheme>({
     }),
     presetUno,
     presetScrollbar({
-      scrollbarWidth: '9px',
-      scrollbarThumbRadius: '4px',
-      scrollbarTrackColor: 'transparent',
-      scrollbarThumbColor: '#999999AA',
+      scrollbarHeight: '1rem',
+      scrollbarWidth: '0.5rem',
+      scrollbarThumbRadius: '0',
+      scrollbarTrackRadius: '0',
+      scrollbarTrackColor: '#a5a5a515',
+      scrollbarThumbColor: '#9999996b',
     }),
   ],
 

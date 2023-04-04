@@ -4,7 +4,7 @@
   @apply flex flex-col bg-transparent border border-default-300 dark:border-default-700 shadow-none min-h-50;
 
   .wb-header {
-    @apply flex flex-row box-color__default--2 px-0 h-auto dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative h-auto!;
+    @apply flex flex-row box-color__default--2 px-0 dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative h-auto!;
 
     .wb-drag {
       @apply flex flex-grow py-2 pl-6 pr-0 overflow-hidden;
@@ -43,7 +43,7 @@
     @apply font-normal border-solid! transform;
 
     .wb-header {
-      @apply flex relative! box-color__default--3 p-0;
+      @apply flex relative! box-color__default--3 p-0 h-11! border-b-none;
 
       .wb-control {
         @apply px-2 py-2;
@@ -67,13 +67,56 @@
 
       .wb-header {
         .wb-control {
-          @apply flex;
+          /* @apply flex; */
 
           * {
             @apply h-full;
           }
         }
       }
+    }
+  }
+
+  .wb-e,
+  .wb-s,
+  .wb-w,
+  .wb-n {
+    /* @apply cursor-e-resize; */
+
+    &:hover {
+      @apply bg-default-400 border-default-800 opacity-15 dark:bg-default-500 dark:border-default-300;
+    }
+  }
+
+  .wb-e {
+    @apply -right-2 top-0 bottom-0 w-2;
+
+    &:hover {
+      @apply -right-1.9  border-l rounded-r-xl;
+    }
+  }
+
+  .wb-w {
+    @apply -left-2 top-0 bottom-0 w-2;
+
+    &:hover {
+      @apply -left-1.9  border-r rounded-l-xl;
+    }
+  }
+
+  .wb-n {
+    @apply -top-2 right-0 left-0 h-2;
+
+    &:hover {
+      @apply -top-1.9 border-b  rounded-t-xl;
+    }
+  }
+
+  .wb-s {
+    @apply -bottom-2 right-0 left-0 h-2;
+
+    &:hover {
+      @apply -bottom-1.9 border-t rounded-b-xl;
     }
   }
 
