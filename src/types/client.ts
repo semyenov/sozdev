@@ -201,9 +201,7 @@ export const IObjectSchema = z.object({
   type: z.string(),
   meta: IMetaSchema.optional().nullable(),
 })
-export type IObject = z.infer<typeof IObjectSchema> & {
-  feature: Feature<Point, { color: [number, number, number] }>
-}
+export type IObject = z.infer<typeof IObjectSchema> & { feature: TFeature }
 
 export const IObjectCreateInputSchema = z.object({
   code: z.string().optional(),
@@ -240,7 +238,7 @@ export type IMoveInfo = z.infer<typeof IMoveInfoSchema>
 export const IMoveSchema = z.object({
   _id: z.string(),
   document: z.string(),
-  feature: z.any().nullable(),
+  feature: z.unknown().nullable(),
   group: z.string(),
   info: IMoveInfoSchema,
   public: z.boolean(),
@@ -251,7 +249,15 @@ export const IMoveSchema = z.object({
   value: z.number(),
   meta: IMetaSchema.optional().nullable(),
 })
-export type IMove = z.infer<typeof IMoveSchema>
+
+export type TFeature = Feature<Point, { color: [number, number, number] }>
+
+export type IMove = z.infer<typeof IMoveSchema> & {
+  feature: {
+    sender: TFeature
+    receiver: TFeature
+  }
+}
 
 export const IMoveCreateInputSchema = z.object({
   code: z.string().optional(),

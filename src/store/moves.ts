@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-import type { IObject, IObjectUpdateInput } from '~/types'
+import type { IMove, IMoveUpdateInput } from '~/types'
 import { IMetaScope } from '~/types'
 
 export const movesStoreKey = IMetaScope.MOVES as const
@@ -8,12 +8,12 @@ export const movesStoreKey = IMetaScope.MOVES as const
 export const useMovesStore = defineStore(movesStoreKey, () => {
   const backendStore = useBackendStore()
 
-  const itemsGetterByIds = backendStore.itemsGetterByIds<IObject>(
+  const itemsGetterByIds = backendStore.itemsGetterByIds<IMove>(
     IMetaScope.MOVES
   )
-  const itemGetter = backendStore.itemGetter<IObject>(IMetaScope.MOVES)
+  const itemGetter = backendStore.itemGetter<IMove>(IMetaScope.MOVES)
   const itemsGetter = backendStore
-    .itemsGetter<IObject>(IMetaScope.MOVES)
+    .itemsGetter<IMove>(IMetaScope.MOVES)
     .then((items) =>
       computed(() =>
         items.value
@@ -34,13 +34,12 @@ export const useMovesStore = defineStore(movesStoreKey, () => {
       )
     )
 
-  const getItems = () => backendStore.get<IObject>([IMetaScope.MOVES, 'items'])
-  const getOthers = () =>
-    backendStore.get<IObject>([IMetaScope.MOVES, 'others'])
+  const getItems = () => backendStore.get<IMove>([IMetaScope.MOVES, 'items'])
+  const getOthers = () => backendStore.get<IMove>([IMetaScope.MOVES, 'others'])
   const getItem = (id: string) =>
-    backendStore.get<IObject>([IMetaScope.MOVES, 'items', id])
-  const putItem = (id: string, input: IObjectUpdateInput) =>
-    backendStore.put<IObject, IObjectUpdateInput>(
+    backendStore.get<IMove>([IMetaScope.MOVES, 'items', id])
+  const putItem = (id: string, input: IMoveUpdateInput) =>
+    backendStore.put<IMove, IMoveUpdateInput>(
       [IMetaScope.MOVES, 'items', id],
       input
     )

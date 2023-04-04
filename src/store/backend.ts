@@ -14,11 +14,13 @@ const logger = useLogger(`store/${backendStoreKey}`)
 export const backendScopeTypes: IMetaScope[] = [
   IMetaScope.OBJECTS,
   IMetaScope.USERS,
+  IMetaScope.MOVES,
 ]
 export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
   data: ['data'],
   objects: ['objects'],
   users: ['users'],
+  moves: ['moves'],
 }
 
 export const useBackendStore = defineStore(backendStoreKey, () => {

@@ -5,19 +5,24 @@ import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
-import type { Feature } from '@turf/helpers'
 import type { TMapboxDraw, TMapboxOverlay } from '../types'
 import jsonData from '../geojson/voronezh.json'
-import type { IObject } from '~/types'
+import type { IMove, IObject } from '~/types'
 import { IMetaScope } from '~/types'
 
 let maplibreglMap: maplibregl.Map
+let maplibreglPopup: maplibregl.Popup
 
 const objectsStore = useObjectsStore()
 const backendStore = useBackendStore()
+const movesStore = useMovesStore()
 
 const objectsIds = await objectsStore.itemsGetter
 const objects = await objectsStore.itemsGetterByIds(objectsIds.value)
+const movesId = await movesStore.itemsGetter
+const moves = await movesStore.itemsGetterByIds(movesId.value)
+
+const filter = ref<string>('')
 
 const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)!
 
@@ -31,6 +36,23 @@ const objectsFeatures = computed<
     features,
   }
 })
+
+const movesFiltered = computed<IMove[]>(() => {
+  if (!filter.value) {
+    return moves.value
+  }
+
+  return moves.value.filter((move) => move._id === filter.value)
+})
+
+// const movesFeatures = computed<IMove[]>(() => {
+//   const features = moves.value.map((object) => object.feature)
+
+//   return {
+//     type: 'FeatureCollection',
+//     features,
+//   }
+// })
 
 onMounted(createMaplibreglMap)
 
@@ -52,14 +74,37 @@ function handleClick() {
 
 // setInterval(handleClick, 5000)
 
+function getMoveTooltip(
+  res: string,
+  value: string,
+  from: string,
+  to: string
+): string {
+  return `
+  <div class="custom-tooltip custom-tooltip--move">
+    <div class="custom-tooltip__header">
+      <span>${res} - ${value}</span>
+    </div>
+    <div class="custom-tooltip__body">
+      <div class="custom-tooltip__row">
+        <span>Отправитель:</span> ${from}
+      </div>
+      <div class="custom-tooltip__row">
+        <span>Получатель:</span> ${to}
+      </div>
+    </div>
+  </div>`
+}
+
 function createMaplibreglMap() {
   maplibreglMap = new maplibregl.Map({
     container: 'mapContainer',
     style:
       'https://api.maptiler.com/maps/streets-v2/style.json?key=jSJRPdUXEsNgteCkgfs4',
-    center: [0, 0], // starting position [lng, lat]
+    center: [42.947337399999995, 51.26721980000001], // starting position [lng, lat]
     maxZoom: 18,
     minZoom: 0,
+    zoom: 6,
     attributionControl: false,
     trackResize: true,
   })
@@ -131,6 +176,22 @@ function createMaplibreglMap() {
     //   },
     // })
 
+    // const popupOffsets: maplibregl.Offset = {
+    //   top: 0,
+    //   'top-left': 0,
+    //   'top-right': 0,
+    //   bottom: 0,
+    //   'bottom-left': 0,
+    //   'bottom-right': 0,
+    //   left: 0,
+    //   right: 0,
+    // }
+    maplibreglPopup = new maplibregl.Popup({
+      offset: 0,
+      closeButton: false,
+      closeOnClick: false,
+    })
+
     maplibreglMap.addLayer({
       id: 'cluster-count',
       type: 'symbol',
@@ -156,35 +217,73 @@ function createMaplibreglMap() {
       },
     })
 
-    const arcLayer = new ArcLayer<
-      Feature<Point, { color: [number, number, number] }>
-    >({
+    const arcLayer = new ArcLayer<IMove>({
       id: 'deckgl-arc',
 
-      data: objectsFeatures.value.features.filter(() => Math.random() < 0.05),
+      data: movesFiltered.value,
 
       pickable: true,
       getWidth: 3,
+      greatCircle: true,
       getTilt: (_d) => (Math.random() < 0.5 ? -1 : 1) * Math.random() * 30,
-      getSourcePosition: (d) => [
-        d.geometry.coordinates[0],
-        d.geometry.coordinates[1],
-      ],
-      getTargetPosition: (d) => {
-        const coordinates =
-          objectsFeatures.value.features[
-            Math.floor(Math.random() * objectsFeatures.value.features.length)
-          ].geometry.coordinates
+      getSourcePosition: (d) => {
+        const coordinates = d.feature.sender.geometry.coordinates
         return [coordinates[0], coordinates[1]]
       },
-      getSourceColor: (d) => d.properties.color,
-      getTargetColor: (d) => d.properties.color,
+      getTargetPosition: (d) => {
+        const coordinates = d.feature.receiver.geometry.coordinates
+        return [coordinates[0], coordinates[1]]
+      },
+
+      getSourceColor: (d) => {
+        return d.feature.sender.properties.color
+      },
+      getTargetColor: (d) => {
+        return d.feature.receiver.properties.color
+      },
+      autoHighlight: true,
+      // transitions: {
+      //   getSourcePosition: {},
+      //   getTargetPosition: 1000,
+      // },
+      onClick(pickingInfo, event) {
+        if (!pickingInfo.object) {
+          return
+        }
+        filter.value = pickingInfo.object._id
+        // pickingInfo.layer?.updateState({})
+
+        console.log({ pickingInfo, event })
+      },
+      updateTriggers: {
+        data: movesFiltered.value,
+      },
+      onHover(pickingInfo, _event) {
+        if (pickingInfo.object && pickingInfo.coordinate) {
+          // console.log({ pickingInfo, event })
+          maplibreglMap.getCanvas().style.cursor = 'pointer'
+          maplibreglPopup
+            .setLngLat([pickingInfo.coordinate[0], pickingInfo.coordinate[1]])
+            .setHTML(
+              'test'
+              // getMoveTooltip(
+              //   pickingInfo.object.resource,
+              //   pickingInfo.object.value,
+              //   pickingInfo.object.sender,
+              //   pickingInfo.object.receiver
+              // )
+            )
+            .addTo(maplibreglMap)
+        } else {
+          // maplibreglMap.getCanvas().style.cursor = 'default'
+          // maplibreglPopup.remove()
+        }
+      },
     })
 
     const deck = new DeckOverlay({
       layers: [arcLayer],
     }) as TMapboxOverlay
-
     maplibreglMap.addControl(deck)
 
     maplibreglMap.on('click', 'clusters', (e) => {
