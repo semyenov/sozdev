@@ -1,17 +1,17 @@
 import { isClient } from '@vueuse/core'
-import type { WinBoxParams } from '../types'
 
 import {
   winboxWindowsParamsStorage,
   winboxWindowsStateStorage,
 } from '../utils/winbox'
 
+import type { WinBoxParams } from '../types'
+
 export function useWinbox(id: string) {
   return {
     winboxWindow: computed(() => {
-      if (!isClient || !winboxWindowsStateStorage.value.has(id)) {
+      if (!isClient || !winboxWindowsStateStorage.value.has(id))
         return
-      }
 
       const winboxEl = document.getElementById(id) as HTMLElement & {
         winbox?: WinBox
@@ -19,7 +19,7 @@ export function useWinbox(id: string) {
 
       return {
         state: winboxWindowsStateStorage.value.get(id),
-        winbox: winboxEl ? winboxEl.winbox : undefined,
+        winbox: winboxEl?.winbox,
       }
     }),
     createWindow: (params: WinBoxParams) => {

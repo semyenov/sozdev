@@ -50,7 +50,7 @@ const props = defineProps({
         props.dashed && `border-dashed`,
       ]"
     >
-      <slot :item="item"></slot>
+      <slot :item="item" />
     </div>
   </div>
 </template>

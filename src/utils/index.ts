@@ -19,10 +19,10 @@ export function validateUuid(str: string) {
                 charIn(chars)
                   .times(4)
                   .and(exactly('-'))
-                  .and(charIn(chars).times(12).at.lineEnd())
-              )
-          )
-      )
+                  .and(charIn(chars).times(12).at.lineEnd()),
+              ),
+          ),
+      ),
   )
 
   return regex.test(str)

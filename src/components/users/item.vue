@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import type { IUser } from '~/types'
+
+import type { PropType } from 'vue'
 
 const props = defineProps({
   index: {
@@ -49,9 +49,8 @@ function handleClick() {
     return
   }
 
-  if (w.state?.min) {
+  if (w.state?.min)
     w.winbox.minimize(false)
-  }
 
   w.winbox.focus()
 }
@@ -61,7 +60,6 @@ function handleClick() {
   <div class="component-user-item">
     <UiCard
       class="cursor-pointer select-none"
-      dashed
       rounded="none"
       :color="winboxWindow ? 'secondary' : 'third'"
       @click="handleClick()"

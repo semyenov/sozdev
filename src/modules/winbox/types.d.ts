@@ -11,7 +11,7 @@ export interface WinBoxParams extends WinBox.Params {
   full?: boolean
 }
 
-export interface WinBoxBbox {
+export interface WinBoxBBox {
   left: number
   right: number
   top: number
@@ -25,8 +25,8 @@ export interface WinBoxBbox {
 export interface WinBoxState {
   max: boolean
   min: boolean
-  hidden: boolean
   full: boolean
+  hidden: boolean
 
   x: number
   y: number

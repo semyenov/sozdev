@@ -1,7 +1,5 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
-
-import type { IObject, IObjectUpdateInput } from '~/types'
 import { IMetaScope } from '~/types'
+import type { IObject, IObjectUpdateInput } from '~/types'
 
 export const objectsStoreKey = IMetaScope.OBJECTS as const
 
@@ -14,7 +12,7 @@ export const useObjectsStore = defineStore(objectsStoreKey, () => {
   const itemGetter = backendStore.itemGetter<IObject>(IMetaScope.OBJECTS)
   const itemsGetter = backendStore
     .itemsGetter<IObject>(IMetaScope.OBJECTS)
-    .then((items) =>
+    .then(items =>
       computed(() =>
         items.value
           .filter((item) => {
@@ -24,14 +22,13 @@ export const useObjectsStore = defineStore(objectsStoreKey, () => {
             const ah = a.info.name.trimStart()
             const bh = b.info.name.trimStart()
 
-            if (ah === bh) {
+            if (ah === bh)
               return 0
-            }
 
             return ah > bh ? 1 : -1
           })
-          .map((item) => item._id)
-      )
+          .map(item => item._id),
+      ),
     )
 
   const getItems = () =>
@@ -43,7 +40,7 @@ export const useObjectsStore = defineStore(objectsStoreKey, () => {
   const putItem = (id: string, input: IObjectUpdateInput) =>
     backendStore.put<IObject, IObjectUpdateInput>(
       [IMetaScope.OBJECTS, 'items', id],
-      input
+      input,
     )
 
   return {
@@ -57,7 +54,3 @@ export const useObjectsStore = defineStore(objectsStoreKey, () => {
     putItem,
   }
 })
-
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useObjectsStore, import.meta.hot))
-}

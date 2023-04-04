@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { winboxRegister } from '../utils/winbox'
+
 import type { PropType } from 'vue'
 import type { WinBoxParams } from '../types'
-import { winboxRegister } from '../utils/winbox'
 
 const props = defineProps({
   params: {
@@ -24,15 +25,14 @@ defineExpose({
 onMounted(openWindow)
 onScopeDispose(closeWindow)
 
-watch(showFlag, (flag) => (flag ? openWindow() : closeWindow()))
+watch(showFlag, flag => (flag ? openWindow() : closeWindow()))
 
 function openWindow() {
-  if (winboxWindow.value && winboxWindow.value.winbox) {
+  if (winboxWindow.value && winboxWindow.value.winbox)
     return
-  }
 
-  const rootEl =
-    document.getElementById(props.params.teleportId) || document.body
+  const rootEl
+    = document.getElementById(props.params.teleportId) || document.body
   const mountEl = document.createElement('div')
   const contentEl = document.createElement('div')
 
@@ -64,9 +64,8 @@ function openWindow() {
 }
 
 function closeWindow() {
-  if (!winboxWindow.value || !winboxWindow.value.winbox) {
+  if (!winboxWindow.value || !winboxWindow.value.winbox)
     return
-  }
 
   winboxWindow.value.winbox.close()
 }
@@ -74,7 +73,7 @@ function closeWindow() {
 
 <template>
   <Teleport v-if="showFlag" :to="`#${params.id} .wb-content`">
-    <!-- <pre class="px-6 border-b box-color__default--2 py-4 text-xs">{{
+    <!-- <pre class="border-b box-color__default--2 px-6 py-4 text-xs">{{
       winboxWindow?.state
     }}</pre> -->
     <slot name="default" />

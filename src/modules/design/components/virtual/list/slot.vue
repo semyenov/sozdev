@@ -33,7 +33,7 @@ const rootRef = ref<HTMLElement | null>(null)
 const dataId = toRef(props, 'dataId')
 const horizontal = toRef(props, 'horizontal')
 const shapeKey = computed<'width' | 'height'>(() =>
-  horizontal.value ? 'width' : 'height'
+  horizontal.value ? 'width' : 'height',
 )
 
 const resizeObserver = useResizeObserver(rootRef, (entries) => {

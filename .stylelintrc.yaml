@@ -1,4 +1,6 @@
 extends:
-  - 'stylelint-config-recommended-vue'
   - 'stylelint-config-recommended'
-  - 'stylelint-config-prettier'
+  - 'stylelint-config-recommended-vue'
+  - 'stylelint-config-standard'
+rules:
+  'selector-class-pattern': null

@@ -59,6 +59,8 @@
   "i18n-ally.sourceLanguage": "ru",
   "i18n-ally.keystyle": "nested",
 
+  "unocss.root": ["/workspaces/new/src/modules/design"],
+
   "remote.extensionKind": {
     "GitHub.copilot": ["ui", "workspace"],
     "GitHub.copilot-labs": ["ui", "workspace"]
@@ -69,7 +71,7 @@
   },
 
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
 
   "[shellscript]": {

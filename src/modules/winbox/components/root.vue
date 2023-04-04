@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { winboxWindowsParamsStorage } from '../utils/winbox'
+
 import { ClientOnly } from '#components'
 
 const { vueApp } = useNuxtApp()
-
-const windowsParams = computed(() =>
-  [...winboxWindowsParamsStorage.value.values()].filter(
-    (params) => !!params.dataComponent
-  )
-)
 </script>
 
 <template>
   <ClientOnly>
     <WinboxWindow
-      v-for="p in windowsParams"
+      v-for="p in winboxWindowsParamsStorage.values()"
       :key="`${p.id}--window`"
       :params="p"
     >
@@ -28,7 +23,9 @@ const windowsParams = computed(() =>
 
         <!-- loading state -->
         <template #fallback>
-          <div class="text-sm m-auto">LOADING</div>
+          <div class="text-sm m-auto">
+            LOADING
+          </div>
         </template>
       </Suspense>
     </WinboxWindow>

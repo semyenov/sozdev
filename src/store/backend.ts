@@ -1,12 +1,11 @@
-import type { FetchOptions, SearchParameters } from 'ofetch'
-
-import { acceptHMRUpdate, defineStore } from 'pinia'
 import { hasOwnProperty, toArray } from '@antfu/utils'
 
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
 
-export const backendStoreIdField = '_id' as const
+import type { FetchOptions, SearchParameters } from 'ofetch'
+
+export const backendStoreIdentificator = '_id' as const
 export const backendStoreKey = 'backend' as const
 
 const logger = useLogger(`store/${backendStoreKey}`)
@@ -25,7 +24,9 @@ export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
 
 export const useBackendStore = defineStore(backendStoreKey, () => {
   const runtimeConfig = useRuntimeConfig()
-  const baseURL = runtimeConfig.apiUri || runtimeConfig.public.apiUri
+  const baseURL
+    = runtimeConfig.apiUri
+    || runtimeConfig.public.apiUri
 
   const authorizationStore = useAuthorizationStore()
 
@@ -37,7 +38,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   })
 
   const store = ref<Map<IMetaScope, Map<string, any>>>(
-    new Map(backendScopeTypes.map((scope) => [scope, new Map()]))
+    new Map(backendScopeTypes.map(scope => [scope, new Map()])),
   )
 
   const itemsGetterByIds =
@@ -60,9 +61,8 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
 
   const itemsGetter = async <T>(scope: IMetaScope) => {
     const storeScopeMap = store.value.get(scope)!
-    if (storeScopeMap.size === 0) {
+    if (storeScopeMap.size === 0)
       await get<T[]>([scope, 'items'])
-    }
 
     return computed(() => {
       const storeScopeMap = store.value.get(scope)!
@@ -70,24 +70,23 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     })
   }
 
-  const itemGetter =
-    <T>(scope: IMetaScope) =>
-    async (id: string) => {
-      const storeScopeMap = store.value.get(scope)!
-      if (!storeScopeMap.has(id)) {
-        await get<T>([scope, 'items', id])
-      }
-
-      return computed(() => {
+  const itemGetter
+    = <T>(scope: IMetaScope) =>
+      async (id: string) => {
         const storeScopeMap = store.value.get(scope)!
-        return storeScopeMap.get(id) as T | undefined
-      })
-    }
+
+        if (!storeScopeMap.has(id))
+          await get<T>([scope, 'items', id])
+
+        return computed(() => {
+          return storeScopeMap.get(id) as T | undefined
+        })
+      }
 
   async function get<T, Q extends SearchParameters = {}>(
     [scope, command, ...params]: [IMetaScope, string, ...string[]],
     query?: Q,
-    opts?: FetchOptions<'json'>
+    opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
     const headers = formatHeaders(authorizationStore.authorization)
@@ -108,7 +107,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   async function post<T, B extends Record<string, any> = {}>(
     [scope, command, ...params]: [IMetaScope, string, ...string[]],
     body?: B,
-    opts?: FetchOptions<'json'>
+    opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
     const headers = formatHeaders(authorizationStore.authorization)
@@ -129,7 +128,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   async function put<T, B extends Record<string, any> = {}>(
     [scope, command, ...params]: [IMetaScope, string, ...string[]],
     body?: B,
-    opts?: FetchOptions<'json'>
+    opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
     const headers = formatHeaders(authorizationStore.authorization)
@@ -150,7 +149,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   async function patch<T, B extends Record<string, any> = {}>(
     [scope, command, ...params]: [IMetaScope, string, ...string[]],
     body?: B,
-    opts?: FetchOptions<'json'>
+    opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
     const headers = formatHeaders(authorizationStore.authorization)
@@ -171,13 +170,12 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   function setStoreItems<T>(scope: IMetaScope, items: T[]) {
     const storeScopeMap = store.value.get(scope)!
     for (const i in items) {
-      const item = items[i] as T & { [backendStoreIdField]: string }
-      if (hasOwnProperty(item, backendStoreIdField)) {
-        storeScopeMap.set(item[backendStoreIdField], {
-          ...item,
-        })
-      }
+      const item = items[i] as T & { [backendStoreIdentificator]: string }
+      if (hasOwnProperty(item, backendStoreIdentificator))
+        storeScopeMap.set(item[backendStoreIdentificator], item)
     }
+
+    return true
   }
 
   return {
@@ -200,19 +198,14 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
 function formatHeaders(authorization: string | null): HeadersInit {
   const headers: HeadersInit = []
 
-  if (authorization) {
+  if (authorization)
     headers.push(['Authorization', `Bearer ${authorization}`])
-  }
 
   return headers
 }
 
 function formatURI(scope: IMetaScope, ...args: string[]) {
   return [...(backendScopeTypesMap[scope] || scope), ...args]
-    .filter((item) => !!item && item !== '')
+    .filter(item => !!item && item !== '')
     .join('/')
-}
-
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useBackendStore, import.meta.hot))
 }

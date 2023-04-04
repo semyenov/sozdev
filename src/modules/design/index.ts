@@ -1,15 +1,13 @@
 import { addComponentsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
-
 import VitePlugin from '@unocss/vite'
-
-import type { UserConfig } from '@unocss/core'
 import { loadConfig } from '@unocss/config'
-
 import postcssNested from 'postcss-nested'
 // @ts-expect-error missing type
 import postcssCurrentSelector from 'postcss-current-selector'
 // @ts-expect-error missing type
 import postcssNestedAncestors from 'postcss-nested-ancestors'
+
+import type { UserConfig } from '@unocss/core'
 
 export default defineNuxtModule<{}>({
   meta: {
@@ -39,14 +37,14 @@ export default defineNuxtModule<{}>({
       process.cwd(),
       { configFile: resolve('unocss.config.ts') },
       [{ files: ['unocss.config'] }],
-      options
+      options,
     )
 
     if (
-      nuxt.options.postcss.plugins.cssnano &&
-      unoConfig.transformers?.some(
-        (t) =>
-          t.name === '@unocss/transformer-directives' && t.enforce !== 'pre'
+      nuxt.options.postcss.plugins.cssnano
+      && unoConfig.transformers?.some(
+        t =>
+          t.name === '@unocss/transformer-directives' && t.enforce !== 'pre',
       )
     ) {
       const preset = nuxt.options.postcss.plugins.cssnano.preset
@@ -62,11 +60,11 @@ export default defineNuxtModule<{}>({
       }
     }
 
-    nuxt.options.postcss.plugins['postcss-current-selector'] =
-      postcssCurrentSelector()
+    nuxt.options.postcss.plugins['postcss-current-selector']
+      = postcssCurrentSelector()
     nuxt.options.postcss.plugins['postcss-nested'] = postcssNested()
-    nuxt.options.postcss.plugins['postcss-nested-ancestors'] =
-      postcssNestedAncestors()
+    nuxt.options.postcss.plugins['postcss-nested-ancestors']
+      = postcssNestedAncestors()
 
     nuxt.hook('vite:extend', ({ config }) => {
       config.plugins = config.plugins || []
@@ -74,6 +72,7 @@ export default defineNuxtModule<{}>({
     })
 
     if (nuxt.options.dev) {
+      // @ts-expect-error new hook
       nuxt.hook('devtools:customTabs', (tabs) => {
         tabs.push({
           title: 'UnoCSS',

@@ -4,10 +4,10 @@ import { objectPick } from '@antfu/utils'
 const authorizationStore = useAuthorizationStore()
 const userFullName = computed(
   () =>
-    authorizationStore.current &&
-    Object.values(
-      objectPick(authorizationStore.current.info, ['first_name', 'last_name'])
-    ).join(' ')
+    authorizationStore.current
+    && Object.values(
+      objectPick(authorizationStore.current.info, ['first_name', 'last_name']),
+    ).join(' '),
 )
 </script>
 

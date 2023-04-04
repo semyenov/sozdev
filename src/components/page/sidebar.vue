@@ -14,7 +14,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b border-dashed"
+          class="border-b"
           color="primary"
           :outline="!isActive"
           size="md"
@@ -31,7 +31,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b border-dashed"
+          class="border-b"
           color="secondary"
           :outline="!isActive"
           size="md"
@@ -48,7 +48,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b border-dashed"
+          class="border-b"
           color="third"
           :outline="!isActive"
           size="md"
@@ -65,7 +65,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b border-dashed"
+          class="border-b"
           color="fourth"
           size="md"
           :outline="!isActive"
@@ -82,7 +82,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b border-dashed"
+          class="border-b"
           color="primary"
           :outline="!isActive"
           size="md"
@@ -97,7 +97,7 @@ const { setLocale, locale } = useI18n()
 
     <div class="flex flex-col mt-8">
       <UiButton
-        class="border-dashed border-t"
+        class="border-t"
         color="default"
         outline
         size="md"

@@ -1,5 +1,6 @@
 import toaster from '~/utils/toast/toast'
 import type { Toast } from '~/utils/toast/toast.d'
+
 declare global {
   interface Window {
     Toast: Toast

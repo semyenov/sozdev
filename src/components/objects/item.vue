@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import type { IObject } from '~/types'
+
+import type { PropType } from 'vue'
 
 const props = defineProps({
   index: {
@@ -43,9 +43,8 @@ function handleClick() {
     return
   }
 
-  if (w.state?.min) {
+  if (w.state?.min)
     w.winbox.minimize(false)
-  }
 
   w.winbox.focus()
 }
@@ -54,7 +53,6 @@ function handleClick() {
 <template>
   <div class="component-object-item">
     <UiCard
-      dashed
       class="cursor-pointer select-none"
       rounded="none"
       :color="winboxWindow ? 'fourth' : 'primary'"

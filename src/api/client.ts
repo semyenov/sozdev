@@ -1,5 +1,6 @@
-import type { $Fetch, FetchOptions, FetchResponse } from 'ofetch'
 import { ofetch } from 'ofetch'
+
+import type { $Fetch, FetchOptions, FetchResponse } from 'ofetch'
 
 export type ApiResponseStatus = 'success' | 'fail'
 export type ApiRequestMethod =
@@ -30,15 +31,15 @@ export class ApiResponse<T> implements IResponse<T> {
   constructor(
     status: ApiResponseStatus,
     res?: FetchResponse<IResponse<T>>,
-    err?: Error
+    err?: Error,
   ) {
     const _data: T | undefined = res?._data?.data
     const _error: IResponseError | undefined | null = res?._data?.error
 
     const _statusCode = res ? res.status : 0
 
-    this._ts =
-      res && res.headers.has('x-timestamp')
+    this._ts
+      = res?.headers.has('x-timestamp')
         ? parseInt(res.headers.get('x-timestamp')!)
         : -1
     this._status = status
@@ -77,7 +78,7 @@ export class ApiClient {
   public async request<T>(
     method: ApiRequestMethod,
     url: string,
-    options: FetchOptions<'json'> = {}
+    options: FetchOptions<'json'> = {},
   ): Promise<ApiResponse<T>> {
     try {
       const res = await this._ofetch.raw<IResponse<T>>(url, {
@@ -86,7 +87,8 @@ export class ApiClient {
       })
 
       return new ApiResponse<T>('success', res)
-    } catch (err) {
+    }
+    catch (err) {
       logger.error(err)
 
       return new ApiResponse('fail', undefined, err as Error)

@@ -1,5 +1,4 @@
 import type { AllowedComponentProps, VNode, VNodeProps } from 'vue'
-import { defineComponent, h } from 'vue'
 
 export type ComponentProps<C extends Component> = C extends new (
   ...args: any
@@ -15,14 +14,14 @@ interface GenericSlots<T> {
 }
 
 export function useGenericComponent<T = unknown>(
-  BaseGenericComponent: Component
+  BaseGenericComponent: Component,
 ) {
   const wrapper = defineComponent(
     (props: ComponentProps<typeof BaseGenericComponent>, { slots }) => {
       return () => {
         return h(BaseGenericComponent, props, slots)
       }
-    }
+    },
   )
 
   return wrapper as typeof wrapper & {

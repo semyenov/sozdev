@@ -2,7 +2,8 @@
 import { clamp, objectPick } from '@antfu/utils'
 import { Document } from 'flexsearch'
 
-import type { PropType } from 'vue'
+import { UiInput, UiVirtualList } from '#components'
+
 import type { IUser } from '~/types'
 import type {
   UIColorVariants,
@@ -10,7 +11,7 @@ import type {
   UISizeVariants,
 } from '~/types/ui'
 
-import { UiInput, UiVirtualList } from '#components'
+import type { PropType } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -106,63 +107,58 @@ const index = new Document<IUser, true>({
 })
 
 const dataIds = asyncComputed(async () => {
-  if (!dirtyFlag) {
+  if (!dirtyFlag)
     return []
-  }
 
   const ids = (
     await index.search(input.value, {
       index: ['info:first_name', 'info:last_name'],
       enrich: false,
     })
-  ).flatMap((item) => item.result)
+  ).flatMap(item => item.result)
 
-  return ids.length > 0 ? ids : options.value.map((item) => item._id)
+  return ids.length > 0 ? ids : options.value.map(item => item._id)
 })
 
 async function dataGetter(id: string) {
-  return computed(() => options.value.find((item) => item._id === id))
+  return computed(() => options.value.find(item => item._id === id))
 }
 
 const showFlag = computed(() => focusFlag.value && dataIds.value.length > 0)
 const cursor = ref(
-  dataIds.value ? dataIds.value.findIndex((id) => id === props.modelValue) : -1
+  dataIds.value ? dataIds.value.findIndex(id => id === props.modelValue) : -1,
 )
 
 watch(
   options,
   async (options) => {
-    if (!options.length) {
+    if (!options.length)
       return
-    }
-    for (const item of options) {
+
+    for (const item of options)
       await index.addAsync(item._id, item as IUser)
-    }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 watch(focusFlag, () => (dirtyFlag.value = true))
 
 watch(dataIds, () => {
-  if (!listComponent.value) {
+  if (!listComponent.value)
     return
-  }
 
   listComponent.value.scrollToIndex(0)
 })
 
 watch(input, (i) => {
-  if (!listComponent.value) {
+  if (!listComponent.value)
     return
-  }
 
   listComponent.value.scrollToIndex(0)
   cursor.value = -1
 
-  if (i !== '') {
+  if (i !== '')
     return
-  }
 
   emit('update:modelValue', undefined)
 })
@@ -172,52 +168,44 @@ onClickOutside(rootRef, () => {
 })
 
 onKeyStroke('Backspace', async () => {
-  if (!focusFlag.value || !props.modelValue) {
+  if (!focusFlag.value || !props.modelValue)
     return
-  }
 
   const item = await dataGetter(props.modelValue)
-  if (!item) {
+  if (!item)
     return
-  }
 
   const field = getField(item, props.searchFields)
   const str = field ? field.toString() : ''
-  if (input.value === str) {
+  if (input.value === str)
     input.value = ''
-  }
 })
 
 onKeyStroke('ArrowUp', (event) => {
-  if (!focusFlag.value) {
+  if (!focusFlag.value)
     return
-  }
 
   event.preventDefault()
 
   cursor.value = clamp(cursor.value - 1, 0, dataIds.value.length - 1)
-  if (listComponent.value) {
+  if (listComponent.value)
     listComponent.value.scrollToIndex(cursor.value)
-  }
 })
 
 onKeyStroke('ArrowDown', (event) => {
-  if (!focusFlag.value) {
+  if (!focusFlag.value)
     return
-  }
 
   event.preventDefault()
 
   cursor.value = clamp(cursor.value + 1, 0, dataIds.value.length - 1)
-  if (listComponent.value) {
+  if (listComponent.value)
     listComponent.value.scrollToIndex(cursor.value)
-  }
 })
 
 onKeyStroke('Enter', async (event) => {
-  if (!focusFlag.value || cursor.value < 0) {
+  if (!focusFlag.value || cursor.value < 0)
     return
-  }
 
   event.preventDefault()
 
@@ -225,24 +213,22 @@ onKeyStroke('Enter', async (event) => {
 })
 
 onMounted(() => {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputComponent.value?.rootRef)
     return
-  }
+
   // inputRef.value.rootRef.addEventListener('focus', focusEventListener)
   document.addEventListener('focusin', documentFocusinEventListener)
   documentFocusinEventListener()
 
-  if (cursor.value < 0) {
+  if (cursor.value < 0)
     return
-  }
 
   itemClickHandler(cursor.value)
 })
 
 onUnmounted(() => {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputComponent.value?.rootRef)
     return
-  }
 
   document.removeEventListener('focusin', documentFocusinEventListener)
 })
@@ -267,16 +253,15 @@ onUnmounted(() => {
 function getField<T extends object>(
   obj: T,
   path: string[],
-  defaultValue?: string
+  defaultValue?: string,
 ): string | object | undefined {
   const travel = () => {
     let val: object = obj
 
     for (const i in path) {
       const p = path[i] as keyof typeof val
-      if (!Object.hasOwn(val, p)) {
+      if (!Object.hasOwn(val, p))
         return
-      }
 
       val = val[p] as T[typeof p]
     }
@@ -285,13 +270,14 @@ function getField<T extends object>(
   }
 
   const result = travel()
-  return result === undefined || result === obj ? defaultValue : result
+  return (result === undefined || result === obj)
+    ? defaultValue
+    : result
 }
 
 function itemClassAdd(n: number) {
-  if (n === cursor.value) {
+  if (n === cursor.value)
     return props.color && `box-color__${props.color}--4`
-  }
 
   return `box-color__${props.color}--2`
 }
@@ -300,15 +286,13 @@ async function itemClickHandler(n: number) {
   cursor.value = n
   const itemId = dataIds.value[cursor.value]
   const item = await dataGetter(itemId as string)
-  if (!item.value) {
+  if (!item.value)
     return
-  }
 
   emit('update:modelValue', itemId as string)
 
-  if (!inputComponent.value?.rootRef) {
+  if (!inputComponent.value?.rootRef)
     return
-  }
 
   toggleFocused(false)
   inputComponent.value.rootRef.blur()
@@ -324,9 +308,8 @@ async function itemHoverHandler(n: number) {
 }
 
 function inputCleanHandler() {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputComponent.value?.rootRef)
     return
-  }
 
   emit('update:modelValue', '')
 
@@ -337,21 +320,19 @@ function inputCleanHandler() {
 }
 
 function inputFocusHandler() {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputComponent.value?.rootRef)
     return
-  }
 
   toggleFocused(true)
   inputComponent.value.rootRef.focus()
 }
 
 function documentFocusinEventListener() {
-  if (!inputComponent.value?.rootRef || !document.activeElement) {
+  if (!inputComponent.value?.rootRef || !document.activeElement)
     return
-  }
 
   toggleFocused(
-    document.activeElement.isEqualNode(inputComponent.value.rootRef)
+    document.activeElement.isEqualNode(inputComponent.value.rootRef),
   )
 }
 </script>
