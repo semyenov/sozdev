@@ -53,7 +53,6 @@ function handleClick() {
 <template>
   <div class="component-object-item">
     <UiCard
-      dashed
       class="cursor-pointer select-none"
       rounded="none"
       :color="winboxWindow ? 'fourth' : 'primary'"

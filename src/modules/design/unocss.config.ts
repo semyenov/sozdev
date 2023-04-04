@@ -273,7 +273,7 @@ export default defineConfig<UnoTheme>({
     }),
     presetUno,
     presetScrollbar({
-      scrollbarHeight: '1rem',
+      scrollbarHeight: '2rem',
       scrollbarWidth: '0.5rem',
       scrollbarThumbRadius: '0',
       scrollbarTrackRadius: '0',

@@ -7,7 +7,7 @@ import {
   useLogger,
 } from '@nuxt/kit'
 
-const logger = useLogger('winbox')
+const logger = useLogger('modules/winbox')
 
 export default defineNuxtModule({
   async setup(_options, nuxt) {
