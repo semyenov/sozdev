@@ -1,5 +1,6 @@
 import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
+
 import {
   availableLocales,
   datetimeFormats,
