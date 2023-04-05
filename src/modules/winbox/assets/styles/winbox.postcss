@@ -1,21 +1,48 @@
 @import url('winbox/dist/css/winbox.min.css');
 
 .winbox.simple {
-  @apply flex flex-col bg-transparent border border-default-300 dark:border-default-700 shadow-none min-h-50;
+  @apply flex flex-col box-color__default--1 border shadow-none rounded-none;
+
+  .wb-e {
+    @apply -right-2 top-0 bottom-0 w-2 border-r;
+  }
+
+  .wb-w {
+    @apply -left-2 top-0 bottom-0 w-2 border-l;
+  }
+
+  .wb-n {
+    @apply -top-2 right-0 left-0 h-2 border-t;
+  }
+
+  .wb-s {
+    @apply -bottom-2 right-0 left-0 h-2 border-b;
+  }
+
+  .wb-e,
+  .wb-s,
+  .wb-w,
+  .wb-n {
+    @apply bg-transparent border-transparent;
+
+    &:hover {
+      @apply dark:bg-default-700 bg-default-200 transition-all duration-500 z-3;
+    }
+  }
 
   .wb-header {
-    @apply flex flex-row box-color__default--2 px-0 dark:text-default-400 border-b border-b text-default-500 justify-center relative h-auto!;
+    @apply flex flex-row box-color__default--2 px-0 py-0 dark:text-default-400 border-b border-b text-default-500 justify-center relative h-auto!;
 
     .wb-drag {
-      @apply flex flex-grow py-2 pl-6 pr-0 overflow-hidden;
+      @apply flex flex-grow overflow-hidden p-0;
 
       .wb-title {
-        @apply inline text-xl font-extrabold font-sans justify-center text-ellipsis w-full;
+        @apply inline text-xl font-extrabold font-sans justify-center text-ellipsis w-full leading-none py-3 pl-6 pr-0;
       }
     }
 
     .wb-control {
-      @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pl-0 pr-4 opacity-60 py-2;
+      @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pl-0 pr-2 opacity-60 py-2;
 
       * {
         @apply h-full max-w-6;
@@ -24,18 +51,18 @@
   }
 
   .wb-body {
-    @apply flex flex-grow box-color__default--1 w-full h-auto overflow-auto scrollbar scrollbar-rounded top-0! relative;
+    @apply flex flex-grow w-full h-auto overflow-auto top-0! relative rounded-b-none;
 
     .wb-content {
-      @apply top-0 right-0 left-0 w-full h-full m-0 absolute;
+      @apply top-0 left-0 w-full h-full m-0 absolute;
     }
   }
 
   &.focus {
-    @apply shadow-xl shadow-default dark:shadow-default-800;
+    @apply shadow-xl shadow-default dark:shadow-default-800 border-default-300;
 
     .wb-header {
-      @apply flex flex-row box-color__default--3 border-default-300 dark:border-default-700 text-default-700 dark:text-default-300;
+      @apply flex flex-row box-color__default--3;
     }
   }
 
@@ -63,8 +90,6 @@
     }
 
     &:hover {
-      @apply z-200!;
-
       .wb-header {
         .wb-control {
           /* @apply flex; */
@@ -77,74 +102,11 @@
     }
   }
 
-  .wb-e,
-  .wb-s,
-  .wb-w,
-  .wb-n {
-    @apply bg-default-400 border-default-800 opacity-0 dark:bg-default-500 dark:border-default-300/10;
-
-    &:hover {
-      @apply dark:bg-default-600 opacity-40 bg-default-300 transition-all duration-500 border-default-400 dark:border-default-600;
-    }
-  }
-
-  .wb-e {
-    @apply -right-2 top-0 bottom-0 border-l w-2;
-
-    &:hover {
-      @apply -right-1.9 rounded-r-full;
-    }
-  }
-
-  .wb-w {
-    @apply -left-2 top-0 bottom-0 w-2  border-r;
-
-    &:hover {
-      @apply -left-1.9 rounded-l-full;
-    }
-  }
-
-  .wb-n {
-    @apply -top-2 right-0 left-0 h-2 border-b;
-
-    &:hover {
-      @apply -top-1.9  rounded-t-full;
-    }
-  }
-
-  .wb-s {
-    @apply -bottom-2 right-0 left-0 h-2 border-t;
-
-    &:hover {
-      @apply -bottom-1.9 rounded-b-full;
-    }
-  }
-
-  &.wb-left {
+  /* &.wb-left {
     @apply border-l-none border-t-none border-b-none;
-
-    /* .wb-n,
-    .wb-s,
-    .wb-w,
-    .wb-nw,
-    .wb-sw,
-    .wb-ne,
-    .wb-se {
-      @apply hidden;
-    } */
   }
 
   &.wb-right {
     @apply border-r-none border-t-none border-b-none;
-
-    /* .wb-n,
-    .wb-s,
-    .wb-e,
-    .wb-ne,
-    .wb-se,
-    .wb-nw,
-    .wb-sw {
-      @apply hidden;
-    } */
-  }
+  } */
 }

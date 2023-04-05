@@ -277,7 +277,7 @@ export default defineConfig<UnoTheme>({
       scrollbarWidth: '0.5rem',
       scrollbarThumbRadius: '0',
       scrollbarTrackRadius: '0',
-      scrollbarTrackColor: '#a5a5a515',
+      scrollbarTrackColor: '#99999900',
       scrollbarThumbColor: '#9999996b',
     }),
   ],

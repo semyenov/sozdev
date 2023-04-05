@@ -31,7 +31,7 @@ const slots = useSlots()
   >
     <div
       v-if="slots.header"
-      class="flex flex-grow flex-row items-center justify-between gap-1 text-base font-bold leading-snug"
+      class="flex flex-row items-center flex-grow justify-between gap-1 text-base font-bold leading-snug"
       :class="[
         props.color && `box-color__${props.color}--3`,
         props.rounded && `list-rounded__${props.rounded}`,

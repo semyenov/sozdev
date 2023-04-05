@@ -1,3 +1,5 @@
+@import url('simplebar-vue/dist/simplebar.min.css');
+
 /* stylelint-disable-next-line selector-id-pattern */
 #__nuxt {
   @apply flex flex-grow w-screen h-screen overflow-hidden;
@@ -22,4 +24,23 @@ html {
 .page-enter-from,
 .page-leave-to {
   @apply opacity-50 blur-lg filter;
+}
+
+.scrollbar,
+.wb-body {
+  &::-webkit-scrollbar {
+    @apply w-3;
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply bg-transparent w-full box-border;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 h-20 transition transition-all rounded-md border-solid border-x-4 border-transparent bg-clip-content;
+
+    &:hover {
+      @apply bg-gray-400 border-x-2 w-full;
+    }
+  }
 }
