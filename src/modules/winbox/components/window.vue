@@ -73,11 +73,6 @@ function closeWindow() {
 
 <template>
   <Teleport v-if="showFlag" :to="`#${params.id} .wb-content`">
-    <div class="border-b px-6 py-4 text-xs box-color__default--2">
-      <pre>{{
-          winboxWindow?.state
-      }}</pre>
-    </div>
     <slot name="default" />
   </Teleport>
 </template>

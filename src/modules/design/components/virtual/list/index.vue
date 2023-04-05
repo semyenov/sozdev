@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { range } from '@antfu/utils'
-import SimpleBar from 'simplebar-core'
+
+import { SimpleBar } from '#components'
 
 import type { VirtualRange } from '~/utils'
 
@@ -136,7 +137,7 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 
-const rootRef = ref<HTMLElement | null>(null)
+const rootRef = ref<InstanceType<typeof SimpleBar> | null>(null)
 const scrollRef = ref<HTMLElement | null>(null)
 
 const shepherdRef = ref<HTMLElement | null>(null)
@@ -161,8 +162,6 @@ const vr = ref<[number, number]>([
   Math.max(props.start, 0),
   Math.min(props.start + props.keeps, dataIds.value.length),
 ])
-
-const simplebar = ref<SimpleBar | null>(null)
 
 const v = new Virtual(
   {
@@ -190,18 +189,17 @@ onMounted(() => {
   // in page mode we bind scroll event to document
   if (props.pageMode) {
     updatePageModeFront()
-
     document.addEventListener('scroll', onScroll, {
       passive: false,
     })
+
+    return
   }
 
-  simplebar.value = new SimpleBar(rootRef.value!, {
-    autoHide: false,
+  scrollRef.value = rootRef.value?.$refs.scrollElement as HTMLElement
+  scrollRef.value?.addEventListener('scroll', onScroll, {
+    passive: false,
   })
-
-  // set position
-  onScroll(new Event('scroll'))
 })
 
 onUnmounted(() => {
@@ -218,8 +216,6 @@ onActivated(() => {
       passive: false,
     })
   }
-
-  onScroll()
 })
 
 onDeactivated(() => {
@@ -233,8 +229,8 @@ watch(
     v.updateParam('uniqueIds', dataIds.slice())
     v.handleDataSourcesChange()
 
-    const offset = getOffsetSize()
-    scrollToOffset(offset + 1)
+    // const offset = getOffsetSize()
+    // scrollToOffset(offset + 1)
   },
 )
 watch(
@@ -261,10 +257,8 @@ function onScroll(evt: Event) {
   const target = evt.target as HTMLElement
   const offsetSize = target[offsetSizeKey.value]
 
-  const clientSize = getClientSize()
-  const scrollSize = getScrollSize()
-
-  console.log(evt, offsetSize, clientSize, scrollSize, simplebar.value)
+  const clientSize = target[clientSizeKey.value]
+  const scrollSize = target[scrollSizeKey.value]
 
   // iOS scroll-spring-back behavior will make direction mistake
   if (
@@ -276,42 +270,6 @@ function onScroll(evt: Event) {
 
   emitScrollEvent(offsetSize, clientSize, scrollSize, evt)
   v.handleScroll(Math.max(0, offsetSize - clientSize / 2))
-}
-
-// return current scroll offset
-function getOffsetSize() {
-  if (props.pageMode) {
-    return (
-      document.documentElement[offsetSizeKey.value]
-      || document.body[offsetSizeKey.value]
-    )
-  }
-
-  return scrollRef.value ? Math.ceil(scrollRef.value[offsetSizeKey.value]) : 0
-}
-
-// return client viewport size
-function getClientSize() {
-  if (props.pageMode) {
-    return (
-      document.documentElement[clientSizeKey.value]
-      || document.body[clientSizeKey.value]
-    )
-  }
-
-  return scrollRef.value ? Math.ceil(scrollRef.value[clientSizeKey.value]) : 0
-}
-
-// return all scroll size
-function getScrollSize() {
-  if (props.pageMode) {
-    return (
-      document.documentElement[scrollSizeKey.value]
-      || document.body[scrollSizeKey.value]
-    )
-  }
-
-  return scrollRef.value ? Math.ceil(scrollRef.value[scrollSizeKey.value]) : 0
 }
 
 // set current scroll position to a expectant offset
@@ -351,10 +309,10 @@ function scrollToBottom() {
   // check if it's really scrolled to the bottom
   // maybe list doesn't render and calculate to last range
   // so we need retry in next event loop until it really at bottom
-  setTimeout(() => {
-    if (getOffsetSize() + getClientSize() < getScrollSize())
-      scrollToBottom()
-  }, 30)
+  // setTimeout(() => {
+  //   if (getOffsetSize() + getClientSize() < getScrollSize())
+  //     scrollToBottom()
+  // }, 30)
 }
 
 // when using page mode we need update slot header size manually
@@ -442,92 +400,70 @@ function getWrapperStyle(
 </script>
 
 <template>
-  <component
+  <SimpleBar
     :is="props.rootTag"
     :key="`${props.dataKey}-list_root`"
     ref="rootRef"
-    data-simplebar="init"
+    :auto-hide="false"
+    :scrollbar-min-size="100"
     role="list"
   >
-    <div class="simplebar-wrapper">
-      <div class="simplebar-height-auto-observer-wrapper">
-        <div class="simplebar-height-auto-observer" />
-      </div>
-      <div class="simplebar-mask">
-        <div class="simplebar-offset">
-          <div
-            ref="scrollRef"
-            class="simplebar-content-wrapper"
-            @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)"
-          >
-            <div class="simplebar-content">
-              <UiVirtualListSlot
-                :key="`${props.dataKey}_list_header`"
-                :tag="props.headerTag"
-                :class="props.headerClass"
-                :style="props.headerStyle"
-                data-id="thead"
-                @resize="onSlotResized"
-              >
-                <slot name="header" />
-              </UiVirtualListSlot>
-              <Component
-                :is="props.wrapTag"
-                :key="`${props.dataKey}_list_wrap`"
-                :class="props.wrapClass"
-                :style="wrapperStyle"
-                role="group"
-              >
-                <Component
-                  :is="props.itemWrapTag"
-                  v-for="i in range(...vr).concat()"
-                  :key="`${props.dataKey}_list_component_wrap_${dataIds[i]}`"
-                  role="listitem"
-                >
-                  <UiVirtualListItem
-                    :index="i"
-                    :tag="props.itemTag"
-                    :style="props.itemStyle"
-                    :horizontal="isHorizontal"
-                    :data-id="dataIds[i]"
-                    :data-key="props.dataKey"
-                    :data-getter="props.dataGetter"
-                    :extra-props="props.extraProps"
-                    :estimate-size="v.getEstimateSize()"
-                    :data-component="props.dataComponent"
-                    :slot-component="slots && slots.item"
-                    :scoped-slots="props.itemScopedSlots"
-                    :item-class="
-                      props.itemClass
-                        + (props.itemClassAdd ? ` ${props.itemClassAdd(i)}` : '')
-                    "
-                    @resize="onItemResized"
-                    @click="emit('itemClick', i)"
-                    @mouseover="emit('itemHover', i)"
-                  />
-                </Component>
-              </Component>
-              <UiVirtualListSlot
-                :key="`${props.dataKey}-list_footer`"
-                :class="props.footerClass"
-                :style="props.footerStyle"
-                :tag="props.footerTag"
-                data-id="tfoot"
-                @resize="onSlotResized"
-              >
-                <slot name="footer" />
-              </UiVirtualListSlot>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="simplebar-placeholder" />
-    </div>
-    <div class="simplebar-track simplebar-horizontal">
-      <div class="simplebar-scrollbar" />
-    </div>
-    <div class="simplebar-track simplebar-vertical">
-      <div class="simplebar-scrollbar" />
-    </div>
-  </component>
+    <!-- @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)" -->
+    <UiVirtualListSlot
+      :key="`${props.dataKey}_list_header`"
+      :tag="props.headerTag"
+      :class="props.headerClass"
+      :style="props.headerStyle"
+      data-id="thead"
+      @resize="onSlotResized"
+    >
+      <slot name="header" />
+    </UiVirtualListSlot>
+    <Component
+      :is="props.wrapTag"
+      :key="`${props.dataKey}_list_wrap`"
+      :class="props.wrapClass"
+      :style="wrapperStyle"
+      role="group"
+    >
+      <Component
+        :is="props.itemWrapTag"
+        v-for="i in range(...vr).concat()"
+        :key="`${props.dataKey}_list_component_wrap_${dataIds[i]}`"
+        role="listitem"
+      >
+        <UiVirtualListItem
+          :index="i"
+          :tag="props.itemTag"
+          :style="props.itemStyle"
+          :horizontal="isHorizontal"
+          :data-id="dataIds[i]"
+          :data-key="props.dataKey"
+          :data-getter="props.dataGetter"
+          :extra-props="props.extraProps"
+          :estimate-size="v.getEstimateSize()"
+          :data-component="props.dataComponent"
+          :slot-component="slots && slots.item"
+          :scoped-slots="props.itemScopedSlots"
+          :item-class="
+            props.itemClass
+              + (props.itemClassAdd ? ` ${props.itemClassAdd(i)}` : '')
+          "
+          @resize="onItemResized"
+          @click="emit('itemClick', i)"
+          @mouseover="emit('itemHover', i)"
+        />
+      </Component>
+    </Component>
+    <UiVirtualListSlot
+      :key="`${props.dataKey}-list_footer`"
+      :class="props.footerClass"
+      :style="props.footerStyle"
+      :tag="props.footerTag"
+      data-id="tfoot"
+      @resize="onSlotResized"
+    >
+      <slot name="footer" />
+    </UiVirtualListSlot>
+  </SimpleBar>
 </template>
