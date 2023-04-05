@@ -5,6 +5,7 @@ const props = defineProps({
     required: true,
   },
 })
+
 const usersStore = useUsersStore()
 const item = await usersStore.itemGetter(props.id)
 </script>
@@ -12,8 +13,8 @@ const item = await usersStore.itemGetter(props.id)
 <template>
   <SimpleBar
     class="overflow-auto"
-    :auto-hide="false"
     :scrollbar-min-size="100"
+    :scrollbar-max-size="300"
   >
     <div class="users-detail-item p-6">
       {{ item }}

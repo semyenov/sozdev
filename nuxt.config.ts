@@ -64,17 +64,6 @@ export default defineNuxtConfig({
   components: {
     dirs: [
       {
-        path: resolve('./node_modules/simplebar-vue/dist'),
-        pattern: '**/*.esm.js',
-        extendComponent: (component) => {
-          console.log(component)
-
-          component.pascalName = 'SimpleBar'
-          component.kebabName = 'simple-bar'
-          return component
-        },
-      },
-      {
         enabled: true,
         global: true,
         isAsync: true,
@@ -93,9 +82,9 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    autoImport: true,
     dirs: ['store', 'composables', 'utils'],
     collectMeta: true,
+
     addons: {
       vueTemplate: true,
     },

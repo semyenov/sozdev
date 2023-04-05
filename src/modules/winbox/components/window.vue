@@ -11,6 +11,7 @@ const props = defineProps({
   },
 })
 
+const disabled = ref(true)
 const params = toRef(props, 'params')
 const [showFlag, showToggle] = useToggle(false)
 
@@ -28,6 +29,8 @@ onScopeDispose(closeWindow)
 watch(showFlag, flag => (flag ? openWindow() : closeWindow()))
 
 function openWindow() {
+  disabled.value = false
+
   if (winboxWindow.value && winboxWindow.value.winbox)
     return
 
@@ -72,7 +75,7 @@ function closeWindow() {
 </script>
 
 <template>
-  <Teleport v-if="showFlag" :to="`#${params.id} .wb-content`">
+  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-content`">
     <slot name="default" />
   </Teleport>
 </template>

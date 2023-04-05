@@ -1,4 +1,4 @@
-import { addComponentsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponent, addComponentsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
 import VitePlugin from '@unocss/vite'
 import { loadConfig } from '@unocss/config'
 import postcssNested from 'postcss-nested'
@@ -17,6 +17,14 @@ export default defineNuxtModule<{}>({
 
   async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
+
+    nuxt.options.css.push(resolve('assets/styles/simplebar.postcss'))
+
+    await addComponent({
+      name: 'SimpleBar',
+      filePath: 'simplebar-vue',
+      global: true,
+    })
 
     await addComponentsDir({
       path: resolve('components'),

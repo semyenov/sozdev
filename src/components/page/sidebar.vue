@@ -5,7 +5,7 @@ const { setLocale, locale } = useI18n()
 
 <template>
   <div
-    class="flex justify-between flex-grow flex-col box-color__default--2 border-r"
+    class="flex flex-grow flex-col justify-between border-r box-color__default--2"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -14,7 +14,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b"
+          class="border-b border-b-dashed"
           color="primary"
           :outline="!isActive"
           size="md"
@@ -22,7 +22,7 @@ const { setLocale, locale } = useI18n()
           :border="false"
           @click="navigate"
         >
-          <i class="inline-block i-carbon:home h-6.5" />
+          <i class="i-carbon:home inline-block h-6.5" />
         </UiButton>
       </NuxtLink>
       <NuxtLink
@@ -31,7 +31,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b"
+          class="border-b border-b-dashed"
           color="secondary"
           :outline="!isActive"
           size="md"
@@ -39,7 +39,7 @@ const { setLocale, locale } = useI18n()
           :border="false"
           @click="navigate"
         >
-          <i class="inline-block h-6.5 i-carbon:data-blob" />
+          <i class="i-carbon:data-blob inline-block h-6.5" />
         </UiButton>
       </NuxtLink>
       <NuxtLink
@@ -48,7 +48,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b"
+          class="border-b border-b-dashed"
           color="third"
           :outline="!isActive"
           size="md"
@@ -56,7 +56,7 @@ const { setLocale, locale } = useI18n()
           :border="false"
           @click="navigate"
         >
-          <i class="inline-block h-6.5 i-carbon:user" />
+          <i class="i-carbon:user inline-block h-6.5" />
         </UiButton>
       </NuxtLink>
       <NuxtLink
@@ -65,7 +65,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b"
+          class="border-b border-b-dashed"
           color="fourth"
           size="md"
           :outline="!isActive"
@@ -73,7 +73,7 @@ const { setLocale, locale } = useI18n()
           :border="false"
           @click="navigate"
         >
-          <i class="inline-block h-6.5 i-carbon:text-scale" />
+          <i class="i-carbon:text-scale inline-block h-6.5" />
         </UiButton>
       </NuxtLink>
       <NuxtLink
@@ -82,7 +82,7 @@ const { setLocale, locale } = useI18n()
         custom
       >
         <UiButton
-          class="border-b"
+          class="border-b border-b-dashed"
           color="primary"
           :outline="!isActive"
           size="md"
@@ -90,14 +90,14 @@ const { setLocale, locale } = useI18n()
           :border="false"
           @click="navigate"
         >
-          <i class="inline-block h-6.5 i-carbon:book" />
+          <i class="i-carbon:book inline-block h-6.5" />
         </UiButton>
       </NuxtLink>
     </div>
 
-    <div class="flex flex-col mt-8">
+    <div class="mt-8 flex flex-col">
       <UiButton
-        class="border-t"
+        class="border-t border-t-dashed"
         color="default"
         outline
         size="md"

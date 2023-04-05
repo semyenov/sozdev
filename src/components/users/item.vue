@@ -60,7 +60,7 @@ function handleClick() {
   <div class="component-user-item">
     <UiCard
       class="cursor-pointer select-none"
-      rounded="none"
+      rounded="md"
       :color="winboxWindow ? 'secondary' : 'third'"
       @click="handleClick()"
     >

@@ -401,11 +401,10 @@ function getWrapperStyle(
 
 <template>
   <SimpleBar
-    :is="props.rootTag"
-    :key="`${props.dataKey}-list_root`"
     ref="rootRef"
-    :auto-hide="false"
+    :key="`${props.dataKey}-list_root`"
     :scrollbar-min-size="100"
+    :scrollbar-max-size="300"
     role="list"
   >
     <!-- @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)" -->
