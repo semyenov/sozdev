@@ -15,7 +15,7 @@ const { setLocale, locale } = useI18n()
       >
         <UiButton
           class="border-b border-b-dashed"
-          color="primary"
+          color="default"
           :outline="!isActive"
           size="md"
           rounded="none"

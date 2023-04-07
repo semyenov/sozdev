@@ -9,9 +9,20 @@ definePageMeta({
 const { t } = useI18n()
 const route = useRoute('objects')
 
+const input = ref<string>('')
+
 const objectsStore = useObjectsStore()
-const objectsIds = await objectsStore.itemsGetter
+// const objectsIds = await objectsStore.itemsGetter
+const objectSearchGetter = objectsStore.searchGetter
 const objectGetter = objectsStore.itemGetter
+
+await objectsStore.getItems()
+const objectsIds = computed(() => {
+  if (input.value === '')
+    return []
+
+  return objectSearchGetter(input.value).value!
+})
 
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
@@ -58,6 +69,17 @@ async function loadOthersHandler() {
         tether: ['left', 'top', 'bottom'],
       }"
     >
+      <div class="w-full flex flex-row items-center justify-center border-b border-b-dashed px-6 py-4 box-color__default--1">
+        <UiInput
+          key="page-objects-index-virtuallist-search"
+          v-model="input"
+          class="w-full"
+          placeholder="Search"
+          size="md"
+          color="default"
+          outline
+        />
+      </div>
       <UiVirtualList
         ref="listComponent"
         :keeps="50"

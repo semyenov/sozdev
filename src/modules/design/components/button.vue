@@ -33,7 +33,7 @@ const props = defineProps({
 
 <template>
   <button
-    class="flex flex-row items-center justify-center flex-shrink-0 transition-200"
+    class="flex flex-shrink-0 flex-row items-center justify-center transition-200"
     :class="[
       props.size && `box-size__${props.size}`,
       props.rounded && `box-rounded__${props.rounded}`,
