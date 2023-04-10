@@ -1,6 +1,9 @@
 import { hasOwnProperty, toArray } from '@antfu/utils'
+import { Document } from 'flexsearch'
+import copy from 'fast-copy'
 
 import { ApiClient } from '~/api/client'
+import type { IObject } from '~/types'
 import { IMetaScope } from '~/types'
 
 import type { FetchOptions, SearchParameters } from 'ofetch'
@@ -20,6 +23,7 @@ export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
   objects: ['objects'],
   users: ['users'],
   moves: ['moves'],
+  reports: ['tasks', 'reports'],
 }
 
 export const useBackendStore = defineStore(backendStoreKey, () => {
@@ -34,6 +38,27 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     baseURL,
     onRequestError: (ctx) => {
       logger.error(JSON.stringify(ctx, null, 2))
+    },
+  })
+
+  const objectsIndex = new Document<IObject>({
+    // worker: true,
+    preset: 'performance',
+    document: {
+      id: '_id',
+      field: [
+        'info:name',
+        'info:code',
+        'resources',
+        'demands',
+        ...[
+          'fd3c3c97-b897-44fd-879c-2921400ed45f',
+          'bcdc181a-21d9-4144-a6a4-35ae0280c5ec',
+          'c7ac6f88-73b2-46ac-8d7a-a1ed63dfbefa',
+          'c1e3da75-fe31-4e95-9957-8ccdfe0e8496',
+          'b65d673a-c71b-4ea0-9b7f-80a78f344a8b',
+        ].map(id => `fields:${id}`),
+      ],
     },
   })
 
@@ -82,6 +107,46 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
           return storeScopeMap.get(id) as T | undefined
         })
       }
+
+  // const searchGetter = <T>(scope: IMetaScope) => async (query: string) => {
+  //   const storeScopeMap = store.value.get(scope)!
+  //   if (scope !== IMetaScope.OBJECTS) {
+  //     logger.error('Search is only available for objects')
+  //     return
+  //   }
+  //   const results = objectsIndex.search(query)
+  //   const items = results.flatMap(r => r.result.map(id => storeScopeMap.get(id as string) as T))
+
+  //   return computed(() => items)
+  // }
+
+  const searchGetter = (scope: IMetaScope) => (query: string) => {
+    // const storeScopeMap = store.value.get(scope)!
+
+    return computed(() => {
+      if (scope !== IMetaScope.OBJECTS) {
+        logger.error('Search is only available for objects')
+        return []
+      }
+
+      objectsIndex.export(console.log)
+
+      const results = objectsIndex.search(query, {
+        index: [
+          'fd3c3c97-b897-44fd-879c-2921400ed45f',
+          'bcdc181a-21d9-4144-a6a4-35ae0280c5ec',
+          'c7ac6f88-73b2-46ac-8d7a-a1ed63dfbefa',
+          'c1e3da75-fe31-4e95-9957-8ccdfe0e8496',
+          'b65d673a-c71b-4ea0-9b7f-80a78f344a8b',
+        ].map(id => `fields:${id}`),
+      })
+
+      // console.log(results)
+
+      const ids = results.flatMap(r => r.result)
+      return ids as string[]
+    })
+  }
 
   async function get<T, Q extends SearchParameters = {}>(
     [scope, command, ...params]: [IMetaScope, string, ...string[]],
@@ -171,8 +236,15 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     const storeScopeMap = store.value.get(scope)!
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
-      if (hasOwnProperty(item, backendStoreIdentificator))
-        storeScopeMap.set(item[backendStoreIdentificator], item)
+      if (hasOwnProperty(item, backendStoreIdentificator)) {
+        if (scope === IMetaScope.OBJECTS) {
+          // console.log(item)
+
+          objectsIndex.add(item as unknown as IObject)
+        }
+
+        storeScopeMap.set(item[backendStoreIdentificator], copy(item))
+      }
     }
 
     return true
@@ -187,6 +259,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     itemsGetterByIds,
 
     itemGetter,
+    searchGetter,
 
     get,
     post,

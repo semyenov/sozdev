@@ -64,13 +64,13 @@ function scrollClickHandler() {
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
         wrap-class="flex flex-col w-full"
-        class="flex flex-col overflow-y-scroll p-6 scrollbar scrollbar-rounded flex-grow items-center gap-8 h-auto max-h-full"
+        class="flex flex-grow flex-col items-center gap-8 overflow-auto p-6"
         :estimate-size="70"
         item-class="mb-6"
       />
     </WinboxWindow>
 
-    <div class="absolute flex flex-col z-10 bottom-8 right-8 gap-4">
+    <div class="absolute bottom-8 right-8 z-10 flex flex-col gap-4">
       <UiButton
         outline
         size="md"
@@ -78,7 +78,7 @@ function scrollClickHandler() {
         color="default"
         @click="scrollClickHandler"
       >
-        <i class="inline-block i-carbon:arrow-down" />
+        <i class="i-carbon:arrow-down inline-block" />
       </UiButton>
     </div>
   </div>

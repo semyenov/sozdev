@@ -9,9 +9,20 @@ definePageMeta({
 const { t } = useI18n()
 const route = useRoute('objects')
 
+const input = ref<string>('')
+
 const objectsStore = useObjectsStore()
-const objectsIds = await objectsStore.itemsGetter
+// const objectsIds = await objectsStore.itemsGetter
+const objectSearchGetter = objectsStore.searchGetter
 const objectGetter = objectsStore.itemGetter
+
+await objectsStore.getItems()
+const objectsIds = computed(() => {
+  if (input.value === '')
+    return []
+
+  return objectSearchGetter(input.value).value!
+})
 
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
@@ -58,6 +69,17 @@ async function loadOthersHandler() {
         tether: ['left', 'top', 'bottom'],
       }"
     >
+      <div class="w-full flex flex-row items-center justify-center border-b border-b-dashed px-6 py-4 box-color__default--1">
+        <UiInput
+          key="page-objects-index-virtuallist-search"
+          v-model="input"
+          class="w-full"
+          placeholder="Search"
+          size="md"
+          color="default"
+          outline
+        />
+      </div>
       <UiVirtualList
         ref="listComponent"
         :keeps="50"
@@ -67,13 +89,13 @@ async function loadOthersHandler() {
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
         wrap-class="flex flex-col w-full"
-        class="flex flex-col items-center gap-8 overflow-y-scroll p-6 scrollbar scrollbar-rounded flex-grow h-auto max-h-full"
+        class="flex flex-grow flex-col items-center gap-8 overflow-auto p-6"
         :estimate-size="70"
         item-class="mb-6"
       />
     </WinboxWindow>
 
-    <div class="flex flex-col absolute gap-2 z-10 right-8 bottom-8">
+    <div class="absolute bottom-8 right-8 z-10 flex flex-col gap-2">
       <UiButton
         class="h-11"
         color="default"
@@ -90,7 +112,7 @@ async function loadOthersHandler() {
         size="md"
         @click.prevent="scrollClickHandler"
       >
-        <i class="inline-block i-carbon:arrow-down" />
+        <i class="i-carbon:arrow-down inline-block" />
       </UiButton>
     </div>
   </div>

@@ -30,6 +30,7 @@ export const useObjectsStore = defineStore(objectsStoreKey, () => {
           .map(item => item._id),
       ),
     )
+  const searchGetter = backendStore.searchGetter(IMetaScope.OBJECTS)
 
   const getItems = () =>
     backendStore.get<IObject>([IMetaScope.OBJECTS, 'items'])
@@ -47,6 +48,7 @@ export const useObjectsStore = defineStore(objectsStoreKey, () => {
     itemsGetter,
     itemsGetterByIds,
     itemGetter,
+    searchGetter,
 
     getItems,
     getOthers,

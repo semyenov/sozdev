@@ -1,0 +1,39 @@
+@import url('simplebar-vue/dist/simplebar.min.css');
+
+[data-simplebar] {
+  .simplebar-track {
+    @apply bg-transparent w-4;
+
+    .simplebar-scrollbar {
+      &::before {
+        @apply bg-gray-300 opacity-50 top-1 left-2 right-1 bottom-1 rounded-md transition-all ease duration-300;
+      }
+
+      &.simplebar-visible::before {
+        @apply bg-gray-400 opacity-50;
+      }
+    }
+
+    &.simplebar-hover {
+      .simplebar-scrollbar::before {
+        @apply bg-gray-500 left-1.5 right-1 opacity-75;
+      }
+    }
+  }
+
+  &.simplebar-scrolling {
+    .simplebar-track {
+      .simplebar-scrollbar::before {
+        @apply bg-gray-400 left-1.5 right-1 opacity-50;
+      }
+    }
+  }
+
+  &.simplebar-dragging {
+    .simplebar-track {
+      .simplebar-scrollbar::before {
+        @apply bg-gray-500 left-1.5 right-1 opacity-75;
+      }
+    }
+  }
+}

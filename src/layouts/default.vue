@@ -8,26 +8,24 @@ watch(tildaKey, v => v && toggleDark())
 
 <template>
   <div class="flex flex-grow box-color__default--3">
-    <NuxtLoadingIndicator class="w-full absolute z-100 h-2" />
-
-    <div class="flex flex-col flex w-full right-0 relative left-0 fixed h-0">
-      <div id="teleport-layer--10" class="z-10" />
-      <div id="teleport-layer--20" class="z-20" />
-    </div>
-
-    <div class="flex flex-col hidden">
-      <WinboxRoot />
-    </div>
+    <NuxtLoadingIndicator class="absolute z-100 h-4 w-full" />
 
     <MapLibre />
-
     <div
-      class="flex flex-grow flex-col items-start text-left justify-items-stretch"
+      class="flex flex-grow flex-col items-start justify-items-stretch text-left"
     >
       <div class="flex flex-grow flex-row">
         <PageSidebar class="z-30" />
-        <div class="flex flex-col flex-grow">
+        <div class="flex flex-grow flex-col">
           <NuxtPage />
+        </div>
+        <div class="fixed relative left-0 right-0 h-0 w-full flex flex-col">
+          <div id="teleport-layer--10" class="z-10" />
+          <div id="teleport-layer--20" class="z-20" />
+        </div>
+
+        <div class="flex flex-grow flex-col">
+          <WinboxRoot />
         </div>
       </div>
     </div>

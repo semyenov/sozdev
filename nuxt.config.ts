@@ -83,6 +83,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['store', 'composables', 'utils'],
     collectMeta: true,
+
     addons: {
       vueTemplate: true,
     },

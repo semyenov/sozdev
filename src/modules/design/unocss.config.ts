@@ -1,6 +1,5 @@
 import chroma from 'chroma-js'
 import { objectMap, range } from '@antfu/utils'
-import { presetScrollbar } from 'unocss-preset-scrollbar'
 import {
   presetUno as createPresetUno,
   defineConfig,
@@ -19,6 +18,8 @@ import type {
   UISizeVariants,
   UnoColorVariants,
 } from '~/types/ui'
+
+import { presetChroma } from './unocss-preset-chroma'
 
 export const unoColorVariants: UnoColorVariants[] = [
   'rose',
@@ -272,14 +273,7 @@ export default defineConfig<UnoTheme>({
       },
     }),
     presetUno,
-    presetScrollbar({
-      scrollbarHeight: '2rem',
-      scrollbarWidth: '0.5rem',
-      scrollbarThumbRadius: '0',
-      scrollbarTrackRadius: '0',
-      scrollbarTrackColor: '#a5a5a515',
-      scrollbarThumbColor: '#9999996b',
-    }),
+    presetChroma(),
   ],
 
   transformers: [transformerDirectives(), transformerVariantGroup(), transformerCompileClass()],

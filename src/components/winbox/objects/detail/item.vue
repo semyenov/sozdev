@@ -5,12 +5,19 @@ const props = defineProps({
     required: true,
   },
 })
+
 const objectsStore = useObjectsStore()
 const item = await objectsStore.itemGetter(props.id)
 </script>
 
 <template>
-  <div class="p-6 objects-detail-item">
-    {{ item }}
-  </div>
+  <SimpleBar
+    class="overflow-auto"
+    :scrollbar-min-size="100"
+    :scrollbar-max-size="300"
+  >
+    <div class="objects-detail-item p-6">
+      {{ item }}
+    </div>
+  </SimpleBar>
 </template>
