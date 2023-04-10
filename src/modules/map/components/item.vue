@@ -95,12 +95,13 @@ function createMaplibreglMap() {
     container: 'mapContainer',
     style:
       'https://api.maptiler.com/maps/streets-v2/style.json?key=jSJRPdUXEsNgteCkgfs4',
-    center: [42.947337399999995, 51.26721980000001], // starting position [lng, lat]
+    center: [42.9473373, 51.2672198], // starting position [lng, lat]
     maxZoom: 18,
     minZoom: 0,
     zoom: 6,
     attributionControl: false,
     trackResize: true,
+    pixelRatio: 1.5,
   })
 
   maplibreglMap.addControl(
@@ -187,7 +188,7 @@ function createMaplibreglMap() {
     //   right: 0,
     // }
     maplibreglPopup = new maplibregl.Popup({
-      offset: 0,
+      // offset: 0,
       closeButton: false,
       closeOnClick: false,
     })
@@ -228,10 +229,12 @@ function createMaplibreglMap() {
       const features = maplibreglMap.queryRenderedFeatures(e.point, {
         layers: ['clusters'],
       })
+
       const clusterId = features[0].properties.cluster_id
       const source = maplibreglMap.getSource(
         'test-source-layer-2',
       ) as maplibregl.GeoJSONSource
+
       if (!source)
         return
 
@@ -256,12 +259,12 @@ function createMaplibreglMap() {
       maplibreglMap.getCanvas().style.cursor = 'default'
     })
 
-    maplibreglMap.on('mousemove', 'test-layer', (_e) => {
-      if (!_e.features || !_e.features[0].id)
+    maplibreglMap.on('mousemove', 'test-layer', (e) => {
+      if (!e.features || !e.features[0].id)
         return
 
       // Do nothing if the feature has not changed
-      if (hoveredStateId.value === _e.features[0].id)
+      if (hoveredStateId.value === e.features[0].id)
         return
 
       // Change hover state prev feature
@@ -269,13 +272,14 @@ function createMaplibreglMap() {
         { source: 'test-source-layer', id: hoveredStateId.value },
         { hover: false },
       )
+
       // Change hover state on current feature
       maplibreglMap.setFeatureState(
-        { source: 'test-source-layer', id: _e.features[0].id },
+        { source: 'test-source-layer', id: e.features[0].id },
         { hover: true },
       )
 
-      hoveredStateId.value = _e.features[0].id
+      hoveredStateId.value = e.features[0].id
     })
 
     maplibreglMap.on('mouseleave', 'test-layer', (_e) => {
@@ -353,24 +357,23 @@ function getArcLayer(data: IMove[]) {
     },
     onHover(pickingInfo, _event) {
       if (pickingInfo.object && pickingInfo.coordinate) {
-        console.log({ pickingInfo, event })
+        // console.log('pickingInfo', pickingInfo)
         maplibreglMap.getCanvas().style.cursor = 'pointer'
         maplibreglPopup
           .setLngLat([pickingInfo.coordinate[0], pickingInfo.coordinate[1]])
           .setHTML(
-            'test',
-            // getMoveTooltip(
-            //   pickingInfo.object.resource,
-            //   pickingInfo.object.value,
-            //   pickingInfo.object.sender,
-            //   pickingInfo.object.receiver
-            // )
+            getMoveTooltip(
+              pickingInfo.object.resource,
+              pickingInfo.object.value,
+              pickingInfo.object.sender,
+              pickingInfo.object.receiver,
+            ),
           )
           .addTo(maplibreglMap)
       }
       else {
         maplibreglMap.getCanvas().style.cursor = 'default'
-        // maplibreglPopup.remove()
+        maplibreglPopup.remove()
       }
     },
   })
@@ -378,6 +381,21 @@ function getArcLayer(data: IMove[]) {
 </script>
 
 <template>
-  <!-- <UiButton @click="handleClick">Move -> 10</UiButton> -->
-  <div id="mapContainer" class="flex flex-col layout-default__map z-0" />
+  <div id="mapContainer" class="layout-default__map z-0 h-full w-full" />
 </template>
+
+<style lang="postcss">
+/* .layout-default__map {
+  .maplibregl-canvas-container {
+    @apply flex-row;
+  }
+}
+
+.maplibregl-popup {
+  @apply flex-row;
+
+  div {
+    @apply flex-row;
+  }
+} */
+</style>

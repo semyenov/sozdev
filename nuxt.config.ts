@@ -115,6 +115,7 @@ export default defineNuxtConfig({
 
     'assets/styles/main.postcss',
     'assets/styles/datepicker.postcss',
+    'assets/styles/maplibre.postcss',
   ],
 
   // Modules configuration

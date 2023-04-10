@@ -1,4 +1,3 @@
-import toaster from '~/utils/toast/toast'
 import type { Toast } from '~/utils/toast/toast.d'
 
 declare global {
@@ -8,14 +7,14 @@ declare global {
 }
 
 const logger = useLogger('plugins/toast')
-export default defineNuxtPlugin(async (nuxtApp) => {
-  nuxtApp.hooks.hookOnce('app:beforeMount', () => {
-    const toastElement = document.createElement('div')
-    toastElement.setAttribute('id', '__toasts')
-    const appRoot = document.querySelector('body')
-    appRoot?.insertAdjacentElement('beforeend', toastElement)
+export default defineNuxtPlugin(async (_nuxtApp) => {
+  // nuxtApp.hooks.hookOnce('app:beforeMount', () => {
+  //   const toastElement = document.createElement('div')
+  //   toastElement.setAttribute('id', '__toasts')
+  //   const appRoot = document.querySelector('body')
+  //   appRoot?.insertAdjacentElement('beforeend', toastElement)
 
-    window.Toast = toaster.getToastRender()
-    logger.success('added toaster')
-  })
+  //   window.Toast = toaster.getToastRender()
+  //   logger.success('added toaster')
+  // })
 })
