@@ -37,8 +37,8 @@
     "ofetch": "^1.0.1",
     "pinia": "^2.0.33",
     "qs": "^6.11.1",
-    "simplebar-vue": "^2.3.2",
     "random-points-on-polygon": "^0.0.4",
+    "simplebar-vue": "^2.3.2",
     "winbox": "^0.2.6",
     "zod": "^3.21.4"
   },

@@ -2,13 +2,14 @@ import { range } from '@antfu/utils'
 import { faker } from '@faker-js/faker'
 
 import { items as objects } from '../objects'
+
 import type { IMove, IMoveType } from '~/types/'
 
 export const items = range(0, 10).map((_i) => {
-  const receiver =
-    objects[faker.datatype.number({ min: 0, max: objects.length - 1 })]
-  const sender =
-    objects[faker.datatype.number({ min: 0, max: objects.length - 1 })]
+  const receiver
+    = objects[faker.datatype.number({ min: 0, max: objects.length - 1 })]
+  const sender
+    = objects[faker.datatype.number({ min: 0, max: objects.length - 1 })]
   const item: IMove = {
     _id: faker.datatype.uuid(),
     info: {

@@ -24,7 +24,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hooks.hookOnce('app:mounted', async () => {
     for (const item of backendStore.store.get(IMetaScope.USERS)!.entries())
       await window.UsersIndex.addAsync(item[0], item[1])
-
+      // window.UsersIndex.search({})
   //   // console.log('Flexsearch', window.UsersIndex.export(console.log))
   })
 })

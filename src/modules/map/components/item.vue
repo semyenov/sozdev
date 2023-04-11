@@ -6,7 +6,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
 import jsonData from '../geojson/voronezh.json'
 
-import type { IMove, IObject } from '~/types'
+import type { IMove } from '~/types'
 import { IMetaScope } from '~/types'
 
 import type { TMapboxDraw, TMapboxOverlay } from '../types'
@@ -19,6 +19,7 @@ let deckOverlay: TMapboxOverlay
 const objectsStore = useObjectsStore()
 const backendStore = useBackendStore()
 const movesStore = useMovesStore()
+const settingsStore = useSettingsStore()
 
 const objectsIds = await objectsStore.itemsGetter
 const objects = await objectsStore.itemsGetterByIds(objectsIds.value)
@@ -50,21 +51,21 @@ const movesFiltered = computed<IMove[]>(() => {
 
 onMounted(createMaplibreglMap)
 
-function handleClick() {
-  backendStore.setStoreItems(
-    IMetaScope.OBJECTS,
-    objectsIds.value.map((id) => {
-      const object = objectsStoreMap.get(id) as IObject
+// function handleClick() {
+//   backendStore.setStoreItems(
+//     IMetaScope.OBJECTS,
+//     objectsIds.value.map((id) => {
+//       const object = objectsStoreMap.get(id) as IObject
 
-      object.feature.geometry.coordinates = [
-        object.feature.geometry.coordinates[0] + (Math.random() - 0.5),
-        object.feature.geometry.coordinates[1] + (Math.random() - 0.5),
-      ]
+//       object.feature.geometry.coordinates = [
+//         object.feature.geometry.coordinates[0] + (Math.random() - 0.5),
+//         object.feature.geometry.coordinates[1] + (Math.random() - 0.5),
+//       ]
 
-      return object
-    }),
-  )
-}
+//       return object
+//     }),
+//   )
+// }
 
 // setInterval(handleClick, 5000)
 
@@ -94,7 +95,7 @@ function createMaplibreglMap() {
   maplibreglMap = new maplibregl.Map({
     container: 'mapContainer',
     style:
-      'https://api.maptiler.com/maps/streets-v2/style.json?key=jSJRPdUXEsNgteCkgfs4',
+      '/map/styles/basic/style.json',
     center: [42.9473373, 51.2672198], // starting position [lng, lat]
     maxZoom: 18,
     minZoom: 0,
@@ -128,12 +129,12 @@ function createMaplibreglMap() {
   maplibreglMap.addControl(drawControl, 'bottom-right')
 
   maplibreglMap.on('load', () => {
-    maplibreglMap.addSource('test-source-layer', {
+    maplibreglMap.addSource('polygons-source-layer', {
       type: 'geojson',
       data: jsonData,
     })
 
-    maplibreglMap.addSource('test-source-layer-2', {
+    maplibreglMap.addSource('objects-source-layer', {
       type: 'geojson',
       data: null,
 
@@ -143,25 +144,53 @@ function createMaplibreglMap() {
     })
 
     maplibreglMap.addLayer({
-      id: 'test-layer',
+      id: 'polygons',
       type: 'fill',
-      source: 'test-source-layer',
+      source: 'polygons-source-layer',
 
       paint: {
-        'fill-color': '#627BC1',
+        'fill-color': settingsStore.districtBoundaries.fillColor,
         'fill-opacity': [
           'case',
           ['boolean', ['feature-state', 'hover'], false],
-          1,
-          0.5,
+          0.2,
+          settingsStore.districtBoundaries.fillOpacity,
         ],
       },
     })
 
+    const marker = new maplibregl.Marker({
+      color: '#000',
+    }).setLngLat([42.9473373, 51.2672198]).addTo(maplibreglMap)
+    marker.setPopup(new maplibregl.Popup().setHTML('<h1>Hello World!</h1>'))
+
+    maplibreglMap.on('zoomend', (e) => {
+      console.log('zoom', maplibreglMap.getZoom())
+    })
+    maplibreglMap.on('click', (e) => {
+      console.log('openst', maplibreglMap.querySourceFeatures('openmaptiles', {
+        sourceLayer: 'place',
+        filter: ['all', ['==', 'class', 'city'], ['==', 'name:ru', 'Пенза']],
+      }))
+      // console.log('mouse', e.featureTarget)
+    })
+    maplibregl
+
+    // maplibreglMap.addLayer({
+    //   id: 'polygons-lines',
+    //   type: 'line',
+    //   source: 'polygons-source-layer',
+    //   layout: {},
+    //   paint: {
+    //     'line-color': settingsStore.districtBoundaries.color,
+    //     'line-width': settingsStore.districtBoundaries.weight,
+    //   },
+    // })
+
     // maplibreglMap.addLayer({
     //   id: 'clusters',
     //   type: 'circle',
-    //   source: 'test-source-layer-2',
+    //   source: 'objects-source-layer',
     //   filter: ['has', 'point_count'],
     //   paint: {
     //     'circle-color': [
@@ -177,26 +206,21 @@ function createMaplibreglMap() {
     //   },
     // })
 
-    // const popupOffsets: maplibregl.Offset = {
-    //   top: 0,
-    //   'top-left': 0,
-    //   'top-right': 0,
-    //   bottom: 0,
-    //   'bottom-left': 0,
-    //   'bottom-right': 0,
-    //   left: 0,
-    //   right: 0,
-    // }
-    maplibreglPopup = new maplibregl.Popup({
-      // offset: 0,
-      closeButton: false,
-      closeOnClick: false,
-    })
+    // maplibreglMap.setLayoutProperty('label_country', 'text-field', [
+    //   'get',
+    //   'name:ru',
+    // ])
+
+      .maplibreglPopup = new maplibregl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+        className: 'custom-popup',
+      })
 
     // maplibreglMap.addLayer({
     //   id: 'cluster-count',
     //   type: 'symbol',
-    //   source: 'test-source-layer-2',
+    //   source: 'objects-source-layer',
     //   filter: ['has', 'point_count'],
 
     //   layout: {
@@ -209,7 +233,7 @@ function createMaplibreglMap() {
     maplibreglMap.addLayer({
       id: 'unclustered-point',
       type: 'circle',
-      source: 'test-source-layer-2',
+      source: 'objects-source-layer',
       filter: ['!', ['has', 'point_count']],
       paint: {
         'circle-color': '#11b4da',
@@ -217,7 +241,6 @@ function createMaplibreglMap() {
         'circle-stroke-width': 1,
         'circle-stroke-color': '#fff',
       },
-
     })
 
     deckOverlay = new DeckOverlay({
@@ -232,7 +255,7 @@ function createMaplibreglMap() {
 
       const clusterId = features[0].properties.cluster_id
       const source = maplibreglMap.getSource(
-        'test-source-layer-2',
+        'objects-source-layer',
       ) as maplibregl.GeoJSONSource
 
       if (!source)
@@ -259,7 +282,8 @@ function createMaplibreglMap() {
       maplibreglMap.getCanvas().style.cursor = 'default'
     })
 
-    maplibreglMap.on('mousemove', 'test-layer', (e) => {
+    maplibreglMap.on('mousemove', 'polygons', (e) => {
+      maplibreglMap.getCanvas().style.cursor = 'pointer'
       if (!e.features || !e.features[0].id)
         return
 
@@ -269,26 +293,28 @@ function createMaplibreglMap() {
 
       // Change hover state prev feature
       maplibreglMap.setFeatureState(
-        { source: 'test-source-layer', id: hoveredStateId.value },
+        { source: 'polygons-source-layer', id: hoveredStateId.value },
         { hover: false },
       )
 
       // Change hover state on current feature
       maplibreglMap.setFeatureState(
-        { source: 'test-source-layer', id: e.features[0].id },
+        { source: 'polygons-source-layer', id: e.features[0].id },
         { hover: true },
       )
 
       hoveredStateId.value = e.features[0].id
     })
 
-    maplibreglMap.on('mouseleave', 'test-layer', (_e) => {
+    maplibreglMap.on('mouseleave', 'polygons', (_e) => {
       if (hoveredStateId.value) {
         maplibreglMap.setFeatureState(
-          { source: 'test-source-layer', id: hoveredStateId.value },
+          { source: 'polygons-source-layer', id: hoveredStateId.value },
           { hover: false },
         )
         hoveredStateId.value = ''
+
+        maplibreglMap.getCanvas().style.cursor = 'default'
       }
     })
 
@@ -296,7 +322,7 @@ function createMaplibreglMap() {
       objectsFeatures,
       (of) => {
         const source = maplibreglMap.getSource(
-          'test-source-layer-2',
+          'objects-source-layer',
         ) as maplibregl.GeoJSONSource
 
         if (!source)
@@ -306,10 +332,11 @@ function createMaplibreglMap() {
       },
       { immediate: true },
     )
+
     watch(
       movesFiltered,
       (mf) => {
-        const arcLayer = getArcLayer(mf)
+        const arcLayer = getArcLayer({ data: mf, map: maplibreglMap })
         deckOverlay.setProps({
           layers: [arcLayer],
         })
@@ -319,7 +346,7 @@ function createMaplibreglMap() {
   })
 }
 
-function getArcLayer(data: IMove[]) {
+function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl.Map | null }) {
   return new ArcLayer<IMove>({
     id: 'deckgl-arc',
     data,
@@ -352,13 +379,12 @@ function getArcLayer(data: IMove[]) {
       else
         moveFilter.value = pickingInfo.object._id
     },
-    updateTriggers: {
-      data: movesFiltered.value,
-    },
     onHover(pickingInfo, _event) {
+      if (!map)
+        return
+
       if (pickingInfo.object && pickingInfo.coordinate) {
-        // console.log('pickingInfo', pickingInfo)
-        maplibreglMap.getCanvas().style.cursor = 'pointer'
+        map.getCanvas().style.cursor = 'pointer'
         maplibreglPopup
           .setLngLat([pickingInfo.coordinate[0], pickingInfo.coordinate[1]])
           .setHTML(
@@ -372,7 +398,7 @@ function getArcLayer(data: IMove[]) {
           .addTo(maplibreglMap)
       }
       else {
-        maplibreglMap.getCanvas().style.cursor = 'default'
+        map.getCanvas().style.cursor = 'default'
         maplibreglPopup.remove()
       }
     },
@@ -385,6 +411,12 @@ function getArcLayer(data: IMove[]) {
 </template>
 
 <style lang="postcss">
+.layout-default__map {
+  .custom-popup {
+    @apply z-10
+  }
+}
+
 /* .layout-default__map {
   .maplibregl-canvas-container {
     @apply flex-row;

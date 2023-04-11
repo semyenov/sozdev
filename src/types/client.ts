@@ -1,5 +1,6 @@
-import type { Feature, Point } from 'geojson'
 import z from 'zod'
+
+import type { Feature, Point } from 'geojson'
 
 export const ValidationMap = {
   email: ['email'],
@@ -330,4 +331,29 @@ export interface IObjectMap {
   _id: string
   name: string
   map: IPointMap
+}
+
+export interface ISelection {
+  filters_by_districts: string[]
+  filters_by_types: string[]
+  filters_by_fields: ISelectionCondition[][]
+  filters_by_resources: ISelectionCondition[][]
+  result_fields: string[]
+  name_selections: string[]
+  result_resources: string[]
+  objects: string[]
+  name: string
+  notes: string
+}
+export interface ISelectionCondition {
+  field_id: string | undefined
+  operation:
+  | 'less-than'
+  | 'less-than-equal'
+  | 'equal'
+  | 'greater-than-equal'
+  | 'greater-than'
+  | 'yes'
+  | 'no'
+  field_value: number
 }

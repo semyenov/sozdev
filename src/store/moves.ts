@@ -9,12 +9,12 @@ export const useMovesStore = defineStore(movesStoreKey, () => {
   const backendStore = useBackendStore()
 
   const itemsGetterByIds = backendStore.itemsGetterByIds<IMove>(
-    IMetaScope.MOVES
+    IMetaScope.MOVES,
   )
   const itemGetter = backendStore.itemGetter<IMove>(IMetaScope.MOVES)
   const itemsGetter = backendStore
     .itemsGetter<IMove>(IMetaScope.MOVES)
-    .then((items) =>
+    .then(items =>
       computed(() =>
         items.value
           .filter((item) => {
@@ -24,14 +24,13 @@ export const useMovesStore = defineStore(movesStoreKey, () => {
             const ah = a.info.name.trimStart()
             const bh = b.info.name.trimStart()
 
-            if (ah === bh) {
+            if (ah === bh)
               return 0
-            }
 
             return ah > bh ? 1 : -1
           })
-          .map((item) => item._id)
-      )
+          .map(item => item._id),
+      ),
     )
 
   const getItems = () => backendStore.get<IMove>([IMetaScope.MOVES, 'items'])
@@ -41,7 +40,7 @@ export const useMovesStore = defineStore(movesStoreKey, () => {
   const putItem = (id: string, input: IMoveUpdateInput) =>
     backendStore.put<IMove, IMoveUpdateInput>(
       [IMetaScope.MOVES, 'items', id],
-      input
+      input,
     )
 
   return {
@@ -56,6 +55,5 @@ export const useMovesStore = defineStore(movesStoreKey, () => {
   }
 })
 
-if (import.meta.hot) {
+if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(useObjectsStore, import.meta.hot))
-}

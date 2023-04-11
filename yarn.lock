@@ -1796,7 +1796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:3.3.3, @nuxt/kit@npm:^3.3.2, @nuxt/kit@npm:^3.3.3":
+"@nuxt/kit@npm:3.3.3, @nuxt/kit@npm:^3.0.0, @nuxt/kit@npm:^3.1.1, @nuxt/kit@npm:^3.1.2, @nuxt/kit@npm:^3.2.0, @nuxt/kit@npm:^3.2.2, @nuxt/kit@npm:^3.3.1, @nuxt/kit@npm:^3.3.2, @nuxt/kit@npm:^3.3.3":
   version: 3.3.3
   resolution: "@nuxt/kit@npm:3.3.3"
   dependencies:
@@ -3722,6 +3722,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mapbox-gl@npm:*, @types/mapbox-gl@npm:^2.6.3":
+  version: 2.7.10
+  resolution: "@types/mapbox-gl@npm:2.7.10"
+  dependencies:
+    "@types/geojson": "*"
+  checksum: 0ee433fa7510733fd7744796d8b04c9bbc6e087a3b46a114433528bd7f64b2b475a245bda3598d7cd1db5a9cf5ea93567d234594b7cd3106d32b0c9cbe333888
+  languageName: node
+  linkType: hard
+
+"@types/mapbox__mapbox-gl-draw@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "@types/mapbox__mapbox-gl-draw@npm:1.3.3"
+  dependencies:
+    "@types/geojson": "*"
+    "@types/mapbox-gl": "*"
+  checksum: c735023d1cd20aaf742556de35699f99d12aaea4b087563fc40713fe7e7da37f660b02fcb0d214d28ddae27b50a3bc95c4644910884258d23994965d3516a1c3
+  languageName: node
+  linkType: hard
+
+"@types/mapbox__point-geometry@npm:*, @types/mapbox__point-geometry@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@types/mapbox__point-geometry@npm:0.1.2"
+  checksum: 6e495e5d7e1fae986ab28ee26b5443b9e6ba54ad97c9df051832ab6e2aafc65fe63d4dd80101c922372fa01423b6947fdcfd253f298b3154418c17e7d3a8aa47
+  languageName: node
+  linkType: hard
+
+"@types/mapbox__vector-tile@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@types/mapbox__vector-tile@npm:1.3.0"
+  dependencies:
+    "@types/geojson": "*"
+    "@types/mapbox__point-geometry": "*"
+    "@types/pbf": "*"
+  checksum: 42fbeba625b6cb3bad47ea79b947aea2a1e32d0620b2f2e17a45cc075ca3be2990697115dd4896d84f11df7c0a9a3533ee76414745b8fd29cb311677b1c6832f
+  languageName: node
+  linkType: hard
+
 "@types/mdast@npm:^3.0.0":
   version: 3.0.11
   resolution: "@types/mdast@npm:3.0.11"
@@ -3918,6 +3955,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/scope-manager@npm:5.54.0":
+  version: 5.54.0
+  resolution: "@typescript-eslint/scope-manager@npm:5.54.0"
+  dependencies:
+    "@typescript-eslint/types": 5.54.0
+    "@typescript-eslint/visitor-keys": 5.54.0
+  checksum: e50f12396de0ddb94aab119bdd5f4769b80dd2c273e137fd25e5811e25114d7a3d3668cdb3c454aca9537e940744881d62a1fed2ec86f07f60533dc7382ae15c
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/scope-manager@npm:5.57.0":
+  version: 5.57.0
+  resolution: "@typescript-eslint/scope-manager@npm:5.57.0"
+  dependencies:
+    "@typescript-eslint/types": 5.57.0
+    "@typescript-eslint/visitor-keys": 5.57.0
+  checksum: 4a851f23da2adbf6341b04c1e3f19fcb66415683f26805d3123725d18845bd4a150bd182de0a91279d5682f2568bb5dd831d4ad0bdb70f49d9ca7381cec4dd17
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/scope-manager@npm:5.57.1":
   version: 5.57.1
   resolution: "@typescript-eslint/scope-manager@npm:5.57.1"
@@ -3962,10 +4019,60 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/types@npm:5.54.0":
+  version: 5.54.0
+  resolution: "@typescript-eslint/types@npm:5.54.0"
+  checksum: 0f66b1b93078f3afea6dfcd3d4e2f0abea4f60cd0c613c2cf13f85098e5bf786185484c9846ed80b6c4272de2c31a70c5a8aacb91314cf1b6da7dcb8855cb7ac
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/types@npm:5.57.0":
+  version: 5.57.0
+  resolution: "@typescript-eslint/types@npm:5.57.0"
+  checksum: 79a100fb650965f63c01c20e6abd79ca0d2043c3a329b9fef89917d6b9ba3c0f946dca3f14f2975ee6349daadd6ce0e98fde3aafe4b710e5a27abe1adc590c85
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/types@npm:5.57.1":
   version: 5.57.1
   resolution: "@typescript-eslint/types@npm:5.57.1"
   checksum: 21789eb697904bbb44a18df961d5918e7c5bd90c79df3a8b8b835da81d0c0f42c7eeb2d05f77cafe49a7367ae7f549a0c8281656ea44b6dc56ae1bf19a3a1eae
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/typescript-estree@npm:5.54.0":
+  version: 5.54.0
+  resolution: "@typescript-eslint/typescript-estree@npm:5.54.0"
+  dependencies:
+    "@typescript-eslint/types": 5.54.0
+    "@typescript-eslint/visitor-keys": 5.54.0
+    debug: ^4.3.4
+    globby: ^11.1.0
+    is-glob: ^4.0.3
+    semver: ^7.3.7
+    tsutils: ^3.21.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 377c75c34c4f95b7ab6218c1d96a6db3ea6ed6727711b6a09354582fe0157861dc1b6fb9e3f7113cd09741f713735d59d5ab5845457f5733a4ebad7470bf600a
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/typescript-estree@npm:5.57.0":
+  version: 5.57.0
+  resolution: "@typescript-eslint/typescript-estree@npm:5.57.0"
+  dependencies:
+    "@typescript-eslint/types": 5.57.0
+    "@typescript-eslint/visitor-keys": 5.57.0
+    debug: ^4.3.4
+    globby: ^11.1.0
+    is-glob: ^4.0.3
+    semver: ^7.3.7
+    tsutils: ^3.21.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 648b88f88ea6cc293ec67b4c0f4f3c2bf733be7e0f2eee08aadbaec6939fd724a6c287decc336abbf67b9e366cc2c48f2e0e48d8302b533e783f798332a06e83
   languageName: node
   linkType: hard
 
@@ -4038,6 +4145,26 @@ __metadata:
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   checksum: 461258e1194d24c5e642c65ba1afd612712fa8e617ac85cfbbe3dde2557fe4abadedbce19a6954ae0cccbfb92b8a09f38d65a3eedca0394861a5d1c4c893c5ed
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:5.54.0":
+  version: 5.54.0
+  resolution: "@typescript-eslint/visitor-keys@npm:5.54.0"
+  dependencies:
+    "@typescript-eslint/types": 5.54.0
+    eslint-visitor-keys: ^3.3.0
+  checksum: 17fc323c09e6272b603cdaec30a99916600fbbb737e1fbc8c1727a487753b4363cea112277fa43e0562bff34bdd1de9ad73ff9433118b1fd469b112fad0313ca
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:5.57.0":
+  version: 5.57.0
+  resolution: "@typescript-eslint/visitor-keys@npm:5.57.0"
+  dependencies:
+    "@typescript-eslint/types": 5.57.0
+    eslint-visitor-keys: ^3.3.0
+  checksum: 77d53f74648e48bf1c6313cd60568c2b1539157ac13945f26204a54beb156666c24f3d033dd0db8ed5d1d4595ee63c072732b17132e4488b46763bf8fdcefa49
   languageName: node
   linkType: hard
 
@@ -8357,7 +8484,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"giget@npm:^1.1.2":
+"giget@npm:^1.1.0, giget@npm:^1.1.2":
   version: 1.1.2
   resolution: "giget@npm:1.1.2"
   dependencies:
@@ -13073,13 +13200,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"radix3@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "radix3@npm:0.1.2"
-  checksum: 483ecb97ae51e8dbda04e1c393bb001739635799bd1d7a7d1086193458df61d85f9e936c44c7bde81aba370dfd6bce8ccbf0fa691911bb8ba83379c90f96fea4
-  languageName: node
-  linkType: hard
-
 "radix3@npm:^1.0.0, radix3@npm:^1.0.1":
   version: 1.0.1
   resolution: "radix3@npm:1.0.1"
@@ -13328,7 +13448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexpp@npm:^3.0.0":
+"regexpp@npm:^3.0.0, regexpp@npm:^3.2.0":
   version: 3.2.0
   resolution: "regexpp@npm:3.2.0"
   checksum: a78dc5c7158ad9ddcfe01aa9144f46e192ddbfa7b263895a70a5c6c73edd9ce85faf7c0430e59ac38839e1734e275b9c3de5c57ee3ab6edc0e0b1bdebefccef8
@@ -13660,7 +13780,7 @@ __metadata:
     "@deck.gl/layers": ^8.9.6
     "@deck.gl/mapbox": ^8.9.6
     "@faker-js/faker": ^7.6.0
-    "@iconify/json": ^2.2.44
+    "@iconify/json": ^2.2.46
     "@mapbox/mapbox-gl-draw": ^1.4.1
     "@nuxt/content": ^2.5.2
     "@nuxt/devtools": ^0.3.1
@@ -13718,6 +13838,7 @@ __metadata:
     prettier: ^2.8.7
     qs: ^6.11.1
     random-points-on-polygon: ^0.0.4
+    simplebar-vue: ^2.3.2
     stylelint: ^15.4.0
     stylelint-config-recommended: ^11.0.0
     stylelint-config-recommended-vue: ^1.4.0
@@ -14325,13 +14446,6 @@ __metadata:
   dependencies:
     bl: ^5.0.0
   checksum: 85131f70ae2830144133b7a6211d56f9ac2603573f4af3d0b66e828af5e13fcdea351f9192f86bb7fed2c64604c8097bf36d50cb77d54e898ce4604c3b7b6b8f
-  languageName: node
-  linkType: hard
-
-"streamsearch@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "streamsearch@npm:1.1.0"
-  checksum: 1cce16cea8405d7a233d32ca5e00a00169cc0e19fbc02aa839959985f267335d435c07f96e5e0edd0eadc6d39c98d5435fb5bbbdefc62c41834eadc5622ad942
   languageName: node
   linkType: hard
 
