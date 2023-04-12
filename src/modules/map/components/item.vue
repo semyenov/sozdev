@@ -167,6 +167,7 @@ function createMaplibreglMap() {
     maplibreglMap.on('zoomend', (e) => {
       console.log('zoom', maplibreglMap.getZoom())
     })
+
     maplibreglMap.on('click', (e) => {
       console.log('openst', maplibreglMap.querySourceFeatures('openmaptiles', {
         sourceLayer: 'place',
@@ -174,7 +175,6 @@ function createMaplibreglMap() {
       }))
       // console.log('mouse', e.featureTarget)
     })
-    maplibregl
 
     // maplibreglMap.addLayer({
     //   id: 'polygons-lines',

@@ -12,7 +12,7 @@
   "sources": {
     "openmaptiles": {
       "type": "vector",
-      "url": "http://192.168.10.13:8888/tiles/tiles"
+      "url": "http://192.168.10.13:8080/data/tiles.json"
     }
   },
   "glyphs": "http://localhost:3000/map/fonts/{fontstack}/{range}.pbf",
