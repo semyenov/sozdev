@@ -3,6 +3,10 @@
 .winbox.simple {
   @apply flex flex-col box-color__default--1 border shadow-none rounded-none;
 
+  .wb-wrapper {
+    @apply flex flex-col flex-grow w-full h-full max-h-full overflow-hidden relative;
+  }
+
   .wb-e {
     @apply -right-3 top-0 bottom-0 w-3 border-l rounded-l-none!;
   }
@@ -51,7 +55,7 @@
   }
 
   .wb-body {
-    @apply flex flex-grow w-full h-auto overflow-auto top-0! relative rounded-b-none;
+    @apply flex flex-grow w-full h-auto max-h-full overflow-inherit top-0! relative rounded-b-none;
 
     .wb-content {
       @apply top-0 left-0 w-full h-full m-0 absolute;

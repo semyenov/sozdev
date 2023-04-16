@@ -70,7 +70,7 @@ export function presetChroma(options: ChromaOptions = {}): Preset {
       ],
 
       [
-        new RegExp(`^${prefix}shape-\\[(.+)\\]$`),
+        new RegExp(`^${prefix}shape-\[(.+)\]$`),
         ([, s]) => ({
           '--un-gradient-shape': s.replace(/_/g, ' '),
           '--un-gradient': 'var(--un-gradient-shape), var(--un-gradient-stops)',

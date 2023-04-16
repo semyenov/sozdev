@@ -22,7 +22,7 @@ const slots = useSlots()
 
 <template>
   <div
-    class="flex flex-col w-full relative border text-left component-card divide-y dark:bg-gray-900 bg-white shadow-xl shadow-opacity-30 dark:shadow-opacity-30"
+    class="component-card relative w-full flex flex-col border bg-white text-left shadow-xl shadow-opacity-30 divide-y dark:bg-gray-900 dark:shadow-opacity-30"
     :class="[
       props.color && `list-color__${props.color}`,
       props.rounded && `box-rounded__${props.rounded}`,
@@ -31,7 +31,7 @@ const slots = useSlots()
   >
     <div
       v-if="slots.header"
-      class="flex flex-row items-center flex-grow justify-between gap-1 text-base font-bold leading-snug"
+      class="flex flex-grow flex-row items-center justify-between gap-1 text-base font-bold leading-snug"
       :class="[
         props.color && `box-color__${props.color}--3`,
         props.rounded && `list-rounded__${props.rounded}`,
@@ -48,7 +48,7 @@ const slots = useSlots()
     </div>
     <div
       v-if="slots.default"
-      class="flex flex-col text-sm items-stretch overflow-auto break-normal"
+      class="flex flex-col items-stretch overflow-auto break-normal text-sm"
       :class="[
         props.color && `box-color__${props.color}--1`,
         props.rounded && `list-rounded__${props.rounded}`,

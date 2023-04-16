@@ -68,7 +68,7 @@ function handleClick() {
         <div class="w-full flex flex-row justify-between px-4 py-2">
           {{ `# ${item.info.first_name} ${item.info.last_name}` }}
           <div
-            class="inline-flex border text-sm box-rounded__sm px-2 font-mono font-light box-color__default--6"
+            class="inline-flex border box-rounded__sm px-2 font-mono text-sm font-light box-color__default--6"
           >
             {{ item.email }}
           </div>

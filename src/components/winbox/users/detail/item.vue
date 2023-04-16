@@ -16,7 +16,7 @@ const item = await usersStore.itemGetter(props.id)
     :scrollbar-min-size="100"
     :scrollbar-max-size="300"
   >
-    <div class="users-detail-item p-6">
+    <div class="users-detail-item max-h-full p-6">
       {{ item }}
     </div>
   </SimpleBar>

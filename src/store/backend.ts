@@ -25,15 +25,10 @@ export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
 }
 
 export const useBackendStore = defineStore(backendStoreKey, () => {
-  const runtimeConfig = useRuntimeConfig()
-  const baseURL
-    = runtimeConfig.apiUri
-    || runtimeConfig.public.apiUri
-
   const authorizationStore = useAuthorizationStore()
 
   const client = new ApiClient({
-    baseURL,
+    baseURL: getRuntimeConfigKey('apiUri'),
     onRequestError: (ctx) => {
       logger.error(JSON.stringify(ctx, null, 2))
     },
@@ -108,8 +103,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
         return []
       }
 
-      objectsIndex.export(console.log)
-
+      const start = Date.now()
       const results = objectsIndex.search(query, {
         index: [
           'fd3c3c97-b897-44fd-879c-2921400ed45f',
@@ -119,6 +113,8 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
           'b65d673a-c71b-4ea0-9b7f-80a78f344a8b',
         ].map(id => `fields:${id}`),
       })
+      const end = Date.now()
+      logger.info(`Search for "${query}" took ${end - start}ms`)
 
       // console.log(results)
 
@@ -138,7 +134,6 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     const res = await client.request<T>('get', uri, {
       query,
       headers,
-      baseURL,
       ...opts,
     })
 
@@ -158,7 +153,6 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
 
     const res = await client.request<T>('post', uri, {
       body,
-      baseURL,
       headers,
       ...opts,
     })
@@ -180,7 +174,6 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     const res = await client.request<T>('put', uri, {
       body,
       headers,
-      baseURL,
       ...opts,
     })
 
@@ -201,7 +194,6 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     const res = await client.request<T>('patch', uri, {
       body,
       headers,
-      baseURL,
       ...opts,
     })
 

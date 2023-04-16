@@ -1,4 +1,4 @@
-import { addComponent, addComponentsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponent, addComponentsDir, addPluginTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import VitePlugin from '@unocss/vite'
 import { loadConfig } from '@unocss/config'
 import postcssNested from 'postcss-nested'
@@ -17,6 +17,18 @@ export default defineNuxtModule<{}>({
 
   async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
+
+    addPluginTemplate({
+      filename: 'unocss.mjs',
+      getContents: () => {
+        const lines = [
+          'import \'@unocss/reset/tailwind.css\'',
+          'import \'uno.css\'',
+          'export default defineNuxtPlugin(() => {})',
+        ]
+        return lines.join('\n')
+      },
+    })
 
     nuxt.options.css.push(resolve('assets/styles/simplebar.postcss'))
 
@@ -43,8 +55,8 @@ export default defineNuxtModule<{}>({
 
     const { config: unoConfig } = await loadConfig<UserConfig>(
       process.cwd(),
-      { configFile: resolve('unocss.config.ts') },
-      [{ files: ['unocss.config'] }],
+      { configFile: resolve('uno.config.ts') },
+      [{ files: ['uno.config'] }],
       options,
     )
 
@@ -80,7 +92,6 @@ export default defineNuxtModule<{}>({
     })
 
     if (nuxt.options.dev) {
-      // @ts-expect-error new hook
       nuxt.hook('devtools:customTabs', (tabs) => {
         tabs.push({
           title: 'UnoCSS',
@@ -93,16 +104,6 @@ export default defineNuxtModule<{}>({
         })
       })
     }
-  },
-  hooks: {
-    'components:extend': (_components) => {
-      // console.log('components', components)
-      // const dynamicComponents = useDynamicComponents()
-      // console.log('dynamic', dynamicComponents)
-    },
-    // 'build:done': () => {
-    //   console.log()
-    // },
   },
 })
 

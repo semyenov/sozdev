@@ -33,6 +33,15 @@ export default defineNuxtConfig({
 
   telemetry: false,
 
+  runtimeConfig: {
+    apiUri: 'http://localhost:3000/api',
+
+    public: {
+      test: 1,
+      apiUri: '/api',
+    },
+  },
+
   app: {
     head: {
       charset: 'utf-8',
@@ -53,20 +62,13 @@ export default defineNuxtConfig({
     },
   },
 
-  runtimeConfig: {
-    apiUri: 'http://localhost:3000/api',
-
-    public: {
-      apiUri: '/api',
-    },
-  },
-
   components: {
     dirs: [
       {
         enabled: true,
         global: true,
-        isAsync: true,
+        prefetch: true,
+        preload: true,
 
         pathPrefix: true,
         prefix: 'winbox',
@@ -93,6 +95,7 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
     strict: true,
+    typeCheck: true,
   },
 
   vue: {
@@ -108,9 +111,6 @@ export default defineNuxtConfig({
   },
 
   css: [
-    '@unocss/reset/antfu.css',
-    'uno.css',
-
     'assets/styles/main.postcss',
     'assets/styles/datepicker.postcss',
   ],
@@ -124,17 +124,22 @@ export default defineNuxtConfig({
 
     '@nuxt/image-edge',
     '@nuxt/content',
+    'magic-regexp/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/emotion',
     '@vue-macros/nuxt',
     '@vueuse/motion/nuxt',
-    'magic-regexp/nuxt',
     'nuxt-typed-router',
+    'nuxt-component-meta',
 
     '@nuxt/devtools',
   ],
+
+  componentMeta: {
+    global: true,
+  },
 
   image: {
     provider: 'unsplash',
