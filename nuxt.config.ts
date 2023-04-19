@@ -7,11 +7,8 @@ import postcssCurrentSelector from 'postcss-current-selector'
 import postcssNestedAncestors from 'postcss-nested-ancestors'
 
 import {
-  availableLocales,
-  datetimeFormats,
   defaultLocale,
   locales,
-  numberFormats,
   onLanguageSwitched,
 } from './src/i18n'
 
@@ -215,15 +212,14 @@ export default defineNuxtConfig({
       cookieKey: 'X-Locale',
       redirectOn: 'root',
     },
-
-    vueI18n: {
-      legacy: false,
-      locale: defaultLocale,
-      fallbackLocale: defaultLocale,
-      availableLocales,
-      numberFormats,
-      datetimeFormats,
-    },
+    // vueI18n: {
+    //   legacy: false,
+    //   locale: defaultLocale,
+    //   fallbackLocale: defaultLocale,
+    //   availableLocales,
+    //   numberFormats,
+    //   datetimeFormats,
+    // },
   },
 
   // https://content.nuxtjs.org/api/configuration

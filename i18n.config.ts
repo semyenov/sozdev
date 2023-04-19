@@ -1,5 +1,19 @@
 // import { availableLocales, datetimeFormats, defaultLocale, locales, numberFormats, onLanguageSwitched } from '~/i18n'
 
+// import { defineI18nConfig } from '@nuxtjs/i18n/dist/runtime/composables'
+
+import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from '~/i18n'
+
+export default defineI18nConfig(_nuxt => ({
+  legacy: false,
+  locale: defaultLocale,
+  fallbackLocale: defaultLocale,
+  availableLocales,
+  numberFormats,
+  datetimeFormats,
+}),
+)
+
 // export default defineI18nConfig(_nuxt => ({
 //   legacy: false,
 
