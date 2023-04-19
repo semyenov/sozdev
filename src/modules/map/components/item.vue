@@ -95,7 +95,7 @@ function createMaplibreglMap() {
   maplibreglMap = new maplibregl.Map({
     container: 'mapContainer',
     style:
-      '/map/styles/basic/style.json',
+      '/map/styles/streets/style.json',
     center: [42.9473373, 51.2672198], // starting position [lng, lat]
     maxZoom: 18,
     minZoom: 0,
@@ -162,19 +162,21 @@ function createMaplibreglMap() {
     const marker = new maplibregl.Marker({
       color: '#000',
     }).setLngLat([42.9473373, 51.2672198]).addTo(maplibreglMap)
-    marker.setPopup(new maplibregl.Popup().setHTML('<h1>Hello World!</h1>'))
-
-    maplibreglMap.on('zoomend', (e) => {
-      console.log('zoom', maplibreglMap.getZoom())
-    })
-
+    marker.setPopup(new maplibregl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      className: 'custom-popup',
+    }).setHTML('<h1>Hello World!</h1>'))
     maplibreglMap.on('click', (e) => {
-      console.log('openst', maplibreglMap.querySourceFeatures('openmaptiles', {
-        sourceLayer: 'place',
-        filter: ['all', ['==', 'class', 'city'], ['==', 'name:ru', 'Пенза']],
-      }))
-      // console.log('mouse', e.featureTarget)
+      console.log(e)
     })
+    // maplibreglMap.on('click', (e) => {
+    //   console.log('openst', maplibreglMap.querySourceFeatures('openmaptiles', {
+    //     sourceLayer: 'place',
+    //     filter: ['all', ['==', 'class', 'city'], ['==', 'name:ru', 'Пенза']],
+    //   }))
+    //   // console.log('mouse', e.featureTarget)
+    // })
 
     // maplibreglMap.addLayer({
     //   id: 'polygons-lines',
@@ -211,11 +213,11 @@ function createMaplibreglMap() {
     //   'name:ru',
     // ])
 
-      .maplibreglPopup = new maplibregl.Popup({
-        closeButton: false,
-        closeOnClick: false,
-        className: 'custom-popup',
-      })
+    maplibreglPopup = new maplibregl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      className: 'custom-popup',
+    })
 
     // maplibreglMap.addLayer({
     //   id: 'cluster-count',
