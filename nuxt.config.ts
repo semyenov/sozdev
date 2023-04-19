@@ -1,5 +1,10 @@
 import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
+import postcssNested from 'postcss-nested'
+// @ts-expect-error missing type
+import postcssCurrentSelector from 'postcss-current-selector'
+// @ts-expect-error missing type
+import postcssNestedAncestors from 'postcss-nested-ancestors'
 
 import {
   availableLocales,
@@ -110,6 +115,14 @@ export default defineNuxtConfig({
     transpile: [({ isDev }) => !isDev && 'flexsearch'],
   },
 
+  postcss: {
+    plugins: {
+      'postcss-nested': postcssNested(),
+      'postcss-current-selector': postcssCurrentSelector(),
+      'postcss-nested-ancestors': postcssNestedAncestors(),
+    },
+  },
+
   css: [
     'assets/styles/main.postcss',
     'assets/styles/datepicker.postcss',
@@ -122,6 +135,8 @@ export default defineNuxtConfig({
     '~/modules/winbox/index',
     '~/modules/design/index',
 
+    '@unocss/nuxt',
+    '@anu-vue/nuxt',
     '@nuxt/image-edge',
     '@nuxt/content',
     'magic-regexp/nuxt',

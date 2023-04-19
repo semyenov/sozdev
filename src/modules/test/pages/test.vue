@@ -72,6 +72,81 @@ const inputDatePicker = ref<Date | string>(
         tether: ['left', 'top', 'bottom'],
       }"
     >
+      <div class="grid-row grid-cols-2 sm:grid-cols-4">
+        <!-- 👉 Sales -->
+        <div class="flex items-center gap-x-3">
+          <AAvatar
+            icon="i-bx-trending-up"
+            color="success"
+            class="rounded-lg text-[1.25rem]"
+          />
+          <ATypography
+            :title="['Sales', 'text-sm font-normal !text-medium-emphasis']"
+            :subtitle="['2.5k', 'text-xl font-bold !text-high-emphasis']"
+          />
+        </div>
+
+        <!-- 👉 Revenue -->
+        <div class="flex items-center gap-x-3">
+          <AAvatar
+            icon="i-bx-dollar"
+            class="rounded-lg text-[1.25rem]"
+          />
+          <ATypography
+            :title="['Revenue', 'text-sm !text-medium-emphasis font-normal']"
+            :subtitle="['$816', 'text-xl font-bold !text-high-emphasis']"
+          />
+        </div>
+
+        <!-- 👉 Customer -->
+        <div class="flex items-center gap-x-3">
+          <AAvatar
+            icon="i-bx-face"
+            color="info"
+            class="rounded-lg text-[1.25rem]"
+          />
+          <ATypography
+            :title="['Customers', 'text-sm !text-medium-emphasis font-normal']"
+            :subtitle="['1.5', 'text-xl font-bold !text-high-emphasis']"
+          />
+        </div>
+
+        <!-- 👉 Returns -->
+        <div class="flex items-center gap-x-3">
+          <AAvatar
+            icon="i-bx-navigation"
+            color="danger"
+            class="rounded-lg text-[1.25rem]"
+          />
+          <ATypography
+            :title="['Returns', 'text-sm !text-medium-emphasis font-normal']"
+            :subtitle="['1.5', 'text-xl font-bold !text-high-emphasis']"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-8">
+        <!-- Icon -->
+        <ABadge :content="9">
+          <i class="i-bx-bell h-6 w-6" />
+        </ABadge>
+
+        <!-- Button -->
+        <ABadge :content="9">
+          <ABtn>
+            Button
+          </ABtn>
+        </ABadge>
+
+        <!-- Avatar -->
+        <ABadge
+          :content="9"
+          offset-x="16"
+          offset-y="16"
+        >
+          <AAvatar src="/images/demo/portrait-1.jpg" />
+        </ABadge>
+      </div>
       <div class="flex flex-col items-center p-6">
         <PageProse class="max-w-300">
           <h4 class="mt-0 font-medium text-default-500 dark:text-default-400">

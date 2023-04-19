@@ -24,7 +24,10 @@
   },
   "dependencies": {
     "@antfu/utils": "^0.7.2",
+    "@anu-vue/nuxt": "^0.13.1",
+    "@anu-vue/preset-theme-default": "^0.13.1",
     "@vuepic/vue-datepicker": "^4.4.0",
+    "anu-vue": "^0.13.1",
     "chroma-js": "^2.4.2",
     "fast-copy": "^3.0.1",
     "fast-equals": "^5.0.1",
@@ -43,6 +46,7 @@
     "@faker-js/faker": "^7.6.0",
     "@histoire/plugin-nuxt": "^0.16.1",
     "@histoire/plugin-vue": "^0.16.1",
+    "@iconify-json/bx": "^1.1.6",
     "@iconify/json": "^2.2.50",
     "@nuxt/content": "^2.5.2",
     "@nuxt/devtools": "^0.4.0",

@@ -1,5 +1,37 @@
-import { defineConfig } from 'unocss'
+import {
+  defineConfig,
 
-import unoConfig from './src/modules/design/uno.config'
+  presetAttributify,
+  presetIcons,
+  presetTypography,
+  presetUno,
+  presetWebFonts,
 
-export default defineConfig({ ...unoConfig })
+  transformerCompileClass,
+  transformerDirectives,
+  transformerVariantGroup,
+} from 'unocss'
+import { presetThemeDefault } from '@anu-vue/preset-theme-default'
+import { presetAnu } from 'anu-vue'
+
+export default defineConfig({
+  // ...unoConfig,
+  include: [/.*\/anu-vue\.js(.*)?$/, './**/*.vue', './**/*.md'],
+
+  presets: [
+    presetIcons(),
+    presetAttributify(),
+    presetTypography(),
+    presetWebFonts({
+      provider: 'google',
+      fonts: {
+        lato: 'Lato',
+      },
+    }),
+    presetUno(),
+    presetAnu(),
+    presetThemeDefault(),
+  ],
+
+  transformers: [transformerDirectives(), transformerVariantGroup(), transformerCompileClass()],
+})

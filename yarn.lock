@@ -133,6 +133,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@anu-vue/nuxt@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@anu-vue/nuxt@npm:0.13.1"
+  dependencies:
+    "@anu-vue/preset-theme-default": 0.13.1
+    "@floating-ui/dom": ^1.1.1
+    "@iconify-json/bx": latest
+    "@nuxt/kit": ^3.2.3
+    anu-vue: 0.13.1
+  checksum: 574eabbc669316098eaf622f461e529a95248fd4db2ebbda81f689e223965089a523b2b6b50b20f90ce5527f345cfde4671a98f60cf12ef5e0bc9263a8415fcc
+  languageName: node
+  linkType: hard
+
+"@anu-vue/preset-theme-default@npm:0.13.1, @anu-vue/preset-theme-default@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "@anu-vue/preset-theme-default@npm:0.13.1"
+  checksum: b0fdf2b922f4ac82c606e33e2be7117a4f172b6805c2e67c80d70a032863d397cb9272cb822022ac840d56f53aa69783775dfb3416a6b72cda0fbecee71eee56
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/code-frame@npm:7.18.6"
@@ -1555,6 +1575,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@floating-ui/core@npm:1.2.6"
+  checksum: e4aa96c435277f1720d4bc939e17a79b1e1eebd589c20b622d3c646a5273590ff889b8c6e126f7be61873cf8c4d7db7d418895986ea19b8b0d0530de32504c3a
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^1.1.1, @floating-ui/dom@npm:^1.2.1":
+  version: 1.2.6
+  resolution: "@floating-ui/dom@npm:1.2.6"
+  dependencies:
+    "@floating-ui/core": ^1.2.6
+  checksum: 2226c6c244b96ae75ab14cc35bb119c8d7b83a85e2ff04e9d9800cffdb17faf4a7cf82db741dd045242ced56e31c8a08e33c8c512c972309a934d83b1f410441
+  languageName: node
+  linkType: hard
+
+"@floating-ui/vue@npm:^0.2.0":
+  version: 0.2.1
+  resolution: "@floating-ui/vue@npm:0.2.1"
+  dependencies:
+    "@floating-ui/dom": ^1.2.1
+    vue-demi: ^0.13.11
+  peerDependencies:
+    "@vue/composition-api": ^1.0.0-rc.1
+    vue: ^2.0.0 || >=3.0.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  checksum: 7af868ae47a4ddcc88428b751dfeca757ed86065c33ac51805955a2af7b33e5d0fdc364cf55efef6d4e4afca09a803be2eaf4103510d863bc0a01e7418cf0cae
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -1690,6 +1742,15 @@ __metadata:
   version: 1.2.1
   resolution: "@humanwhocodes/object-schema@npm:1.2.1"
   checksum: a824a1ec31591231e4bad5787641f59e9633827d0a2eaae131a288d33c9ef0290bd16fda8da6f7c0fcb014147865d12118df10db57f27f41e20da92369fcb3f1
+  languageName: node
+  linkType: hard
+
+"@iconify-json/bx@npm:^1.1.6, @iconify-json/bx@npm:latest":
+  version: 1.1.6
+  resolution: "@iconify-json/bx@npm:1.1.6"
+  dependencies:
+    "@iconify/types": "*"
+  checksum: a5a2288ab2b2c2ae12f216a4ca15932e78b13d79b9b9d67f045d19f01c75eeb4075f60e19d1caf6e19f59b8ecfbd58cf741956ee2c80d7349e155cdb68b2cc41
   languageName: node
   linkType: hard
 
@@ -2283,7 +2344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:3.4.1, @nuxt/kit@npm:^3.0.0-rc.11, @nuxt/kit@npm:^3.4.1":
+"@nuxt/kit@npm:3.4.1, @nuxt/kit@npm:^3.0.0-rc.11, @nuxt/kit@npm:^3.2.3, @nuxt/kit@npm:^3.4.1":
   version: 3.4.1
   resolution: "@nuxt/kit@npm:3.4.1"
   dependencies:
@@ -4774,6 +4835,22 @@ __metadata:
   version: 6.2.1
   resolution: "ansi-styles@npm:6.2.1"
   checksum: ef940f2f0ced1a6347398da88a91da7930c33ecac3c77b72c5905f8b8fe402c52e6fde304ff5347f616e27a742da3f1dc76de98f6866c69251ad0b07a66776d9
+  languageName: node
+  linkType: hard
+
+"anu-vue@npm:0.13.1, anu-vue@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "anu-vue@npm:0.13.1"
+  dependencies:
+    "@floating-ui/vue": ^0.2.0
+    colord: ^2.9.3
+    defu: ^6.1.2
+    vue: ^3.2.47
+  peerDependencies:
+    "@unocss/reset": ^0.41.1
+    "@vueuse/core": ^9.6.0
+    vue-router: 4
+  checksum: 0d26d1268271c085c65f2f5ca1402bbd14ac4e8e98e758272d24c3015165b780a690ff74935930e5c54c314c0e78ad82f520c73b1aef04faae425827a2ad3d21
   languageName: node
   linkType: hard
 
@@ -13997,9 +14074,12 @@ __metadata:
   dependencies:
     "@antfu/eslint-config": ^0.38.4
     "@antfu/utils": ^0.7.2
+    "@anu-vue/nuxt": ^0.13.1
+    "@anu-vue/preset-theme-default": ^0.13.1
     "@faker-js/faker": ^7.6.0
     "@histoire/plugin-nuxt": ^0.16.1
     "@histoire/plugin-vue": ^0.16.1
+    "@iconify-json/bx": ^1.1.6
     "@iconify/json": ^2.2.50
     "@nuxt/content": ^2.5.2
     "@nuxt/devtools": ^0.4.0
@@ -14025,6 +14105,7 @@ __metadata:
     "@vueuse/core": ^10.0.2
     "@vueuse/motion": ^2.0.0-beta.27
     "@vueuse/nuxt": ^10.0.2
+    anu-vue: ^0.13.1
     chroma-js: ^2.4.2
     consola: ^3.0.2
     eslint: ^8.38.0
