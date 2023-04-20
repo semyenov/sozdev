@@ -16,7 +16,8 @@ import { presetAnu } from 'anu-vue'
 
 export default defineConfig({
   // ...unoConfig,
-  // include: [/.*\/anu-vue\.js(.*)?$/, './**/*.vue', './**/*.md'],
+
+  include: [/.*\/anu-vue\.js(.*)?$/, /^.*\.vue$/, /^.*\.md$/],
 
   presets: [
     presetIcons(),

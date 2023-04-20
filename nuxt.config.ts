@@ -138,8 +138,8 @@ export default defineNuxtConfig({
     '~/modules/map/index',
     '~/modules/design/index',
 
-    '@unocss/nuxt',
     '@anu-vue/nuxt',
+    '@unocss/nuxt',
     '@nuxt/image-edge',
     '@nuxt/content',
     'magic-regexp/nuxt',

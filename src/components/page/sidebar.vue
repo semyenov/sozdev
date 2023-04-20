@@ -5,7 +5,7 @@ const { setLocale, locale } = useI18n()
 
 <template>
   <div
-    class="flex flex-grow flex-col justify-between border-r box-color__default--2"
+    class="box-color__default--2 flex flex-grow flex-col justify-between border-r"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -13,107 +13,97 @@ const { setLocale, locale } = useI18n()
         :to="localePath({ name: 'index' })"
         custom
       >
-        <UiButton
+        <ABtn
           class="border-b border-b-dashed"
           color="default"
           :outline="!isActive"
-          size="md"
           rounded="none"
-          :border="false"
+          icon="i-carbon:home"
+          icon-only
+          variant="text"
           @click="navigate"
         >
-          <i class="i-carbon:home inline-block h-6.5" />
-        </UiButton>
+          <!-- <i class="i-carbon:home inline-block h-6.5" />
+          </UiButton> -->
+        </abtn>
       </NuxtLink>
       <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'objects' })"
         custom
       >
-        <UiButton
+        <ABtn
           class="border-b border-b-dashed"
-          color="secondary"
+          color="default"
           :outline="!isActive"
-          size="md"
           rounded="none"
-          :border="false"
+          icon="i-carbon:data-blob"
+          icon-only
+          variant="text"
           @click="navigate"
-        >
-          <i class="i-carbon:data-blob inline-block h-6.5" />
-        </UiButton>
+        />
       </NuxtLink>
       <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'users' })"
         custom
       >
-        <UiButton
+        <ABtn
           class="border-b border-b-dashed"
-          color="third"
+          color="default"
           :outline="!isActive"
-          size="md"
           rounded="none"
-          :border="false"
+          icon="i-carbon:user"
+          icon-only
+          variant="text"
           @click="navigate"
-        >
-          <i class="i-carbon:user inline-block h-6.5" />
-        </UiButton>
+        />
       </NuxtLink>
       <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'test' })"
         custom
       >
-        <UiButton
+        <ABtn
           class="border-b border-b-dashed"
-          color="fourth"
-          size="md"
+          color="default"
           :outline="!isActive"
           rounded="none"
-          :border="false"
+          icon="i-carbon:text-scale"
+          icon-only
+          variant="text"
           @click="navigate"
-        >
-          <i class="i-carbon:text-scale inline-block h-6.5" />
-        </UiButton>
+        />
       </NuxtLink>
       <NuxtLink
         v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'content-all', params: { all: ['test'] } })"
         custom
       >
-        <UiButton
+        <ABtn
           class="border-b border-b-dashed"
-          color="primary"
+          color="default"
           :outline="!isActive"
-          size="md"
           rounded="none"
-          :border="false"
+          icon="i-carbon:book"
+          icon-only
+          variant="text"
           @click="navigate"
-        >
-          <i class="i-carbon:book inline-block h-6.5" />
-        </UiButton>
+        />
       </NuxtLink>
     </div>
 
     <div class="mt-8 flex flex-col">
-      <UiButton
-        class="border-t border-t-dashed"
+      <ABtn
+        class="border-b border-b-dashed"
         color="default"
-        outline
-        size="md"
         rounded="none"
-        :border="false"
+        :icon="locale === 'ru' ? 'i-twemoji:flag-russia' : 'i-twemoji:flag-united-states'
+        "
+        icon-only
+        variant="text"
         @click="setLocale(locale === 'ru' ? 'en' : 'ru')"
-      >
-        <i
-          class="inline-block h-6.5"
-          :class="[
-            locale === 'ru'
-              ? 'i-twemoji:flag-russia'
-              : 'i-twemoji:flag-united-states',
-          ]"
-        />
-      </UiButton>
+      />
     </div>
   </div>
 </template>

@@ -60,7 +60,7 @@ function handleClick() {
   <div class="component-user-item">
     <ACard
       class="cursor-pointer select-none"
-      :color="winboxWindow ? 'primary' : 'third'"
+      :color="winboxWindow ? 'primary' : 'cool-gray'"
       :variant="winboxWindow ? 'fill' : 'light'"
       @click="handleClick()"
     >
