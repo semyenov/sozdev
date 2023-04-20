@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import type { NuxtComponentMetaNames } from '#nuxt-component-meta/types'
+
 definePageMeta({
   layout: 'default',
 })
 
 const { t } = useI18n()
 const route = useRoute('index')
+
+const specificComponentName = ref<NuxtComponentMetaNames>('WinboxObjectsDetailItem')
+
+const specificComponentMeta = await useComponentMeta(specificComponentName)
+const composableData = await useComponentMeta()
 
 const { data } = await useFetch('/api/test', {
   method: 'get',
@@ -15,7 +22,7 @@ const { data } = await useFetch('/api/test', {
 </script>
 
 <template>
-  <div class="page" :class="`page__${route.name}`">
+  <div class="page" :class="`page__${String(route.name)}`">
     <WinboxWindow
       :params="{
         id: 'page-index',
@@ -36,12 +43,12 @@ const { data } = await useFetch('/api/test', {
       }"
     >
       <SimpleBar
-        class="overflow-auto"
+        class="overflow-auto chroma-linear-3-lab-blue-100-red-100 chroma-shape-[to_bottom]"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
       >
         <div
-          class="flex flex-col items-start p-6 box-color__default--1"
+          class="flex flex-col items-start p-6"
         >
           <PageProse
             v-if="data"
@@ -59,7 +66,31 @@ const { data } = await useFetch('/api/test', {
             {{ data.text }}
           </PageProse>
 
-          <NuxtImg provider="unsplash" src="photo-1549574518-8f791f8a16d4" sizes="xs:200px md:500px lg:1024" class="mb-6" />
+          <PageProse
+            v-if="data"
+            v-motion
+            :initial="{
+              y: -100,
+              opacity: 0,
+            }"
+            :enter="{
+              y: 0,
+              opacity: 1,
+            }"
+            class="mb-6"
+          >
+            <h2>
+              <span>Components from</span>
+              <code>useComponentMeta('{{ specificComponentName }}')</code>
+            </h2>
+            <pre>{{ specificComponentMeta }}</pre>
+
+            <h2>
+              <span>Components from</span>
+              <code>useComponentMeta</code>
+            </h2>
+            <pre>{{ composableData }}</pre>
+          </PageProse>
 
           <div class="flex flex-row justify-center gap-2 text-3xl">
             <i class="i-logos:vue text-9xl" />

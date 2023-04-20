@@ -91,5 +91,6 @@
   "cSpell.words": ["Nuxt", "Winbox"],
   "[postcss]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

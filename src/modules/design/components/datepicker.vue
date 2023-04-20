@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import Datepicker from '@vuepic/vue-datepicker'
+// // import Datepicker from '@vuepic/vue-datepicker'
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Date],
-    required: true,
-  },
-})
+// const props = defineProps({
+//   modelValue: {
+//     type: [String, Date],
+//     required: true,
+//   },
+// })
 
-const emit = defineEmits<{
-  (event: 'update:modelValue', value: string | Date): void
-}>()
+// const emit = defineEmits<{
+//   (event: 'update:modelValue', value: string | Date): void
+// }>()
 
-const { d } = useI18n()
+// const { d } = useI18n()
 
-const valueComputed = computed({
-  get: () => {
-    return props.modelValue
-  },
-  set: (newValue: Date | string) => {
-    const formatedDate = d(newValue, 'medium')
-    return emit('update:modelValue', formatedDate)
-  },
-})
+// // const valueComputed = computed({
+// //   get: () => {
+// //     return props.modelValue
+// //   },
+// //   set: (newValue: Date | string) => {
+// //     const formatedDate = d(newValue, 'medium')
+// //     return emit('update:modelValue', formatedDate)
+// //   },
+// // })
 </script>
 
 <template>
   <div>
     <div>
-      <Datepicker
+      <!-- <Datepicker
         v-model="valueComputed"
         format="dd.MM.yyyy HH:mm"
         :flow="['calendar', 'time']"
@@ -43,7 +43,7 @@ const valueComputed = computed({
         <template #dp-input>
           <UiInput readonly :value="valueComputed" />
         </template>
-      </Datepicker>
+      </Datepicker> -->
     </div>
   </div>
 </template>

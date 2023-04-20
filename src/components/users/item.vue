@@ -58,32 +58,33 @@ function handleClick() {
 
 <template>
   <div class="component-user-item">
-    <UiCard
+    <ACard
       class="cursor-pointer select-none"
-      rounded="md"
-      :color="winboxWindow ? 'secondary' : 'third'"
+      :color="winboxWindow ? 'primary' : 'third'"
+      :variant="winboxWindow ? 'fill' : 'light'"
       @click="handleClick()"
     >
-      <template v-if="item" #header>
-        <div class="w-full flex flex-row justify-between px-4 py-2">
+      <template v-if="item" #title>
+        <div class="w-full flex flex-row justify-between">
           {{ `# ${item.info.first_name} ${item.info.last_name}` }}
-          <div
-            class="inline-flex border text-sm box-rounded__sm px-2 font-mono font-light box-color__default--6"
-          >
-            {{ item.email }}
-          </div>
+        </div>
+      </template>
+      <template v-if="item" #header-right>
+        <div
+          class="box-color__default--6 inline-flex items-center font-mono text-sm font-light"
+        >
+          {{ item.email }}
         </div>
       </template>
       <template v-if="item">
-        <div class="p-4">
+        <div class="px-4 pb-4">
           {{ item }}
         </div>
-      </template>
-      <template v-if="winboxWindow" #footer>
-        <div v-if="winboxWindow?.state" class="px-4 py-1.5">
+
+        <div v-if="winboxWindow?.state" class="px-4 pb-4 pt-1.5">
           {{ winboxWindow?.state }}
         </div>
       </template>
-    </UiCard>
+    </ACard>
   </div>
 </template>

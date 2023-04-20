@@ -59,7 +59,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template v-if="item" #header>
-        <div class="flex flex-row w-full justify-between px-4 py-2">
+        <div class="w-full flex flex-row justify-between px-4 py-2">
           {{ `# ${item.info.name}` }}
         </div>
       </template>

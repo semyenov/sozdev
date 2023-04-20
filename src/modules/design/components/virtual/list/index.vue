@@ -418,6 +418,7 @@ function getWrapperStyle(
     >
       <slot name="header" />
     </UiVirtualListSlot>
+
     <Component
       :is="props.wrapTag"
       :key="`${props.dataKey}_list_wrap`"
@@ -454,6 +455,7 @@ function getWrapperStyle(
         />
       </Component>
     </Component>
+
     <UiVirtualListSlot
       :key="`${props.dataKey}-list_footer`"
       :class="props.footerClass"

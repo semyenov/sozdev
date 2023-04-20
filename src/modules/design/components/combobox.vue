@@ -338,7 +338,7 @@ function documentFocusinEventListener() {
 </script>
 
 <template>
-  <div ref="rootRef" class="relative flex flex-row c-combobox">
+  <div ref="rootRef" class="c-combobox relative flex flex-row">
     <!-- <div class="flex flex-row">{{ dataIds }}</div> -->
 
     <UiInput
@@ -371,7 +371,7 @@ function documentFocusinEventListener() {
         'flex flex-col w-full',
         props.color && `list-color__${props.color}`,
       ]"
-      class="flex flex-col items-center overflow-auto border left-0 right-0 absolute top-full z-1 max-h-100 rounded-t-none border-t-none scrollbar scrollbar-rounded"
+      class="absolute left-0 right-0 top-full z-1 max-h-100 flex flex-col items-center overflow-auto border rounded-t-none border-t-none"
       :class="[
         props.rounded && `box-rounded__${props.rounded}`,
         props.color && `box-color__${props.color}--4`,
@@ -387,7 +387,7 @@ function documentFocusinEventListener() {
       outline
       tabindex="-1"
       :color="props.color"
-      class="absolute right-0 bottom-0 top-0 rounded-l-none"
+      class="absolute bottom-0 right-0 top-0 rounded-l-none"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag
@@ -396,8 +396,8 @@ function documentFocusinEventListener() {
       ]"
       @click="inputFocusHandler"
     >
-      <i v-if="!focusFlag" class="inline-block i-carbon:caret-down h-6" />
-      <i v-else class="inline-block h-6 i-carbon:caret-up" />
+      <i v-if="!focusFlag" class="i-carbon:caret-down inline-block h-6" />
+      <i v-else class="i-carbon:caret-up inline-block h-6" />
     </UiButton>
     <UiButton
       v-else
@@ -414,7 +414,7 @@ function documentFocusinEventListener() {
       ]"
       @click="inputCleanHandler"
     >
-      <i class="inline-block h-6 i-carbon:close" />
+      <i class="i-carbon:close inline-block h-6" />
     </UiButton>
   </div>
 </template>

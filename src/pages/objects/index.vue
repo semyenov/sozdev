@@ -69,17 +69,6 @@ async function loadOthersHandler() {
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <div class="w-full flex flex-row items-center justify-center border-b border-b-dashed px-6 py-4 box-color__default--1">
-        <UiInput
-          key="page-objects-index-virtuallist-search"
-          v-model="input"
-          class="w-full"
-          placeholder="Search"
-          size="md"
-          color="default"
-          outline
-        />
-      </div>
       <UiVirtualList
         ref="listComponent"
         :keeps="50"
@@ -88,11 +77,25 @@ async function loadOthersHandler() {
         :data-getter="objectGetter"
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
-        wrap-class="flex flex-col w-full"
-        class="flex flex-grow flex-col items-center gap-8 overflow-auto p-6"
-        :estimate-size="70"
+        wrap-class="flex flex-col flex-grow"
+        class="flex flex-grow flex-col items-center px-6"
         item-class="mb-6"
-      />
+        :estimate-size="70"
+      >
+        <template #header>
+          <div class="w-full flex flex-row items-center justify-center py-4 box-color__default--1">
+            <UiInput
+              key="page-objects-index-virtuallist-search"
+              v-model="input"
+              class="w-full"
+              placeholder="Search"
+              size="md"
+              color="default"
+              outline
+            />
+          </div>
+        </template>
+      </UiVirtualList>
     </WinboxWindow>
 
     <div class="absolute bottom-8 right-8 z-10 flex flex-col gap-2">

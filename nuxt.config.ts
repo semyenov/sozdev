@@ -1,13 +1,16 @@
 import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
+import postcssNested from 'postcss-nested'
+
+// @ts-expect-error missing type
+import postcssCurrentSelector from 'postcss-current-selector'
+
+// @ts-expect-error missing type
+import postcssNestedAncestors from 'postcss-nested-ancestors'
 
 import {
-  availableLocales,
-  datetimeFormats,
   defaultLocale,
   locales,
-  numberFormats,
-  onLanguageSwitched,
 } from './src/i18n'
 
 const rootDir = resolve(__dirname)
@@ -32,6 +35,15 @@ export default defineNuxtConfig({
 
   telemetry: false,
 
+  runtimeConfig: {
+    apiUri: 'http://localhost:3000/api',
+
+    public: {
+      test: 1,
+      apiUri: '/api',
+    },
+  },
+
   app: {
     head: {
       charset: 'utf-8',
@@ -52,20 +64,13 @@ export default defineNuxtConfig({
     },
   },
 
-  runtimeConfig: {
-    apiUri: 'http://localhost:3000/api',
-
-    public: {
-      apiUri: '/api',
-    },
-  },
-
   components: {
     dirs: [
       {
         enabled: true,
         global: true,
-        isAsync: true,
+        prefetch: true,
+        preload: true,
 
         pathPrefix: true,
         prefix: 'winbox',
@@ -92,6 +97,7 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
     strict: true,
+    typeCheck: true,
   },
 
   vue: {
@@ -110,10 +116,15 @@ export default defineNuxtConfig({
     ],
   },
 
-  css: [
-    '@unocss/reset/antfu.css',
-    'uno.css',
+  postcss: {
+    plugins: {
+      'postcss-nested': postcssNested(),
+      'postcss-current-selector': postcssCurrentSelector(),
+      'postcss-nested-ancestors': postcssNestedAncestors(),
+    },
+  },
 
+  css: [
     'assets/styles/main.postcss',
     'assets/styles/datepicker.postcss',
     'assets/styles/maplibre.postcss',
@@ -127,19 +138,26 @@ export default defineNuxtConfig({
     '~/modules/map/index',
     '~/modules/design/index',
 
+    '@unocss/nuxt',
+    '@anu-vue/nuxt',
     '@nuxt/image-edge',
     '@nuxt/content',
+    'magic-regexp/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/emotion',
     '@vue-macros/nuxt',
     '@vueuse/motion/nuxt',
-    'magic-regexp/nuxt',
     'nuxt-typed-router',
+    'nuxt-component-meta',
 
     '@nuxt/devtools',
   ],
+
+  // componentMeta: {
+  //   global: true,
+  // },
 
   image: {
     provider: 'unsplash',
@@ -193,22 +211,21 @@ export default defineNuxtConfig({
     lazy: true,
     strategy: 'no_prefix',
     langDir: 'i18n/locales',
-    onLanguageSwitched,
+    // onLanguageSwitched,
 
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'X-Locale',
       redirectOn: 'root',
     },
-
-    vueI18n: {
-      legacy: false,
-      locale: defaultLocale,
-      fallbackLocale: defaultLocale,
-      availableLocales,
-      numberFormats,
-      datetimeFormats,
-    },
+    // vueI18n: {
+    //   legacy: false,
+    //   locale: defaultLocale,
+    //   fallbackLocale: defaultLocale,
+    //   availableLocales,
+    //   numberFormats,
+    //   datetimeFormats,
+    // },
   },
 
   // https://content.nuxtjs.org/api/configuration
@@ -217,7 +234,7 @@ export default defineNuxtConfig({
   },
 
   nuxtTypedRouter: {
-    experimentalPathCheck: true,
+    // experimentalPathCheck: true,
     plugin: true,
 
     strict: {
