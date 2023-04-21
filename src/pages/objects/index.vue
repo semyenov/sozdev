@@ -47,15 +47,6 @@ function scrollClickHandler() {
 async function loadOthersHandler() {
   await objectsStore.getOthers()
 }
-
-const testInput = computed({
-  get: () => {
-    return input.value
-  },
-  set: (v) => {
-    input.value = v
-  },
-})
 </script>
 
 <template>
@@ -95,7 +86,7 @@ const testInput = computed({
           <div class="box-color__default--1 w-full flex flex-col items-center justify-center py-4">
             <AInput
               key="page-objects-index-virtuallist-search"
-              v-model="testInput"
+              v-model="input"
               class="w-full"
               placeholder="Search"
               color="default"
