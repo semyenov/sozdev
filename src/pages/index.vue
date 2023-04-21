@@ -32,7 +32,7 @@ const { data } = await useFetch('/api/test', {
         index: 10,
         border: 0,
         top: 0,
-        left: 44,
+        left: 40,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -43,7 +43,7 @@ const { data } = await useFetch('/api/test', {
       }"
     >
       <SimpleBar
-        class="overflow-auto chroma-linear-3-lab-blue-100-red-100 chroma-shape-[to_bottom]"
+        class="chroma-linear-3-lab-blue-100-red-100 chroma-shape-[to_bottom] overflow-auto"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
       >

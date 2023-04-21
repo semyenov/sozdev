@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { notUndefined } from '@antfu/utils'
+import { defaultThemeColors } from 'anu-vue'
 
 import { UsersComboboxItem } from '#components'
 
@@ -49,6 +50,59 @@ const inputTab = ref<number>(0)
 const inputDatePicker = ref<Date | string>(
   d(new Date().toISOString(), 'medium'),
 )
+const tabs = [
+  {
+    title: 'Account',
+    value: 'account',
+    icon: 'i-bx-user',
+  },
+  {
+    title: 'Notifications',
+    value: 'notifications',
+    icon: 'i-bx-bell',
+  },
+  {
+    title: 'Settings',
+    value: 'settings',
+    icon: 'i-bx-cog',
+  },
+  {
+    title: 'Test',
+    value: 'test',
+    icon: 'i-bx-cog',
+  },
+]
+
+const items = [
+  {
+    text: 'test1',
+    disabled: false,
+  },
+  {
+    text: 'test2',
+    disabled: false,
+  },
+  {
+    text: 'test3',
+    disabled: true,
+  },
+]
+
+const isDialogShown = ref<boolean>(false)
+
+const chips = ref(defaultThemeColors.map(c => ({
+  color: c,
+  isClosed: true,
+})))
+
+const allChipsClosed = computed(() => chips.value.every(chip => !chip.isClosed))
+const reset = () => chips.value.forEach(chip => chip.isClosed = true)
+
+const alertLoading = ref(false)
+
+const cardLoading = ref(false)
+
+const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls: true })
 </script>
 
 <template>
@@ -58,11 +112,11 @@ const inputDatePicker = ref<Date | string>(
         id: 'page-test',
         teleportId: 'teleport-layer--10',
         title: t('test.title'),
-        class: ['simple', 'wb-left', 'no-close'],
+        class: ['simple', 'wb-left', 'no-close', 'border-none'],
         index: 10,
         border: 0,
         top: 0,
-        left: 44,
+        left: 40,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -72,246 +126,323 @@ const inputDatePicker = ref<Date | string>(
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <div class="grid-row grid-cols-2 sm:grid-cols-4">
-        <!-- 👉 Sales -->
-        <div class="flex items-center gap-x-3">
-          <AAvatar
-            icon="i-bx-trending-up"
-            color="success"
-            class="rounded-lg text-[1.25rem]"
-          />
-          <ATypography
-            :title="['Sales', 'text-sm font-normal !text-medium-emphasis']"
-            :subtitle="['2.5k', 'text-xl font-bold !text-high-emphasis']"
-          />
-        </div>
+      <SimpleBar
+        class="overflow-auto"
+        :scrollbar-min-size="100"
+        :scrollbar-max-size="300"
+      >
+        <div class="flex flex-col items-center p-6">
+          <PageProse class="max-w-300">
+            <h4 class="text-default-500 dark:text-default-400 mt-0 font-medium">
+              Tooltip
+            </h4>
+            <div class="flex flex-wrap items-start justify-start gap-4">
+              <ABtn>
+                <ATooltip text="Hello!" />
+                Hover Over Me
+              </ABtn>
+              <ABtn>
+                <!-- ℹ️ You can also customize `--a-tooltip-bg-c` CSS var for changing tooltip background -->
+                <ATooltip class="[&_.a-tooltip]-bg-danger">
+                  <span class="a-tooltip-text">
+                    <i class="i-bx-shield-x me-1" />
+                    <span>Protection is disabled</span>
+                  </span>
+                </ATooltip>
+                Scan Skipped
+              </ABtn>
 
-        <!-- 👉 Revenue -->
-        <div class="flex items-center gap-x-3">
-          <AAvatar
-            icon="i-bx-dollar"
-            class="rounded-lg text-[1.25rem]"
-          />
-          <ATypography
-            :title="['Revenue', 'text-sm !text-medium-emphasis font-normal']"
-            :subtitle="['$816', 'text-xl font-bold !text-high-emphasis']"
-          />
-        </div>
-
-        <!-- 👉 Customer -->
-        <div class="flex items-center gap-x-3">
-          <AAvatar
-            icon="i-bx-face"
-            color="info"
-            class="rounded-lg text-[1.25rem]"
-          />
-          <ATypography
-            :title="['Customers', 'text-sm !text-medium-emphasis font-normal']"
-            :subtitle="['1.5', 'text-xl font-bold !text-high-emphasis']"
-          />
-        </div>
-
-        <!-- 👉 Returns -->
-        <div class="flex items-center gap-x-3">
-          <AAvatar
-            icon="i-bx-navigation"
-            color="danger"
-            class="rounded-lg text-[1.25rem]"
-          />
-          <ATypography
-            :title="['Returns', 'text-sm !text-medium-emphasis font-normal']"
-            :subtitle="['1.5', 'text-xl font-bold !text-high-emphasis']"
-          />
-        </div>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-8">
-        <!-- Icon -->
-        <ABadge :content="9">
-          <i class="i-bx-bell h-6 w-6" />
-        </ABadge>
-
-        <!-- Button -->
-        <ABadge :content="9">
-          <ABtn>
-            Button
-          </ABtn>
-        </ABadge>
-
-        <!-- Avatar -->
-        <ABadge
-          :content="9"
-          offset-x="16"
-          offset-y="16"
-        >
-          <AAvatar src="/images/demo/portrait-1.jpg" />
-        </ABadge>
-      </div>
-      <div class="flex flex-col items-center p-6">
-        <PageProse class="max-w-300">
-          <h4 class="mt-0 font-medium text-default-500 dark:text-default-400">
-            Tooltip
-          </h4>
-          <div class="flex flex-col flex-wrap items-start justify-start gap-4">
-            <UiToast />
-          </div>
-          <h4 class="font-medium text-default-500 dark:text-default-400">
-            Date Picker
-          </h4>
-          <div class="flex flex-col flex-wrap items-start justify-start gap-4">
-            selected: {{ inputDatePicker }}
-            <UiDatepicker v-model="inputDatePicker" />
-          </div>
-          <h4 class="font-medium text-default-500 dark:text-default-400">
-            List
-          </h4>
-          <div class="flex flex-col flex-wrap items-center justify-start gap-4">
-            <UiList
-              v-slot="{ item }"
-              :items="['test1', 'test2', 'test3']"
-              color="primary"
-            >
-              <div class="test">
-                {{ item }}
-              </div>
-            </UiList>
-          </div>
-
-          <h4 class="font-medium text-default-500 dark:text-default-400">
-            Tabs
-          </h4>
-          <div class="flex flex-col flex-wrap items-center justify-start gap-4">
-            <UiTabsList v-model="inputTab" class="flex flex-row gap-1.5">
-              <UiTabsListItem>
-                <template #default="{ activateTab, isActive }">
-                  <UiButton :outline="!isActive" @click="activateTab">
-                    Tab 1
-                  </UiButton>
-                </template>
-              </UiTabsListItem>
-              <UiTabsListItem>
-                <template #default="{ activateTab, isActive }">
-                  <UiButton :outline="!isActive" @click="activateTab">
-                    Tab 2
-                  </UiButton>
-                </template>
-              </UiTabsListItem>
-            </UiTabsList>
-            <UiTabsPanels v-model="inputTab">
-              <UiTabsPanelsItem>Tab Panel 1</UiTabsPanelsItem>
-              <UiTabsPanelsItem>Tab Panel 2</UiTabsPanelsItem>
-            </UiTabsPanels>
-          </div>
-
-          <h4 class="font-medium text-default-500 dark:text-default-400">
-            Combobox
-          </h4>
-          <div class="flex flex-row flex-wrap items-center justify-start gap-4">
-            <UiCombobox
-              v-for="color in uiColorVariants"
-              :key="`combobox-${color}`"
-              v-model="input"
-              :color="color"
-              :options="usersOptions"
-              :data-component="UsersComboboxItem"
-              class="w-full"
-            />
-          </div>
-
-          <h4 class="font-medium text-default-500 dark:text-default-400">
-            Boxes
-          </h4>
-          <div
-            v-for="color in uiColorVariants"
-            :key="`box-${color}`"
-            class="mb-6 flex flex-row flex-wrap items-center justify-start gap-4"
-          >
-            <div
-              v-for="variant in 9"
-              :key="`box-${variant}`"
-              class="h-26 w-26 flex flex-col items-center justify-center break-words border p-2"
-              :class="`box-color__${color}--${variant}`"
-            >
-              <div class="-mt-6">
-                {{ color }}
-              </div>
-              <div class="text-4xl font-bold">
-                {{ variant }}
-              </div>
+              <ABtn>
+                <ATooltip placement="top" text="Hello!" />
+                Top tooltip
+              </ABtn>
             </div>
-          </div>
 
-          <h4 class="font-medium text-default-500 dark:text-default-400">
-            Buttons
-          </h4>
-          <template
-            v-for="rounded in uiRoundedVariants"
-            :key="`rounded-${rounded}`"
-          >
-            <div
-              v-for="(size, index) in uiSizeVariants"
-              :key="`input-size__${size} input-rounded__${rounded}`"
-              class="mb-6 flex flex-row flex-wrap items-center justify-start"
-              :class="`gap-${(index + 4) * 0.5}`"
-            >
-              <UiButton
-                v-for="color in uiColorVariants"
-                :key="`input-${color}`"
-                :size="size"
-                :color="color"
-                :rounded="rounded"
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Dialog
+            </h4>
+            <div class="flex flex-col flex-wrap items-start justify-start gap-4">
+              <ADialog
+                v-model="isDialogShown"
+                title="Dialog title"
+                subtitle="Chocolate cake tiramisu donut"
+                text="Ice cream sweet pie pie dessert sweet danish. Jelly jelly beans cupcake jelly-o chocolate bonbon chocolate bar."
+              />
+
+              <ABtn @click="isDialogShown = true">
+                Show dialog
+              </ABtn>
+            </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Closable chip
+            </h4>
+            <div class="flex flex-col flex-wrap justify-center gap-4">
+              <AChip
+                v-for="chip in chips"
+                :key="chip.color"
+                v-model="chip.isClosed"
+                :color="chip.color"
+                closable
+                class="justify-between capitalize"
               >
-                <i class="i-carbon:download inline-block" />
-                <span>{{
-                  `${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`
-                }}</span>
-              </UiButton>
-            </div>
-            <div
-              v-for="(size, index) in uiSizeVariants"
-              :key="`input-size__${size} input-rounded__${rounded}`"
-              class="mb-6 flex flex-row flex-wrap items-center justify-start"
-              :class="`gap-${(index + 4) * 0.5}`"
-            >
-              <UiButton
-                v-for="color in uiColorVariants"
-                :key="`input-${color}-outline`"
-                outline
-                :size="size"
-                :color="color"
-                :rounded="rounded"
-              >
-                <i class="i-carbon:download inline-block" />
-                <span>{{
-                  `${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`
-                }}</span>
-              </UiButton>
-            </div>
-          </template>
+                {{ chip.color }}
+              </AChip>
 
-          <h4 class="font-medium text-default-500 dark:text-default-400">
-            Inputs
-          </h4>
-          <template v-for="rounded in uiRoundedVariants">
-            <div
-              v-for="(size, index) in uiSizeVariants"
-              :key="`btn-size__${size} btn-rounded__${rounded}`"
-              class="mb-6 w-full flex flex-col flex-wrap items-center justify-start"
-              :class="`gap-${(index + 4) * 0.5}`"
-            >
-              <UiInput
-                v-for="color in uiColorVariants"
-                :key="`btn-${color}`"
-                class="w-full flex flex-col"
-                :size="size"
-                :color="color"
-                :rounded="rounded"
-                :model-value="`${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`"
+              <div class="w-full">
+                <ABtn
+                  v-if="allChipsClosed"
+                  @click="reset"
+                >
+                  Return Chips
+                </ABtn>
+              </div>
+            </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Loaders
+            </h4>
+            <div class="flex flex-wrap items-start justify-start gap-4">
+              <AAlert
+                variant="fill"
+                class="relative cursor-pointer"
+                icon="i-bx-info-circle"
+                @click="alertLoading = !alertLoading"
+              >
+                Click me to toggle loading
+                <ALoader :loading="alertLoading" />
+              </AAlert>
+
+              <ABtn @click="startBtnLoading">
+                <ALoadingIcon
+                  icon="i-bx-cloud-upload"
+                  :loading="!btnLoaded"
+                />
+                <span>Upload</span>
+              </ABtn>
+
+              <ACard
+                title="Click me"
+                subtitle="Chocolate cake tiramisu donut"
+                text="Ice cream sweet pie pie dessert sweet danish. Jelly jelly beans cupcake jelly-o chocolate bonbon chocolate bar."
+                :loading="cardLoading"
+                variant="light"
+                color="primary"
+                @click="cardLoading = !cardLoading"
               />
             </div>
-          </template>
-        </PageProse>
-      </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Date Picker
+            </h4>
+            <div class="flex flex-col flex-wrap items-start justify-start gap-4">
+              selected: {{ inputDatePicker }}
+              <UiDatepicker v-model="inputDatePicker" />
+            </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              List
+            </h4>
+            <div class="flex flex-col flex-wrap items-start justify-start gap-4">
+              <AList
+                :items="items"
+                class="[--a-list-item-margin:0_0] [padding:0] m-y-0 w-full p-x-0"
+              >
+                <AListItem
+                  v-for="(item, index) in items"
+                  :key="item.text"
+                  :text="item.text"
+                  :value="index"
+                  class="primary"
+                >
+                  <template #append>
+                    <span class="kbd">
+                      &#8984; {{ item.text }}
+                    </span>
+                  </template>
+                </AListItem>
+              </AList>
+            </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              New Tabs
+            </h4>
+            <ATabs
+              class="tabs"
+              :tabs="tabs"
+              transition="view-next"
+            >
+              <!-- 👉 Account -->
+              <template #account>
+                <div class="a-card-body">
+                  Bear claw sweet dessert sweet chocolate bar sesame snaps shortbread.
+                </div>
+              </template>
+
+              <!-- 👉 Notifications -->
+              <template #notifications>
+                <div class="a-card-body">
+                  Lollipop marzipan cotton candy pie macaroon wafer jelly beans shortbread.
+                </div>
+              </template>
+
+              <!-- 👉 Settings -->
+              <template #settings>
+                <div class="a-card-body">
+                  Pastry biscuit tart I love gummies wafer oat cake.
+                </div>
+              </template>
+              <template #test>
+                <div class="a-card-body">
+                  Hello, Alexander! Vue.js makes the animations and transitions incredibly easy to implement. So you should really use this opportunity to give a little spark to your application/website to shine. Nuxt.js already builds on the provided capabilities of Vue.js. It gives you a possibility to create a very simple transitions between the pages very fast and almost for no effort.
+                </div>
+              </template>
+            </ATabs>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Tabs
+            </h4>
+            <div class="flex flex-col flex-wrap items-center justify-start gap-4">
+              <UiTabsList v-model="inputTab" class="flex flex-row gap-1.5">
+                <UiTabsListItem>
+                  <template #default="{ activateTab, isActive }">
+                    <ABtn :variant="isActive ? 'fill' : 'outline'" :states="!isActive" @click="activateTab">
+                      Tab 1
+                    </ABtn>
+                  </template>
+                </UiTabsListItem>
+                <UiTabsListItem>
+                  <template #default="{ activateTab, isActive }">
+                    <ABtn :variant="isActive ? 'fill' : 'outline'" :states="!isActive" @click="activateTab">
+                      Tab 2
+                    </ABtn>
+                  </template>
+                </UiTabsListItem>
+              </UiTabsList>
+              <UiTabsPanels v-model="inputTab">
+                <UiTabsPanelsItem>Tab Panel 1</UiTabsPanelsItem>
+                <UiTabsPanelsItem>Tab Panel 2</UiTabsPanelsItem>
+              </UiTabsPanels>
+            </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Combobox
+            </h4>
+            <div class="flex flex-row flex-wrap items-center justify-start gap-4">
+              <UiCombobox
+                v-for="color in uiColorVariants"
+                :key="`combobox-${color}`"
+                v-model="input"
+                :color="color"
+                :options="usersOptions"
+                :data-component="UsersComboboxItem"
+                class="w-full"
+              />
+            </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Boxes
+            </h4>
+            <div
+              v-for="color in uiColorVariants"
+              :key="`box-${color}`"
+              class="mb-6 flex flex-row flex-wrap items-center justify-start gap-4"
+            >
+              <div
+                v-for="variant in 9"
+                :key="`box-${variant}`"
+                class="h-26 w-26 flex flex-col items-center justify-center break-words border p-2"
+                :class="`box-color__${color}--${variant}`"
+              >
+                <div class="-mt-6">
+                  {{ color }}
+                </div>
+                <div class="text-4xl font-bold">
+                  {{ variant }}
+                </div>
+              </div>
+            </div>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Buttons
+            </h4>
+            <template
+              v-for="rounded in uiRoundedVariants"
+              :key="`rounded-${rounded}`"
+            >
+              <div
+                v-for="(size, index) in uiSizeVariants"
+                :key="`input-size__${size} input-rounded__${rounded}`"
+                class="mb-6 flex flex-row flex-wrap items-center justify-start"
+                :class="`gap-${(index + 4) * 0.5}`"
+              >
+                <ABtn
+                  v-for="color in uiColorVariants"
+                  :key="`input-${color}`"
+                  :size="size"
+                  :color="color"
+                  :rounded="rounded"
+                >
+                  <i class="i-carbon:download inline-block" />
+                  <span>{{
+                    `${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`
+                  }}</span>
+                </ABtn>
+              </div>
+              <div
+                v-for="(size, index) in uiSizeVariants"
+                :key="`input-size__${size} input-rounded__${rounded}`"
+                class="mb-6 flex flex-row flex-wrap items-center justify-start"
+                :class="`gap-${(index + 4) * 0.5}`"
+              >
+                <ABtn
+                  v-for="color in uiColorVariants"
+                  :key="`input-${color}-outline`"
+                  outline
+                  :size="size"
+                  :color="color"
+                  :rounded="rounded"
+                >
+                  <i class="i-carbon:download inline-block" />
+                  <span>{{
+                    `${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`
+                  }}</span>
+                </ABtn>
+              </div>
+            </template>
+
+            <h4 class="text-default-500 dark:text-default-400 font-medium">
+              Inputs
+            </h4>
+            <template v-for="rounded in uiRoundedVariants">
+              <div
+                v-for="(size, index) in uiSizeVariants"
+                :key="`btn-size__${size} btn-rounded__${rounded}`"
+                class="mb-6 w-full flex flex-col flex-wrap items-center justify-start"
+                :class="`gap-${(index + 4) * 0.5}`"
+              >
+                <AInput
+                  v-for="color in uiColorVariants"
+                  :key="`btn-${color}`"
+                  class="w-full flex flex-col"
+                  :size="size"
+                  :color="color"
+                  :rounded="rounded"
+                  :model-value="`${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`"
+                />
+              </div>
+            </template>
+          </PageProse>
+        </div>
+      </SimpleBar>
     </WinboxWindow>
   </div>
 </template>
+
+<style lang="postcss">
+.tabs {
+  .a-tab-title {
+    @apply m-0
+  }
+}
+</style>

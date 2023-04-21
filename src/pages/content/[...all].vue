@@ -15,7 +15,7 @@ const contentPath = route.params.all.join('/')
         class: ['simple', 'wb-left', 'no-close'],
         border: 0,
         top: 0,
-        left: 44,
+        left: 40,
         bottom: 0,
         right: '50%',
         height: '100%',

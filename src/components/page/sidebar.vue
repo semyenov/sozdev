@@ -5,7 +5,7 @@ const { setLocale, locale } = useI18n()
 
 <template>
   <div
-    class="box-color__default--2 flex flex-grow flex-col justify-between border-r"
+    class="box-color__default--2 flex flex-grow flex-col justify-between border-r bg-white"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -15,7 +15,7 @@ const { setLocale, locale } = useI18n()
       >
         <ABtn
           class="border-b border-b-dashed"
-          color="default"
+          color="teal"
           :outline="!isActive"
           rounded="none"
           icon="i-carbon:home"
@@ -34,7 +34,7 @@ const { setLocale, locale } = useI18n()
       >
         <ABtn
           class="border-b border-b-dashed"
-          color="default"
+          color="teal"
           :outline="!isActive"
           rounded="none"
           icon="i-carbon:data-blob"
@@ -50,7 +50,7 @@ const { setLocale, locale } = useI18n()
       >
         <ABtn
           class="border-b border-b-dashed"
-          color="default"
+          color="teal"
           :outline="!isActive"
           rounded="none"
           icon="i-carbon:user"
@@ -66,7 +66,7 @@ const { setLocale, locale } = useI18n()
       >
         <ABtn
           class="border-b border-b-dashed"
-          color="default"
+          color="teal"
           :outline="!isActive"
           rounded="none"
           icon="i-carbon:text-scale"
@@ -82,7 +82,7 @@ const { setLocale, locale } = useI18n()
       >
         <ABtn
           class="border-b border-b-dashed"
-          color="default"
+          color="teal"
           :outline="!isActive"
           rounded="none"
           icon="i-carbon:book"

@@ -2,7 +2,7 @@
 import { clamp, objectPick } from '@antfu/utils'
 import { Document } from 'flexsearch'
 
-import { UiInput, UiVirtualList } from '#components'
+import { AInput, UiVirtualList } from '#components'
 
 import type { IUser } from '~/types'
 import type {
@@ -24,7 +24,7 @@ const props = defineProps({
   },
   size: {
     type: String as PropType<UISizeVariants>,
-    default: 'md',
+    default: 'text-sm',
   },
   rounded: {
     type: String as PropType<UIRoundedVariants>,
@@ -63,7 +63,8 @@ const dirtyFlag = ref(false)
 const [focusFlag, toggleFocused] = useToggle(false)
 
 const rootRef = ref<HTMLElement | null>(null)
-const inputComponent = ref<InstanceType<typeof UiInput> | null>(null)
+const inputEl = ref<HTMLInputElement | null>(null)
+const inputComponent = ref<InstanceType<typeof AInput> | null>(null)
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
 const input = ref<string>('')
@@ -213,10 +214,11 @@ onKeyStroke('Enter', async (event) => {
 })
 
 onMounted(() => {
-  if (!inputComponent.value?.rootRef)
+  if (!inputEl.value)
     return
 
   // inputRef.value.rootRef.addEventListener('focus', focusEventListener)
+
   document.addEventListener('focusin', documentFocusinEventListener)
   documentFocusinEventListener()
 
@@ -227,7 +229,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (!inputComponent.value?.rootRef)
+  if (!inputEl.value)
     return
 
   document.removeEventListener('focusin', documentFocusinEventListener)
@@ -277,9 +279,9 @@ function getField<T extends object>(
 
 function itemClassAdd(n: number) {
   if (n === cursor.value)
-    return props.color && `box-color__${props.color}--4`
+    return props.color && 'bg-primary text-white'
 
-  return `box-color__${props.color}--2`
+  return ''
 }
 
 async function itemClickHandler(n: number) {
@@ -291,11 +293,11 @@ async function itemClickHandler(n: number) {
 
   emit('update:modelValue', itemId as string)
 
-  if (!inputComponent.value?.rootRef)
+  if (!inputEl.value)
     return
 
   toggleFocused(false)
-  inputComponent.value.rootRef.blur()
+  inputEl.value.blur()
 
   const field = getField(item.value, props.searchFields)
   const str = field ? field.toString() : ''
@@ -308,7 +310,7 @@ async function itemHoverHandler(n: number) {
 }
 
 function inputCleanHandler() {
-  if (!inputComponent.value?.rootRef)
+  if (!inputEl.value)
     return
 
   emit('update:modelValue', '')
@@ -316,78 +318,95 @@ function inputCleanHandler() {
   toggleFocused(true)
   input.value = ''
   cursor.value = -1
-  inputComponent.value.rootRef.focus()
+  inputEl.value.focus()
 }
 
 function inputFocusHandler() {
-  if (!inputComponent.value?.rootRef)
+  if (!inputEl.value)
     return
 
-  toggleFocused(true)
-  inputComponent.value.rootRef.focus()
+  toggleFocused()
+  inputEl.value.focus()
 }
 
 function documentFocusinEventListener() {
-  if (!inputComponent.value?.rootRef || !document.activeElement)
+  if (!inputEl.value || !document.activeElement)
     return
 
+  // console.log(inputEl.value)
+
   toggleFocused(
-    document.activeElement.isEqualNode(inputComponent.value.rootRef),
+    document.activeElement.isEqualNode(inputEl.value),
   )
 }
+
+watch(inputComponent, (input) => {
+  if (!input || inputEl.value)
+    return
+
+  inputEl.value = input.$el.querySelector('input')
+  // document.addEventListener('focusin', documentFocusinEventListener)
+  // documentFocusinEventListener()
+})
 </script>
 
 <template>
   <div ref="rootRef" class="c-combobox relative flex flex-row">
     <!-- <div class="flex flex-row">{{ dataIds }}</div> -->
 
-    <UiInput
+    <AInput
       ref="inputComponent"
       v-model="input"
-      :color="props.color"
-      :border="props.border"
-      :size="props.size"
-      :rounded="props.rounded"
       class="w-full"
+      :input-wrapper-classes="
+        showFlag && 'rounded-b-none'
+      "
       :class="[
-        showFlag && 'rounded-b-none',
+        props.size,
         focusFlag
           ? `!box-color__${props.color}--3`
           : `!box-color__${props.color}--2`,
       ]"
-    />
-    <UiVirtualList
+    >
+      asdasd
+    </AInput>
+    <ACard
       v-if="dirtyFlag"
-      v-show="showFlag"
-      ref="listComponent"
-      v-bind="objectPick(props, ['dataComponent', 'dataKey'])"
-      :data-component="props.dataComponent"
-      :data-key="props.dataKey"
-      :data-ids="dataIds as string[]"
-      :data-getter="dataGetter"
-      :keeps="40"
-      :page-mode="false"
-      :wrap-class="[
-        'flex flex-col w-full',
-        props.color && `list-color__${props.color}`,
-      ]"
-      class="absolute left-0 right-0 top-full z-1 max-h-100 flex flex-col items-center overflow-auto border rounded-t-none border-t-none"
-      :class="[
-        props.rounded && `box-rounded__${props.rounded}`,
-        props.color && `box-color__${props.color}--4`,
-      ]"
-      :estimate-size="50"
-      :item-class-add="itemClassAdd"
-      @item-click="itemClickHandler"
-      @item-hover="itemHoverHandler"
-    />
-    <UiButton
+      class="left-0 right-0 top-full z-1 rounded-t-none !absolute"
+    >
+      <UiVirtualList
+        v-show="showFlag"
+        ref="listComponent"
+        v-bind="objectPick(props, ['dataComponent', 'dataKey'])"
+        :data-component="props.dataComponent"
+        :data-key="props.dataKey"
+        :data-ids="dataIds as string[]"
+        :data-getter="dataGetter"
+        :keeps="40"
+        :page-mode="false"
+        :wrap-class="[
+          'flex flex-col w-full',
+          props.color && `list-color__${props.color}`,
+        ]"
+        :class="[
+          props.rounded && `box-rounded__${props.rounded}`,
+          props.color && `box-color__${props.color}--4`,
+        ]"
+        :estimate-size="50"
+        :item-class-add="itemClassAdd"
+        class="max-h-100 w-full flex flex-col items-center overflow-auto border rounded-t-none border-t-none"
+        @item-click="itemClickHandler"
+        @item-hover="itemHoverHandler"
+      />
+    </ACard>
+    <ABtn
       v-if="input.length === 0"
-      size="sm"
-      outline
+      size="text-xs"
+
       tabindex="-1"
       :color="props.color"
-      class="absolute bottom-0 right-0 top-0 rounded-l-none"
+
+      class="bottom-0 right-0 top-0 h-full rounded-l-none p-0 !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag
@@ -398,14 +417,13 @@ function documentFocusinEventListener() {
     >
       <i v-if="!focusFlag" class="i-carbon:caret-down inline-block h-6" />
       <i v-else class="i-carbon:caret-up inline-block h-6" />
-    </UiButton>
-    <UiButton
+    </ABtn>
+    <ABtn
       v-else
-      outline
-      size="sm"
+      size="text-xs"
       tabindex="-1"
       :color="props.color"
-      class="absolute bottom-0 right-0 top-0 rounded-l-none"
+      class="bottom-0 right-0 top-0 h-full rounded-l-none p-0 !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag
@@ -415,6 +433,6 @@ function documentFocusinEventListener() {
       @click="inputCleanHandler"
     >
       <i class="i-carbon:close inline-block h-6" />
-    </UiButton>
+    </ABtn>
   </div>
 </template>

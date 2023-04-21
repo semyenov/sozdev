@@ -35,13 +35,13 @@
   }
 
   .wb-header {
-    @apply flex flex-row box-color__default--2 px-0 py-0 dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative box-border;
+    @apply flex flex-row box-color__default--2 px-0 py-0 dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative box-border bg-white;
 
     .wb-drag {
       @apply flex flex-grow overflow-hidden p-0;
 
       .wb-title {
-        @apply inline text-xl font-extrabold font-sans justify-center text-ellipsis w-full leading-none py-3 pl-6 pr-0;
+        @apply inline text-xl font-extrabold font-sans justify-center text-ellipsis w-full leading-none py-3 pl-6 pr-0 text-medium-emphasis;
       }
     }
 
@@ -49,7 +49,7 @@
       @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pl-0 pr-4 opacity-60 py-2;
 
       * {
-        @apply h-full max-w-6;
+        @apply h-full max-w-6 ;
       }
     }
   }
@@ -88,7 +88,7 @@
         @apply pl-4;
 
         .wb-title {
-          @apply inline text-base! pb-3;
+          @apply inline text-base! pb-3 ;
         }
       }
     }

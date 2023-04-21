@@ -47,6 +47,15 @@ function scrollClickHandler() {
 async function loadOthersHandler() {
   await objectsStore.getOthers()
 }
+
+const testInput = computed({
+  get: () => {
+    return input.value
+  },
+  set: (v) => {
+    input.value = v
+  },
+})
 </script>
 
 <template>
@@ -59,7 +68,7 @@ async function loadOthersHandler() {
         class: ['simple', 'wb-left', 'no-close'],
         top: 0,
         border: 0,
-        left: 44,
+        left: 40,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -83,16 +92,15 @@ async function loadOthersHandler() {
         :estimate-size="70"
       >
         <template #header>
-          <div class="w-full flex flex-row items-center justify-center py-4 box-color__default--1">
-            <UiInput
+          <div class="box-color__default--1 w-full flex flex-col items-center justify-center py-4">
+            <AInput
               key="page-objects-index-virtuallist-search"
-              v-model="input"
+              v-model="testInput"
               class="w-full"
               placeholder="Search"
-              size="md"
               color="default"
-              outline
             />
+            input: {{ input }}
           </div>
         </template>
       </UiVirtualList>
