@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
+console.log(route.fullPath)
 </script>
 
 <template>
