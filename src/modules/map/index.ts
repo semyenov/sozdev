@@ -5,7 +5,7 @@ import {
   defineNuxtModule,
 } from '@nuxt/kit'
 
-import { logger } from './utils/logger'
+import { logger } from './utils'
 
 export default defineNuxtModule({
   async setup(_options, _nuxt) {

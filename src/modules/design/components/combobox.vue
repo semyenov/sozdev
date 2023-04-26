@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { clamp, objectPick } from '@antfu/utils'
 import { Document } from 'flexsearch'
+import { nanoid } from 'nanoid'
 
 import { AInput, UiVirtualList } from '#components'
 
@@ -334,6 +335,7 @@ function documentFocusinEventListener() {
     return
 
   // console.log(inputEl.value)
+  console.log(document.activeElement.isEqualNode(inputEl.value))
 
   toggleFocused(
     document.activeElement.isEqualNode(inputEl.value),
@@ -345,9 +347,12 @@ watch(inputComponent, (input) => {
     return
 
   inputEl.value = input.$el.querySelector('input')
-  // document.addEventListener('focusin', documentFocusinEventListener)
-  // documentFocusinEventListener()
+  // inputEl.value?.setAttribute('id', nanoid())
+
+  document.addEventListener('focusin', documentFocusinEventListener)
+  documentFocusinEventListener()
 })
+const inputId = shallowRef<string>(nanoid())
 </script>
 
 <template>
@@ -356,7 +361,9 @@ watch(inputComponent, (input) => {
 
     <AInput
       ref="inputComponent"
+      :key="nanoid()"
       v-model="input"
+      :input-classes="inputId"
       class="w-full"
       :input-wrapper-classes="
         showFlag && 'rounded-b-none'
@@ -367,9 +374,7 @@ watch(inputComponent, (input) => {
           ? `!box-color__${props.color}--3`
           : `!box-color__${props.color}--2`,
       ]"
-    >
-      asdasd
-    </AInput>
+    />
     <ACard
       v-if="dirtyFlag"
       class="left-0 right-0 top-full z-1 rounded-t-none !absolute"
@@ -401,12 +406,12 @@ watch(inputComponent, (input) => {
     </ACard>
     <ABtn
       v-if="input.length === 0"
-      size="text-xs"
+      size="text-xl"
 
       tabindex="-1"
       :color="props.color"
 
-      class="bottom-0 right-0 top-0 h-full rounded-l-none p-0 !absolute"
+      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag
@@ -420,10 +425,10 @@ watch(inputComponent, (input) => {
     </ABtn>
     <ABtn
       v-else
-      size="text-xs"
+      size="text-xl"
       tabindex="-1"
       :color="props.color"
-      class="bottom-0 right-0 top-0 h-full rounded-l-none p-0 !absolute"
+      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag

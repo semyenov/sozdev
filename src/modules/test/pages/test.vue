@@ -379,7 +379,6 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
                 <ABtn
                   v-for="color in uiColorVariants"
                   :key="`input-${color}`"
-                  :size="size"
                   :color="color"
                   :rounded="rounded"
                 >
@@ -399,7 +398,6 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
                   v-for="color in uiColorVariants"
                   :key="`input-${color}-outline`"
                   outline
-                  :size="size"
                   :color="color"
                   :rounded="rounded"
                 >
@@ -425,7 +423,6 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
                   v-for="color in uiColorVariants"
                   :key="`btn-${color}`"
                   class="w-full flex flex-col"
-                  :size="size"
                   :color="color"
                   :rounded="rounded"
                   :model-value="`${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`"

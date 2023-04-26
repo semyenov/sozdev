@@ -218,14 +218,6 @@ export default defineNuxtConfig({
       cookieKey: 'X-Locale',
       redirectOn: 'root',
     },
-    // vueI18n: {
-    //   legacy: false,
-    //   locale: defaultLocale,
-    //   fallbackLocale: defaultLocale,
-    //   availableLocales,
-    //   numberFormats,
-    //   datetimeFormats,
-    // },
   },
 
   // https://content.nuxtjs.org/api/configuration

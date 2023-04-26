@@ -251,7 +251,8 @@ export const IMoveSchema = z.object({
   meta: IMetaSchema.optional().nullable(),
 })
 
-export type TFeature = Feature<Point, { color: [number, number, number] }>
+export type TFeature = Feature<Point, { color: [number, number, number]
+  icon: string }>
 
 export type IMove = z.infer<typeof IMoveSchema> & {
   feature: {

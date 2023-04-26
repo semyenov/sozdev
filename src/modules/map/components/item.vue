@@ -69,29 +69,7 @@ onMounted(createMaplibreglMap)
 
 // setInterval(handleClick, 5000)
 
-function getMoveTooltip(
-  res: string,
-  value: string,
-  from: string,
-  to: string,
-): string {
-  return `
-  <div class="custom-tooltip custom-tooltip--move">
-    <div class="custom-tooltip__header">
-      <span>${res} - ${value}</span>
-    </div>
-    <div class="custom-tooltip__body">
-      <div class="custom-tooltip__row">
-        <span>Отправитель:</span> ${from}
-      </div>
-      <div class="custom-tooltip__row">
-        <span>Получатель:</span> ${to}
-      </div>
-    </div>
-  </div>`
-}
-
-function createMaplibreglMap() {
+async function createMaplibreglMap() {
   maplibreglMap = new maplibregl.Map({
     container: 'mapContainer',
     style:
@@ -104,6 +82,7 @@ function createMaplibreglMap() {
     trackResize: true,
     pixelRatio: 1.5,
   })
+  // maplibreglMap.setStyle()
 
   maplibreglMap.addControl(
     new maplibregl.NavigationControl({
@@ -128,7 +107,7 @@ function createMaplibreglMap() {
 
   maplibreglMap.addControl(drawControl, 'bottom-right')
 
-  maplibreglMap.on('load', () => {
+  maplibreglMap.on('load', async () => {
     maplibreglMap.addSource('polygons-source-layer', {
       type: 'geojson',
       data: jsonData,
@@ -139,8 +118,7 @@ function createMaplibreglMap() {
       data: null,
 
       // cluster: true,
-      // clusterMaxZoom: 14, // Max zoom to cluster points on
-      // clusterRadius: 50,
+      // clusterMaxZoom: 8, // Max zoom to cluster points on
     })
 
     maplibreglMap.addLayer({
@@ -159,35 +137,16 @@ function createMaplibreglMap() {
       },
     })
 
-    const marker = new maplibregl.Marker({
-      color: '#000',
-    }).setLngLat([42.9473373, 51.2672198]).addTo(maplibreglMap)
-    marker.setPopup(new maplibregl.Popup({
-      closeButton: false,
-      closeOnClick: false,
-      className: 'custom-popup',
-    }).setHTML('<h1>Hello World!</h1>'))
-    maplibreglMap.on('click', (e) => {
-      console.log(e)
+    maplibreglMap.addLayer({
+      id: 'polygons-lines',
+      type: 'line',
+      source: 'polygons-source-layer',
+      layout: {},
+      paint: {
+        'line-color': settingsStore.districtBoundaries.color,
+        'line-width': settingsStore.districtBoundaries.weight,
+      },
     })
-    // maplibreglMap.on('click', (e) => {
-    //   console.log('openst', maplibreglMap.querySourceFeatures('openmaptiles', {
-    //     sourceLayer: 'place',
-    //     filter: ['all', ['==', 'class', 'city'], ['==', 'name:ru', 'Пенза']],
-    //   }))
-    //   // console.log('mouse', e.featureTarget)
-    // })
-
-    // maplibreglMap.addLayer({
-    //   id: 'polygons-lines',
-    //   type: 'line',
-    //   source: 'polygons-source-layer',
-    //   layout: {},
-    //   paint: {
-    //     'line-color': settingsStore.districtBoundaries.color,
-    //     'line-width': settingsStore.districtBoundaries.weight,
-    //   },
-    // })
 
     // maplibreglMap.addLayer({
     //   id: 'clusters',
@@ -208,11 +167,6 @@ function createMaplibreglMap() {
     //   },
     // })
 
-    // maplibreglMap.setLayoutProperty('label_country', 'text-field', [
-    //   'get',
-    //   'name:ru',
-    // ])
-
     maplibreglPopup = new maplibregl.Popup({
       closeButton: false,
       closeOnClick: false,
@@ -232,17 +186,40 @@ function createMaplibreglMap() {
     //   },
     // })
 
+    // maplibreglMap.addLayer({
+    //   id: 'unclustered-point',
+    //   type: 'circle',
+    //   source: 'objects-source-layer',
+    //   filter: ['!', ['has', 'point_count']],
+    //   paint: {
+    //     'circle-color': '#11b4da',
+    //     'circle-radius': 4,
+    //     'circle-stroke-width': 1,
+    //     'circle-stroke-color': '#fff',
+    //   },
+    // })
+
+    // const srcImg = '/logo1.png'
+
+    // try {
+    //   const image = await getImage(srcImg)
+
+    //   maplibreglMap.addImage('custom-image', image)
+    // }
+    // catch (e) {
+    //   logger.error(e)
+    // }
+
     maplibreglMap.addLayer({
-      id: 'unclustered-point',
-      type: 'circle',
+      id: 'objects',
+      type: 'symbol',
       source: 'objects-source-layer',
-      filter: ['!', ['has', 'point_count']],
-      paint: {
-        'circle-color': '#11b4da',
-        'circle-radius': 4,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#fff',
+      layout: {
+        'icon-image': 'map-icons/mvd/7_mvd.svg',
+        // 'icon-size': 1,
+        // 'icon-allow-overlap': true,
       },
+      // filter: ['!', ['has', 'point_count']],
     })
 
     deckOverlay = new DeckOverlay({
@@ -250,31 +227,31 @@ function createMaplibreglMap() {
 
     maplibreglMap.addControl(deckOverlay)
 
-    maplibreglMap.on('click', 'clusters', (e) => {
-      const features = maplibreglMap.queryRenderedFeatures(e.point, {
-        layers: ['clusters'],
-      })
+    // maplibreglMap.on('click', 'clusters', (e) => {
+    //   const features = maplibreglMap.queryRenderedFeatures(e.point, {
+    //     layers: ['clusters'],
+    //   })
 
-      const clusterId = features[0].properties.cluster_id
-      const source = maplibreglMap.getSource(
-        'objects-source-layer',
-      ) as maplibregl.GeoJSONSource
+    //   const clusterId = features[0].properties.cluster_id
+    //   const source = maplibreglMap.getSource(
+    //     'objects-source-layer',
+    //   ) as maplibregl.GeoJSONSource
 
-      if (!source)
-        return
+    //   if (!source)
+    //     return
 
-      source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-        if (err || !zoom)
-          return
+    //   source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+    //     if (err || !zoom)
+    //       return
 
-        if (features[0].geometry.type === 'Point') {
-          maplibreglMap.easeTo({
-            center: features[0].geometry.coordinates as [number, number],
-            zoom,
-          })
-        }
-      })
-    })
+    //     if (features[0].geometry.type === 'Point') {
+    //       maplibreglMap.easeTo({
+    //         center: features[0].geometry.coordinates as [number, number],
+    //         zoom,
+    //       })
+    //     }
+    //   })
+    // })
 
     maplibreglMap.on('mouseenter', 'clusters', () => {
       maplibreglMap.getCanvas().style.cursor = 'pointer'
@@ -405,6 +382,27 @@ function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl
       }
     },
   })
+}
+function getMoveTooltip(
+  res: string,
+  value: string,
+  from: string,
+  to: string,
+): string {
+  return `
+  <div class="custom-tooltip custom-tooltip--move">
+    <div class="custom-tooltip__header">
+      <span>${res} - ${value}</span>
+    </div>
+    <div class="custom-tooltip__body">
+      <div class="custom-tooltip__row">
+        <span>Отправитель:</span> ${from}
+      </div>
+      <div class="custom-tooltip__row">
+        <span>Получатель:</span> ${to}
+      </div>
+    </div>
+  </div>`
 }
 </script>
 

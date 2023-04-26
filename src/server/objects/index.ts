@@ -1,6 +1,5 @@
 import { range } from '@antfu/utils'
 import { faker } from '@faker-js/faker'
-
 import { bbox, randomPosition } from '@turf/turf'
 
 import jsonData from '../../modules/map/geojson/voronezh.json'
@@ -32,8 +31,10 @@ export const items = range(0, 1000).map((_i) => {
       },
       properties: {
         color: Array.from({ length: 3 }, () =>
-          faker.datatype.number({ min: 0, max: 255 })
+          faker.datatype.number({ min: 0, max: 255 }),
         ) as [number, number, number],
+
+        icon: 'map-icons/medical/plus_empty/7.svg',
       },
     },
     type: 'test',

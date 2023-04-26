@@ -60,7 +60,7 @@ function handleClick() {
   <div class="component-user-item">
     <ACard
       class="cursor-pointer select-none"
-      :color="winboxWindow ? 'primary' : 'cool-gray'"
+      :color="winboxWindow ? 'primary' : 'info'"
       :variant="winboxWindow ? 'fill' : 'light'"
       @click="handleClick()"
     >
@@ -77,14 +77,20 @@ function handleClick() {
         </div>
       </template>
       <template v-if="item">
-        <div class="px-4 pb-4">
+        <div class="px-4 leading-snug" :class="[winboxWindow ? 'pb-2' : 'pb-5']">
           {{ item }}
         </div>
 
-        <div v-if="winboxWindow?.state" class="px-4 pb-4 pt-1.5">
+        <div v-if="winboxWindow?.state" class="px-4 pb-5 pt-1.5">
           {{ winboxWindow?.state }}
         </div>
       </template>
     </ACard>
   </div>
 </template>
+
+<style lang="postcss">
+.a-card-typography-wrapper {
+  @apply !pb-2 pt-4;
+}
+</style>
