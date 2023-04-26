@@ -32,7 +32,7 @@ const props = defineProps({
 
 <template>
   <div
-    class="relative w-full flex flex-col border text-left divide-y dark:bg-gray-900 component-list rounded-lg"
+    class="component-list relative w-full flex flex-col border rounded-lg text-left divide-y dark:bg-gray-900"
     :class="[
       props.color && `list-color__${props.color}`,
       props.rounded && `box-rounded__${props.rounded}`,
@@ -50,7 +50,7 @@ const props = defineProps({
         props.dashed && `border-dashed`,
       ]"
     >
-      <slot :item="item"></slot>
+      <slot :item="item" />
     </div>
   </div>
 </template>

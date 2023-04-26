@@ -10,26 +10,23 @@ function minify(styles: string): string {
   function mapStyleChar(char: string) {
     // Retain spaces between selectors
     // Determine start of selector
-    if (/[\.@#]/.test(char) && !value) {
+    if (/[\.@#]/.test(char) && !value)
       selector = true
-    }
+
     // Determine end of selector
-    if (/[,\{]/.test(char) && selector) {
+    if (/[,\{]/.test(char) && selector)
       selector = false
-    }
 
     // Retain spaces between rules with multiple values
-    if (char === ':' && !selector) {
+    if (char === ':' && !selector)
       value = true
-    }
-    if (char === ';' && !selector) {
+
+    if (char === ';' && !selector)
       value = false
-    }
 
     // Replace spaces and line-breaks
-    if (/\s/.test(char) && !selector && !value) {
+    if (/\s/.test(char) && !selector && !value)
       return ''
-    }
 
     return char
   }
@@ -46,7 +43,7 @@ function minify(styles: string): string {
 
 /** Format CSS from camelCase */
 export function formatCssProperties(
-  passedStyles?: Record<string, string>
+  passedStyles?: Record<string, string>,
 ): string {
   const styles = passedStyles || {}
 
@@ -54,15 +51,13 @@ export function formatCssProperties(
     const formattedName = style
       .split('')
       .map((letter, index) => {
-        if (letter === '-') {
+        if (letter === '-')
           return letter
-        }
 
         const vendorPrefix = /^(?:webkit|moz|ms)/.test(style) && index === 0
 
-        if (vendorPrefix || letter === letter.toUpperCase()) {
+        if (vendorPrefix || letter === letter.toUpperCase())
           return `-${letter.toLowerCase()}`
-        }
 
         return letter
       })

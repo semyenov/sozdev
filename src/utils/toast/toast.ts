@@ -1,7 +1,8 @@
-import type { Options, TRenderFunction } from './toast.d'
 import { validateOptions } from './validate'
 import { appendStylesheet } from './styles'
 import renderToast from './render'
+
+import type { Options, TRenderFunction } from './toast.d'
 
 /**
  * **Options:**
@@ -15,22 +16,22 @@ import renderToast from './render'
  * @property `positionY` - 'top' or 'bottom'.
  * @property `styles` - CSS key/value pairs.
  */
-const checkOptions = (globalOptions: Options = {}) => {
+function checkOptions(globalOptions: Options = {}) {
   const options = globalOptions
 
   // Set defaults
-  if (options.duration === undefined) {
+  if (options.duration === undefined)
     options.duration = 5000
-  }
-  if (options.pauseOnHover === undefined) {
+
+  if (options.pauseOnHover === undefined)
     options.pauseOnHover = true
-  }
-  if (!options.positionY) {
+
+  if (!options.positionY)
     options.positionY = 'bottom'
-  }
-  if (!options.positionX) {
+
+  if (!options.positionX)
     options.positionX = 'right'
-  }
+
   validateOptions(options)
   appendStylesheet(options)
   return options

@@ -1,103 +1,51 @@
 diff --git a/index.d.ts b/index.d.ts
-index 594559f8a1102334a39a37ef6df47417a07cce35..94e40162a227ed04ce09e34b411cb30b8c69ba91 100755
+index 594559f8a1102334a39a37ef6df47417a07cce35..63dfe9282d866378e5a138d3b31513a908fdafa5 100755
 --- a/index.d.ts
 +++ b/index.d.ts
-@@ -6,115 +6,121 @@
- export as namespace WinBox;
- 
- interface WinBox {
--    dom: Node;
--    background: string;
--    body: HTMLElement;
--    border: string | number;
-+  dom: Node;
-+  background: string;
-+  body: HTMLElement;
-+  border: string | number;
- 
--    class: string | string[];
-+  class: string | string[];
- 
--    html: string;
--    id: string | number;
--    index: number;
--    max: boolean;
--    modal: boolean;
--    root: Node;
--    title: string;
--    url: string;
--    onfocus: (this: WinBox) => void;
--    onblur: (this: WinBox) => void;
--    onresize: (this: WinBox, width: number, height: number) => void;
--    onmove: (this: WinBox, x: number, y: number) => void;
--    onclose: (this: WinBox, force: boolean) => boolean;
--    mount(src?: Element): WinBox;
--    unmount(dest?: Element): WinBox;
--    setTitle(title: string): WinBox;
--    setBackground(background: string): WinBox;
--    setUrl(url: string): WinBox;
--    focus(): WinBox;
--    hide(): WinBox;
--    show(): WinBox;
--    minimize(state?: boolean): WinBox;
--    maximize(state?: boolean): WinBox;
--    fullscreen(state?: boolean): WinBox;
--    close(force?: boolean): boolean | void;
--    move(x?: string | number, y?: string | number, skipUpdate?: boolean): WinBox;
+@@ -21,7 +21,23 @@ interface WinBox {
+     root: Node;
+     title: string;
+     url: string;
++
++    width: number | string;
++    height: number | string;
++    minheight: number | string;
++    minwidth: number | string;
++    maxheight: number | string;
++    maxwidth: number | string;
++
++    top: number | string;
++    right: number | string;
++    bottom: number | string;
++    left: number | string;
++
+     onfocus: (this: WinBox) => void;
++    onmaximize: (this: WinBox, state?: boolean) => void;
++    onminimize: (this: WinBox, state?: boolean) => void;
++    onrestore: (this: WinBox, state?: boolean) => void;
+     onblur: (this: WinBox) => void;
+     onresize: (this: WinBox, width: number, height: number) => void;
+     onmove: (this: WinBox, x: number, y: number) => void;
+@@ -39,10 +55,15 @@ interface WinBox {
+     fullscreen(state?: boolean): WinBox;
+     close(force?: boolean): boolean | void;
+     move(x?: string | number, y?: string | number, skipUpdate?: boolean): WinBox;
 -    resize(w?: string | number, h?: string | number, skipUpdate?: boolean): WinBox;
--    addClass(classname: string): WinBox;
--    removeClass(classname: string): WinBox;
-+  html: string;
-+  id: string | number;
-+  index: number;
-+  max: boolean;
-+  modal: boolean;
-+  root: Node;
-+  title: string;
-+  url: string;
-+  onfocus: (this: WinBox) => void;
-+  onmaximize: (this: WinBox, state?: boolean) => void;
-+  onminimize: (this: WinBox, state?: boolean) => void;
-+  onrestore: (this: WinBox, state?: boolean) => void;
-+  onblur: (this: WinBox) => void;
-+  onresize: (this: WinBox, width: number, height: number) => void;
-+  onmove: (this: WinBox, x: number, y: number) => void;
-+  onclose: (this: WinBox, force: boolean) => boolean;
-+  mount(src?: Element): WinBox;
-+  unmount(dest?: Element): WinBox;
-+  setTitle(title: string): WinBox;
-+  setBackground(background: string): WinBox;
-+  setUrl(url: string): WinBox;
-+  focus(): WinBox;
-+  hide(): WinBox;
-+  show(): WinBox;
-+  minimize(state?: boolean): WinBox;
-+  maximize(state?: boolean): WinBox;
-+  fullscreen(state?: boolean): WinBox;
-+  close(force?: boolean): boolean | void;
-+  move(x?: string | number, y?: string | number, skipUpdate?: boolean): WinBox;
-+  resize(
-+    w?: string | number,
-+    h?: string | number,
-+    skipUpdate?: boolean
-+  ): WinBox;
-+  addClass(classname: string): WinBox;
-+  removeClass(classname: string): WinBox;
++    resize(
++        w?: string | number,
++        h?: string | number,
++        skipUpdate?: boolean
++    ): WinBox;
+     addClass(classname: string): WinBox;
+     removeClass(classname: string): WinBox;
  }
 +
  declare namespace WinBox {
--    interface WinBoxConstructor {
--        (title: string, params?: Params): WinBox;
--        (params: Params): WinBox;
--        new (title: string, params?: Params): WinBox;
--        new (params: Params): WinBox;
--    }
-+  interface WinBoxConstructor {
-+    (title: string, params?: Params): WinBox;
-+    (params: Params): WinBox;
-+    new (title: string, params?: Params): WinBox;
-+    new (params: Params): WinBox;
-+  }
+     interface WinBoxConstructor {
+         (title: string, params?: Params): WinBox;
+@@ -51,66 +72,64 @@ declare namespace WinBox {
+         new (params: Params): WinBox;
+     }
  
 -    interface Params {
 -        background?: string | undefined;
@@ -130,49 +78,13 @@ index 594559f8a1102334a39a37ef6df47417a07cce35..94e40162a227ed04ce09e34b411cb30b
 -        onresize?: ((this: WinBox, width: number, height: number) => void) | undefined;
 -        onmove?: ((this: WinBox, x: number, y: number) => void) | undefined;
 -    }
-+  type Params = Partial<{
-+    header: number;
-+    // configuration:
-+    index: number;
-+    id: string;
-+    root: HTMLElement;
-+    class: string[];
-+
-+    // appearance:
-+    title: string;
-+    background: string;
-+    border: number;
-+    icon: boolean;
-+
-+    // initial state:
-+    modal: boolean;
-+    max: boolean;
-+    min: boolean;
-+    hidden: boolean;
-+
-+    // dimension:
-+    width: number | string;
-+    height: number | string;
-+    minheight: number | string;
-+    minwidth: number | string;
-+    maxheight: number | string;
-+    maxwidth: number | string;
-+    autosize: boolean;
-+
-+    // position:
-+    x: number;
-+    y: number;
-+
-+    // viewport boundaries:
-+    top: number | string;
-+    right: number | string;
-+    bottom: number | string;
-+    left: number | string;
-+
-+    // contents (choose from):
-+    url: false | string;
-+    mount: false | HTMLElement;
-+    html: string;
++    type Params = Partial<{
++        header: number;
++        // configuration:
++        index: number;
++        id: string;
++        root: HTMLElement;
++        class: string[];
  
 -    interface Params {
 -        background?: string | undefined;
@@ -202,25 +114,56 @@ index 594559f8a1102334a39a37ef6df47417a07cce35..94e40162a227ed04ce09e34b411cb30b
 -        onresize?: ((this: WinBox, width: number, height: number) => void) | undefined;
 -        onmove?: ((this: WinBox, x: number, y: number) => void) | undefined;
 -    }
-+    // callbacks:
-+    oncreate?: (options: Params) => void;
-+    onshow?: (this: WinBox) => void;
-+    onhide?: (this: WinBox) => void;
-+    onfocus?: (this: WinBox) => void;
-+    onblur?: (this: WinBox) => void;
-+    onresize?: (this: WinBox, width: number, height: number) => void;
-+    onmove?: (this: WinBox, x: number, y: number) => void;
-+    onclose?: (this: WinBox, force?: boolean) => boolean;
-+    onfullscreen?: (this: WinBox) => void;
-+    onmaximize?: (this: WinBox, state?: boolean) => void;
-+    onminimize?: (this: WinBox) => void;
-+    onrestore?: (this: WinBox) => void;
-+  }>;
++        // appearance:
++        title: string;
++        background: string;
++        border: number;
++        icon: boolean;
++
++        // initial state:
++        modal: boolean;
++        max: boolean;
++        min: boolean;
++        hidden: boolean;
++
++        // dimension:
++        width: number | string;
++        height: number | string;
++        minheight: number | string;
++        minwidth: number | string;
++        maxheight: number | string;
++        maxwidth: number | string;
++        autosize: boolean;
++
++        // position:
++        x: number;
++        y: number;
++
++        // viewport boundaries:
++        top: number | string;
++        right: number | string;
++        bottom: number | string;
++        left: number | string;
++
++        // contents (choose from):
++        url: false | string;
++        mount: false | HTMLElement;
++        html: string;
++
++        // callbacks:
++        oncreate?: (options: Params) => void;
++        onshow?: (this: WinBox) => void;
++        onhide?: (this: WinBox) => void;
++        onfocus?: (this: WinBox) => void;
++        onblur?: (this: WinBox) => void;
++        onresize?: (this: WinBox, width: number, height: number) => void;
++        onmove?: (this: WinBox, x: number, y: number) => void;
++        onclose?: (this: WinBox, force?: boolean) => boolean;
++        onfullscreen?: (this: WinBox) => void;
++        onmaximize?: (this: WinBox, state?: boolean) => void;
++        onminimize?: (this: WinBox, state: boolean) => void;
++        onrestore?: (this: WinBox) => void;
++    }>;
  }
  
  declare const WinBox: WinBox.WinBoxConstructor & {
--    new: ((title: string, params?: WinBox.Params) => WinBox) | ((params: WinBox.Params) => WinBox);
-+  new: ((title: string, params?: WinBox.Params) => WinBox) | ((params: WinBox.Params) => WinBox);
- };
- 
- export = WinBox;

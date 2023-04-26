@@ -1,10 +1,16 @@
+import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
+import postcssNested from 'postcss-nested'
+
+// @ts-expect-error missing type
+import postcssCurrentSelector from 'postcss-current-selector'
+
+// @ts-expect-error missing type
+import postcssNestedAncestors from 'postcss-nested-ancestors'
+
 import {
-  availableLocales,
-  datetimeFormats,
   defaultLocale,
   locales,
-  numberFormats,
 } from './src/i18n'
 
 const rootDir = resolve(__dirname)
@@ -19,16 +25,24 @@ const componentsDir = resolve(srcDir, 'components')
 export default defineNuxtConfig({
   srcDir,
   appDir,
-
   alias: {
-    assets: assetsDir,
-    public: publicDir,
+    'assets': assetsDir,
+    'public': publicDir,
 
-    '~~': rootDir,
     '~': srcDir,
+    '~~': rootDir,
   },
 
   telemetry: false,
+
+  runtimeConfig: {
+    apiUri: 'http://localhost:3000/api',
+
+    public: {
+      test: 1,
+      apiUri: '/api',
+    },
+  },
 
   app: {
     head: {
@@ -44,15 +58,9 @@ export default defineNuxtConfig({
       ],
     },
 
-    // pageTransition: {
-    //   name: 'page',
-    //   mode: 'out-in',
-    // },
-  },
-
-  runtimeConfig: {
-    public: {
-      apiUri: '/api',
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
     },
   },
 
@@ -61,7 +69,8 @@ export default defineNuxtConfig({
       {
         enabled: true,
         global: true,
-        isAsync: true,
+        prefetch: true,
+        preload: true,
 
         pathPrefix: true,
         prefix: 'winbox',
@@ -79,45 +88,121 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['store', 'composables', 'utils'],
     collectMeta: true,
+
     addons: {
       vueTemplate: true,
     },
   },
 
+  typescript: {
+    shim: false,
+    strict: true,
+    typeCheck: true,
+  },
+
+  vue: {
+    compilerOptions: {
+      nodeTransforms: [
+        transformShortVmodel({ prefix: '::' }),
+      ],
+    },
+  },
+
   build: {
-    transpile: [({ isDev }) => !isDev && 'flexsearch'],
+    transpile: [
+      ({ isDev }) => !isDev && 'flexsearch',
+      ({ isDev }) => isDev && '@deck.gl/layers',
+      ({ isDev }) => isDev && '@deck.gl/mapbox',
+    ],
+  },
+
+  postcss: {
+    plugins: {
+      'postcss-nested': postcssNested(),
+      'postcss-current-selector': postcssCurrentSelector(),
+      'postcss-nested-ancestors': postcssNestedAncestors(),
+    },
   },
 
   css: [
-    '@unocss/reset/antfu.css',
-
-    'uno.css',
-
     'assets/styles/main.postcss',
-    'assets/styles/winbox.postcss',
     'assets/styles/datepicker.postcss',
+    'assets/styles/maplibre.postcss',
   ],
 
   // Modules configuration
 
   modules: [
     '~/modules/test/index',
+    '~/modules/winbox/index',
+    '~/modules/map/index',
     '~/modules/design/index',
 
-    '@sozdev/winbox',
-
+    '@anu-vue/nuxt',
+    '@unocss/nuxt',
+    '@nuxt/image-edge',
     '@nuxt/content',
+    'magic-regexp/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/emotion',
     '@vue-macros/nuxt',
     '@vueuse/motion/nuxt',
-    'magic-regexp/nuxt',
     'nuxt-typed-router',
+    'nuxt-component-meta',
 
     '@nuxt/devtools',
   ],
+
+  // componentMeta: {
+  //   global: true,
+  // },
+
+  image: {
+    provider: 'unsplash',
+    unsplash: {
+      // baseURL: 'https://source.unsplash.com',
+      // preset: 'default',
+      modifiers: {
+        width: (value: number) => `w:${value}`,
+        height: (value: number) => `h:${value}`,
+        format: (value: string) => `fm:${value}`,
+        quality: (value: number) => `q:${value}`,
+        fit: (value: string) => `fit:${value}`,
+        dpr: (value: number) => `dpr:${value}`,
+      },
+    },
+    screens: {
+      'xs': 320,
+      'sm': 640,
+      'md': 768,
+      'lg': 1024,
+      'xl': 1280,
+      'xxl': 1536,
+      '2xl': 1536,
+    },
+    // presets: {
+    //   default: {
+    //     modifiers: {
+    //       width: 500,
+    //       height: 500,
+    //       format: 'jpg',
+    //       quality: 75,
+    //       fit: 'cover',
+    //       dpr: 2,
+    //     },
+    //   },
+    // },
+  },
+
+  pinia: {
+    autoImports: [
+      'defineStore',
+      ['defineStore', 'definePiniaStore'],
+      'storeToRefs',
+    ],
+  },
 
   i18n: {
     defaultLocale,
@@ -126,20 +211,12 @@ export default defineNuxtConfig({
     lazy: true,
     strategy: 'no_prefix',
     langDir: 'i18n/locales',
+    // onLanguageSwitched,
 
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'X-Locale',
       redirectOn: 'root',
-    },
-
-    vueI18n: {
-      legacy: false,
-      locale: defaultLocale,
-      fallbackLocale: defaultLocale,
-      availableLocales,
-      numberFormats,
-      datetimeFormats,
     },
   },
 
@@ -149,7 +226,7 @@ export default defineNuxtConfig({
   },
 
   nuxtTypedRouter: {
-    experimentalPathCheck: true,
+    // experimentalPathCheck: true,
     plugin: true,
 
     strict: {

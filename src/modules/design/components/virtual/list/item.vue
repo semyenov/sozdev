@@ -74,13 +74,12 @@ const item = await props.dataGetter(dataId.value)
 const rootRef = ref<HTMLElement | null>(null)
 const horizontal = toRef(props, 'horizontal')
 const shapeKey = computed<'width' | 'height'>(() =>
-  horizontal.value ? 'width' : 'height'
+  horizontal.value ? 'width' : 'height',
 )
 
 const resizeObserver = useResizeObserver(rootRef, (entries) => {
-  if (entries.length > 0) {
+  if (entries.length > 0)
     emit('resize', dataId.value, entries[0].contentRect[shapeKey.value], false)
-  }
 })
 
 onMounted(dispatchSizeChange)
@@ -92,9 +91,8 @@ onUnmounted(resizeObserver.stop)
 function dispatchSizeChange() {
   if (rootRef.value) {
     const entries = rootRef.value.getClientRects()
-    if (entries.length > 0) {
+    if (entries.length > 0)
       emit('resize', dataId.value, entries[0][shapeKey.value], true)
-    }
   }
 }
 </script>

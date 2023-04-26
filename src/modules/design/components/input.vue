@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import type {
   UIColorVariants,
   UIRoundedVariants,
   UISizeVariants,
 } from '~/types/ui'
+
+import type { PropType } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -44,12 +44,12 @@ const input = useVModel(props, 'modelValue', emit, { passive: true })
     v-bind="attrs"
     ref="rootRef"
     v-model="input"
-    class="flex flex-row items-center justify-center border transition-200 c-input outline-none"
+    class="c-input flex flex-row items-center justify-center border outline-none transition-200"
     :class="[
-      props.color &&
-        `box-color__${props.color}--2 focus:box-color__${props.color}--3`,
+      props.color
+        && `box-color__${props.color}--2 focus:box-color__${props.color}--3`,
       props.size && `box-size__${props.size}`,
       props.rounded && `box-rounded__${props.rounded}`,
     ]"
-  />
+  >
 </template>

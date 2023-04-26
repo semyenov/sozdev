@@ -1,6 +1,7 @@
 import consolaGlobalInstance from 'consola'
 
-export const useLogger = (tag?: string) =>
-  !tag
+export function useLogger(tag?: string) {
+  return !tag
     ? consolaGlobalInstance
     : consolaGlobalInstance.create({ defaults: { tag } })
+}
