@@ -1,16 +1,13 @@
 diff --git a/package.json b/package.json
-index ea5df77a19183fcaff81141fbc8fe6af877ba916..8b51e2471ec10d25bb72ba8eb8483380a0bb37f2 100644
+index ea5df77a19183fcaff81141fbc8fe6af877ba916..5cccc5ead054db95184621586f1c30b802bb51ac 100644
 --- a/package.json
 +++ b/package.json
-@@ -20,10 +20,8 @@
+@@ -20,7 +20,7 @@
      "url": "https://github.com/nextapps-de/winbox/issues",
      "email": "info@nextapps.de"
    },
 -  "main": "src/js/winbox.js",
 +  "module": "src/js/winbox.js",
    "type": "module",
--  "browser": "dist/winbox.bundle.min.js",
--  "preferGlobal": false,
-   "repository": {
-     "type": "git",
-     "url": "https://github.com/nextapps-de/winbox.git"
+   "browser": "dist/winbox.bundle.min.js",
+   "preferGlobal": false,

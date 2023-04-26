@@ -7,7 +7,7 @@ watch(tildaKey, v => v && toggleDark())
 </script>
 
 <template>
-  <div class="flex flex-grow box-color__default--3">
+  <div class="box-color__default--3 flex flex-grow">
     <NuxtLoadingIndicator class="absolute z-100 h-4 w-full" />
 
     <MapLibre />

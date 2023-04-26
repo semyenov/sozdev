@@ -9,16 +9,7 @@
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=jSJRPdUXEsNgteCkgfs4"
     }
   },
-  "sprite": [
-    {
-      "id": "default",
-      "url": "http://localhost:3000/map/styles/streets/old/sprite"
-    },
-    {
-      "id": "sprite_custom",
-      "url": "http://localhost:3000/map/styles/streets/new/sprite"
-    }
-  ],
+  "sprite": "http://localhost:3000/map/styles/streets/old/sprite",
   "glyphs": "http://localhost:3000/map/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
