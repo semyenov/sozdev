@@ -334,9 +334,6 @@ function documentFocusinEventListener() {
   if (!inputEl.value || !document.activeElement)
     return
 
-  // console.log(inputEl.value)
-  console.log(document.activeElement.isEqualNode(inputEl.value))
-
   toggleFocused(
     document.activeElement.isEqualNode(inputEl.value),
   )

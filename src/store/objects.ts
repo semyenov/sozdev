@@ -7,7 +7,7 @@ export const useObjectsStore = defineStore(objectsStoreKey, () => {
   const backendStore = useBackendStore()
 
   const itemsGetterByIds = backendStore.itemsGetterByIds<IObject>(
-    IMetaScope.OBJECTS
+    IMetaScope.OBJECTS,
   )
   const itemGetter = backendStore.itemGetter<IObject>(IMetaScope.OBJECTS)
   const itemsGetter = backendStore

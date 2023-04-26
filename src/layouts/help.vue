@@ -8,7 +8,7 @@ const authorizationStore = useAuthorizationStore()
 
 <template>
   <div
-    class="layout layout-default flex flex-grow overflow-hidden box-color__default--3"
+    class="box-color__default--3 layout layout-default flex flex-grow overflow-hidden"
   >
     <div class="layout-default__loading z-100 h-2">
       <NuxtLoadingIndicator />
@@ -33,7 +33,7 @@ const authorizationStore = useAuthorizationStore()
     <div
       class="layout-default__left fixed bottom-0 left-0 top-0 z-3 flex flex-row"
     >
-      <div class="border-r box-color__default--2">
+      <div class="box-color__default--2 border-r">
         <PageSidebar />
       </div>
       <div

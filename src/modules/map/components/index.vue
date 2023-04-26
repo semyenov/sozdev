@@ -2,7 +2,7 @@
 
 <template>
   <div
-    class="layout-default__map flex flex-grow fixed top-0 left-0 h-full w-full"
+    class="layout-default__map fixed left-0 top-0 h-full w-full flex flex-grow"
   >
     <MapLibreItem />
   </div>

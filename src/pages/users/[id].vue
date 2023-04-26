@@ -16,7 +16,7 @@ const item = await usersGetter(id)
 
 <template>
   <div class="page page-users-id h-full w-full">
-    <div v-if="item" class="sticky flex flex-row box-color__default--2">
+    <div v-if="item" class="box-color__default--2 sticky flex flex-row">
       <PageTitle v-if="item.info.first_name && item.info.last_name">
         {{ `# ${item.info.first_name} ${item.info.last_name} Page` }}
       </PageTitle>

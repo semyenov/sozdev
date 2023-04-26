@@ -95,7 +95,7 @@ const { data } = await useFetch('/api/test', {
           <div class="flex flex-row justify-center gap-2 text-3xl">
             <i class="i-logos:vue text-9xl" />
             <div
-              class="i-twemoji:grinning-face-with-smiling-eyes hover:i-twemoji:face-with-tears-of-joy text-7xl"
+              class="i-twemoji:grinning-face-with-smiling-eyes text-7xl hover:i-twemoji:face-with-tears-of-joy"
             />
             <i
               class="i-mdi:alarm text-6xl text-orange-400"
