@@ -406,12 +406,9 @@ const inputId = shallowRef<string>(nanoid())
     </ACard>
     <ABtn
       v-if="input.length === 0"
-      size="text-xl"
-
-      tabindex="-1"
       :color="props.color"
 
-      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 !absolute"
+      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 text-xl !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag
@@ -425,10 +422,8 @@ const inputId = shallowRef<string>(nanoid())
     </ABtn>
     <ABtn
       v-else
-      size="text-xl"
-      tabindex="-1"
       :color="props.color"
-      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 !absolute"
+      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 text-xl !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag

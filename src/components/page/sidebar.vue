@@ -16,8 +16,7 @@ const { setLocale, locale } = useI18n()
         <ABtn
           class="border-b border-b-dashed"
           color="teal"
-          :outline="!isActive"
-          rounded="none"
+          :states="!isActive"
           icon="i-carbon:home"
           icon-only
           variant="text"
@@ -35,8 +34,7 @@ const { setLocale, locale } = useI18n()
         <ABtn
           class="border-b border-b-dashed"
           color="teal"
-          :outline="!isActive"
-          rounded="none"
+          :states="!isActive"
           icon="i-carbon:data-blob"
           icon-only
           variant="text"
@@ -51,8 +49,7 @@ const { setLocale, locale } = useI18n()
         <ABtn
           class="border-b border-b-dashed"
           color="teal"
-          :outline="!isActive"
-          rounded="none"
+          :states="!isActive"
           icon="i-carbon:user"
           icon-only
           variant="text"
@@ -67,8 +64,7 @@ const { setLocale, locale } = useI18n()
         <ABtn
           class="border-b border-b-dashed"
           color="teal"
-          :outline="!isActive"
-          rounded="none"
+          :states="!isActive"
           icon="i-carbon:text-scale"
           icon-only
           variant="text"
@@ -83,8 +79,7 @@ const { setLocale, locale } = useI18n()
         <ABtn
           class="border-b border-b-dashed"
           color="teal"
-          :outline="!isActive"
-          rounded="none"
+          :states="!isActive"
           icon="i-carbon:book"
           icon-only
           variant="text"
@@ -97,7 +92,6 @@ const { setLocale, locale } = useI18n()
       <ABtn
         class="border-b border-b-dashed"
         color="default"
-        rounded="none"
         :icon="locale === 'ru' ? 'i-twemoji:flag-russia' : 'i-twemoji:flag-united-states'
         "
         icon-only

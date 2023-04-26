@@ -89,6 +89,7 @@ async function loadOthersHandler() {
               v-model="input"
               class="w-full"
               placeholder="Search"
+
               color="default"
             />
             input: {{ input }}

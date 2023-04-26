@@ -232,13 +232,13 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
               />
             </div>
 
-            <h4 class="text-default-500 dark:text-default-400 font-medium">
+            <!-- <h4 class="text-default-500 dark:text-default-400 font-medium">
               Date Picker
             </h4>
             <div class="flex flex-col flex-wrap items-start justify-start gap-4">
               selected: {{ inputDatePicker }}
               <UiDatepicker v-model="inputDatePicker" />
-            </div>
+            </div> -->
 
             <h4 class="text-default-500 dark:text-default-400 font-medium">
               List
@@ -380,7 +380,6 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
                   v-for="color in uiColorVariants"
                   :key="`input-${color}`"
                   :color="color"
-                  :rounded="rounded"
                 >
                   <i class="i-carbon:download inline-block" />
                   <span>{{
@@ -397,9 +396,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
                 <ABtn
                   v-for="color in uiColorVariants"
                   :key="`input-${color}-outline`"
-                  outline
                   :color="color"
-                  :rounded="rounded"
                 >
                   <i class="i-carbon:download inline-block" />
                   <span>{{
@@ -423,8 +420,6 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
                   v-for="color in uiColorVariants"
                   :key="`btn-${color}`"
                   class="w-full flex flex-col"
-                  :color="color"
-                  :rounded="rounded"
                   :model-value="`${color.toUpperCase()}-${size.toUpperCase()}-${rounded.toLocaleUpperCase()}`"
                 />
               </div>
