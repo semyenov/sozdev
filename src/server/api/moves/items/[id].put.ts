@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     if (index < 0)
       return 404
 
-    items.splice(index, 1, body.data)
+    // items.splice(index, 1, body.data)
   }
 
   return 400
