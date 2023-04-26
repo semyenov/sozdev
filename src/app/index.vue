@@ -1,11 +1,10 @@
 <script setup lang="ts">
 const route = useRoute()
+console.log(route.fullPath)
 </script>
 
 <template>
-  <div>
-    <NuxtLayout>
-      <NuxtPage :key="route.fullPath" />
-    </NuxtLayout>
-  </div>
+  <NuxtLayout>
+    <NuxtPage :key="route.fullPath" />
+  </NuxtLayout>
 </template>

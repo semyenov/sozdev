@@ -1,0 +1,116 @@
+@import url('winbox/dist/css/winbox.min.css');
+
+.winbox.simple {
+  @apply flex flex-col border shadow-none rounded-none;
+
+  .wb-wrapper {
+    @apply flex flex-col flex-grow w-full h-full max-h-full overflow-hidden relative;
+  }
+
+  .wb-e {
+    @apply -right-3 top-0 bottom-0 w-3 border-l rounded-l-none!;
+  }
+
+  .wb-w {
+    @apply -left-3 top-0 bottom-0 w-3 border-r rounded-r-none!;
+  }
+
+  .wb-n {
+    @apply -top-3 right-0 left-0 h-3 border-b rounded-b-none!;
+  }
+
+  .wb-s {
+    @apply -bottom-3 right-0 left-0 h-3 border-t rounded-t-none!;
+  }
+
+  .wb-e,
+  .wb-s,
+  .wb-w,
+  .wb-n {
+    @apply bg-transparent border-transparent rounded-full;
+
+    &:hover {
+      @apply dark:bg-default-700 bg-default-300/50 border-default-400 transition-all duration-500 z-3;
+    }
+  }
+
+  .wb-header {
+    @apply flex flex-row box-color__default--2 px-0 py-0 dark:text-default-400 border-b border-b-dashed text-default-500 justify-center relative box-border bg-white;
+
+    .wb-drag {
+      @apply flex flex-grow overflow-hidden p-0;
+
+      .wb-title {
+        @apply inline text-xl font-extrabold font-sans justify-center text-ellipsis w-full leading-none py-3 pl-6 pr-0 text-medium-emphasis;
+      }
+    }
+
+    .wb-control {
+      @apply flex flex-row order-2 h-auto filter-invert-100 dark:filter-invert-0 dark:opacity-70 pl-0 pr-4 opacity-60 py-2;
+
+      * {
+        @apply h-full max-w-6;
+      }
+    }
+  }
+
+  .wb-body {
+    @apply flex flex-grow w-full h-auto max-h-full overflow-inherit top-0! relative rounded-b-none;
+
+    .wb-content {
+      @apply top-0 left-0 w-full h-full m-0 absolute;
+    }
+  }
+
+  &.focus {
+    @apply shadow-xl shadow-default dark:shadow-default-800 border-default-300;
+
+    .wb-header {
+      @apply flex flex-row box-color__default--3;
+    }
+  }
+
+  &.min {
+    @apply font-normal border-solid! transform;
+
+    .wb-header {
+      @apply flex relative! box-color__default--3 p-0 border-b-none;
+
+      .wb-control {
+        @apply px-2 py-2;
+
+        * {
+          @apply h-full;
+        }
+      }
+
+      .wb-drag {
+        @apply pl-4;
+
+        .wb-title {
+          @apply inline text-base! pb-3;
+        }
+      }
+    }
+
+    &:hover {
+      .wb-header {
+        .wb-control {
+          /* @apply flex; */
+
+          * {
+            @apply h-full;
+          }
+        }
+      }
+    }
+  }
+
+  /* &.wb-left {
+    @apply border-l-none border-t-none border-b-none;
+  }
+
+  &.wb-right {
+    @apply border-r-none border-t-none border-b-none;
+  } */
+}

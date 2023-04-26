@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { clamp, objectPick } from '@antfu/utils'
 import { Document } from 'flexsearch'
+import { nanoid } from 'nanoid'
 
-import type { PropType } from 'vue'
+import { AInput, UiVirtualList } from '#components'
+
 import type { IUser } from '~/types'
 import type {
   UIColorVariants,
@@ -10,7 +12,7 @@ import type {
   UISizeVariants,
 } from '~/types/ui'
 
-import { UiInput, UiVirtualList } from '#components'
+import type { PropType } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -23,7 +25,7 @@ const props = defineProps({
   },
   size: {
     type: String as PropType<UISizeVariants>,
-    default: 'md',
+    default: 'text-sm',
   },
   rounded: {
     type: String as PropType<UIRoundedVariants>,
@@ -62,7 +64,8 @@ const dirtyFlag = ref(false)
 const [focusFlag, toggleFocused] = useToggle(false)
 
 const rootRef = ref<HTMLElement | null>(null)
-const inputComponent = ref<InstanceType<typeof UiInput> | null>(null)
+const inputEl = ref<HTMLInputElement | null>(null)
+const inputComponent = ref<InstanceType<typeof AInput> | null>(null)
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
 const input = ref<string>('')
@@ -106,62 +109,58 @@ const index = new Document<IUser, true>({
 })
 
 const dataIds = asyncComputed(async () => {
-  if (!dirtyFlag) {
+  if (!dirtyFlag)
     return []
-  }
 
   const ids = (
     await index.search(input.value, {
       index: ['info:first_name', 'info:last_name'],
       enrich: false,
     })
-  ).flatMap((item) => item.result)
+  ).flatMap(item => item.result)
 
-  return ids.length > 0 ? ids : options.value.map((item) => item._id)
+  return ids.length > 0 ? ids : options.value.map(item => item._id)
 })
 
-const dataGetter = async (id: string) =>
-  computed(() => options.value.find((item) => item._id === id))
+async function dataGetter(id: string) {
+  return computed(() => options.value.find(item => item._id === id))
+}
 
 const showFlag = computed(() => focusFlag.value && dataIds.value.length > 0)
 const cursor = ref(
-  dataIds.value ? dataIds.value.findIndex((id) => id === props.modelValue) : -1
+  dataIds.value ? dataIds.value.findIndex(id => id === props.modelValue) : -1,
 )
 
 watch(
   options,
   async (options) => {
-    if (!options.length) {
+    if (!options.length)
       return
-    }
-    for (const item of options) {
+
+    for (const item of options)
       await index.addAsync(item._id, item as IUser)
-    }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 watch(focusFlag, () => (dirtyFlag.value = true))
 
 watch(dataIds, () => {
-  if (!listComponent.value) {
+  if (!listComponent.value)
     return
-  }
 
   listComponent.value.scrollToIndex(0)
 })
 
 watch(input, (i) => {
-  if (!listComponent.value) {
+  if (!listComponent.value)
     return
-  }
 
   listComponent.value.scrollToIndex(0)
   cursor.value = -1
 
-  if (i !== '') {
+  if (i !== '')
     return
-  }
 
   emit('update:modelValue', undefined)
 })
@@ -171,52 +170,44 @@ onClickOutside(rootRef, () => {
 })
 
 onKeyStroke('Backspace', async () => {
-  if (!focusFlag.value || !props.modelValue) {
+  if (!focusFlag.value || !props.modelValue)
     return
-  }
 
   const item = await dataGetter(props.modelValue)
-  if (!item) {
+  if (!item)
     return
-  }
 
   const field = getField(item, props.searchFields)
   const str = field ? field.toString() : ''
-  if (input.value === str) {
+  if (input.value === str)
     input.value = ''
-  }
 })
 
 onKeyStroke('ArrowUp', (event) => {
-  if (!focusFlag.value) {
+  if (!focusFlag.value)
     return
-  }
 
   event.preventDefault()
 
   cursor.value = clamp(cursor.value - 1, 0, dataIds.value.length - 1)
-  if (listComponent.value) {
+  if (listComponent.value)
     listComponent.value.scrollToIndex(cursor.value)
-  }
 })
 
 onKeyStroke('ArrowDown', (event) => {
-  if (!focusFlag.value) {
+  if (!focusFlag.value)
     return
-  }
 
   event.preventDefault()
 
   cursor.value = clamp(cursor.value + 1, 0, dataIds.value.length - 1)
-  if (listComponent.value) {
+  if (listComponent.value)
     listComponent.value.scrollToIndex(cursor.value)
-  }
 })
 
 onKeyStroke('Enter', async (event) => {
-  if (!focusFlag.value || cursor.value < 0) {
+  if (!focusFlag.value || cursor.value < 0)
     return
-  }
 
   event.preventDefault()
 
@@ -224,24 +215,23 @@ onKeyStroke('Enter', async (event) => {
 })
 
 onMounted(() => {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputEl.value)
     return
-  }
+
   // inputRef.value.rootRef.addEventListener('focus', focusEventListener)
+
   document.addEventListener('focusin', documentFocusinEventListener)
   documentFocusinEventListener()
 
-  if (cursor.value < 0) {
+  if (cursor.value < 0)
     return
-  }
 
   itemClickHandler(cursor.value)
 })
 
 onUnmounted(() => {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputEl.value)
     return
-  }
 
   document.removeEventListener('focusin', documentFocusinEventListener)
 })
@@ -266,16 +256,15 @@ onUnmounted(() => {
 function getField<T extends object>(
   obj: T,
   path: string[],
-  defaultValue?: string
+  defaultValue?: string,
 ): string | object | undefined {
   const travel = () => {
     let val: object = obj
 
     for (const i in path) {
       const p = path[i] as keyof typeof val
-      if (!Object.hasOwn(val, p)) {
+      if (!Object.hasOwn(val, p))
         return
-      }
 
       val = val[p] as T[typeof p]
     }
@@ -284,33 +273,32 @@ function getField<T extends object>(
   }
 
   const result = travel()
-  return result === undefined || result === obj ? defaultValue : result
+  return (result === undefined || result === obj)
+    ? defaultValue
+    : result
 }
 
 function itemClassAdd(n: number) {
-  if (n === cursor.value) {
-    return props.color && `box-color__${props.color}--4`
-  }
+  if (n === cursor.value)
+    return props.color && 'bg-primary text-white'
 
-  return `box-color__${props.color}--2`
+  return ''
 }
 
 async function itemClickHandler(n: number) {
   cursor.value = n
   const itemId = dataIds.value[cursor.value]
   const item = await dataGetter(itemId as string)
-  if (!item.value) {
+  if (!item.value)
     return
-  }
 
   emit('update:modelValue', itemId as string)
 
-  if (!inputComponent.value?.rootRef) {
+  if (!inputEl.value)
     return
-  }
 
   toggleFocused(false)
-  inputComponent.value.rootRef.blur()
+  inputEl.value.blur()
 
   const field = getField(item.value, props.searchFields)
   const str = field ? field.toString() : ''
@@ -323,89 +311,104 @@ async function itemHoverHandler(n: number) {
 }
 
 function inputCleanHandler() {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputEl.value)
     return
-  }
 
   emit('update:modelValue', '')
 
   toggleFocused(true)
   input.value = ''
   cursor.value = -1
-  inputComponent.value.rootRef.focus()
+  inputEl.value.focus()
 }
 
 function inputFocusHandler() {
-  if (!inputComponent.value?.rootRef) {
+  if (!inputEl.value)
     return
-  }
 
-  toggleFocused(true)
-  inputComponent.value.rootRef.focus()
+  toggleFocused()
+  inputEl.value.focus()
 }
 
 function documentFocusinEventListener() {
-  if (!inputComponent.value?.rootRef || !document.activeElement) {
+  if (!inputEl.value || !document.activeElement)
     return
-  }
+
+  // console.log(inputEl.value)
+  console.log(document.activeElement.isEqualNode(inputEl.value))
 
   toggleFocused(
-    document.activeElement.isEqualNode(inputComponent.value.rootRef)
+    document.activeElement.isEqualNode(inputEl.value),
   )
 }
+
+watch(inputComponent, (input) => {
+  if (!input || inputEl.value)
+    return
+
+  inputEl.value = input.$el.querySelector('input')
+  // inputEl.value?.setAttribute('id', nanoid())
+
+  document.addEventListener('focusin', documentFocusinEventListener)
+  documentFocusinEventListener()
+})
+const inputId = shallowRef<string>(nanoid())
 </script>
 
 <template>
-  <div ref="rootRef" class="relative flex flex-row c-combobox">
+  <div ref="rootRef" class="c-combobox relative flex flex-row">
     <!-- <div class="flex flex-row">{{ dataIds }}</div> -->
 
-    <UiInput
+    <AInput
       ref="inputComponent"
+      :key="nanoid()"
       v-model="input"
-      :color="props.color"
-      :border="props.border"
-      :size="props.size"
-      :rounded="props.rounded"
+      :input-classes="inputId"
       class="w-full"
+      :input-wrapper-classes="
+        showFlag && 'rounded-b-none'
+      "
       :class="[
-        showFlag && 'rounded-b-none',
+        props.size,
         focusFlag
           ? `!box-color__${props.color}--3`
           : `!box-color__${props.color}--2`,
       ]"
     />
-    <UiVirtualList
+    <ACard
       v-if="dirtyFlag"
-      v-show="showFlag"
-      ref="listComponent"
-      v-bind="objectPick(props, ['dataComponent', 'dataKey'])"
-      :data-component="props.dataComponent"
-      :data-key="props.dataKey"
-      :data-ids="dataIds as string[]"
-      :data-getter="dataGetter"
-      :keeps="40"
-      :page-mode="false"
-      :wrap-class="[
-        'flex flex-col w-full',
-        props.color && `list-color__${props.color}`,
-      ]"
-      class="flex flex-col items-center overflow-auto border left-0 right-0 absolute top-full z-1 max-h-100 rounded-t-none border-t-none scrollbar scrollbar-rounded"
-      :class="[
-        props.rounded && `box-rounded__${props.rounded}`,
-        props.color && `box-color__${props.color}--4`,
-      ]"
-      :estimate-size="50"
-      :item-class-add="itemClassAdd"
-      @item-click="itemClickHandler"
-      @item-hover="itemHoverHandler"
-    />
-    <UiButton
+      class="left-0 right-0 top-full z-1 rounded-t-none !absolute"
+    >
+      <UiVirtualList
+        v-show="showFlag"
+        ref="listComponent"
+        v-bind="objectPick(props, ['dataComponent', 'dataKey'])"
+        :data-component="props.dataComponent"
+        :data-key="props.dataKey"
+        :data-ids="dataIds as string[]"
+        :data-getter="dataGetter"
+        :keeps="40"
+        :page-mode="false"
+        :wrap-class="[
+          'flex flex-col w-full',
+          props.color && `list-color__${props.color}`,
+        ]"
+        :class="[
+          props.rounded && `box-rounded__${props.rounded}`,
+          props.color && `box-color__${props.color}--4`,
+        ]"
+        :estimate-size="50"
+        :item-class-add="itemClassAdd"
+        class="max-h-100 w-full flex flex-col items-center overflow-auto border rounded-t-none border-t-none"
+        @item-click="itemClickHandler"
+        @item-hover="itemHoverHandler"
+      />
+    </ACard>
+    <ABtn
       v-if="input.length === 0"
-      size="sm"
-      outline
-      tabindex="-1"
       :color="props.color"
-      class="absolute right-0 bottom-0 top-0 rounded-l-none"
+
+      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 text-xl !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag
@@ -414,16 +417,13 @@ function documentFocusinEventListener() {
       ]"
       @click="inputFocusHandler"
     >
-      <i v-if="!focusFlag" class="inline-block i-carbon:caret-down h-6" />
-      <i v-else class="inline-block h-6 i-carbon:caret-up" />
-    </UiButton>
-    <UiButton
+      <i v-if="!focusFlag" class="i-carbon:caret-down inline-block h-6" />
+      <i v-else class="i-carbon:caret-up inline-block h-6" />
+    </ABtn>
+    <ABtn
       v-else
-      outline
-      size="sm"
-      tabindex="-1"
       :color="props.color"
-      class="absolute bottom-0 right-0 top-0 rounded-l-none"
+      class="bottom-0 right-0 top-0 h-full w-6 rounded-l-none p-0 text-xl !absolute"
       :class="[
         showFlag && `rounded-b-none`,
         focusFlag
@@ -432,7 +432,7 @@ function documentFocusinEventListener() {
       ]"
       @click="inputCleanHandler"
     >
-      <i class="inline-block h-6 i-carbon:close" />
-    </UiButton>
+      <i class="i-carbon:close inline-block h-6" />
+    </ABtn>
   </div>
 </template>

@@ -9,10 +9,10 @@
   "editor.wrappingIndent": "deepIndent",
 
   "where-am-i.icon": "home",
-  "where-am-i.template": "{icon}  share/nuxt",
+  "where-am-i.template": "{icon} {project-name}",
   "where-am-i.colorful": true,
   "where-am-i.color": "#fff",
-  "where-am-i": false,
+  // "where-am-i": false,
 
   // "typescript.tsdk": "node_modules/typescript/lib",
   "extensions.disabled": ["vscode.typescript-language-features"],
@@ -88,5 +88,9 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
 
-  "cSpell.words": ["Nuxt", "Winbox"]
+  "cSpell.words": ["Nuxt", "Winbox"],
+  "[postcss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

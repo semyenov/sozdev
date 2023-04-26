@@ -5,32 +5,31 @@ const instance = getCurrentInstance()
 const tabsListState = inject<TabsListState>('tabsListState')
 
 const index = computed(() => {
-  if (tabsListState && instance)
+  if (tabsListState && instance) {
     return tabsListState.tabs.value.findIndex(
-      (target) => target.uid === instance.uid
+      target => target.uid === instance.uid,
     )
+  }
 
   return -1
 })
 const isActive = computed(() =>
-  tabsListState ? index.value === tabsListState.active.value : false
+  tabsListState ? index.value === tabsListState.active.value : false,
 )
 
 watchEffect(
   () => {
-    if (index.value === -1 && tabsListState && instance) {
+    if (index.value === -1 && tabsListState && instance)
       tabsListState.tabs.value.push(instance)
-    }
   },
   {
     flush: 'post',
-  }
+  },
 )
 
 function activateTab() {
-  if (tabsListState) {
+  if (tabsListState)
     tabsListState.selectTab(index.value)
-  }
 }
 </script>
 

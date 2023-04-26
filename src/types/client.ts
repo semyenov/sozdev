@@ -1,5 +1,7 @@
 import z from 'zod'
 
+import type { Feature, Point } from 'geojson'
+
 export const ValidationMap = {
   email: ['email'],
   min: ['min'],
@@ -190,7 +192,7 @@ export type IObjectInfo = z.infer<typeof IObjectInfoSchema>
 
 export const IObjectSchema = z.object({
   _id: z.string(),
-  feature: z.any().nullable(),
+  feature: z.unknown().nullable(),
   fields: z.record(z.any()),
   info: IObjectInfoSchema,
   level: z.number(),
@@ -200,7 +202,7 @@ export const IObjectSchema = z.object({
   type: z.string(),
   meta: IMetaSchema.optional().nullable(),
 })
-export type IObject = z.infer<typeof IObjectSchema>
+export type IObject = z.infer<typeof IObjectSchema> & { feature: TFeature }
 
 export const IObjectCreateInputSchema = z.object({
   code: z.string().optional(),
@@ -226,6 +228,68 @@ export const IObjectUpdateInputSchema = z.object({
   demands: z.record(z.any()).optional().nullable(),
 })
 export type IObjectUpdateInput = z.infer<typeof IObjectUpdateInputSchema>
+
+export const IMoveInfoSchema = z.object({
+  code: z.string().optional(),
+  name: z.string(),
+  notes: z.string().optional(),
+})
+export type IMoveInfo = z.infer<typeof IMoveInfoSchema>
+
+export const IMoveSchema = z.object({
+  _id: z.string(),
+  document: z.string(),
+  feature: z.unknown().nullable(),
+  group: z.string(),
+  info: IMoveInfoSchema,
+  public: z.boolean(),
+  receiver: z.string(),
+  resource: z.string(),
+  sender: z.string(),
+  type: IMoveTypeSchema,
+  value: z.number(),
+  meta: IMetaSchema.optional().nullable(),
+})
+
+export type TFeature = Feature<Point, { color: [number, number, number]
+  icon: string }>
+
+export type IMove = z.infer<typeof IMoveSchema> & {
+  feature: {
+    sender: TFeature
+    receiver: TFeature
+  }
+}
+
+export const IMoveCreateInputSchema = z.object({
+  code: z.string().optional(),
+  document: z.string().optional().nullable(),
+  feature: z.any().nullable(),
+  group: z.string(),
+  name: z.string(),
+  notes: z.string().optional(),
+  receiver: z.string(),
+  resource: z.string(),
+  sender: z.string(),
+  type: IMoveTypeSchema,
+  value: z.number(),
+})
+export type IMoveCreateInput = z.infer<typeof IMoveCreateInputSchema>
+
+export const IMoveUpdateInputSchema = z.object({
+  code: z.string().optional(),
+  document: z.string().optional().nullable(),
+  feature: z.any().nullable(),
+  group: z.string(),
+  name: z.string().optional(),
+  notes: z.string().optional(),
+  receiver: z.string().optional(),
+  resource: z.string().optional(),
+  sender: z.string().optional(),
+  type: IMoveTypeSchema,
+  value: z.number().optional(),
+})
+export type IMoveUpdateInput = z.infer<typeof IMoveUpdateInputSchema>
 
 export const IDeltaSchema = z.object({
   pt: z.string().array().nullable(),
@@ -255,3 +319,42 @@ export const IChangeSchema = z.object({
   diffs: IDiffSchema.array().nullable(),
 })
 export type IChange = z.infer<typeof IChangeSchema>
+
+export interface IPointMap {
+  type: string
+  geometry: {
+    type: string
+    coordinates: number[]
+  }
+  // properties: {}
+}
+export interface IObjectMap {
+  _id: string
+  name: string
+  map: IPointMap
+}
+
+export interface ISelection {
+  filters_by_districts: string[]
+  filters_by_types: string[]
+  filters_by_fields: ISelectionCondition[][]
+  filters_by_resources: ISelectionCondition[][]
+  result_fields: string[]
+  name_selections: string[]
+  result_resources: string[]
+  objects: string[]
+  name: string
+  notes: string
+}
+export interface ISelectionCondition {
+  field_id: string | undefined
+  operation:
+  | 'less-than'
+  | 'less-than-equal'
+  | 'equal'
+  | 'greater-than-equal'
+  | 'greater-than'
+  | 'yes'
+  | 'no'
+  field_value: number
+}

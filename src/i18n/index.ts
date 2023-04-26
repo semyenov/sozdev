@@ -120,25 +120,29 @@ const numberFormat = {
 export const defaultLocale = 'ru'
 
 export const availableLocales = [
-  ...Object.keys(localesList).filter((item) => localesList[item].available),
+  ...Object.keys(localesList).filter(item => localesList[item].available),
 ]
 
 export const locales = [
   ...Object.keys(localesList).reduce(
     (prev, cur) => [...prev, localesList[cur]],
-    [] as LocaleObject[]
+    [] as LocaleObject[],
   ),
 ]
 export const datetimeFormats = {
   ...locales.reduce(
     (acc, l) => ({ ...acc, [l.code]: dateFormat }),
-    {} as { [key: string]: typeof dateFormat }
+    {} as { [key: string]: typeof dateFormat },
   ),
 }
 
 export const numberFormats = Object.freeze({
   ...Object.keys(locales).reduce(
     (acc, l) => ({ ...acc, [l]: numberFormat }),
-    {}
+    {},
   ),
 })
+
+export function onLanguageSwitched() {
+  return window.location.reload()
+}

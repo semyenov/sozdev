@@ -10,19 +10,55 @@ parserOptions:
 
 plugins:
   - 'vue'
+  - 'import'
   - '@typescript-eslint'
-  - prettier
 
 extends:
-  - 'plugin:@typescript-eslint/recommended'
-  - '@nuxtjs/eslint-config-typescript'
+  - 'eslint:recommended'
+  - 'plugin:import/recommended'
+  - 'plugin:import/typescript'
   - 'plugin:vue/vue3-recommended'
-  - '@unocss'
+  - 'plugin:@typescript-eslint/recommended'
+  - '@nuxtjs'
+  - '@nuxtjs/eslint-config-typescript'
   - '@antfu'
-  - prettier
+  - 'plugin:unocss/recommended'
+  - '@unocss'
+
+settings:
+  'import/resolver':
+    typescript: true
+    node: true
 
 rules:
-  antfu/generic-spacing: 'off'
-  vue/multi-word-component-names: 'off'
-  prettier/prettier: warn
-  no-console: warn
+  'no-console': 'warn'
+  '@unocss/order': 'error'
+  'unocss/classnames-order': 'error'
+  'unocss/no-excessive-whitespaces': 'error'
+  'unocss/no-duplicated-classnames': 'error'
+  'vue/multi-word-component-names': 'off'
+  'import/no-unresolved': 'error'
+  'import/namespace': 'error'
+  'import/default': 'error'
+  'import/export': 'error'
+  'import/named': 'error'
+  'import/order':
+    - 'error'
+    - 'groups':
+      - 'builtin'
+      - 'external'
+      - 'object'
+      - 'parent'
+      - 'internal'
+      - 'sibling'
+      - 'index'
+      - 'type'
+      'pathGroups':
+        - 'pattern': '@/**'
+          'group': 'internal'
+          'position': 'after'
+        - 'pattern': '~/**'
+          'group': 'internal'
+          'position': 'after'
+      'distinctGroup': true
+      'newlines-between': 'always'

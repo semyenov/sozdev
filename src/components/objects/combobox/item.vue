@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import type { IObject } from '~/types'
+
+import type { PropType } from 'vue'
 
 const props = defineProps({
   index: {
@@ -20,7 +20,7 @@ const item = toRef(props, 'item')
 <template>
   <div
     v-if="item"
-    class="flex-row items-center box-size__md flex cursor-pointer text-left"
+    class="box-size__md flex flex-row cursor-pointer items-center text-left"
   >
     <i class="i-carbon:building inline-block" />
     {{ item.info.name }}

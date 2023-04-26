@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import type { IObject } from '~/types'
+
+import type { PropType } from 'vue'
 
 const props = defineProps({
   index: {
@@ -23,23 +23,28 @@ const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
   const w = winboxWindow.value
-  if (!w || !w.state || !w.winbox) {
+
+  if (!w?.winbox) {
     createWindow({
       id: winboxId,
       title: winboxTitle,
+
       teleportId: 'teleport-layer--20',
+
       dataComponent: 'WinboxObjectsDetailItem',
       dataProps: {
         id: item.value._id,
       },
+
+      tether: ['top', 'right', 'bottom'],
+      class: ['simple', 'wb-right'],
     })
 
     return
   }
 
-  if (w.state.min) {
+  if (w.state?.min)
     w.winbox.minimize(false)
-  }
 
   w.winbox.focus()
 }
@@ -48,13 +53,13 @@ function handleClick() {
 <template>
   <div class="component-object-item">
     <UiCard
-      dashed
       class="cursor-pointer select-none"
+      rounded="md"
       :color="winboxWindow ? 'fourth' : 'primary'"
       @click="handleClick"
     >
       <template v-if="item" #header>
-        <div class="flex flex-row w-full justify-between px-4 py-2">
+        <div class="w-full flex flex-row justify-between px-4 py-2">
           {{ `# ${item.info.name}` }}
         </div>
       </template>

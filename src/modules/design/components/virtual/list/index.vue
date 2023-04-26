@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import type { ComputedRef, PropType } from 'vue'
 import { range } from '@antfu/utils'
 
+import { SimpleBar } from '#components'
+
 import type { VirtualRange } from '~/utils'
+
+import type { ComputedRef, PropType } from 'vue'
 
 const props = defineProps({
   dataIds: {
@@ -134,7 +137,9 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 
-const rootRef = ref<HTMLElement | null>(null)
+const rootRef = ref<InstanceType<typeof SimpleBar> | null>(null)
+const scrollRef = ref<HTMLElement | null>(null)
+
 const shepherdRef = ref<HTMLElement | null>(null)
 
 const direction = toRef(props, 'direction')
@@ -167,7 +172,7 @@ const v = new Virtual(
     buffer: Math.round(props.keeps / 3),
     uniqueIds: dataIds.value.slice(),
   },
-  onRangeChanged
+  onRangeChanged,
 )
 
 defineExpose({
@@ -184,20 +189,22 @@ onMounted(() => {
   // in page mode we bind scroll event to document
   if (props.pageMode) {
     updatePageModeFront()
-
     document.addEventListener('scroll', onScroll, {
       passive: false,
     })
+
+    return
   }
 
-  // set position
-  onScroll(new Event('scroll'))
+  scrollRef.value = rootRef.value?.$refs.scrollElement as HTMLElement
+  scrollRef.value?.addEventListener('scroll', onScroll, {
+    passive: false,
+  })
 })
 
 onUnmounted(() => {
-  if (props.pageMode) {
+  if (props.pageMode)
     document.removeEventListener('scroll', onScroll)
-  }
 })
 
 // set back offset when awake from keep-alive
@@ -209,14 +216,11 @@ onActivated(() => {
       passive: false,
     })
   }
-
-  onScroll()
 })
 
 onDeactivated(() => {
-  if (props.pageMode) {
+  if (props.pageMode)
     document.removeEventListener('scroll', onScroll)
-  }
 })
 
 watch(
@@ -225,64 +229,47 @@ watch(
     v.updateParam('uniqueIds', dataIds.slice())
     v.handleDataSourcesChange()
 
-    const offset = getOffsetSize()
-    scrollToOffset(offset + 1)
-  }
+    // const offset = getOffsetSize()
+    // scrollToOffset(offset + 1)
+  },
 )
 watch(
   () => props.keeps,
   (keeps) => {
     v.updateParam('keeps', keeps)
     v.handleSlotSizeChange()
-  }
+  },
 )
 watch(
   () => props.start,
   (start) => {
     scrollToIndex(start)
-  }
+  },
 )
 watch(
   () => props.offset,
   (offset) => {
     scrollToOffset(offset)
-  }
+  },
 )
 
-// return current scroll offset
-function getOffsetSize() {
-  if (props.pageMode) {
-    return (
-      document.documentElement[offsetSizeKey.value] ||
-      document.body[offsetSizeKey.value]
-    )
-  }
+function onScroll(evt: Event) {
+  const target = evt.target as HTMLElement
+  const offsetSize = target[offsetSizeKey.value]
 
-  return rootRef.value ? Math.ceil(rootRef.value[offsetSizeKey.value]) : 0
-}
+  const clientSize = target[clientSizeKey.value]
+  const scrollSize = target[scrollSizeKey.value]
 
-// return client viewport size
-function getClientSize() {
-  if (props.pageMode) {
-    return (
-      document.documentElement[clientSizeKey.value] ||
-      document.body[clientSizeKey.value]
-    )
-  }
+  // iOS scroll-spring-back behavior will make direction mistake
+  if (
+    offsetSize < 0
+    || offsetSize + clientSize > scrollSize + 1
+    || !scrollSize
+  )
+    return
 
-  return rootRef.value ? Math.ceil(rootRef.value[clientSizeKey.value]) : 0
-}
-
-// return all scroll size
-function getScrollSize() {
-  if (props.pageMode) {
-    return (
-      document.documentElement[scrollSizeKey.value] ||
-      document.body[scrollSizeKey.value]
-    )
-  }
-
-  return rootRef.value ? Math.ceil(rootRef.value[scrollSizeKey.value]) : 0
+  emitScrollEvent(offsetSize, clientSize, scrollSize, evt)
+  v.handleScroll(Math.max(0, offsetSize - clientSize / 2))
 }
 
 // set current scroll position to a expectant offset
@@ -294,9 +281,8 @@ function scrollToOffset(offset: number) {
     return
   }
 
-  if (rootRef.value) {
-    rootRef.value[offsetSizeKey.value] = offset
-  }
+  if (scrollRef.value)
+    scrollRef.value[offsetSizeKey.value] = offset
 }
 
 // set current scroll position to a expectant index
@@ -313,37 +299,33 @@ function scrollToIndex(index: number) {
 
 // set current scroll position to bottom
 function scrollToBottom() {
-  if (!shepherdRef.value) {
+  if (!shepherdRef.value)
     return
-  }
 
-  const offset =
-    shepherdRef.value[isHorizontal.value ? 'offsetLeft' : 'offsetTop']
+  const offset
+    = shepherdRef.value[isHorizontal.value ? 'offsetLeft' : 'offsetTop']
   scrollToOffset(offset)
 
   // check if it's really scrolled to the bottom
   // maybe list doesn't render and calculate to last range
   // so we need retry in next event loop until it really at bottom
-  setTimeout(() => {
-    if (getOffsetSize() + getClientSize() < getScrollSize()) {
-      scrollToBottom()
-    }
-  }, 30)
+  // setTimeout(() => {
+  //   if (getOffsetSize() + getClientSize() < getScrollSize())
+  //     scrollToBottom()
+  // }, 30)
 }
 
 // when using page mode we need update slot header size manually
 // taking root offset relative to the browser as slot header size
 function updatePageModeFront() {
-  if (!rootRef.value) {
+  if (!scrollRef.value)
     return
-  }
 
-  const { defaultView } = rootRef.value.ownerDocument
-  if (!defaultView) {
+  const { defaultView } = scrollRef.value.ownerDocument
+  if (!defaultView)
     return
-  }
 
-  const rect = rootRef.value.getBoundingClientRect()
+  const rect = scrollRef.value.getBoundingClientRect()
   const offsetFront = isHorizontal.value
     ? rect.left + defaultView!.pageXOffset
     : rect.top + defaultView!.pageYOffset
@@ -368,9 +350,8 @@ function onSlotResized(type: string, size: number, init: boolean) {
       break
   }
 
-  if (init) {
+  if (init)
     v.handleSlotSizeChange()
-  }
 }
 
 // here is the rerendering entry
@@ -379,37 +360,19 @@ function onRangeChanged(r: VirtualRange) {
   wrapperStyle.value = getWrapperStyle(r.padBehind, r.padFront)
 }
 
-function onScroll(evt?: Event) {
-  const offsetSize = getOffsetSize()
-  const clientSize = getClientSize()
-  const scrollSize = getScrollSize()
-
-  // iOS scroll-spring-back behavior will make direction mistake
-  if (
-    offsetSize < 0 ||
-    offsetSize + clientSize > scrollSize + 1 ||
-    !scrollSize
-  ) {
-    return
-  }
-
-  emitScrollEvent(offsetSize, clientSize, scrollSize, evt)
-  v.handleScroll(Math.max(0, offsetSize - clientSize / 2))
-}
-
 // emit event in special position
 function emitScrollEvent(
   offsetSize: number,
   clientSize: number,
   scrollSize: number,
-  evt?: Event
+  evt?: Event,
 ) {
   emit('scroll', evt as UIEvent, v.getRange())
 
   if (
-    v.isFront() &&
-    dataIds.value.length > 0 &&
-    offsetSize - props.topThreshold <= 0
+    v.isFront()
+    && dataIds.value.length > 0
+    && offsetSize - props.topThreshold <= 0
   ) {
     emit('totop')
 
@@ -417,16 +380,15 @@ function emitScrollEvent(
   }
 
   if (
-    v.isBehind() &&
-    offsetSize + clientSize + props.bottomThreshold >= scrollSize
-  ) {
+    v.isBehind()
+    && offsetSize + clientSize + props.bottomThreshold >= scrollSize
+  )
     emit('tobottom')
-  }
 }
 
 function getWrapperStyle(
   padBehind: number,
-  padFront: number
+  padFront: number,
 ): Record<string, any> {
   return {
     ...props.wrapStyle,
@@ -438,14 +400,14 @@ function getWrapperStyle(
 </script>
 
 <template>
-  <Component
-    :is="props.rootTag"
-    :key="`${props.dataKey}-list_root`"
+  <SimpleBar
     ref="rootRef"
+    :key="`${props.dataKey}-list_root`"
+    :scrollbar-min-size="100"
+    :scrollbar-max-size="300"
     role="list"
-    @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)"
   >
-    <!-- <div class="fixed left-0 top-0">{{ vr }}</div> -->
+    <!-- @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)" -->
     <UiVirtualListSlot
       :key="`${props.dataKey}_list_header`"
       :tag="props.headerTag"
@@ -484,8 +446,8 @@ function getWrapperStyle(
           :slot-component="slots && slots.item"
           :scoped-slots="props.itemScopedSlots"
           :item-class="
-            props.itemClass +
-            (props.itemClassAdd ? ` ${props.itemClassAdd(i)}` : '')
+            props.itemClass
+              + (props.itemClassAdd ? ` ${props.itemClassAdd(i)}` : '')
           "
           @resize="onItemResized"
           @click="emit('itemClick', i)"
@@ -504,5 +466,5 @@ function getWrapperStyle(
     >
       <slot name="footer" />
     </UiVirtualListSlot>
-  </Component>
+  </SimpleBar>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import type { IUser } from '~/types'
+
+import type { PropType } from 'vue'
 
 const props = defineProps({
   index: {
@@ -23,7 +23,8 @@ const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleClick() {
   const w = winboxWindow.value
-  if (!w || !w.state || !w.winbox) {
+
+  if (!w?.winbox) {
     createWindow({
       id: winboxId,
       title: winboxTitle,
@@ -48,9 +49,8 @@ function handleClick() {
     return
   }
 
-  if (w.state.min) {
+  if (w.state?.min)
     w.winbox.minimize(false)
-  }
 
   w.winbox.focus()
 }
@@ -58,32 +58,39 @@ function handleClick() {
 
 <template>
   <div class="component-user-item">
-    <UiCard
+    <ACard
       class="cursor-pointer select-none"
-      dashed
-      :color="winboxWindow ? 'secondary' : 'third'"
+      :color="winboxWindow ? 'primary' : 'info'"
+      :variant="winboxWindow ? 'fill' : 'light'"
       @click="handleClick()"
     >
-      <template v-if="item" #header>
-        <div class="w-full flex flex-row justify-between px-4 py-2">
+      <template v-if="item" #title>
+        <div class="w-full flex flex-row justify-between">
           {{ `# ${item.info.first_name} ${item.info.last_name}` }}
-          <div
-            class="inline-flex border text-sm box-rounded__sm px-2 font-mono font-light box-color__default--6"
-          >
-            {{ item.email }}
-          </div>
+        </div>
+      </template>
+      <template v-if="item" #header-right>
+        <div
+          class="box-color__default--6 inline-flex items-center font-mono text-sm font-light"
+        >
+          {{ item.email }}
         </div>
       </template>
       <template v-if="item">
-        <div class="p-4">
+        <div class="px-4 leading-snug" :class="[winboxWindow ? 'pb-2' : 'pb-5']">
           {{ item }}
         </div>
-      </template>
-      <template v-if="winboxWindow" #footer>
-        <div v-if="winboxWindow?.state" class="px-4 py-1.5">
+
+        <div v-if="winboxWindow?.state" class="px-4 pb-5 pt-1.5">
           {{ winboxWindow?.state }}
         </div>
       </template>
-    </UiCard>
+    </ACard>
   </div>
 </template>
+
+<style lang="postcss">
+.a-card-typography-wrapper {
+  @apply !pb-2 pt-4;
+}
+</style>
