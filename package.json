@@ -78,7 +78,7 @@
     "@unocss/transformer-compile-class": "^0.51.8",
     "@vue-macros/nuxt": "^1.2.8",
     "@vueuse/core": "^10.1.0",
-    "@vueuse/motion": "^2.0.0-beta.27",
+    "@vueuse/motion": "^2.0.0-beta.12",
     "@vueuse/nuxt": "^10.1.0",
     "consola": "^3.1.0",
     "eslint": "^8.39.0",
