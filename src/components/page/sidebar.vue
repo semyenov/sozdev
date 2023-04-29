@@ -10,7 +10,7 @@ function log(amount = 0): Middleware {
     name: 'shiftByAmount',
     options: amount,
     fn: ({ x, y }) => {
-      console.log(x, y)
+      // console.log(x, y)
 
       return {
         x: x + amount,
@@ -19,12 +19,12 @@ function log(amount = 0): Middleware {
     },
   }
 }
-function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>) {
+function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement>) {
   // console.log('referenceEl :>> ', referenceEl)
   // console.log('floatingEl :>> ', floatingEl)
 
   // We aren't adding any middleware
-  console.log('mmmmmm', referenceEl, floatingEl)
+  // console.log('mmmmmm', referenceEl, floatingEl)
 
   return [log(10), offset(1000)]
 }
