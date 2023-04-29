@@ -32,7 +32,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
 
 <template>
   <div
-    class="flex flex-grow flex-col justify-between border-r bg-gray-50"
+    class="flex flex-grow flex-col justify-between border-r bg-gray-50 shadow"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -45,10 +45,10 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           color="primary"
           icon="i-carbon:home"
           icon-only
-          :variant="isActive ? 'light' : 'text'"
+          :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="slide-x" :middleware="middleware" :text="$t('index.title')" />
+          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="scroll-x" :middleware="middleware" :text="$t('index.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -61,10 +61,10 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           color="primary"
           icon="i-carbon:data-blob"
           icon-only
-          :variant="isActive ? 'light' : 'text'"
+          :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="slide-x" :text="$t('objects.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="$t('objects.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -78,10 +78,10 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
             color="primary"
             icon="i-carbon:user"
             icon-only
-            :variant="isActive ? 'light' : 'text'"
+            :variant="isActive ? 'fill' : 'text'"
             @click="navigate"
           >
-            <ATooltip placement="right" transition="slide-x" :text="$t('users.title')" />
+            <ATooltip placement="right" transition="scroll-x" :text="$t('users.title')" />
           </ABtn>
         </ABadge>
       </NuxtLink>
@@ -95,10 +95,10 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           color="primary"
           icon="i-carbon:text-scale"
           icon-only
-          :variant="isActive ? 'light' : 'text'"
+          :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="slide-x" :text="$t('test.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="$t('test.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -111,10 +111,10 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           color="primary"
           icon="i-carbon:book"
           icon-only
-          :variant="isActive ? 'light' : 'text'"
+          :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="slide-x" :text="$t('content.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="$t('content.title')" />
         </ABtn>
       </NuxtLink>
     </div>
