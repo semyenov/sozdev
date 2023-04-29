@@ -19,14 +19,19 @@ export function winboxRegister(
 ) {
   if (!winboxWindowsStateStorage.value.get(params.id)) {
     winboxWindowsStateStorage.value.set(params.id, {
+      index: winboxWindowsStateStorage.value.size,
+      tt: params.tether?.includes('top'),
+      tr: params.tether?.includes('right'),
+      tb: params.tether?.includes('bottom'),
+      tl: params.tether?.includes('left'),
       x: convertUnits('width', params.x),
       y: convertUnits('height', params.y),
-      width: convertUnits('width', params.width),
-      height: convertUnits('height', params.height),
       max: params.max || false,
       min: params.min || false,
       hidden: params.hidden || false,
       full: params.full || false,
+      width: convertUnits('width', params.width),
+      height: convertUnits('height', params.height),
     })
   }
 
@@ -154,24 +159,29 @@ export function winboxRegister(
       let width: number = ss.width
       let height: number = ss.height
 
+      const ll = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tl && cur.index < ss.index) ? sum + cur.width : sum, 0)
+      const lr = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tr && cur.index < ss.index) ? sum + cur.width : sum, 0)
+
+      console.log({ ll, lr })
+
       // calculate tether position
       if (params.tether) {
-        if (params.tether.includes('left'))
-          x = bb.left
+        if (ss.tl)
+          x = bb.left + ll
 
-        if (params.tether.includes('top'))
+        if (ss.tt)
           y = bb.top
 
-        if (params.tether.includes('right')) {
-          x = window.innerWidth - bb.right - width
+        if (ss.tr) {
+          x = window.innerWidth - bb.right - lr - width
 
-          if (params.tether.includes('left'))
-            width = bb.maxwidth
+          if (ss.tl)
+            width = bb.maxwidth - lr
         }
-        if (params.tether.includes('bottom')) {
+        if (ss.tb) {
           y = window.innerWidth - bb.bottom - height
 
-          if (params.tether.includes('top'))
+          if (ss.tt)
             height = bb.maxheight
         }
       }

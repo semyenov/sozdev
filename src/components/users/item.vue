@@ -36,14 +36,14 @@ function handleOpen() {
         id: item.value._id,
       },
 
-      tether: [],
+      tether: ['bottom'],
       class: ['simple'],
 
       width: 500,
       height: 600,
 
       x: (window.innerWidth - 500) / 2,
-      y: (window.innerHeight - 600) / 2,
+      y: window.innerHeight - 600,
     })
 
     return

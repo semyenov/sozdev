@@ -1,14 +1,13 @@
 <script setup lang="ts">
 const keys = useMagicKeys()
 const tildaKey = keys['\\']
-const { locale } = useI18n()
 
 watch(tildaKey, v => v && toggleDark())
 // const authorizationStore = useAuthorizationStore()
 </script>
 
 <template>
-  <div class="box-color__default--3 flex flex-grow">
+  <div class="flex flex-grow">
     <NuxtLoadingIndicator class="absolute z-100 h-4 w-full" />
     <MapLibre />
     <div

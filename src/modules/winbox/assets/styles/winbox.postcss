@@ -104,17 +104,17 @@
       & * {
         @apply cursor-pointer;
       }
+
     }
   }
 
   .wb-body {
-    @apply flex flex-grow w-full h-auto max-h-full overflow-inherit top-0! relative rounded-b-none;
+    @apply flex flex-grow w-full h-auto max-h-full overflow-auto top-0! relative rounded-b-none [will-change:contents];
 
-    overflow: auto;
     -webkit-overflow-scrolling: touch;
 
     /* overflow-scrolling: touch; */
-    will-change: contents;
+
 
     .wb-content {
       @apply top-0 left-0 w-full h-full m-0 absolute;
@@ -183,6 +183,11 @@
   &.wb-right {
     @apply border-r-none border-t-none border-b-none;
   }
+}
+
+
+.winbox.no-close .wb-close {
+  @apply hidden;
 }
 
 body.wb-lock .winbox {

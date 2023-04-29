@@ -46,11 +46,11 @@ function scrollClickHandler() {
         top: 0,
         left: 45,
         bottom: 0,
-        right: '50%',
+        // right: '50%',
         height: '100%',
         minheight: '100%',
         width: 550,
-        minwidth: 500,
+        minwidth: 300,
         tether: ['left', 'top', 'bottom'],
       }"
     >

@@ -1,17 +1,14 @@
 /* stylelint-disable-next-line selector-id-pattern */
-#__nuxt {
-  @apply flex flex-grow w-screen h-screen overflow-hidden;
-}
-
 html,
-body {
-  @apply flex w-full h-full;
+body,
+#__nuxt {
+  @apply flex w-full h-full max-w-screen max-h-screen overflow-hidden;
 
   background-color: hsl(var(--a-body-bg-c));
 }
 
 html {
-  /* @apply [scrollbar-gutter:auto] lt-sm:text-3 md:text-4; */
+  @apply [scrollbar-gutter:auto];
 }
 
 .page-enter-active,
