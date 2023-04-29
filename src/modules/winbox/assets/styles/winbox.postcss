@@ -1,47 +1,89 @@
-@import url('winbox/dist/css/winbox.min.css');
+/* @import url('winbox/dist/css/winbox.min.css'); */
 
-.winbox.simple {
-  @apply flex flex-col border shadow-none rounded-none;
+.winbox {
+  @apply flex flex-col border shadow-none rounded-none fixed backdrop-filter backdrop-blur-20;
+
+  transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
+  transition-timing-function: cubic-bezier(0.3, 1, 0.3, 1);
+
+  /* contain "strict" does not make overflow contents selectable */
+  contain: layout size;
+
+  /* explicitly set text align to left fixes an issue with iframes alignment when centered */
+  text-align: left;
+
+  /* workaround for using passive listeners */
+  touch-action: none;
 
   .wb-wrapper {
     @apply flex flex-col flex-grow w-full h-full max-h-full overflow-hidden relative;
   }
 
   .wb-e {
-    @apply -right-3 top-0 bottom-0 w-3 border-l rounded-l-none!;
+    @apply -right-3 top-0 bottom-0 w-3 border-l rounded-l-none! cursor-e-resize;
   }
 
   .wb-w {
-    @apply -left-3 top-0 bottom-0 w-3 border-r rounded-r-none!;
+    @apply -left-3 top-0 bottom-0 w-3 border-r rounded-r-none! cursor-w-resize;
   }
 
   .wb-n {
-    @apply -top-3 right-0 left-0 h-3 border-b rounded-b-none!;
+    @apply -top-3 right-0 left-0 h-3 border-b rounded-b-none! cursor-n-resize;
   }
 
   .wb-s {
-    @apply -bottom-3 right-0 left-0 h-3 border-t rounded-t-none!;
+    @apply -bottom-3 right-0 left-0 h-3 border-t rounded-t-none! cursor-s-resize;
   }
 
   .wb-e,
   .wb-s,
   .wb-w,
   .wb-n {
-    @apply bg-transparent border-transparent rounded-full;
+    @apply absolute bg-transparent border-transparent rounded-full;
 
     &:hover {
       @apply dark:bg-gray-700 bg-gray-300/50 border-gray-300 transition-all duration-500 z-3;
     }
   }
 
+  .wb-ne {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    cursor: ne-resize;
+    z-index: 2;
+  }
+
+  .wb-sw {
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    width: 15px;
+    height: 15px;
+    cursor: ne-resize;
+    z-index: 2;
+  }
+
+  .wb-se {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    cursor: nw-resize;
+    z-index: 2;
+  }
+
   .wb-header {
-    @apply flex flex-row box-color__default--2 px-0 py-0 dark:text-default-400 border-b text-gray-500 justify-center relative box-border bg-white;
+    @apply flex flex-row px-0 py-0 dark:text-default-400 border-b text-gray-500 justify-center relative box-border bg-gray-100;
 
     .wb-drag {
-      @apply flex flex-grow overflow-hidden p-0 justify-center items-center;
+      @apply flex flex-grow overflow-hidden p-0 justify-center items-center py-3 cursor-grab;
 
       .wb-title {
-        @apply inline text-xl font-extrabold font-sans  text-ellipsis w-full leading-none pl-4 pr-0 text-medium-emphasis;
+        @apply inline text-xl font-extrabold font-sans w-full leading-none pl-4 pr-0 text-medium-emphasis text-truncate;
       }
     }
 
@@ -54,16 +96,22 @@
   .wb-body {
     @apply flex flex-grow w-full h-auto max-h-full overflow-inherit top-0! relative rounded-b-none;
 
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    /* overflow-scrolling: touch; */
+    will-change: contents;
+
     .wb-content {
       @apply top-0 left-0 w-full h-full m-0 absolute;
     }
   }
 
   &.focus {
-    @apply shadow-xl shadow-default dark:shadow-default-800 border-default-300;
+    @apply shadow-xl shadow-default dark:shadow-gray-800 border-gray-300;
 
     .wb-header {
-      @apply flex flex-row box-color__default--3;
+      @apply flex flex-row bg-gray-50;
     }
   }
 
@@ -88,17 +136,15 @@
       }
     }
 
-    &:hover {
+    /* &:hover {
       .wb-header {
         .wb-control {
-          /* @apply flex; */
-
           * {
             @apply h-full;
           }
         }
       }
-    }
+    } */
   }
 
   /* &.wb-left {
@@ -108,4 +154,13 @@
   &.wb-right {
     @apply border-r-none border-t-none border-b-none;
   } */
+}
+
+body.wb-lock .winbox {
+  will-change: left, top, width, height;
+  transition: none;
+}
+
+body.wb-lock iframe {
+  pointer-events: none;
 }

@@ -40,10 +40,10 @@ function handleOpen() {
       class: ['simple'],
 
       width: 400,
-      height: 400,
+      height: 600,
 
       x: (window.innerWidth - 400) / 2,
-      y: (window.innerHeight - 400) / 2,
+      y: (window.innerHeight - 600) / 2,
     })
 
     return
@@ -55,36 +55,33 @@ function handleOpen() {
   w.winbox.focus()
 }
 
-function handleClose() {
-  const w = winboxWindow.value
-  if (w?.winbox)
-    w.winbox.close()
-}
+// function handleClose() {
+//   const w = winboxWindow.value
+//   if (w?.winbox)
+//     w.winbox.close()
+// }
 </script>
 
 <template>
   <ACard
-    class="cursor-pointer select-none spacing-80"
+    class="cursor-pointer select-none shadow-none spacing-80 [&_.a-title]:leading-tight"
     :variant="winboxWindow ? 'fill' : 'light'"
-    :title="`# ${item.info.first_name} ${item.info.last_name}`"
-    :subtitle="item.email"
     color="primary"
+    :subtitle="item.email"
+    @click="handleOpen"
   >
+    <template #title>
+      <div
+        class="flex flex-grow"
+      >
+        {{ `# ${item.info.first_name} ${item.info.last_name}` }}
+      </div>
+    </template>
     <template v-if="winboxWindow" #header-right>
       <!-- Action buttons -->
       <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
-        <i class="i-carbon:close" @click="handleClose" />
-      </div>
-    </template>
-
-    <div class="a-card-body a-card-spacer">
-      <ATypography
-        :text="[JSON.stringify(item, null, 2), 'text-xs']"
-        @click="handleOpen"
-      />
-      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
         <ABtn
-          color="danger"
+          color="info"
           variant="fill"
           icon="i-carbon:add"
           @click="item.mandate !== undefined && item.mandate++"
@@ -92,6 +89,14 @@ function handleClose() {
           Mandate
         </ABtn>
       </div>
-    </div>
+    </template>
+
+    <!-- <div class="a-card-body a-card-spacer">
+      <ATypography
+        :text="[JSON.stringify(item, null, 2), 'text-xs']"
+        @click="handleOpen"
+      />
+      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2" />
+    </div> -->
   </ACard>
 </template>

@@ -66,7 +66,7 @@ function scrollClickHandler() {
         wrap-class="flex flex-col w-full"
         class="flex flex-grow flex-col items-center gap-6 overflow-auto p-4"
         :estimate-size="70"
-        item-class="mb-6"
+        item-class="mb-4"
       />
     </WinboxWindow>
 

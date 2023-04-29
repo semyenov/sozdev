@@ -80,6 +80,7 @@ function openWindow() {
     full: false,
     hidden: false,
     template: templateEl,
+    background: 'rgba(255,255,255,0.7)',
 
     ...params.value,
     title: undefined,
@@ -101,10 +102,10 @@ function closeWindow() {
 <template>
   <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-header`">
     <div class="wb-control">
-      <i class="i-carbon:screen text-2xl" @click="winboxWindow?.winbox?.fullscreen(true)" />
-      <i class="i-carbon:minimize text-2xl" @click="winboxWindow?.winbox?.minimize(!winboxWindow.state?.min)" />
-      <i class="i-carbon:maximize text-2xl" @click="winboxWindow?.winbox?.maximize(!winboxWindow.state?.max)" />
-      <i class="i-carbon:information-disabled text-2xl" @click="closeWindow" />
+      <i class="i-carbon:screen text-xl" @click="winboxWindow?.winbox?.fullscreen(true)" />
+      <i class="i-carbon:minimize text-xl" @click="winboxWindow?.winbox?.minimize(!winboxWindow.state?.min)" />
+      <i class="i-carbon:maximize text-xl" @click="winboxWindow?.winbox?.maximize(!winboxWindow.state?.max)" />
+      <i class="i-carbon:information-disabled text-xl" @click="closeWindow" />
     </div>
   </Teleport>
   <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-drag`">

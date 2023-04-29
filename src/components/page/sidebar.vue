@@ -32,7 +32,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
 
 <template>
   <div
-    class="box-color__default--2 flex flex-grow flex-col justify-between border-r bg-white"
+    class="flex flex-grow flex-col justify-between border-r bg-gray-50"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -41,14 +41,14 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
         custom
       >
         <ABtn
-          class="rounded-0 text-lg"
+          class="border-b rounded-0 text-lg"
           color="primary"
           icon="i-carbon:home"
           icon-only
           :variant="isActive ? 'light' : 'text'"
           @click="navigate"
         >
-          <ATooltip class="[&_.a-tooltip]:(bg-danger em:px-1 em:py-0)" placement="right" transition="scroll-x" :middleware="middleware" :text="$t('index.title')" />
+          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="scroll-x" :middleware="middleware" :text="$t('index.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -57,7 +57,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
         custom
       >
         <ABtn
-          class="rounded-0 text-lg"
+          class="border-b rounded-0 text-lg"
           color="primary"
           icon="i-carbon:data-blob"
           icon-only
@@ -73,7 +73,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
         custom
       >
         <ABtn
-          class="rounded-0 text-lg"
+          class="border-b rounded-0 text-lg"
           color="primary"
           icon="i-carbon:user"
           icon-only
@@ -89,7 +89,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
         custom
       >
         <ABtn
-          class="rounded-0 text-lg"
+          class="border-b rounded-0 text-lg"
           color="primary"
           icon="i-carbon:text-scale"
           icon-only
@@ -105,7 +105,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
         custom
       >
         <ABtn
-          class="rounded-0 text-lg"
+          class="border-b rounded-0 text-lg"
           color="primary"
           icon="i-carbon:book"
           icon-only
@@ -119,7 +119,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
 
     <div class="mt-8 flex flex-col">
       <ABtn
-        class="rounded-0 text-lg"
+        class="border-t rounded-0 text-lg"
         color="primary"
         :icon="locale === 'ru' ? 'i-twemoji:flag-russia' : 'i-twemoji:flag-united-states'
         "

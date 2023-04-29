@@ -21,7 +21,7 @@ const winboxId = `winbox-detail-${item.value._id}`
 
 const { winboxWindow, createWindow } = useWinbox(winboxId)
 
-function handleClick() {
+function handleOpen() {
   const w = winboxWindow.value
 
   if (!w?.winbox) {
@@ -51,28 +51,40 @@ function handleClick() {
 </script>
 
 <template>
-  <div class="component-object-item">
-    <UiCard
-      class="cursor-pointer select-none"
-      rounded="md"
-      :color="winboxWindow ? 'fourth' : 'primary'"
-      @click="handleClick"
-    >
-      <template v-if="item" #header>
-        <div class="w-full flex flex-row justify-between px-4 py-2">
-          {{ `# ${item.info.name}` }}
-        </div>
-      </template>
-      <template v-if="item">
-        <div class="p-4">
-          {{ item }}
-        </div>
-      </template>
-      <template v-if="winboxWindow" #footer>
-        <div v-if="winboxWindow?.state" class="px-4 py-1.5">
-          {{ winboxWindow?.state }}
-        </div>
-      </template>
-    </UiCard>
-  </div>
+  <ACard
+    class="cursor-pointer select-none shadow-none spacing-80 [&_.a-title]:leading-tight"
+    :variant="winboxWindow ? 'fill' : 'light'"
+    color="primary"
+    :subtitle="item.info!.code"
+    @click="handleOpen"
+  >
+    <template #title>
+      <div
+        class="flex flex-grow"
+      >
+        {{ `# ${item.info.name}` }}
+      </div>
+    </template>
+    <template v-if="winboxWindow" #header-right>
+      <!-- Action buttons -->
+      <!-- <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
+        <ABtn
+          color="danger"
+          variant="fill"
+          icon="i-carbon:add"
+          @click="item.mandate !== undefined && item.mandate++"
+        >
+          Mandate
+        </ABtn>
+      </div> -->
+    </template>
+
+    <!-- <div class="a-card-body a-card-spacer">
+      <ATypography
+        :text="[JSON.stringify(item, null, 2), 'text-xs']"
+        @click="handleOpen"
+      />
+      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2" />
+    </div> -->
+  </ACard>
 </template>
