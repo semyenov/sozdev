@@ -1,12 +1,9 @@
+// @ts-expect-error missing type
+import postcssCurrentSelector from 'postcss-current-selector' // @ts-expect-error missing type
+import postcssNestedAncestors from 'postcss-nested-ancestors'
+import postcssNested from 'postcss-nested'
 import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
-import postcssNested from 'postcss-nested'
-
-// @ts-expect-error missing type
-import postcssCurrentSelector from 'postcss-current-selector'
-
-// @ts-expect-error missing type
-import postcssNestedAncestors from 'postcss-nested-ancestors'
 
 import {
   defaultLocale,
