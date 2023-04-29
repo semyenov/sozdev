@@ -2,8 +2,9 @@
 import { clamp, objectPick } from '@antfu/utils'
 import { Document } from 'flexsearch'
 import { nanoid } from 'nanoid'
+import { AInput } from 'anu-vue'
 
-import { AInput, UiVirtualList } from '#components'
+import { UiVirtualList } from '#components'
 
 import type { IUser } from '~/types'
 import type {
@@ -11,8 +12,6 @@ import type {
   UIRoundedVariants,
   UISizeVariants,
 } from '~/types/ui'
-
-import type { PropType } from 'vue'
 
 const props = defineProps({
   modelValue: {
