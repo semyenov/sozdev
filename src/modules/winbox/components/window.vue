@@ -80,7 +80,7 @@ function openWindow() {
     full: false,
     hidden: false,
     template: templateEl,
-    background: 'rgba(255,255,255,0.7)',
+    background: 'rgba(255,255,255,0.8)',
 
     ...params.value,
     title: undefined,

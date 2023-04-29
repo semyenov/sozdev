@@ -52,7 +52,7 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none shadow-none spacing-80 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none shadow-none spacing-70 [&_.a-title]:leading-tight"
     :variant="winboxWindow ? 'fill' : 'light'"
     color="primary"
     :subtitle="item.info!.code"

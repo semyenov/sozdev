@@ -21,7 +21,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
   >
     <!-- 👉 Slot: Before -->
     <template #before>
-      <AInput v-model="input" class="my-4 px-4" />
+      <AInput v-model="input" class="my-4 px-4 text-xs" />
       <hr>
     </template>
 

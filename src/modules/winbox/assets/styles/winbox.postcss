@@ -1,7 +1,7 @@
 /* @import url('winbox/dist/css/winbox.min.css'); */
 
 .winbox {
-  @apply flex flex-col border shadow-none rounded-none fixed backdrop-filter backdrop-blur-20;
+  @apply flex flex-col border shadow-none rounded-none fixed backdrop-filter backdrop-blur-10;
 
   transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
   transition-timing-function: cubic-bezier(0.3, 1, 0.3, 1);
@@ -42,8 +42,18 @@
     @apply absolute bg-transparent border-transparent rounded-full;
 
     &:hover {
-      @apply dark:bg-gray-700 bg-gray-300/50 border-gray-300 transition-all duration-500 z-3;
+      @apply dark:bg-gray-700 bg-gray-300/50 border-gray-300 transition-all duration-500;
     }
+  }
+
+  .wb-nw {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 15px;
+    height: 15px;
+    cursor: nw-resize;
+    z-index: 2;
   }
 
   .wb-ne {
