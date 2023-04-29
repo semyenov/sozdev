@@ -27,7 +27,7 @@ const { data } = await useFetch('/api/test', {
         id: 'page-index',
         teleportId: 'teleport-layer--10',
         title: $t('index.title'),
-        class: ['simple', 'wb-left', 'no-close'],
+        class: ['wb-left', 'no-close'],
         index: 10,
         border: 0,
         top: 0,
@@ -37,7 +37,7 @@ const { data } = await useFetch('/api/test', {
         height: '100%',
         minheight: '100%',
         width: 550,
-        minwidth: 500,
+        minwidth: 400,
         tether: ['left', 'top', 'bottom'],
       }"
     >
@@ -92,9 +92,9 @@ const { data } = await useFetch('/api/test', {
           </PageProse> -->
 
           <div class="flex flex-row justify-center gap-2 text-3xl">
-            <i class="i-logos:vue text-9xl" />
+            <i class="i-logos:vue text-8xl" />
             <div
-              class="i-twemoji:grinning-face-with-smiling-eyes text-7xl hover:i-twemoji:face-with-tears-of-joy"
+              class="i-twemoji:grinning-face-with-smiling-eyes hover:i-twemoji:face-with-tears-of-joy text-7xl"
             />
             <i
               class="i-mdi:alarm text-6xl text-orange-400"

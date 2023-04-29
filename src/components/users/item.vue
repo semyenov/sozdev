@@ -39,10 +39,10 @@ function handleOpen() {
       tether: [],
       class: ['simple'],
 
-      width: 400,
+      width: 500,
       height: 600,
 
-      x: (window.innerWidth - 400) / 2,
+      x: (window.innerWidth - 500) / 2,
       y: (window.innerHeight - 600) / 2,
     })
 
@@ -64,29 +64,22 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none spacing-70 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none shadow spacing-70 [&_.a-title]:leading-tight"
     :variant="winboxWindow ? 'fill' : 'light'"
+    :title="`# ${item.info.first_name} ${item.info.last_name}`"
     :subtitle="item.email"
     @click="handleOpen"
   >
-    <template #title>
-      <div
-        class="flex flex-grow"
-      >
-        {{ `# ${item.info.first_name} ${item.info.last_name}` }}
-      </div>
-    </template>
     <template v-if="winboxWindow" #header-right>
-      <!-- Action buttons -->
       <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
         <ABtn
           color="info"
-          variant="fill"
-          icon="i-carbon:add"
+          variant="light"
+          icon="i-carbon:bring-to-front"
+          icon-only
+          class="text-xl"
           @click="item.mandate !== undefined && item.mandate++"
-        >
-          Mandate
-        </ABtn>
+        />
       </div>
     </template>
 

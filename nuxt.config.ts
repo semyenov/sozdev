@@ -163,12 +163,12 @@ export default defineNuxtConfig({
     themes: {
       light: {
         colors: {
-          primary: '0, 0%, 50%',
+          primary: '0, 0%, 60%',
         },
       },
       dark: {
         colors: {
-          primary: '0, 0%, 25%',
+          primary: '0, 0%, 10%',
         },
       },
     },

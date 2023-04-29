@@ -42,7 +42,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
                   color="success"
                   class="rounded text-xs"
                 >
-                  {{ field.key }}
+                  {{ $t(`users.item.fields.${field.key}`) }}
                 </AChip>
               </span>
             </template>

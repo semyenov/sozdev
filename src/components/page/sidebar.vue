@@ -32,7 +32,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
 
 <template>
   <div
-    class="flex flex-grow flex-col justify-between border-r bg-gray-50 shadow"
+    class="dark-bg-primary-900 flex flex-grow flex-col justify-between border-r bg-gray-50 shadow"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -48,7 +48,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="scroll-x" :middleware="middleware" :text="$t('index.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="$t('index.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -87,22 +87,6 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
       </NuxtLink>
       <NuxtLink
         v-slot="{ isActive, navigate }"
-        :to="localePath({ name: 'test' })"
-        custom
-      >
-        <ABtn
-          class="border-b rounded-0 text-lg"
-          color="primary"
-          icon="i-carbon:text-scale"
-          icon-only
-          :variant="isActive ? 'fill' : 'text'"
-          @click="navigate"
-        >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('test.title')" />
-        </ABtn>
-      </NuxtLink>
-      <NuxtLink
-        v-slot="{ isActive, navigate }"
         :to="localePath({ name: 'content-all', params: { all: ['test'] } })"
         custom
       >
@@ -115,6 +99,22 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           @click="navigate"
         >
           <ATooltip placement="right" transition="scroll-x" :text="$t('content.title')" />
+        </ABtn>
+      </NuxtLink>
+      <NuxtLink
+        v-slot="{ isActive, navigate }"
+        :to="localePath({ name: 'test' })"
+        custom
+      >
+        <ABtn
+          class="border-b rounded-0 text-lg"
+          color="primary"
+          icon="i-carbon:text-scale"
+          icon-only
+          :variant="isActive ? 'fill' : 'text'"
+          @click="navigate"
+        >
+          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="scroll-x" :middleware="middleware" :text="$t('test.title')" />
         </ABtn>
       </NuxtLink>
     </div>

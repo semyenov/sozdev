@@ -8,21 +8,14 @@ const localesList: {
     code: 'en',
     iso: 'en-US',
     name: 'English',
-    file: 'en.yaml',
+    file: 'en.yml',
     available: true,
   },
   ru: {
     code: 'ru',
     iso: 'ru-RU',
     name: 'Русский',
-    file: 'ru.yaml',
-    available: true,
-  },
-  ua: {
-    code: 'uk',
-    iso: 'uk-UA',
-    name: 'Українська',
-    file: 'uk.yaml',
+    file: 'ru.yml',
     available: true,
   },
 }

@@ -1,10 +1,11 @@
 /* @import url('winbox/dist/css/winbox.min.css'); */
 
 .winbox {
-  @apply flex flex-col border shadow-none rounded-none fixed backdrop-filter backdrop-blur-10;
+  @apply flex flex-col border shadow-none rounded-none fixed backdrop-filter backdrop-blur-10 bg-white/85;
 
   transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
   transition-timing-function: cubic-bezier(0.3, 1, 0.3, 1);
+
 
   /* contain "strict" does not make overflow contents selectable */
   contain: layout size;
@@ -87,7 +88,7 @@
   }
 
   .wb-header {
-    @apply flex flex-row px-0 py-0 dark:text-default-400 border-b text-gray-500 justify-center relative bg-gray-50;
+    @apply flex flex-row px-0 py-0 dark:text-default-400 text-gray-500 justify-center relative bg-gray-50 border-b;
 
     .wb-drag {
       @apply flex flex-grow overflow-hidden p-0 justify-center items-center py-3 cursor-grab;
@@ -100,6 +101,9 @@
     .wb-control {
       @apply flex flex-row gap-x-2 pl-0 pr-4 items-center justify-center;
 
+      & * {
+        @apply cursor-pointer;
+      }
     }
   }
 
@@ -126,10 +130,10 @@
   }
 
   &.min {
-    @apply font-normal border-solid! transform;
+    @apply font-normal border-solid! transform overflow-hidden;
 
     .wb-header {
-      @apply flex relative! box-color__default--3 p-0 border-b-none;
+      @apply flex relative! border-b-none;
 
       .wb-control {
         @apply px-2 py-2;
@@ -137,13 +141,28 @@
         * {
           @apply h-full;
         }
+
+        .wb-full,
+        .wb-min {
+          @apply hidden
+        }
       }
 
       .wb-drag {
         .wb-title {
-          @apply text-base!;
+          @apply text-base! pl-2;
         }
       }
+    }
+
+    .wb-e,
+    .wb-s,
+    .wb-w,
+    .wb-n,.wb-nw,
+    .wb-ne,
+    .wb-sw,
+    .wb-se {
+      @apply hidden;
     }
 
     /* &:hover {
@@ -157,13 +176,13 @@
     } */
   }
 
-  /* &.wb-left {
+  &.wb-left {
     @apply border-l-none border-t-none border-b-none;
   }
 
   &.wb-right {
     @apply border-r-none border-t-none border-b-none;
-  } */
+  }
 }
 
 body.wb-lock .winbox {

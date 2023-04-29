@@ -1,0 +1,41 @@
+'404':
+  button:
+    back: Назад
+  text:
+    not-found: Страница не найдена
+index:
+  title: Добро пожаловать
+objects:
+  title: Объекты
+  item:
+    search:
+      placeholder: поиск по данным объекта
+    fields:
+      _id: идентификатор
+      info: информация
+      feature: позиция
+      type: тип
+      level: уровень
+      fields: поля
+      parent: родитель
+      demands: потребности
+      resources: ресурсы
+  search:
+    placeholder: поиск по объектам
+users:
+  title: Пользователи
+  item:
+    search:
+      placeholder: поиск по данным пользователя
+    fields:
+      _id: идентификатор
+      info: информация
+      type: тип
+      mandate: мандат
+      role: роль
+      email: эл. почта
+      scopes: доступы
+content:
+  title: Справка
+test:
+  title: Тест

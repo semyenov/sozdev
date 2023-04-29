@@ -56,7 +56,7 @@ async function loadOthersHandler() {
         id: 'page-objects',
         teleportId: 'teleport-layer--10',
         title: t('objects.title'),
-        class: ['simple', 'wb-left', 'no-close'],
+        class: ['wb-left', 'no-close'],
         top: 0,
         border: 0,
         left: 45,
@@ -69,16 +69,8 @@ async function loadOthersHandler() {
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <div class="w-full flex flex-col items-center justify-center border-b bg-white p-4">
-        <AInput
-          key="page-objects-index-virtuallist-search"
-          v-model="input"
-          class="w-full"
-          placeholder="Search"
+      <AInput v-model="input" class="border-b py-0" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none" :placeholder="$t('objects.search.placeholder')" />
 
-          color="default"
-        />
-      </div>
       <UiVirtualList
         ref="listComponent"
         :keeps="50"

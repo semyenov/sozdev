@@ -27,14 +27,7 @@ onMounted(openWindow)
 onScopeDispose(closeWindow)
 
 watch(showFlag, flag => (flag ? openWindow() : closeWindow()))
-// watch(params, (p) => {
-//   if (p.title)
-//     winboxWindow.value?.winbox?.setTitle(p.title)
-//   if (p.background)
-//     winboxWindow.value?.winbox?.setBackground(p.background)
-//   if (p.url)
-//     winboxWindow.value?.winbox?.setUrl(p.url)
-// })
+watch(params, updateWindowParams)
 
 function openWindow() {
   disabled.value = false
@@ -49,20 +42,26 @@ function openWindow() {
 
   const templateEl = document.createElement('div')
   templateEl.innerHTML = `
-    <div class=wb-header>
-      <div class=wb-drag></div>
+    <div class="wb-header">
+      <div class="wb-drag"></div>
+      <div class="wb-control text-xl">
+        <i class="wb-min i-carbon:minimize"></i>
+        <i class="wb-max i-carbon:maximize"></i>
+        <i class="wb-full i-carbon:screen"></i>
+        <i class="wb-close i-carbon:information-disabled"></i>
+      </div>
     </div>
 
-    <div class=wb-body></div>
+    <div class="wb-body"></div>
 
-    <div class=wb-n></div>
-    <div class=wb-s></div>
-    <div class=wb-w></div>
-    <div class=wb-e></div>
-    <div class=wb-nw></div>
-    <div class=wb-ne></div>
-    <div class=wb-se></div>
-    <div class=wb-sw></div>
+    <div class="wb-n"></div>
+    <div class="wb-s"></div>
+    <div class="wb-w"></div>
+    <div class="wb-e"></div>
+    <div class="wb-nw"></div>
+    <div class="wb-ne"></div>
+    <div class="wb-se"></div>
+    <div class="wb-sw"></div>
   `
 
   winboxRegister(rootEl, mountEl, {
@@ -80,7 +79,7 @@ function openWindow() {
     full: false,
     hidden: false,
     template: templateEl,
-    background: 'rgba(255,255,255,0.8)',
+    // background: 'rgba(255,255,255,0.8)',
 
     ...params.value,
     title: undefined,
@@ -89,6 +88,18 @@ function openWindow() {
   nextTick(() => {
     showToggle(true)
   })
+}
+
+function updateWindowParams(p: WinBoxParams) {
+  if (!winboxWindow.value || !winboxWindow.value.winbox)
+    return
+
+  if (p.url)
+    winboxWindow.value.winbox.setUrl(p.url)
+  if (p.title)
+    winboxWindow.value.winbox.setTitle(p.title)
+  if (p.background)
+    winboxWindow.value.winbox.setBackground(p.background)
 }
 
 function closeWindow() {
@@ -100,7 +111,7 @@ function closeWindow() {
 </script>
 
 <template>
-  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-header`">
+  <Teleport v-if="showFlag" :disabled="true" :to="`#${params.id} .wb-header`">
     <div class="wb-control">
       <i class="i-carbon:screen text-xl" @click="winboxWindow?.winbox?.fullscreen(true)" />
       <i class="i-carbon:minimize text-xl" @click="winboxWindow?.winbox?.minimize(!winboxWindow.state?.min)" />

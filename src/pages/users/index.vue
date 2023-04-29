@@ -41,7 +41,7 @@ function scrollClickHandler() {
         id: 'page-users',
         teleportId: 'teleport-layer--10',
         title: t('users.title'),
-        class: ['simple', 'wb-left', 'no-close'],
+        class: ['wb-left', 'no-close'],
         border: 0,
         top: 0,
         left: 45,
