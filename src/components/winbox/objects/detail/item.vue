@@ -10,7 +10,7 @@ const objectsStore = useObjectsStore()
 const item = await objectsStore.itemGetter(props.id)
 
 const input = ref('')
-const fields = computed(() => item.value && Object.entries(item.value).filter(([key, val]) => (input.value === '' || key.includes(input.value)) && val !== undefined).map(([key, val]) => ({ key, val })))
+const fields = computed(() => item.value && Object.entries(item.value).filter(([key, val]) => (input.value === '' || key.concat(' ', JSON.stringify(val)).includes(input.value)) && val !== undefined).map(([key, val]) => ({ key, val })))
 </script>
 
 <template>
@@ -21,8 +21,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
   >
     <!-- 👉 Slot: Before -->
     <template #before>
-      <AInput v-model="input" class="my-4 px-4 text-xs" />
-      <hr class="mb-2">
+      <AInput v-model="input" class="border-b py-0" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none" :placeholder="$t('objects.item.search.placeholder')" />
     </template>
 
     <template #default>

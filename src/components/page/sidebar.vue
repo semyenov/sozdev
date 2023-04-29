@@ -48,7 +48,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           :variant="isActive ? 'light' : 'text'"
           @click="navigate"
         >
-          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="scroll-x" :middleware="middleware" :text="$t('index.title')" />
+          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="slide-x" :middleware="middleware" :text="$t('index.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -64,7 +64,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           :variant="isActive ? 'light' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('objects.title')" />
+          <ATooltip placement="right" transition="slide-x" :text="$t('objects.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -72,16 +72,18 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
         :to="localePath({ name: 'users' })"
         custom
       >
-        <ABtn
-          class="border-b rounded-0 text-lg"
-          color="primary"
-          icon="i-carbon:user"
-          icon-only
-          :variant="isActive ? 'light' : 'text'"
-          @click="navigate"
-        >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('users.title')" />
-        </ABtn>
+        <ABadge :content="9" color="info">
+          <ABtn
+            class="border-b rounded-0 text-lg"
+            color="primary"
+            icon="i-carbon:user"
+            icon-only
+            :variant="isActive ? 'light' : 'text'"
+            @click="navigate"
+          >
+            <ATooltip placement="right" transition="slide-x" :text="$t('users.title')" />
+          </ABtn>
+        </ABadge>
       </NuxtLink>
       <NuxtLink
         v-slot="{ isActive, navigate }"
@@ -96,7 +98,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           :variant="isActive ? 'light' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('test.title')" />
+          <ATooltip placement="right" transition="slide-x" :text="$t('test.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -112,7 +114,7 @@ function middleware(referenceEl: Ref<HTMLElement>, floatingEl: Ref<HTMLElement>)
           :variant="isActive ? 'light' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('content.title')" />
+          <ATooltip placement="right" transition="slide-x" :text="$t('content.title')" />
         </ABtn>
       </NuxtLink>
     </div>
