@@ -59,7 +59,7 @@ async function loadOthersHandler() {
         class: ['simple', 'wb-left', 'no-close'],
         top: 0,
         border: 0,
-        left: 40,
+        left: 45,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -78,7 +78,7 @@ async function loadOthersHandler() {
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
         wrap-class="flex flex-col flex-grow"
-        class="flex flex-grow flex-col items-center px-6"
+        class="flex flex-grow flex-col items-center px-4"
         item-class="mb-6"
         :estimate-size="70"
       >

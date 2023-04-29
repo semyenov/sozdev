@@ -116,7 +116,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
         index: 10,
         border: 0,
         top: 0,
-        left: 40,
+        left: 45,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -131,7 +131,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
       >
-        <div class="flex flex-col items-center p-6">
+        <div class="flex flex-col items-center p-4">
           <PageProse class="max-w-300 w-full">
             <h4 class="text-default-500 dark:text-default-400 mt-0 font-medium">
               Tooltip

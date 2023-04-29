@@ -27,6 +27,14 @@ onMounted(openWindow)
 onScopeDispose(closeWindow)
 
 watch(showFlag, flag => (flag ? openWindow() : closeWindow()))
+// watch(params, (p) => {
+//   if (p.title)
+//     winboxWindow.value?.winbox?.setTitle(p.title)
+//   if (p.background)
+//     winboxWindow.value?.winbox?.setBackground(p.background)
+//   if (p.url)
+//     winboxWindow.value?.winbox?.setUrl(p.url)
+// })
 
 function openWindow() {
   disabled.value = false
@@ -37,16 +45,30 @@ function openWindow() {
   const rootEl
     = document.getElementById(props.params.teleportId) || document.body
   const mountEl = document.createElement('div')
-  const contentEl = document.createElement('div')
-
   mountEl.classList.add('wb-wrapper')
-  contentEl.classList.add('wb-content')
-  mountEl.appendChild(contentEl)
+
+  const templateEl = document.createElement('div')
+  templateEl.innerHTML = `
+    <div class=wb-header>
+      <div class=wb-drag></div>
+    </div>
+
+    <div class=wb-body></div>
+
+    <div class=wb-n></div>
+    <div class=wb-s></div>
+    <div class=wb-w></div>
+    <div class=wb-e></div>
+    <div class=wb-nw></div>
+    <div class=wb-ne></div>
+    <div class=wb-se></div>
+    <div class=wb-sw></div>
+  `
 
   winboxRegister(rootEl, mountEl, {
     top: 0,
     bottom: 0,
-    left: 44,
+    left: 45,
     right: 0,
     border: 0,
     width: 550,
@@ -57,8 +79,10 @@ function openWindow() {
     max: false,
     full: false,
     hidden: false,
+    template: templateEl,
 
     ...params.value,
+    title: undefined,
   })
 
   nextTick(() => {
@@ -75,7 +99,21 @@ function closeWindow() {
 </script>
 
 <template>
-  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-content`">
+  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-header`">
+    <div class="wb-control">
+      <i class="i-carbon:screen text-2xl" @click="winboxWindow?.winbox?.fullscreen(true)" />
+      <i class="i-carbon:minimize text-2xl" @click="winboxWindow?.winbox?.minimize(!winboxWindow.state?.min)" />
+      <i class="i-carbon:maximize text-2xl" @click="winboxWindow?.winbox?.maximize(!winboxWindow.state?.max)" />
+      <i class="i-carbon:information-disabled text-2xl" @click="closeWindow" />
+    </div>
+  </Teleport>
+  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-drag`">
+    <div class="wb-title">
+      <slot v-if="$slots.title" name="title" />
+      <span v-else>{{ params.title }}</span>
+    </div>
+  </Teleport>
+  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-wrapper`">
     <slot name="default" />
   </Teleport>
 </template>

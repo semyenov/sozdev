@@ -20,7 +20,11 @@ export default defineConfig({
   include: [/.*\/anu-vue\.js(.*)?$/, /^.*\.vue$/, /^.*\.md$/],
 
   presets: [
-    presetIcons(),
+    presetIcons({
+      extraProperties: {
+        display: 'inline-flex',
+      },
+    }),
     presetAttributify(),
     presetTypography(),
     presetWebFonts({

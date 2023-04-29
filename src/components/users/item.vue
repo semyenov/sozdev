@@ -21,7 +21,7 @@ const winboxId = `winbox-detail-${item.value._id}`
 
 const { winboxWindow, createWindow } = useWinbox(winboxId)
 
-function handleClick() {
+function handleOpen() {
   const w = winboxWindow.value
 
   if (!w?.winbox) {
@@ -54,43 +54,44 @@ function handleClick() {
 
   w.winbox.focus()
 }
+
+function handleClose() {
+  const w = winboxWindow.value
+  if (w?.winbox)
+    w.winbox.close()
+}
 </script>
 
 <template>
-  <div class="component-user-item">
-    <ACard
-      class="cursor-pointer select-none"
-      :color="winboxWindow ? 'primary' : 'info'"
-      :variant="winboxWindow ? 'fill' : 'light'"
-      @click="handleClick()"
-    >
-      <template v-if="item" #title>
-        <div class="w-full flex flex-row justify-between">
-          {{ `# ${item.info.first_name} ${item.info.last_name}` }}
-        </div>
-      </template>
-      <template v-if="item" #header-right>
-        <div
-          class="box-color__default--6 inline-flex items-center font-mono text-sm font-light"
+  <ACard
+    class="cursor-pointer select-none spacing-80"
+    :variant="winboxWindow ? 'fill' : 'light'"
+    :title="`# ${item.info.first_name} ${item.info.last_name}`"
+    :subtitle="item.email"
+    color="primary"
+  >
+    <template v-if="winboxWindow" #header-right>
+      <!-- Action buttons -->
+      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
+        <i class="i-carbon:close" @click="handleClose" />
+      </div>
+    </template>
+
+    <div class="a-card-body a-card-spacer">
+      <ATypography
+        :text="[JSON.stringify(item, null, 2), 'text-xs']"
+        @click="handleOpen"
+      />
+      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
+        <ABtn
+          color="danger"
+          variant="fill"
+          icon="i-carbon:add"
+          @click="item.mandate !== undefined && item.mandate++"
         >
-          {{ item.email }}
-        </div>
-      </template>
-      <template v-if="item">
-        <div class="px-4 leading-snug" :class="[winboxWindow ? 'pb-2' : 'pb-5']">
-          {{ item }}
-        </div>
-
-        <div v-if="winboxWindow?.state" class="px-4 pb-5 pt-1.5">
-          {{ winboxWindow?.state }}
-        </div>
-      </template>
-    </ACard>
-  </div>
+          Mandate
+        </ABtn>
+      </div>
+    </div>
+  </ACard>
 </template>
-
-<style lang="postcss">
-.a-card-typography-wrapper {
-  @apply !pb-2 pt-4;
-}
-</style>

@@ -23,7 +23,7 @@ const item = await usersGetter(id)
     </div>
     <div
       v-if="item"
-      class="h-full max-h-screen max-w-200 w-full flex flex-col items-center gap-8 overflow-y-scroll p-6"
+      class="h-full max-h-screen max-w-200 w-full flex flex-col items-center gap-8 overflow-y-scroll p-4"
     >
       <UsersItem :item="item" :index="0" />
     </div>

@@ -5,7 +5,6 @@ definePageMeta({
   layout: 'default',
 })
 
-const { t } = useI18n()
 const route = useRoute('index')
 
 const specificComponentName = ref<NuxtComponentMetaNames>('WinboxObjectsDetailItem')
@@ -27,12 +26,12 @@ const { data } = await useFetch('/api/test', {
       :params="{
         id: 'page-index',
         teleportId: 'teleport-layer--10',
-        title: t('index.title'),
+        title: $t('index.title'),
         class: ['simple', 'wb-left', 'no-close'],
         index: 10,
         border: 0,
         top: 0,
-        left: 40,
+        left: 45,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -48,7 +47,7 @@ const { data } = await useFetch('/api/test', {
         :scrollbar-max-size="300"
       >
         <div
-          class="flex flex-col items-start p-6"
+          class="flex flex-col items-start p-4"
         >
           <PageProse
             v-if="data"

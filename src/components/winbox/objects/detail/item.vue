@@ -16,7 +16,7 @@ const item = await objectsStore.itemGetter(props.id)
     :scrollbar-min-size="100"
     :scrollbar-max-size="300"
   >
-    <div class="objects-detail-item p-6">
+    <div class="objects-detail-item p-4">
       {{ item }}
     </div>
   </SimpleBar>
