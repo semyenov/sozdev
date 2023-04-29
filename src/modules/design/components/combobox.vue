@@ -47,7 +47,7 @@ const props = defineProps({
   },
 
   dataComponent: {
-    type: [Object, Function],
+    type: [Object, Function] as PropType<Component>,
     required: false,
   },
   dataKey: {

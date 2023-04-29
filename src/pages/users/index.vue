@@ -64,7 +64,7 @@ function scrollClickHandler() {
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
         wrap-class="flex flex-col w-full"
-        class="flex flex-grow flex-col items-center gap-8 overflow-auto p-4"
+        class="flex flex-grow flex-col items-center gap-6 overflow-auto p-4"
         :estimate-size="70"
         item-class="mb-6"
       />
