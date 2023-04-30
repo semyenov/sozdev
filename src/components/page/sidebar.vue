@@ -32,7 +32,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
 
 <template>
   <div
-    class="dark-bg-primary-900 flex flex-grow flex-col justify-between border-r bg-gray-50 shadow"
+    class="flex flex-grow flex-col justify-between border-r border-warmGray-300 bg-warmGray-200/95 shadow shadow-warmGray/45 backdrop-blur-10 backdrop-filter"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -41,8 +41,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         custom
       >
         <ABtn
-          class="border-b rounded-0 text-lg"
-          color="primary"
+          class="border-b border-warmGray-300 rounded-0 text-lg"
           icon="i-carbon:home"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
@@ -57,8 +56,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         custom
       >
         <ABtn
-          class="border-b rounded-0 text-lg"
-          color="primary"
+          class="border-b border-warmGray-300 rounded-0 text-lg"
           icon="i-carbon:data-blob"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
@@ -72,10 +70,9 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         :to="localePath({ name: 'users' })"
         custom
       >
-        <ABadge :content="9" color="info">
+        <ABadge anchor="bottom right" offset-x="20" offset-y="20" :content="9" dot color="info">
           <ABtn
-            class="border-b rounded-0 text-lg"
-            color="primary"
+            class="border-b border-warmGray-300 rounded-0 text-lg"
             icon="i-carbon:user"
             icon-only
             :variant="isActive ? 'fill' : 'text'"
@@ -91,8 +88,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         custom
       >
         <ABtn
-          class="border-b rounded-0 text-lg"
-          color="primary"
+          class="border-b border-warmGray-300 rounded-0 text-lg"
           icon="i-carbon:book"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
@@ -107,8 +103,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         custom
       >
         <ABtn
-          class="border-b rounded-0 text-lg"
-          color="primary"
+          class="border-b border-warmGray-300 rounded-0 text-lg"
           icon="i-carbon:text-scale"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
@@ -121,8 +116,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
 
     <div class="mt-8 flex flex-col">
       <ABtn
-        class="border-t rounded-0 text-lg"
-        color="primary"
+        class="border-t border-warmGray-300 rounded-0 text-lg"
         :icon="locale === 'ru' ? 'i-twemoji:flag-russia' : 'i-twemoji:flag-united-states'
         "
         icon-only

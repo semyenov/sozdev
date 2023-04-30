@@ -64,7 +64,7 @@ function handleOpen() {
         <ABtn
           class="inline-flex text-xl"
           color="info"
-          variant="light"
+          variant="text"
           icon="i-carbon:bring-to-front"
           icon-only
         />

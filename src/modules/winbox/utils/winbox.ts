@@ -159,10 +159,9 @@ export function winboxRegister(
       let width: number = ss.width
       let height: number = ss.height
 
+      const ws = getWindowSize()
       const ll = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tl && cur.index < ss.index) ? sum + cur.width : sum, 0)
       const lr = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tr && cur.index < ss.index) ? sum + cur.width : sum, 0)
-
-      console.log({ ll, lr })
 
       // calculate tether position
       if (params.tether) {
@@ -173,13 +172,13 @@ export function winboxRegister(
           y = bb.top
 
         if (ss.tr) {
-          x = window.innerWidth - bb.right - lr - width
+          x = ws.width - bb.right - lr - width
 
           if (ss.tl)
             width = bb.maxwidth - lr
         }
         if (ss.tb) {
-          y = window.innerWidth - bb.bottom - height
+          y = ws.width - bb.bottom - height
 
           if (ss.tt)
             height = bb.maxheight
@@ -192,12 +191,12 @@ export function winboxRegister(
       x = clamp(
         x,
         Math.max(0, bb.left),
-        Math.max(0, window.innerWidth - bb.right - width),
+        Math.max(0, ws.width - bb.right - width),
       )
       y = clamp(
         y,
         Math.max(0, bb.top),
-        Math.max(0, window.innerHeight - bb.bottom - height),
+        Math.max(0, ws.height - bb.bottom - height),
       )
 
       // update winbox params
@@ -219,6 +218,8 @@ export function winboxRegister(
 }
 
 function calcBBox(params: WinBoxParams): WinBoxBBox {
+  const ws = getWindowSize()
+
   return {
     left: convertUnits('width', params.left),
     right: convertUnits('width', params.right),
@@ -226,11 +227,11 @@ function calcBBox(params: WinBoxParams): WinBoxBBox {
     bottom: convertUnits('width', params.bottom),
 
     maxwidth:
-      window.innerWidth
+      ws.width
       - convertUnits('width', params.left)
       - convertUnits('width', params.right),
     maxheight:
-      window.innerHeight
+      ws.height
       - convertUnits('height', params.top)
       - convertUnits('height', params.bottom),
 
@@ -243,14 +244,24 @@ export function convertUnits(
   type: 'width' | 'height',
   value?: string | number,
 ) {
+  const ws = getWindowSize()
   return (typeof value === 'number'
     ? value
     : typeof value === 'string'
       ? value.endsWith('%')
         ? Math.floor(
           (parseFloat(value.slice(0, value.length - 1)) / 100)
-            * (type === 'width' ? window.innerWidth : window.innerHeight),
+            * (type === 'width' ? ws.width : ws.height),
         )
         : parseInt(value.slice(0, value.length - 2))
       : 0)
+}
+
+function getWindowSize() {
+  return {
+    width: window.innerWidth || document.documentElement.clientWidth
+  || document.body.clientWidth,
+    height: window.innerHeight || document.documentElement.clientHeight
+  || document.body.clientHeight,
+  }
 }

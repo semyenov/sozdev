@@ -56,12 +56,13 @@ async function loadOthersHandler() {
         id: 'page-objects',
         teleportId: 'teleport-layer--10',
         title: t('objects.title'),
-        class: ['wb-left', 'no-close'],
+        class: ['wb-left', 'no-header'],
         top: 0,
         border: 0,
         left: 45,
-        bottom: 0,
+        bottom: 45,
         // right: '50%',
+        background: 'rgba(231,229,228,0.6)',
         height: '100%',
         minheight: '100%',
         width: 550,
@@ -69,20 +70,20 @@ async function loadOthersHandler() {
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <AInput v-model="input" class="border-b py-0" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none" :placeholder="$t('objects.search.placeholder')" />
+      <AInput v-model="input" color="primary" class="border-b" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none bg-white" :placeholder="$t('objects.search.placeholder')" />
 
       <UiVirtualList
         ref="listComponent"
-        :keeps="50"
+        :keeps="25"
         :page-mode="false"
+        :estimate-size="70"
         :data-ids="objectsSearchIds"
         :data-getter="objectGetter"
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
-        wrap-class="flex flex-col flex-grow"
-        class="flex flex-grow flex-col items-center px-4 pt-4"
-        item-class="mb-4"
-        :estimate-size="70"
+        wrap-class="flex flex-col w-full h-full"
+        class="flex flex-grow flex-col items-center overflow-auto py-4 pl-0 pr-6"
+        item-class="mb-2 rounded-l-0 "
       />
     </WinboxWindow>
 

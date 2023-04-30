@@ -46,8 +46,8 @@ function openWindow() {
       <div class="wb-drag"></div>
       <div class="wb-control text-xl">
         <i class="wb-min i-carbon:minimize"></i>
-        <i class="wb-max i-carbon:maximize"></i>
-        <i class="wb-full i-carbon:screen"></i>
+        <!-- <i class="wb-max i-carbon:maximize"></i>
+        <i class="wb-full i-carbon:screen"></i> -->
         <i class="wb-close i-carbon:information-disabled"></i>
       </div>
     </div>
@@ -79,7 +79,7 @@ function openWindow() {
     full: false,
     hidden: false,
     template: templateEl,
-    // background: 'rgba(255,255,255,0.8)',
+    background: 'rgba(255,255,255,0.8)',
 
     ...params.value,
     title: undefined,
@@ -111,14 +111,6 @@ function closeWindow() {
 </script>
 
 <template>
-  <Teleport v-if="showFlag" :disabled="true" :to="`#${params.id} .wb-header`">
-    <div class="wb-control">
-      <i class="i-carbon:screen text-xl" @click="winboxWindow?.winbox?.fullscreen(true)" />
-      <i class="i-carbon:minimize text-xl" @click="winboxWindow?.winbox?.minimize(!winboxWindow.state?.min)" />
-      <i class="i-carbon:maximize text-xl" @click="winboxWindow?.winbox?.maximize(!winboxWindow.state?.max)" />
-      <i class="i-carbon:information-disabled text-xl" @click="closeWindow" />
-    </div>
-  </Teleport>
   <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-drag`">
     <div class="wb-title">
       <slot v-if="$slots.title" name="title" />

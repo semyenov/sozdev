@@ -17,10 +17,10 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
   <AList
     v-if="fields"
     :items="fields"
-    class="grid-rows-[auto_1fr_auto] m-0 h-full"
+    class="grid-rows-[auto_1fr_auto] my-0 h-full"
   >
     <template #before>
-      <AInput v-model="input" class="border-b py-0" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none" :placeholder="$t('users.item.search.placeholder')" />
+      <AInput v-model="input" class="border-b text-sm" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none" :placeholder="$t('users.item.search.placeholder')" />
     </template>
 
     <template #default>
@@ -33,11 +33,11 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
           <AListItem
             v-for="field in fields"
             :key="field.key"
-            :text="[field.val, 'text-sm']"
+            :text="[field.val, 'text-xs']"
             class="items-start"
           >
             <template #append>
-              <span class="min-w-20% self-start text-right font-bold">
+              <span class="min-w-auto self-start text-right font-bold">
                 <AChip
                   color="success"
                   class="rounded text-xs"

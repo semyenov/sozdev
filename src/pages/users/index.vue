@@ -41,15 +41,16 @@ function scrollClickHandler() {
         id: 'page-users',
         teleportId: 'teleport-layer--10',
         title: t('users.title'),
-        class: ['wb-left', 'no-close'],
+        class: ['wb-left', 'no-header'],
         border: 0,
         top: 0,
         left: 45,
         bottom: 0,
         // right: '50%',
+        background: 'rgba(231,229,228,0.7)',
         height: '100%',
         minheight: '100%',
-        width: 550,
+        width: 450,
         minwidth: 300,
         tether: ['left', 'top', 'bottom'],
       }"
@@ -57,16 +58,16 @@ function scrollClickHandler() {
       <UiVirtualList
         ref="listComponent"
         key="page-users-index-virtuallist"
-        :keeps="50"
+        :keeps="48"
         :page-mode="false"
+        :estimate-size="70"
         :data-ids="usersIds"
         :data-getter="usersGetter"
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
-        wrap-class="flex flex-col w-full"
-        class="flex flex-grow flex-col items-center gap-6 overflow-auto p-4"
-        :estimate-size="70"
-        item-class="mb-4"
+        wrap-class="flex flex-col w-full h-full"
+        class="flex flex-grow flex-col items-center overflow-auto py-2 pl-4 pr-0"
+        item-class="mb-2 rounded-r-0 text-sm"
       />
     </WinboxWindow>
 

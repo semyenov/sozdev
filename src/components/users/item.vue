@@ -36,14 +36,13 @@ function handleOpen() {
         id: item.value._id,
       },
 
-      tether: ['bottom'],
+      tether: ['left', 'top', 'bottom'],
       class: ['simple'],
 
       width: 500,
       height: 600,
 
-      x: (window.innerWidth - 500) / 2,
-      y: window.innerHeight - 600,
+      bottom: 0,
     })
 
     return
@@ -64,31 +63,30 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none shadow spacing-70 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none shadow-none spacing-75"
     :variant="winboxWindow ? 'fill' : 'light'"
-    :title="`# ${item.info.first_name} ${item.info.last_name}`"
-    :subtitle="item.email"
     @click="handleOpen"
   >
-    <template v-if="winboxWindow" #header-right>
-      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
+    <div class="w-full flex flex-row a-card-body">
+      <div class="flex flex-grow flex-row items-center flex-gap-4">
+        <AAvatar color="primary">
+          {{ [item.info.first_name, item.info.last_name].map((str) => str[0]).join("") }}
+        </AAvatar>
+        <ATypography
+          :title="`# ${item.info.first_name} ${item.info.last_name}`"
+          :subtitle="item.email"
+        />
+      </div>
+      <div v-if="winboxWindow?.winbox" class="flex flex-shrink flex-wrap justify-center gap-x-4 gap-y-2">
         <ABtn
           color="info"
-          variant="light"
+          variant="text"
           icon="i-carbon:bring-to-front"
           icon-only
-          class="text-xl"
+          class="text-lg"
           @click="item.mandate !== undefined && item.mandate++"
         />
       </div>
-    </template>
-
-    <!-- <div class="a-card-body a-card-spacer">
-      <ATypography
-        :text="[JSON.stringify(item, null, 2), 'text-xs']"
-        @click="handleOpen"
-      />
-      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2" />
-    </div> -->
+    </div>
   </ACard>
 </template>
