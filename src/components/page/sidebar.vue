@@ -32,7 +32,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
 
 <template>
   <div
-    class="flex flex-grow flex-col justify-between border-r border-warmGray-300 bg-warmGray-200/95 shadow shadow-warmGray/45 backdrop-blur-10 backdrop-filter"
+    class="flex flex-grow flex-col justify-between border-r border-warmGray-300 bg-warmGray-200/80 shadow-lg shadow-warmGray/60 backdrop-blur-20 backdrop-filter"
   >
     <div class="flex flex-col">
       <NuxtLink
@@ -56,7 +56,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         custom
       >
         <ABtn
-          class="border-b border-warmGray-300 rounded-0 text-lg"
+          class="rounded-0 text-lg hover:border-none"
           icon="i-carbon:data-blob"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
@@ -72,7 +72,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
       >
         <ABadge anchor="bottom right" offset-x="20" offset-y="20" :content="9" dot color="info">
           <ABtn
-            class="border-b border-warmGray-300 rounded-0 text-lg"
+            class="rounded-0 text-lg hover:border-none"
             icon="i-carbon:user"
             icon-only
             :variant="isActive ? 'fill' : 'text'"
@@ -88,13 +88,13 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         custom
       >
         <ABtn
-          class="border-b border-warmGray-300 rounded-0 text-lg"
+          class="rounded-0 text-lg hover:border-none"
           icon="i-carbon:book"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('content.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="$t('content-all.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -103,7 +103,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         custom
       >
         <ABtn
-          class="border-b border-warmGray-300 rounded-0 text-lg"
+          class="rounded-0 text-lg hover:border-none"
           icon="i-carbon:text-scale"
           icon-only
           :variant="isActive ? 'fill' : 'text'"

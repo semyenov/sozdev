@@ -56,7 +56,7 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none shadow spacing-70 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none shadow spacing-80 [&_.a-title]:leading-tight"
     :variant="winboxWindow ? 'fill' : 'light'"
     :title="`${item.info.name}`"
     :subtitle="item.info!.code"
@@ -68,7 +68,7 @@ function handleOpen() {
         <ABtn
           color="info"
           variant="light"
-          icon="i-carbon:bring-to-front"
+          icon="i-carbon:data-refinery-reference"
           icon-only
           class="text"
         />

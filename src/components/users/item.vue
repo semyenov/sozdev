@@ -15,6 +15,7 @@ const props = defineProps({
 })
 
 const item = toRef(props, 'item')
+const avatarText = computed(() => [item.value.info.first_name, item.value.info.last_name].map(str => str[0]).join(''))
 
 const winboxTitle = `${item.value.info.first_name} ${item.value.info.last_name}`
 const winboxId = `winbox-detail-${item.value._id}`
@@ -40,9 +41,9 @@ function handleOpen() {
       class: ['simple'],
 
       width: 400,
-      height: 600,
+      height: '50%',
 
-      x: window.innerWidth - 400,
+      x: (window.innerWidth - 400) / 2,
       y: (window.innerHeight - 600) / 2,
 
       top: 45,
@@ -58,24 +59,18 @@ function handleOpen() {
 
   w.winbox.focus()
 }
-
-// function handleClose() {
-//   const w = winboxWindow.value
-//   if (w?.winbox)
-//     w.winbox.close()
-// }
 </script>
 
 <template>
   <ACard
-    class="cursor-pointer select-none spacing-70 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none spacing-80 [&_.a-title]:leading-tight"
     :variant="winboxWindow ? 'fill' : 'light'"
     @click="handleOpen"
   >
     <div class="w-full flex flex-row a-card-body">
       <div class="flex flex-grow flex-row items-center flex-gap-4">
         <AAvatar color="primary" class="text-xl spacing-100">
-          {{ [item.info.first_name, item.info.last_name].map((str) => str[0]).join("") }}
+          {{ avatarText }}
         </AAvatar>
         <ATypography
           :title="`${item.info.first_name} ${item.info.last_name}`"
@@ -86,7 +81,7 @@ function handleOpen() {
         <ABtn
           color="info"
           variant="light"
-          icon="i-carbon:bring-to-front"
+          icon="i-carbon:data-refinery-reference"
           icon-only
           class="text"
           @click="item.mandate !== undefined && item.mandate++"

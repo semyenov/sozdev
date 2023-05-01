@@ -60,14 +60,13 @@ async function loadOthersHandler() {
         top: 45,
         border: 0,
         left: 45,
-        bottom: 45,
+        bottom: 0,
         width: 400,
         minwidth: 300,
         tether: ['left', 'top', 'bottom'],
-        background: 'rgba(231,229,228,0.7)',
       }"
     >
-      <AInput v-model="input" color="primary" class="border-b" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none bg-white" :placeholder="$t('objects.search.placeholder')" />
+      <AInput v-model="input" color="primary" class="shadow spacing-95" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="$t('objects.search.placeholder')" />
 
       <UiVirtualList
         ref="listComponent"
@@ -79,8 +78,8 @@ async function loadOthersHandler() {
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
         wrap-class="flex flex-col w-full h-full"
-        class="flex flex-grow flex-col items-center overflow-auto px-4 py-3"
-        item-class="mb-3 "
+        class="flex flex-grow flex-col items-center overflow-auto px-4 py-4"
+        item-class="mb-3"
       />
     </WinboxWindow>
 

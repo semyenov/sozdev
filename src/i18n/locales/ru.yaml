@@ -35,7 +35,7 @@ users:
       role: роль
       email: эл. почта
       scopes: доступы
-content:
+content-all:
   title: Справка
 test:
   title: Тест

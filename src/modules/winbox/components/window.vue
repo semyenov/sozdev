@@ -46,10 +46,10 @@ function openWindow() {
     <div class="wb-header">
       <div class="wb-drag"></div>
       <div class="wb-control text-xl">
-        <i class="wb-min i-carbon:minimize"></i>
+        <i class="wb-min i-ic:baseline-minimize"></i>
         <!-- <i class="wb-max i-carbon:maximize"></i>
-        <i class="wb-full i-carbon:screen"></i> -->
-        <i class="wb-close i-carbon:information-disabled"></i>
+        <i class="wb-full i-ic:baseline-fullscreen"></i> -->
+        <i class="wb-close i-ic:round-close"></i>
       </div>
     </div>
 
@@ -80,7 +80,7 @@ function openWindow() {
     full: false,
     hidden: false,
     template: templateEl,
-    background: 'rgba(255,255,255,0.75)',
+    background: 'rgba(255,255,255,0.80)',
 
     ...params.value,
     title: undefined,

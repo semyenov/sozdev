@@ -49,7 +49,6 @@ function scrollClickHandler() {
         width: 400,
         minwidth: 300,
         tether: ['left', 'top', 'bottom'],
-        background: 'rgba(231,229,228,0.7)',
       }"
     >
       <UiVirtualList
@@ -62,8 +61,7 @@ function scrollClickHandler() {
         :data-getter="usersGetter"
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
-        wrap-class="flex flex-col w-full h-full"
-        class="flex flex-grow flex-col items-center overflow-auto px-4 py-2"
+        class="overflow-auto p-4"
         item-class="mb-3"
       />
     </WinboxWindow>

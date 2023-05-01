@@ -20,12 +20,12 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
     class="grid-rows-[auto_1fr_auto] my-0 h-full"
   >
     <template #before>
-      <AInput v-model="input" class="border-b bg-white!" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none " :placeholder="$t('users.item.search.placeholder')" />
+      <AInput v-model="input" color="primary" class="shadow-sm spacing-95" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="$t('objects.search.placeholder')" />
     </template>
 
     <template #default>
       <SimpleBar
-        class="overflow-auto"
+        class="overflow-auto py-2"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
       >
@@ -53,10 +53,9 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
 
     <!-- 👉 Slot: After -->
     <template #after>
-      <hr>
       <AListItem
         :subtitle="`${fields.length} fields found`"
-        class="opacity-75"
+        class="border-t bg-white"
       />
     </template>
   </AList>

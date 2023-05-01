@@ -112,7 +112,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
         id: 'page-test',
         teleportId: 'teleport-layer--10',
         title: t('test.title'),
-        class: ['wb-left', 'no-close', 'border-none'],
+        class: ['wb-left', 'no-header', 'border-none'],
         index: 10,
         border: 0,
         top: 45,

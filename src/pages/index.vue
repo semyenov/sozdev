@@ -27,7 +27,7 @@ const { data } = await useFetch('/api/test', {
         id: 'page-index',
         teleportId: 'teleport-layer--10',
         title: $t('index.title'),
-        class: ['wb-left', 'no-close'],
+        class: ['wb-left', 'no-header'],
         index: 10,
         border: 0,
         top: 45,
