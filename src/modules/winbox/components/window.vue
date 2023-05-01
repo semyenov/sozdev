@@ -38,6 +38,7 @@ function openWindow() {
   const rootEl
     = document.getElementById(props.params.teleportId) || document.body
   const mountEl = document.createElement('div')
+  mountEl.innerHTML = '<div class="wb-content"></div>'
   mountEl.classList.add('wb-wrapper')
 
   const templateEl = document.createElement('div')
@@ -65,21 +66,21 @@ function openWindow() {
   `
 
   winboxRegister(rootEl, mountEl, {
-    top: 0,
+    top: 45,
     bottom: 0,
     left: 45,
     right: 0,
     border: 0,
-    width: 550,
+    width: 400,
     header: 45,
-    minwidth: 400,
+    minwidth: 300,
     class: ['simple'],
     min: false,
     max: false,
     full: false,
     hidden: false,
     template: templateEl,
-    background: 'rgba(255,255,255,0.8)',
+    background: 'rgba(255,255,255,0.75)',
 
     ...params.value,
     title: undefined,
@@ -117,7 +118,7 @@ function closeWindow() {
       <span v-else>{{ params.title }}</span>
     </div>
   </Teleport>
-  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-wrapper`">
+  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-content`">
     <slot name="default" />
   </Teleport>
 </template>

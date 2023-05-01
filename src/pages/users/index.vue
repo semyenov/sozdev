@@ -43,22 +43,19 @@ function scrollClickHandler() {
         title: t('users.title'),
         class: ['wb-left', 'no-header'],
         border: 0,
-        top: 0,
+        top: 45,
         left: 45,
         bottom: 0,
-        // right: '50%',
-        background: 'rgba(231,229,228,0.7)',
-        height: '100%',
-        minheight: '100%',
-        width: 450,
+        width: 400,
         minwidth: 300,
         tether: ['left', 'top', 'bottom'],
+        background: 'rgba(231,229,228,0.7)',
       }"
     >
       <UiVirtualList
         ref="listComponent"
         key="page-users-index-virtuallist"
-        :keeps="48"
+        :keeps="50"
         :page-mode="false"
         :estimate-size="70"
         :data-ids="usersIds"
@@ -66,8 +63,8 @@ function scrollClickHandler() {
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
         wrap-class="flex flex-col w-full h-full"
-        class="flex flex-grow flex-col items-center overflow-auto py-2 pl-4 pr-0"
-        item-class="mb-2 rounded-r-0 text-sm"
+        class="flex flex-grow flex-col items-center overflow-auto px-4 py-2"
+        item-class="mb-3"
       />
     </WinboxWindow>
 

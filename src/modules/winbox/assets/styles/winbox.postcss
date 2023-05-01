@@ -90,7 +90,7 @@
 
 
   .wb-header {
-    @apply flex flex-row px-0 py-0 dark:text-default-400 text-gray-500 justify-center relative bg-warmGray-100 border-b;
+    @apply flex flex-row px-0 py-0 dark:text-default-400 text-gray-500 justify-center relative bg-warmGray-50 border-b;
 
     .wb-drag {
       @apply flex flex-grow overflow-hidden p-0 justify-center items-center py-3 cursor-grab;
@@ -118,7 +118,7 @@
   }
 
   .wb-body {
-    @apply flex flex-grow w-full h-auto max-h-full overflow-auto top-0! relative rounded-b-none [will-change:contents];
+    @apply flex flex-grow w-full h-auto max-h-full overflow-hidden top-0! relative rounded-b-none [will-change:contents];
 
     -webkit-overflow-scrolling: touch;
 
@@ -134,7 +134,7 @@
     @apply shadow-xl shadow-default dark:shadow-gray-800 border-warmGray-300;
 
     .wb-header {
-      @apply flex flex-row bg-warmGray-200;
+      @apply flex flex-row bg-warmGray-100;
     }
   }
 

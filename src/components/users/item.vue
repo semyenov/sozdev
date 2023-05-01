@@ -36,13 +36,18 @@ function handleOpen() {
         id: item.value._id,
       },
 
-      tether: ['left', 'top', 'bottom'],
+      tether: [],
       class: ['simple'],
 
-      width: 500,
+      width: 400,
       height: 600,
 
+      x: window.innerWidth - 400,
+      y: (window.innerHeight - 600) / 2,
+
+      top: 45,
       bottom: 0,
+      left: 45,
     })
 
     return
@@ -63,27 +68,27 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none shadow-none spacing-75"
+    class="cursor-pointer select-none spacing-70 [&_.a-title]:leading-tight"
     :variant="winboxWindow ? 'fill' : 'light'"
     @click="handleOpen"
   >
     <div class="w-full flex flex-row a-card-body">
       <div class="flex flex-grow flex-row items-center flex-gap-4">
-        <AAvatar color="primary">
+        <AAvatar color="primary" class="text-xl spacing-100">
           {{ [item.info.first_name, item.info.last_name].map((str) => str[0]).join("") }}
         </AAvatar>
         <ATypography
-          :title="`# ${item.info.first_name} ${item.info.last_name}`"
+          :title="`${item.info.first_name} ${item.info.last_name}`"
           :subtitle="item.email"
         />
       </div>
-      <div v-if="winboxWindow?.winbox" class="flex flex-shrink flex-wrap justify-center gap-x-4 gap-y-2">
+      <div v-if="winboxWindow?.winbox" class="flex flex-shrink flex-wrap justify-center gap-x-4 gap-y-2 spacing-100">
         <ABtn
           color="info"
-          variant="text"
+          variant="light"
           icon="i-carbon:bring-to-front"
           icon-only
-          class="text-lg"
+          class="text"
           @click="item.mandate !== undefined && item.mandate++"
         />
       </div>

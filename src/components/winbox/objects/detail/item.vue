@@ -34,14 +34,14 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
           <AListItem
             v-for="field in fields"
             :key="field.key"
-            :text="[field.val, 'text-sm']"
+            :text="[field.val, 'text-sm inline break-words']"
             class="items-start border-b border-b-dashed"
           >
             <template #append>
-              <span class="min-w-20% self-start text-right font-bold">
+              <span class="min-w-auto self-start text-right font-bold">
                 <AChip
                   color="success"
-                  class="rounded text-xs"
+                  class="rounded text-xs shadow-sm"
                 >
                   {{ $t(`objects.item.fields.${field.key}`) }}
                 </AChip>

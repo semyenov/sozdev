@@ -38,6 +38,10 @@ function handleOpen() {
 
       tether: ['top', 'right', 'bottom'],
       class: ['wb-right'],
+
+      top: 45,
+      bottom: 0,
+      left: 45,
     })
 
     return
@@ -54,19 +58,19 @@ function handleOpen() {
   <ACard
     class="cursor-pointer select-none shadow spacing-70 [&_.a-title]:leading-tight"
     :variant="winboxWindow ? 'fill' : 'light'"
-    :title="`# ${item.info.name}`"
+    :title="`${item.info.name}`"
     :subtitle="item.info!.code"
     @click="handleOpen"
   >
     <template v-if="winboxWindow" #header-right>
       <!-- Action buttons -->
-      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
+      <div v-if="winboxWindow?.winbox" class="flex flex-shrink flex-wrap justify-center gap-x-4 gap-y-2 spacing-100">
         <ABtn
-          class="inline-flex text-xl"
           color="info"
-          variant="text"
+          variant="light"
           icon="i-carbon:bring-to-front"
           icon-only
+          class="text"
         />
       </div>
     </template>

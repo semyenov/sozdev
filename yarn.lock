@@ -2524,6 +2524,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@orama/orama@npm:^1.0.0-beta.13":
+  version: 1.0.0-beta.13
+  resolution: "@orama/orama@npm:1.0.0-beta.13"
+  checksum: 0e398f252001805ff6e3b247d827a8e04db0f378baa8ad5e676618726190736f353281f852c72d330d72ab6fa9fb59012281df9f8d132b613b869410bf1bb397
+  languageName: node
+  linkType: hard
+
 "@pinia/nuxt@npm:^0.4.9":
   version: 0.4.9
   resolution: "@pinia/nuxt@npm:0.4.9"
@@ -15336,6 +15343,7 @@ __metadata:
     "@nuxtjs/eslint-config": ^12.0.0
     "@nuxtjs/eslint-config-typescript": ^12.0.0
     "@nuxtjs/i18n": ^8.0.0-beta.11
+    "@orama/orama": ^1.0.0-beta.13
     "@pinia/nuxt": ^0.4.9
     "@turf/turf": ^6.5.0
     "@types/chroma-js": ^2.4.0

@@ -115,14 +115,11 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
         class: ['wb-left', 'no-close', 'border-none'],
         index: 10,
         border: 0,
-        top: 0,
+        top: 45,
         left: 45,
         bottom: 0,
-        right: '50%',
-        height: '100%',
-        minheight: '100%',
-        width: 550,
-        minwidth: 500,
+        width: 400,
+        minwidth: 300,
         tether: ['left', 'top', 'bottom'],
       }"
     >
