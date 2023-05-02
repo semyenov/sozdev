@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import type { NuxtComponentMetaNames } from '#nuxt-component-meta/types'
+// import type { NuxtComponentMetaNames } from '#nuxt-component-meta/types'
 
 definePageMeta({
   layout: 'default',
 })
 
-const { t } = useI18n()
 const route = useRoute('index')
 
-const specificComponentName = ref<NuxtComponentMetaNames>('WinboxObjectsDetailItem')
+// const specificComponentName = ref<NuxtComponentMetaNames>('WinboxObjectsDetailItem')
 
-const specificComponentMeta = await useComponentMeta(specificComponentName)
-const composableData = await useComponentMeta()
+// const specificComponentMeta = await useComponentMeta(specificComponentName)
+// const composableData = await useComponentMeta()
 
 const { data } = await useFetch('/api/test', {
   method: 'get',
@@ -27,18 +26,18 @@ const { data } = await useFetch('/api/test', {
       :params="{
         id: 'page-index',
         teleportId: 'teleport-layer--10',
-        title: t('index.title'),
-        class: ['simple', 'wb-left', 'no-close'],
+        title: $t('index.title'),
+        class: ['wb-left', 'no-close'],
         index: 10,
         border: 0,
         top: 0,
-        left: 40,
+        left: 45,
         bottom: 0,
         right: '50%',
         height: '100%',
         minheight: '100%',
         width: 550,
-        minwidth: 500,
+        minwidth: 400,
         tether: ['left', 'top', 'bottom'],
       }"
     >
@@ -48,7 +47,7 @@ const { data } = await useFetch('/api/test', {
         :scrollbar-max-size="300"
       >
         <div
-          class="flex flex-col items-start p-6"
+          class="flex flex-col items-start p-4"
         >
           <PageProse
             v-if="data"
@@ -66,7 +65,7 @@ const { data } = await useFetch('/api/test', {
             {{ data.text }}
           </PageProse>
 
-          <PageProse
+          <!-- <PageProse
             v-if="data"
             v-motion
             :initial="{
@@ -90,10 +89,10 @@ const { data } = await useFetch('/api/test', {
               <code>useComponentMeta</code>
             </h2>
             <pre>{{ composableData }}</pre>
-          </PageProse>
+          </PageProse> -->
 
           <div class="flex flex-row justify-center gap-2 text-3xl">
-            <i class="i-logos:vue text-9xl" />
+            <i class="i-logos:vue text-8xl" />
             <div
               class="i-twemoji:grinning-face-with-smiling-eyes hover:i-twemoji:face-with-tears-of-joy text-7xl"
             />

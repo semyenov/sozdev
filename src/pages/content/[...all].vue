@@ -12,10 +12,10 @@ const contentPath = route.params.all.join('/')
         id: 'page-content-all',
         teleportId: 'teleport-layer--10',
         title: t('content.title'),
-        class: ['simple', 'wb-left', 'no-close'],
+        class: ['wb-left', 'no-close'],
         border: 0,
         top: 0,
-        left: 40,
+        left: 45,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -26,7 +26,7 @@ const contentPath = route.params.all.join('/')
       }"
     >
       <div
-        class="h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-6"
+        class="h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-4"
       >
         <ContentDoc :path="contentPath" />
       </div>

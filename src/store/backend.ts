@@ -131,7 +131,10 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
           'c7ac6f88-73b2-46ac-8d7a-a1ed63dfbefa',
           'c1e3da75-fe31-4e95-9957-8ccdfe0e8496',
           'b65d673a-c71b-4ea0-9b7f-80a78f344a8b',
-        ].map(id => `fields:${id}`),
+        ].map(id => `fields:${id}`).concat([
+          'info:name',
+          'info:code',
+        ]),
       })
       const end = Date.now()
       logger.info(`Search for "${query}" took ${end - start}ms`)

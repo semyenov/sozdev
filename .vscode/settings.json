@@ -14,7 +14,7 @@
   "where-am-i.color": "#fff",
   // "where-am-i": false,
 
-  // "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.tsdk": "node_modules/typescript/lib",
   "extensions.disabled": ["vscode.typescript-language-features"],
   "vscode.typescript-language-features": null,
   "volar.takeOverMode.extension": "Vue.volar",
@@ -54,7 +54,7 @@
   "browse-lite.startUrl": "http://localhost:3000",
   "browse-lite.chromeExecutable": "/usr/bin/chromium",
 
-  "i18n-ally.localesPaths": ["src/i18n", "src/i18n/locales"],
+  "i18n-ally.localesPaths": ["src/i18n/locales"],
   "i18n-ally.displayLanguage": "ru",
   "i18n-ally.sourceLanguage": "ru",
   "i18n-ally.keystyle": "nested",
@@ -91,6 +91,5 @@
   "cSpell.words": ["Nuxt", "Winbox"],
   "[postcss]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  }
 }

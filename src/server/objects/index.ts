@@ -21,6 +21,7 @@ export const items = range(0, 1000).map((_i) => {
     _id: faker.datatype.uuid(),
     info: {
       name: `${faker.address.street()}, ${faker.address.buildingNumber()}`,
+      code: `${faker.random.alpha(3)}-${faker.random.numeric()}`,
     },
     feature: {
       id: faker.datatype.uuid(),

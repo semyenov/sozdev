@@ -1,12 +1,9 @@
+// @ts-expect-error missing type
+import postcssCurrentSelector from 'postcss-current-selector' // @ts-expect-error missing type
+import postcssNestedAncestors from 'postcss-nested-ancestors'
+import postcssNested from 'postcss-nested'
 import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
-import postcssNested from 'postcss-nested'
-
-// @ts-expect-error missing type
-import postcssCurrentSelector from 'postcss-current-selector'
-
-// @ts-expect-error missing type
-import postcssNestedAncestors from 'postcss-nested-ancestors'
 
 import {
   defaultLocale,
@@ -133,7 +130,7 @@ export default defineNuxtConfig({
   // Modules configuration
 
   modules: [
-    '~/modules/test/index',
+    // '~/modules/test/index',
     '~/modules/winbox/index',
     '~/modules/map/index',
     '~/modules/design/index',
@@ -158,6 +155,21 @@ export default defineNuxtConfig({
   // componentMeta: {
   //   global: true,
   // },
+
+  anu: {
+    themes: {
+      light: {
+        colors: {
+          primary: '0, 0%, 60%',
+        },
+      },
+      dark: {
+        colors: {
+          primary: '0, 0%, 10%',
+        },
+      },
+    },
+  },
 
   image: {
     provider: 'unsplash',
