@@ -40,16 +40,14 @@ onMounted(async () => {
 
 <template>
   <div class="h-full w-full flex flex-row">
-    <PageSidebar class="z-30" />
-    <div class="absolute left-0 right-0 h-0 w-full flex flex-col">
-      <div id="teleport-layer--10" class="z-10" />
-      <div id="teleport-layer--20" class="z-20" />
-    </div>
+    <div id="teleport-layer--10" class="absolute left-0 right-0 z-10 h-0 w-full" />
+    <PageSidebar class="z-20 shadow-lg shadow-warmGray/40 backdrop-blur-20 backdrop-filter" />
+    <div id="teleport-layer--30" class="absolute left-0 right-0 z-30 h-0 w-full" />
 
     <MapLibre />
 
     <div class="w-full flex flex-col">
-      <div class="h-45px flex flex-row items-center justify-between border-b border-warmGray-300 bg-warmGray-100/85 px-4 shadow-2xl shadow-warmGray/20 backdrop-blur-10 backdrop-filter">
+      <div class="h-45px flex flex-row items-center justify-between border-b border-warmGray-300 bg-warmGray-100 px-4 shadow-warmGray/20 shadow-xl backdrop-blur-10 backdrop-filter">
         <NuxtLoadingIndicator class="absolute z-100 w-full" />
         <span class="text-xl font-extrabold">
           {{ $t(`${route.name}.title`) }}
