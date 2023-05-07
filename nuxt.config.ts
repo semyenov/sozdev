@@ -158,13 +158,31 @@ export default defineNuxtConfig({
   anu: {
     themes: {
       light: {
+        class: '',
         colors: {
           primary: '0, 0%, 60%',
+          success: '94.5, 100%, 39.6%',
+          info: '200.1, 100%, 54.3%',
+          warning: '42.4, 100%, 50%',
+          danger: '358.3, 100%, 64.9%',
+        },
+        cssVars: {
+          'body-bg-c': '0,4.8%,95.9%',
+          'surface-c': '0, 0%, 100%',
         },
       },
       dark: {
+        class: 'dark',
         colors: {
           primary: '0, 0%, 10%',
+          success: '94.5, 73%, 39.6%',
+          info: '200.1, 73%, 54.3%',
+          warning: '42.4, 73%, 50%',
+          danger: '358.3, 73%, 64.9%',
+        },
+        cssVars: {
+          'body-bg-c': 'var(--a-primary-hue), 15%, 5%',
+          'surface-c': 'var(--a-primary-hue), 7%, 10%',
         },
       },
     },

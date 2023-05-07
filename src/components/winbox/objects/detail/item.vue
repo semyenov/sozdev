@@ -20,7 +20,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
     class="grid-rows-[auto_1fr_auto] my-0 h-full"
   >
     <template #before>
-      <AInput v-model="input" color="primary" class="border-b spacing-95" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="$t('objects.item.search.placeholder')" />
+      <AInput v-model="input" color="primary" class="border-b spacing-95" append-inner-icon="i-ph:magnifying-glass" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="$t('objects.item.search.placeholder')" />
     </template>
 
     <template #default>

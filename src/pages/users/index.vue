@@ -8,9 +8,13 @@ definePageMeta({
 
 const route = useRoute('users')
 
+const input = ref<string>('')
+
 const usersStore = useUsersStore()
-const usersIds = await usersStore.itemsGetter
-const usersGetter = usersStore.itemGetter
+const usersGetter = await usersStore.itemsGetter
+const userSearchGetter = usersStore.searchGetter
+const usersIds = asyncComputed(() => userSearchGetter(input.value))
+const userGetter = usersStore.itemGetter
 
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
@@ -54,16 +58,20 @@ function scrollClickHandler() {
       <UiVirtualList
         ref="listComponent"
         key="page-users-index-virtuallist"
-        :keeps="50"
+        :keeps="25"
         :page-mode="false"
         :estimate-size="70"
-        :data-ids="usersIds"
-        :data-getter="usersGetter"
+        :data-ids="usersIds || usersGetter"
+        :data-getter="userGetter"
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
         class="overflow-auto p-4"
         item-class="mb-3"
-      />
+      >
+        <template #header>
+          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('users.search.placeholder')" />
+        </template>
+      </UiVirtualList>
     </WinboxWindow>
 
     <div class="absolute bottom-8 right-8 z-10 flex flex-col gap-4">

@@ -64,11 +64,11 @@ function handleOpen() {
   >
     <template v-if="winboxWindow" #header-right>
       <!-- Action buttons -->
-      <div v-if="winboxWindow?.winbox" class="flex flex-shrink flex-wrap justify-center gap-x-4 gap-y-2 spacing-100">
+      <div v-if="winboxWindow?.winbox" class="ml-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 spacing-100">
         <ABtn
           color="info"
           variant="light"
-          icon="i-carbon:data-refinery-reference"
+          icon="i-ph:cards"
           icon-only
           class="text"
         />

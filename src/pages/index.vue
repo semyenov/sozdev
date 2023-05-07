@@ -18,6 +18,7 @@ const { data } = await useFetch('/api/test', {
     name: 'Alexander',
   },
 })
+// const { themes, activeThemeName, activeTheme } = useAnu()
 </script>
 
 <template>
@@ -63,6 +64,7 @@ const { data } = await useFetch('/api/test', {
             {{ data.text }}
           </PageProse>
 
+          <!-- {{ themes }} -->
           <!-- <PageProse
             v-if="data"
             v-motion

@@ -7,6 +7,8 @@ index:
   title: Добро пожаловать
 objects:
   title: Объекты
+  search:
+    placeholder: поиск по объектам
   item:
     search:
       placeholder: поиск по данным объекта
@@ -21,10 +23,10 @@ objects:
       parent: родитель
       demands: потребности
       resources: ресурсы
-  search:
-    placeholder: поиск по объектам
 users:
   title: Пользователи
+  search:
+    placeholder: поиск по пользователям
   item:
     search:
       placeholder: поиск по данным пользователя

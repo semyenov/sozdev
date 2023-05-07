@@ -47,12 +47,11 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         :data-getter="objectGetter"
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
-        wrap-class="flex flex-col w-full h-full"
-        class="flex flex-grow flex-col items-center overflow-auto px-4 py-4"
+        class="overflow-auto p-4"
         item-class="mb-3"
       >
         <template #header>
-          <AInput v-model="input" color="primary" class="sticky mb-6 shadow spacing-95" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="$t('objects.search.placeholder')" />
+          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('objects.search.placeholder')" />
         </template>
       </UiVirtualList>
     </WinboxWindow>

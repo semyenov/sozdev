@@ -74,10 +74,10 @@ function handleOpen() {
         </AAvatar>
         <ATypography
           :title="`${item.info.first_name} ${item.info.last_name}`"
-          :subtitle="item.email"
+          :subtitle="[item.email, 'break-all']"
         />
       </div>
-      <div v-if="winboxWindow?.winbox" class="flex flex-shrink flex-wrap justify-center gap-x-4 gap-y-2 spacing-100">
+      <div v-if="winboxWindow?.winbox" class="ml-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 spacing-100">
         <ABtn
           color="info"
           variant="light"

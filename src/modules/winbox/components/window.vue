@@ -46,8 +46,8 @@ function openWindow() {
       <div class="wb-drag"></div>
       <div class="wb-control text-xl">
         <i class="wb-min i-ph:minus mt-2.5"></i>
-        <!-- <i class="wb-max i-ph:plus"></i>
-        <i class="wb-full i-ph:browser"></i> -->
+        <i class="wb-max i-ph:plus"></i>
+        <i class="wb-full i-ph:browser"></i>
         <i class="wb-close i-ph:x"></i>
       </div>
     </div>
