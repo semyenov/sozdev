@@ -10,7 +10,6 @@ import type {
   UISizeVariants,
 } from '~/types/ui'
 
-const { t, d } = useI18n()
 const route = useRoute('test')
 
 const uiSizeVariants: UISizeVariants[] = ['xs', 'sm', 'md', 'lg', 'xl']
@@ -47,9 +46,9 @@ const usersOptions = (
 const input = ref<string | undefined>(undefined)
 const inputTab = ref<number>(0)
 
-const inputDatePicker = ref<Date | string>(
-  d(new Date().toISOString(), 'medium'),
-)
+// const inputDatePicker = ref<Date | string>(
+//   d(new Date().toISOString(), 'medium'),
+// )
 const tabs = [
   {
     title: 'Account',
@@ -111,7 +110,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
       :params="{
         id: 'page-test',
         teleportId: 'teleport-layer--10',
-        title: t('test.title'),
+        title: $t('test.title'),
         class: ['wb-left', 'no-header', 'border-none'],
         index: 10,
         border: 0,

@@ -8,7 +8,7 @@ export default defineI18nConfig(_nuxt => ({
   numberFormats,
   datetimeFormats,
   pluralizationRules: {
-    ru: (choice, choicesLength, orgRule) => {
+    ru: (choice, choicesLength, _orgRule) => {
       if (choice === 0)
         return 0
 
