@@ -84,7 +84,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
       </NuxtLink>
       <NuxtLink
         v-slot="{ isActive, navigate }"
-        :to="localePath({ name: 'content-all', params: { all: ['test'] } })"
+        :to="localePath({ name: 'help' })"
         custom
       >
         <ABtn
@@ -94,7 +94,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('content-all.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="$t('help.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink

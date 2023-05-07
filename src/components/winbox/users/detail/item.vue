@@ -54,7 +54,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
     <!-- 👉 Slot: After -->
     <template #after>
       <AListItem
-        :subtitle="`${fields.length} fields found`"
+        :subtitle="$t('users.item.search.status', fields.length)"
         class="border-t bg-white"
       />
     </template>

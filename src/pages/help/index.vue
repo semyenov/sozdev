@@ -1,15 +1,14 @@
 <script setup lang="ts">
-const route = useRoute('content-all')
-const contentPath = route.params.all.join('/')
+const route = useRoute('help')
 </script>
 
 <template>
   <div class="page" :class="`page__${route.name}`">
     <WinboxWindow
       :params="{
-        id: 'page-content-all',
+        id: 'page-help',
         teleportId: 'teleport-layer--10',
-        title: $t('content.title'),
+        title: $t('help.title'),
         class: ['wb-left', 'no-header'],
         border: 0,
         top: 45,
@@ -25,7 +24,11 @@ const contentPath = route.params.all.join('/')
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
       >
-        <ContentDoc class="p-4" :path="contentPath" />
+        <div class="flex flex-col p-4">
+          <ContentList path="/" v-slot="{ list }">
+            <HelpLink v-for="article in list" :key="article._id" :item="article" />
+          </ContentList>
+        </div>
       </UiSimplebar>
     </WinboxWindow>
   </div>

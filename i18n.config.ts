@@ -1,8 +1,4 @@
-// import { availableLocales, datetimeFormats, defaultLocale, locales, numberFormats, onLanguageSwitched } from '~/i18n'
-
-// import { defineI18nConfig } from '@nuxtjs/i18n/dist/runtime/composables'
-
-import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from '~/i18n'
+import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from './src/i18n'
 
 export default defineI18nConfig(_nuxt => ({
   legacy: false,
@@ -11,32 +7,20 @@ export default defineI18nConfig(_nuxt => ({
   availableLocales,
   numberFormats,
   datetimeFormats,
-}),
-)
+  pluralizationRules: {
+    ru: (choice, choicesLength, orgRule) => {
+      if (choice === 0)
+        return 0
 
-// export default defineI18nConfig(_nuxt => ({
-//   legacy: false,
+      const teen = choice > 10 && choice < 20
+      const endsWithOne = choice % 10 === 1
+      if (!teen && endsWithOne)
+        return 1
 
-//   defaultLocale,
-//   locales,
+      if (!teen && choice % 10 >= 2 && choice % 10 <= 4)
+        return 2
 
-//   lazy: true,
-//   strategy: 'no_prefix',
-//   langDir: 'i18n/locales',
-//   onLanguageSwitched,
-
-//   detectBrowserLanguage: {
-//     useCookie: true,
-//     cookieKey: 'X-Locale',
-//     redirectOn: 'root',
-//   },
-
-//   vueI18n: {
-//     legacy: false,
-//     locale: defaultLocale,
-//     fallbackLocale: defaultLocale,
-//     availableLocales,
-//     numberFormats,
-//     datetimeFormats,
-//   },
-// }))
+      return choicesLength < 4 ? 2 : 3
+    },
+  },
+}))

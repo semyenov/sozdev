@@ -35,7 +35,7 @@ users:
       role: role
       scopes: accesses
       type: type
-content-all:
+help:
   title: Help
 test:
   title: Test

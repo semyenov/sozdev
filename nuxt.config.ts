@@ -36,7 +36,6 @@ export default defineNuxtConfig({
     apiUri: 'http://localhost:3000/api',
 
     public: {
-      test: 1,
       apiUri: '/api',
     },
   },
@@ -223,7 +222,6 @@ export default defineNuxtConfig({
     lazy: true,
     strategy: 'no_prefix',
     langDir: 'i18n/locales',
-    // onLanguageSwitched,
 
     detectBrowserLanguage: {
       useCookie: true,
@@ -233,12 +231,14 @@ export default defineNuxtConfig({
   },
 
   // https://content.nuxtjs.org/api/configuration
-  content: {
-    api: { baseURL: '/_content' },
-  },
+  // content: {
+  //   api: {
+  //     baseURL: '/_content',
+  //   },
+  // },
 
   nuxtTypedRouter: {
-    // experimentalPathCheck: true,
+    // pathCheck: true,
     plugin: true,
 
     strict: {

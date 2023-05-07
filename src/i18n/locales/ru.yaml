@@ -10,6 +10,7 @@ objects:
   item:
     search:
       placeholder: поиск по данным объекта
+      status: 0 полей | {n} поле | {n} поля | {n} полей
     fields:
       _id: идентификатор
       info: информация
@@ -27,6 +28,7 @@ users:
   item:
     search:
       placeholder: поиск по данным пользователя
+      status: 0 полей | {n} полe | {n} поля | {n} полей
     fields:
       _id: идентификатор
       info: информация
@@ -35,7 +37,7 @@ users:
       role: роль
       email: эл. почта
       scopes: доступы
-content-all:
+help:
   title: Справка
 test:
   title: Тест
