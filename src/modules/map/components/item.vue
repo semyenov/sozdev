@@ -7,7 +7,6 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import jsonData from '../geojson/voronezh.json'
 
 import type { IMove } from '~/types'
-import { IMetaScope } from '~/types'
 
 import type { TMapboxDraw, TMapboxOverlay } from '../types'
 import type { FeatureCollection, Point } from 'geojson'
@@ -17,7 +16,6 @@ let maplibreglPopup: maplibregl.Popup
 let deckOverlay: TMapboxOverlay
 
 const objectsStore = useObjectsStore()
-const backendStore = useBackendStore()
 const movesStore = useMovesStore()
 const settingsStore = useSettingsStore()
 
@@ -28,8 +26,6 @@ const moves = await movesStore.itemsGetterByIds(movesId.value)
 
 const moveFilter = ref<string>('')
 const hoveredStateId = ref<string | number >('')
-
-const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)!
 
 const objectsFeatures = computed<
   FeatureCollection<Point, { color: [number, number, number] }>
@@ -383,6 +379,7 @@ function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl
     },
   })
 }
+
 function getMoveTooltip(
   res: string,
   value: string,

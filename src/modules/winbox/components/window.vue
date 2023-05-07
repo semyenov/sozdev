@@ -74,6 +74,7 @@ function openWindow() {
     width: 400,
     header: 45,
     minwidth: 300,
+    minheight: 100,
     class: ['simple'],
     min: false,
     max: false,

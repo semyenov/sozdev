@@ -26,7 +26,7 @@ export interface WinBoxBBox {
 }
 
 export interface WinBoxState {
-  index: number
+  index?: number
 
   tt?: boolean
   tr?: boolean

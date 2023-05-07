@@ -152,9 +152,9 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
   ],
 
-  // componentMeta: {
-  //   global: true,
-  // },
+  componentMeta: {
+    globalsOnly: true,
+  },
 
   anu: {
     themes: {

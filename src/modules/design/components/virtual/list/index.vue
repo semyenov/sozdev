@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { range } from '@antfu/utils'
 
-import { SimpleBar } from '#components'
+import { UiSimplebar } from '#components'
 
 import type { VirtualRange } from '~/utils'
 
@@ -137,7 +137,7 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 
-const rootRef = ref<InstanceType<typeof SimpleBar> | null>(null)
+const rootRef = ref<InstanceType<typeof UiSimplebar> | null>(null)
 const scrollRef = ref<HTMLElement | null>(null)
 
 const shepherdRef = ref<HTMLElement | null>(null)
@@ -196,10 +196,7 @@ onMounted(() => {
     return
   }
 
-  scrollRef.value = rootRef.value?.$refs.scrollElement as HTMLElement
-  scrollRef.value?.addEventListener('scroll', onScroll, {
-    passive: false,
-  })
+  scrollRef.value = rootRef.value!.$refs.scrollRef as HTMLElement
 })
 
 onUnmounted(() => {
@@ -242,15 +239,11 @@ watch(
 )
 watch(
   () => props.start,
-  (start) => {
-    scrollToIndex(start)
-  },
+  scrollToIndex,
 )
 watch(
   () => props.offset,
-  (offset) => {
-    scrollToOffset(offset)
-  },
+  scrollToOffset,
 )
 
 function onScroll(evt: Event) {
@@ -400,12 +393,13 @@ function getWrapperStyle(
 </script>
 
 <template>
-  <SimpleBar
+  <UiSimplebar
     ref="rootRef"
     :key="`${props.dataKey}-list_root`"
     :scrollbar-min-size="100"
     :scrollbar-max-size="300"
     role="list"
+    @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)"
   >
     <!-- @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)" -->
     <UiVirtualListSlot
@@ -466,5 +460,5 @@ function getWrapperStyle(
     >
       <slot name="footer" />
     </UiVirtualListSlot>
-  </SimpleBar>
+  </UiSimplebar>
 </template>

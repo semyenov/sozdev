@@ -16,7 +16,7 @@ const fieldsIds = [
 
 const lineBBox = bbox(jsonData.features[0])
 
-export const items = range(0, 1000).map((_i) => {
+export const items = range(0, 10000).map((_i) => {
   const item: IObject = {
     _id: faker.datatype.uuid(),
     info: {

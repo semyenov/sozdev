@@ -38,7 +38,7 @@ const { data } = await useFetch('/api/test', {
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <SimpleBar
+      <UiSimplebar
         class="chroma-linear-3-lab-blue-100-red-100 chroma-shape-[to_bottom] overflow-auto"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
@@ -91,7 +91,7 @@ const { data } = await useFetch('/api/test', {
           <div class="flex flex-row justify-center gap-2 text-3xl">
             <i class="i-logos:vue text-8xl" />
             <div
-              class="i-twemoji:grinning-face-with-smiling-eyes text-7xl hover:i-twemoji:face-with-tears-of-joy"
+              class="i-twemoji:grinning-face-with-smiling-eyes hover:i-twemoji:face-with-tears-of-joy text-7xl"
             />
             <i
               class="i-mdi:alarm text-6xl text-orange-400"
@@ -107,7 +107,7 @@ const { data } = await useFetch('/api/test', {
             />
           </div>
         </div>
-      </SimpleBar>
+      </UiSimplebar>
     </WinboxWindow>
   </div>
 </template>

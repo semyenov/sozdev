@@ -6,7 +6,6 @@ definePageMeta({
   middleware: 'authorization',
 })
 
-const { t } = useI18n()
 const route = useRoute('users')
 
 const usersStore = useUsersStore()
@@ -40,7 +39,7 @@ function scrollClickHandler() {
       :params="{
         id: 'page-users',
         teleportId: 'teleport-layer--10',
-        title: t('users.title'),
+        title: $t('users.title'),
         class: ['wb-left', 'no-header'],
         border: 0,
         top: 45,

@@ -123,7 +123,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <SimpleBar
+      <UiSimplebar
         class="overflow-auto"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
@@ -423,7 +423,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
             </template>
           </PageProse>
         </div>
-      </SimpleBar>
+      </UiSimplebar>
     </WinboxWindow>
   </div>
 </template>

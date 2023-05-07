@@ -19,7 +19,7 @@ export function winboxRegister(
 ) {
   if (!winboxWindowsStateStorage.value.get(params.id)) {
     winboxWindowsStateStorage.value.set(params.id, {
-      index: winboxWindowsStateStorage.value.size,
+      index: params.index,
       tt: params.tether?.includes('top'),
       tr: params.tether?.includes('right'),
       tb: params.tether?.includes('bottom'),
@@ -102,6 +102,7 @@ export function winboxRegister(
     },
 
     onfocus() {
+      s.value.index = this.index
       return !!params.onfocus && params.onfocus.call(this)
     },
 
@@ -137,6 +138,8 @@ export function winboxRegister(
       // get current state
       const s = getState()
 
+      s.index = ss.index
+
       // update boolean states
       s.min = ss.min
       s.max = ss.max
@@ -160,22 +163,22 @@ export function winboxRegister(
       let height: number = ss.height
 
       const ws = getWindowSize()
-      const ll = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tl && cur.index < ss.index) ? sum + cur.width : sum, 0)
-      const lr = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tr && cur.index < ss.index) ? sum + cur.width : sum, 0)
+      // const ll = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tl && cur.index < ss.index) ? sum + cur.width : sum, 0)
+      // const lr = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tr && cur.index < ss.index) ? sum + cur.width : sum, 0)
 
       // calculate tether position
       if (params.tether) {
         if (ss.tl)
-          x = bb.left + ll
+          x = bb.left
 
         if (ss.tt)
           y = bb.top
 
         if (ss.tr) {
-          x = ws.width - bb.right - lr - width
+          x = ws.width - bb.right - width
 
           if (ss.tl)
-            width = bb.maxwidth - lr
+            width = bb.maxwidth
         }
         if (ss.tb) {
           y = ws.width - bb.bottom - height

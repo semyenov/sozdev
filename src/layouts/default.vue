@@ -1,41 +1,11 @@
 <script setup lang="ts">
-import { create, insertMultiple, search } from '@orama/orama'
-
-import { IMetaScope } from '~/types'
-
-import type { Document } from '@orama/orama'
-
 const route = useRoute()
 const keys = useMagicKeys()
 const tildaKey = keys['\\']
 
 watch(tildaKey, v => v && toggleDark())
 // const authorizationStore = useAuthorizationStore()
-const backendStore = useBackendStore()
-
-onMounted(async () => {
-  window.Orama = await create({
-    schema: {
-      email: 'string',
-      info: {
-        first_name: 'string',
-        last_name: 'string',
-      },
-    },
-    components: {
-      afterInsert(value) {
-        value = unref(value)
-      },
-    },
-  })
-
-  await insertMultiple(window.Orama, (await backendStore.itemsGetter(IMetaScope.OBJECTS)).value as Document[])
-
-  console.log(await search(window.Orama, {
-    term: ' ',
-    properties: '*',
-  }))
-})
+// const backendStore = useBackendStore()
 </script>
 
 <template>

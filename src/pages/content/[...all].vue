@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n()
-
 const route = useRoute('content-all')
 const contentPath = route.params.all.join('/')
 </script>
@@ -11,7 +9,7 @@ const contentPath = route.params.all.join('/')
       :params="{
         id: 'page-content-all',
         teleportId: 'teleport-layer--10',
-        title: t('content.title'),
+        title: $t('content.title'),
         class: ['wb-left', 'no-header'],
         border: 0,
         top: 45,
@@ -22,11 +20,13 @@ const contentPath = route.params.all.join('/')
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <div
-        class="h-full max-h-screen w-full flex flex-col items-start overflow-y-scroll p-4"
+      <UiSimplebar
+        class="overflow-auto"
+        :scrollbar-min-size="100"
+        :scrollbar-max-size="300"
       >
-        <ContentDoc :path="contentPath" />
-      </div>
+        <ContentDoc class="p-4" :path="contentPath" />
+      </UiSimplebar>
     </WinboxWindow>
   </div>
 </template>
