@@ -82,18 +82,14 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
       }
 
   const searchGetter = (scope: IMetaScope) => async (query: string) => {
-    if (!isClient)
-      throw new Error('Search is only available for objects')
+    if (!isClient || !window[scope])
+      throw new Error('Search is not available')
 
-    const results
-     = await search(window[scope], {
-       term: query,
-       properties: '*',
-       limit: 100000,
-       boost: {
-         'info.name': 2,
-       },
-     })
+    const results = await search(window[scope], {
+      term: query,
+      properties: '*',
+      limit: 100000,
+    })
     return results.hits.map(item => item.id)
   }
 
