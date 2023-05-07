@@ -3,8 +3,10 @@
     back: Назад
   text:
     not-found: Страница не найдена
+
 index:
   title: Добро пожаловать
+
 objects:
   title: Объекты
   search:
@@ -23,6 +25,7 @@ objects:
       parent: родитель
       demands: потребности
       resources: ресурсы
+
 users:
   title: Пользователи
   search:
@@ -39,7 +42,9 @@ users:
       role: роль
       email: эл. почта
       scopes: доступы
+
 help:
   title: Справка
+
 test:
   title: Тест

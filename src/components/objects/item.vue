@@ -36,7 +36,7 @@ function handleOpen() {
       },
 
       tether: ['top', 'right', 'bottom'],
-      class: ['wb-right'],
+      class: [],
 
       top: 44,
       bottom: -1,

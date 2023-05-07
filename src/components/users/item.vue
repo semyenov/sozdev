@@ -68,11 +68,14 @@ function handleOpen() {
     @click="handleOpen"
   >
     <div class="w-full flex flex-row a-card-body">
-      <div class="flex flex-grow flex-row items-center flex-gap-4">
-        <AAvatar :color="stringToColor(item._id)" class="text-xl spacing-100">
-          {{ avatarText }}
-        </AAvatar>
+      <div class="flex flex-grow flex-row items-center gap-4">
+        <div class="aspect-ratio-square flex items-center justify-center">
+          <AAvatar :color="stringToColor(item._id)" class="text-xl spacing-100">
+            {{ avatarText }}
+          </AAvatar>
+        </div>
         <ATypography
+          class="flex-grow"
           :title="`${item.info.first_name} ${item.info.last_name}`"
           :subtitle="[item.email, 'break-all']"
         />
