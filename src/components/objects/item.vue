@@ -18,7 +18,6 @@ const item = toRef(props, 'item')
 
 const winboxTitle = `${item.value.info.name}`
 const winboxId = `winbox-detail-${item.value._id}`
-
 const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleOpen() {

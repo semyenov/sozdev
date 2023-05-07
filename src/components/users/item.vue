@@ -19,7 +19,6 @@ const avatarText = computed(() => [item.value.info.first_name, item.value.info.l
 
 const winboxTitle = `${item.value.info.first_name} ${item.value.info.last_name}`
 const winboxId = `winbox-detail-${item.value._id}`
-
 const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleOpen() {

@@ -11,9 +11,10 @@ const props = defineProps({
   },
 })
 const item = toRef(props, 'item')
-const { winboxWindow, createWindow } = useWinbox(item.value._id)
 
+const winboxTitle = `${item.value.title}`
 const winboxId = `winbox-help-${item.value._path?.replaceAll('/', '-')}`
+const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleOpen() {
   const w = winboxWindow.value
@@ -21,7 +22,7 @@ function handleOpen() {
   if (!w?.winbox) {
     createWindow({
       id: winboxId,
-      title: item.value.title,
+      title: winboxTitle,
 
       teleportId: 'teleport-layer--20',
 
