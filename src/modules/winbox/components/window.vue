@@ -38,7 +38,6 @@ function openWindow() {
   const rootEl
     = document.getElementById(props.params.teleportId) || document.body
   const mountEl = document.createElement('div')
-  mountEl.innerHTML = '<div class="wb-content"></div>'
   mountEl.classList.add('wb-wrapper')
 
   const templateEl = document.createElement('div')
@@ -46,10 +45,10 @@ function openWindow() {
     <div class="wb-header">
       <div class="wb-drag"></div>
       <div class="wb-control text-xl">
-        <i class="wb-min i-ic:baseline-minimize"></i>
-        <!-- <i class="wb-max i-carbon:maximize"></i>
-        <i class="wb-full i-ic:baseline-fullscreen"></i> -->
-        <i class="wb-close i-ic:round-close"></i>
+        <i class="wb-min i-ph:minus mt-2.5"></i>
+        <!-- <i class="wb-max i-ph:plus"></i>
+        <i class="wb-full i-ph:browser"></i> -->
+        <i class="wb-close i-ph:x"></i>
       </div>
     </div>
 
@@ -66,10 +65,10 @@ function openWindow() {
   `
 
   winboxRegister(rootEl, mountEl, {
-    top: 45,
-    bottom: 0,
-    left: 45,
-    right: 0,
+    top: 44,
+    left: 44,
+    bottom: -1,
+    right: -1,
     border: 0,
     width: 400,
     header: 45,
@@ -119,7 +118,7 @@ function closeWindow() {
       <span v-else>{{ params.title }}</span>
     </div>
   </Teleport>
-  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-content`">
+  <Teleport v-if="showFlag" :disabled="disabled" :to="`#${params.id} .wb-wrapper`">
     <slot name="default" />
   </Teleport>
 </template>

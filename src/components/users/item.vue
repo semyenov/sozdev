@@ -45,9 +45,10 @@ function handleOpen() {
       x: (window.innerWidth - 400) / 2,
       y: (window.innerHeight - 600) / 2,
 
-      top: 45,
-      bottom: 0,
-      left: 45,
+      top: 44,
+      bottom: -1,
+      left: 44,
+      right: -1,
     })
 
     return
@@ -68,7 +69,7 @@ function handleOpen() {
   >
     <div class="w-full flex flex-row a-card-body">
       <div class="flex flex-grow flex-row items-center flex-gap-4">
-        <AAvatar color="primary" class="text-xl spacing-100">
+        <AAvatar :color="stringToColor(item._id)" class="text-xl spacing-100">
           {{ avatarText }}
         </AAvatar>
         <ATypography

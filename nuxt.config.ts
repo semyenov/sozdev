@@ -155,21 +155,20 @@ export default defineNuxtConfig({
   //   globalsOnly: true,
   // },
 
-  // anu: {
-  //   themes: {
-  //     light: {
-  //       colors: {
-  //         primary: '0, 0%, 60%',
-  //       },
-  //     },
-  //     dark: {
-  //       colors: {
-  //         ...defaultThemeColors,
-  //         primary: '0, 0%, 10%',
-  //       },
-  //     },
-  //   },
-  // },
+  anu: {
+    themes: {
+      light: {
+        colors: {
+          primary: '0, 0%, 60%',
+        },
+      },
+      dark: {
+        colors: {
+          primary: '0, 0%, 10%',
+        },
+      },
+    },
+  },
 
   image: {
     provider: 'unsplash',

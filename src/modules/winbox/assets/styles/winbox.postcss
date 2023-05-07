@@ -1,7 +1,7 @@
 /* @import url('winbox/dist/css/winbox.min.css'); */
 
 .winbox {
-  @apply flex flex-col border border-warmGray-300 shadow-warmGray/40 shadow rounded-none fixed backdrop-filter backdrop-blur-20;
+  @apply flex flex-col border border-warmGray-300 shadow-warmGray/40 shadow-md rounded-none fixed backdrop-filter backdrop-blur-20;
 
   transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
   transition-timing-function: cubic-bezier(0.3, 1, 0.3, 1);
@@ -125,13 +125,13 @@
     /* overflow-scrolling: touch; */
 
 
-    .wb-content {
+    .wb-wrapper {
       @apply top-0 left-0 w-full h-full m-0 absolute;
     }
   }
 
   &.focus {
-    @apply shadow-xl shadow-warmGray/40 dark:shadow-gray-800 border-warmGray-300;
+    @apply shadow shadow-warmGray/40 dark:shadow-gray-800 border-warmGray-300;
 
     .wb-header {
       @apply flex flex-row bg-warmGray-100;

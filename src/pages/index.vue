@@ -27,12 +27,13 @@ const { data } = await useFetch('/api/test', {
         id: 'page-index',
         teleportId: 'teleport-layer--10',
         title: $t('index.title'),
-        class: ['wb-left', 'no-header'],
+        class: ['no-header'],
         index: 10,
         border: 0,
-        top: 45,
-        left: 45,
-        bottom: 0,
+        top: 44,
+        left: 44,
+        bottom: -1,
+        right: -1,
         width: 400,
         minwidth: 300,
         tether: ['left', 'top', 'bottom'],
@@ -91,7 +92,7 @@ const { data } = await useFetch('/api/test', {
           <div class="flex flex-row justify-center gap-2 text-3xl">
             <i class="i-logos:vue text-8xl" />
             <div
-              class="i-twemoji:grinning-face-with-smiling-eyes hover:i-twemoji:face-with-tears-of-joy text-7xl"
+              class="i-twemoji:grinning-face-with-smiling-eyes text-7xl hover:i-twemoji:face-with-tears-of-joy"
             />
             <i
               class="i-mdi:alarm text-6xl text-orange-400"

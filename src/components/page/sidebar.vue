@@ -42,7 +42,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
       >
         <ABtn
           class="border-b border-warmGray-300 rounded-0 text-lg"
-          icon="i-carbon:home"
+          icon="i-ph:house-simple"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
@@ -57,7 +57,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
       >
         <ABtn
           class="rounded-0 text-lg hover:border-none"
-          icon="i-carbon:data-blob"
+          icon="i-ph:buildings"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
@@ -73,7 +73,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
         <ABadge anchor="bottom right" offset-x="20" offset-y="20" :content="9" dot color="info">
           <ABtn
             class="rounded-0 text-lg hover:border-none"
-            icon="i-carbon:user"
+            icon="i-ph:user"
             icon-only
             :variant="isActive ? 'fill' : 'text'"
             @click="navigate"
@@ -89,7 +89,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
       >
         <ABtn
           class="rounded-0 text-lg hover:border-none"
-          icon="i-carbon:book"
+          icon="i-ph:lifebuoy"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
@@ -104,7 +104,7 @@ function middleware(_referenceEl: Ref<HTMLElement>, _floatingEl: Ref<HTMLElement
       >
         <ABtn
           class="rounded-0 text-lg hover:border-none"
-          icon="i-carbon:text-scale"
+          icon="i-ph:feather"
           icon-only
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"

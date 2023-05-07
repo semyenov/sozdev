@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type {
-  ParsedContent,
-} from '@nuxt/content/dist/runtime/types'
 import type { PropType } from 'vue'
 
 const props = defineProps({
   item: {
-    type: Object as PropType<ParsedContent>,
+    type: Object as PropType<{
+      title: string
+      description: string
+      _path: string
+    }>,
     required: true,
   },
 })
@@ -29,6 +30,7 @@ function handleOpen() {
       dataComponent: 'ContentDoc',
       dataProps: {
         path: item.value._path,
+        class: 'w-full h-full',
       },
 
       tether: [],
@@ -40,9 +42,10 @@ function handleOpen() {
       x: (window.innerWidth - 400) / 2,
       y: (window.innerHeight - 600) / 2,
 
-      top: 45,
-      bottom: 0,
-      left: 45,
+      top: 44,
+      bottom: -1,
+      left: 44,
+      right: -1,
     })
 
     return
@@ -56,5 +59,8 @@ function handleOpen() {
 </script>
 
 <template>
-  <ATypography v-if="item" :title="item.title" @click="handleOpen" />
+  <ACard
+    v-if="item" :title="item.title" :subtitle="item.description" class="cursor-pointer select-none spacing-80 [&_.a-title]:leading-tight"
+    :variant="winboxWindow ? 'fill' : 'light'" @click="handleOpen"
+  />
 </template>

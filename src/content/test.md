@@ -1,6 +1,9 @@
 ---
-layout: default
+title: test
+description: Test help markdown component 
 ---
+
+::wrapper
 
 ::test{.mb-8}
 ---
@@ -33,4 +36,6 @@ color: third
 
 #footer
   :p{.px-4.py-2.flex}[Hello, world!]
+::
+
 ::
