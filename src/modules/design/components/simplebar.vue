@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import simplebar from 'simplebar-core'
+import Simplebar from 'simplebar-core'
 
 const props = defineProps({
   scrollbarMaxSize: {
@@ -14,7 +14,7 @@ const emits = defineEmits<{
   (event: 'scroll', e: UIEvent): void
 }>()
 
-const sb = ref<simplebar>()
+const sb = ref<Simplebar>()
 
 const rootRef = ref<HTMLElement | null>(null)
 const scrollRef = ref<HTMLElement | null>(null)
@@ -27,8 +27,8 @@ defineExpose({
 })
 
 onMounted(() => {
-  sb.value = new simplebar(rootRef.value!, {
-    ...simplebar.defaultOptions,
+  sb.value = new Simplebar(rootRef.value!, {
+    ...Simplebar.defaultOptions,
     ...props,
   })
 })
