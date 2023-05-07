@@ -16,8 +16,7 @@ const { winboxWindow, createWindow } = useWinbox(item.value._id)
 const winboxId = `winbox-help-${item.value._path?.replaceAll('/', '-')}`
 
 function handleOpen() {
-  console.log("LLLLLLLLL");
-  
+  console.log('LLLLLLLLL')
   const w = winboxWindow.value
 
   if (!w?.winbox) {

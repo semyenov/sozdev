@@ -11,6 +11,7 @@ const route = useRoute('objects')
 const input = ref<string>('')
 
 const objectsStore = useObjectsStore()
+const objectsGetter = await objectsStore.itemsGetter
 
 const objectSearchGetter = objectsStore.searchGetter
 const objectGetter = objectsStore.itemGetter
@@ -41,7 +42,7 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         :keeps="25"
         :page-mode="false"
         :estimate-size="70"
-        :data-ids="objectsIds"
+        :data-ids="objectsIds || objectsGetter"
         :data-getter="objectGetter"
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"
@@ -54,26 +55,5 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         </template>
       </UiVirtualList>
     </WinboxWindow>
-
-    <!-- <div class="absolute bottom-8 right-8 z-10 flex flex-col gap-2">
-      <UiButton
-        class="h-11"
-        color="default"
-        outline
-        size="md"
-        @click.prevent="loadOthersHandler"
-      >
-        <i class="i-carbon:download inline-block" />
-      </UiButton>
-      <UiButton
-        class="h-11"
-        color="default"
-        outline
-        size="md"
-        @click.prevent="scrollClickHandler"
-      >
-        <i class="i-carbon:arrow-down inline-block" />
-      </UiButton>
-    </div> -->
   </div>
 </template>
