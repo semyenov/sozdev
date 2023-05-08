@@ -134,6 +134,7 @@ export default defineNuxtConfig({
     '~/modules/map/index',
     '~/modules/design/index',
 
+    'nuxt-typed-router',
     '@anu-vue/nuxt',
     '@unocss/nuxt',
     '@nuxt/image-edge',
@@ -145,7 +146,6 @@ export default defineNuxtConfig({
     '@nuxtjs/emotion',
     '@vue-macros/nuxt',
     '@vueuse/motion/nuxt',
-    'nuxt-typed-router',
     // 'nuxt-component-meta',
 
     '@nuxt/devtools',
@@ -228,7 +228,6 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: [
       'defineStore',
-      ['defineStore', 'definePiniaStore'],
       'storeToRefs',
     ],
   },

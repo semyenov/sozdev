@@ -37,10 +37,10 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
             class="items-start"
           >
             <template #append>
-              <span class="min-w-auto self-start text-right font-bold">
+              <span class="min-w-auto self-start text-right">
                 <AChip
                   color="success"
-                  class="abosolute right-4 rounded text-xs shadow-sm"
+                  class="right-4 rounded text-xs"
                 >
                   {{ $t(`objects.item.fields.${field.key}`) }}
                 </AChip>

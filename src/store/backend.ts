@@ -1,7 +1,5 @@
 import { hasOwnProperty, toArray } from '@antfu/utils'
 import copy from 'fast-copy'
-import { insert, search } from '@orama/orama'
-import { isClient } from '@vueuse/core'
 
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
@@ -81,17 +79,17 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
         })
       }
 
-  const searchGetter = (scope: IMetaScope) => async (query: string) => {
-    if (!isClient || !window[scope])
-      throw new Error('Search is not available')
+  // const searchGetter = (scope: IMetaScope) => async (query: string) => {
+  //   if (!isClient || !window[scope])
+  //     throw new Error('Search is not available')
 
-    const results = await search(window[scope], {
-      term: query,
-      properties: '*',
-      limit: 100000,
-    })
-    return results.hits.map(item => item.id)
-  }
+  //   const results = await search(window[scope], {
+  //     term: query,
+  //     properties: '*',
+  //     limit: 100000,
+  //   })
+  //   return results.hits.map(item => item.id)
+  // }
 
   async function get<T, Q extends SearchParameters = {}>(
     [scope, command, ...params]: [IMetaScope, string, ...string[]],
@@ -178,8 +176,8 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
       if (hasOwnProperty(item, backendStoreIdentificator)) {
-        if (isClient)
-          insert(window[scope], item)
+        // if (isClient)
+        //   insert(window[scope], item)
 
         storeScopeMap.set(item[backendStoreIdentificator], copy(item))
       }
@@ -197,7 +195,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     itemsGetterByIds,
 
     itemGetter,
-    searchGetter,
+    // searchGetter,
 
     get,
     post,

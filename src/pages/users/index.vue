@@ -11,10 +11,9 @@ const route = useRoute('users')
 const input = ref<string>('')
 
 const usersStore = useUsersStore()
-const usersGetter = await usersStore.itemsGetter
-const userSearchGetter = usersStore.searchGetter
-const usersIds = asyncComputed(() => userSearchGetter(input.value))
+
 const userGetter = usersStore.itemGetter
+const usersIds = asyncComputed(() => usersStore.searchGetter ? usersStore.searchGetter(input.value) : usersStore.itemsGetter.then(r => r.value))
 
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
@@ -61,7 +60,7 @@ function scrollClickHandler() {
         :keeps="25"
         :page-mode="false"
         :estimate-size="70"
-        :data-ids="usersIds || usersGetter"
+        :data-ids="usersIds"
         :data-getter="userGetter"
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
@@ -69,7 +68,7 @@ function scrollClickHandler() {
         item-class="mb-3"
       >
         <template #header>
-          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('users.search.placeholder')" />
+          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('objects.search.placeholder')" />
         </template>
       </UiVirtualList>
     </WinboxWindow>

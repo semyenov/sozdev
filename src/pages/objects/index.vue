@@ -11,12 +11,10 @@ const route = useRoute('objects')
 const input = ref<string>('')
 
 const objectsStore = useObjectsStore()
-const objectsGetter = await objectsStore.itemsGetter
 
-const objectSearchGetter = objectsStore.searchGetter
 const objectGetter = objectsStore.itemGetter
+const objectsIds = asyncComputed(() => objectsStore.searchGetter ? objectsStore.searchGetter(input.value) : objectsStore.itemsGetter.then(r => r.value))
 
-const objectsIds = asyncComputed(() => objectSearchGetter(input.value))
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 </script>
 
@@ -43,7 +41,7 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         :keeps="25"
         :page-mode="false"
         :estimate-size="70"
-        :data-ids="objectsIds || objectsGetter"
+        :data-ids="objectsIds"
         :data-getter="objectGetter"
         :data-component="ObjectsItem"
         data-key="page-objects-index-virtuallist"

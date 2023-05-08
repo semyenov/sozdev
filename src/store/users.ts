@@ -34,7 +34,6 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
           .map(item => item._id),
       ),
     )
-  const searchGetter = backendStore.searchGetter(IMetaScope.USERS)
 
   const getItems = () => backendStore.get<IUser>([IMetaScope.USERS, 'items'])
   const getItem = (id: string) =>
@@ -56,7 +55,6 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
   return {
     itemsGetter,
     itemGetter,
-    searchGetter,
 
     getItems,
     getItem,
@@ -67,4 +65,20 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
 
     testCount,
   }
+}, {
+  orama: {
+    schema: {
+      email: 'string',
+      info: {
+        first_name: 'string',
+        last_name: 'string',
+        phone: 'string',
+      },
+    },
+    components: {
+      getDocumentIndexId(doc: IUser) {
+        return doc._id
+      },
+    },
+  },
 })
