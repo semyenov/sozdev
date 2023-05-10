@@ -41,10 +41,10 @@ function scrollClickHandler() {
         id: 'page-users',
         teleportId: 'teleport-layer--10',
         title: t('users.title'),
-        class: ['simple', 'wb-left', 'no-close'],
+        class: ['wb-left', 'no-close'],
         border: 0,
         top: 0,
-        left: 40,
+        left: 45,
         bottom: 0,
         right: '50%',
         height: '100%',
@@ -64,9 +64,9 @@ function scrollClickHandler() {
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
         wrap-class="flex flex-col w-full"
-        class="flex flex-grow flex-col items-center gap-8 overflow-auto p-6"
+        class="flex flex-grow flex-col items-center gap-6 overflow-auto p-4"
         :estimate-size="70"
-        item-class="mb-6"
+        item-class="mb-4"
       />
     </WinboxWindow>
 

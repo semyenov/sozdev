@@ -52,7 +52,8 @@
         "tombonnike.vscode-status-bar-format-toggle",
         "VisualStudioExptTeam.vscodeintellicode",
         "arcanis.vscode-zipfs",
-        "antfu.where-am-i"
+        "antfu.where-am-i",
+        "vunguyentuan.vscode-postcss"
       ]
     }
   }

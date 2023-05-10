@@ -5,338 +5,37 @@
     not-found: Страница не найдена
 index:
   title: Добро пожаловать
-data:
-  title: Страница с данными
 objects:
-  title: Страница объекта
+  title: Объекты
+  item:
+    search:
+      placeholder: поиск по данным объекта
+    fields:
+      _id: идентификатор
+      info: информация
+      feature: позиция
+      type: тип
+      level: уровень
+      fields: поля
+      parent: родитель
+      demands: потребности
+      resources: ресурсы
+  search:
+    placeholder: поиск по объектам
 users:
-  title: Пользовательская страница
+  title: Пользователи
+  item:
+    search:
+      placeholder: поиск по данным пользователя
+    fields:
+      _id: идентификатор
+      info: информация
+      type: тип
+      mandate: мандат
+      role: роль
+      email: эл. почта
+      scopes: доступы
 content:
-  title: Страница с контентом
+  title: Справка
 test:
-  title: Тестовая Страница
-footer:
-  button:
-    about: О проекте
-    user: Страница пользователя
-header:
-  button:
-    about: О проекте
-    fullscreen: На весь экран
-    home: Домой
-    login: Войти
-    logout: Выйти
-    modules: Модули
-    objectFields: Поля объектов
-    objectLayers: Слои объектов
-    objectTypes: Типы организаций и объектов
-    objects: Организации и объекты
-    positions: Должности
-    recommendations: Рекомендации
-    skills: Навыки
-    toggle_dark: Включить темную тему
-    toggle_langs: Поменять язык
-login:
-  button:
-    back: Назад
-    login: Войти
-  header: Авторизация
-  input:
-    email:
-      placeholder: Email
-      validation:
-        email: Введите корректный адрес электронной почты
-    login:
-      label: Логин
-      placeholder: Логин
-    password:
-      label: Пароль
-      placeholder: Пароль
-  text:
-    register: Регистрация
-sidebar:
-  button:
-    home: Домой
-    districts: Районы
-    resources: Ресурсы
-    toggle_dark: Включить темную тему
-    toggle_langs: Поменять язык
-    manual: ''
-modules:
-  input:
-    search:
-      placeholder: Поиск по модулям
-objectFields:
-  groups:
-    obshchaya: Общая
-    gosudarstvennaya_registratsiya: Государственная регистрация
-    bankovskie_rekviziti: Банковские реквизиты
-    mestopolozhenie: Местоположение
-    rukovoditel_organizatsii: Руководитель организации
-    otvetstvennii_za_vu_i_bronirovanie: Ответственный за ВУ и бронирование
-    rabotnik_kadrovoi_sluzhbi: Работник кадровой службы
-    kontaktnaya_informatsiya: Контактная информация
-    kategoriya_danet: Категория (да/нет)
-    litsenziya_na_rabotu_s_gostainoi: Лицензия на работу с гостайной
-    litsenziya_na_vipusk_voennoi_produktsii: Лицензия на выпуск военной продукции
-    dopolnitelnie_kharakteristiki: Дополнительные характеристики
-    svedeniya_o_rabotayushchikh: Сведения о работающих
-    osnovnie_svedenia: Основные сведения
-    ohrana_oborona: Охрана/Оборона
-    grazhdanskaia_oborona: Гражданская оборона
-    mobilizacionnie_zadania: Мобилизационные задания
-    uchastvuet_v_nsn: Участвует в НСН
-    tekhnicheskie_kharakteristiki: Технические характеристики
-    slyzhebnie_nastroyki: Служебные настройки
-  input:
-    search:
-      label: Поиск по полям объектов
-      placeholder: Поиск по полям объектов
-  validation:
-    omitempty: Не пустое
-objectLayers:
-  input:
-    search:
-      label: Поиск по слоям
-      placeholder: Поиск по слоям
-objectTypes:
-  input:
-    search:
-      label: Поиск по типам объектов
-      placeholder: Поиск по типам объектов
-positions:
-  input:
-    search:
-      label: Поиск по должностям
-      placeholder: Поиск по должностям
-recommendations:
-  input:
-    search:
-      label: Поиск по рекомендациям
-      placeholder: Поиск по рекомендациям
-register:
-  button:
-    back: Назад
-    register: Зарегистрироваться
-  header: Регистрация
-  input:
-    email:
-      placeholder: Email
-    first_name:
-      label: Имя
-      placeholder: Имя
-    last_name:
-      label: Фамилия
-      placeholder: Фамилия
-    login:
-      label: Логин
-      placeholder: Логин
-    password:
-      label: Пароль
-      placeholder: Пароль
-    password_repeat:
-      label: Повторите пароль
-      placeholder: Повторите пароль
-    phone:
-      placeholder: Телефон
-    token:
-      label: Токен
-      placeholder: Токен
-  text:
-    login: Вход
-user:
-  button:
-    back: Назад
-    login: Войти
-  text:
-    hi: Привет, {name}!
-  input:
-    phone: Телефон
-    email: E-mail
-  role:
-    '10': Супер-администратор
-    '20': Администратор
-    '30': Оператор
-    '40': Сотрудник группы контроля
-    '50': Наблюдатель
-    ROOT: Супер-администратор
-    ADMIN: Администратор
-    EDITOR: Оператор
-    OPERATOR: Сотрудник группы контроля
-    VIEWER: Наблюдатель
-  scope:
-    DATA: DATA
-    DIFFS: История действий
-    DISPOSITIONS: Поручения
-    MOVES: Моб.задания
-    OBJECT_FIELDS: Поля типов
-    OBJECT_LAYERS: Слои объектов
-    OBJECT_RESOURCES: Ресурсы
-    OBJECTS: Организации и объекты
-    OBJECT_TYPES: Типы организаций и объектов
-    POINTS: Регламенты
-    POSITIONS: Должности
-    REGULATIONS: Шаблоны регламентов
-    REPORTS: Донесения
-    SYNC_BACKUP: Синхронизация БД
-    TASK_GROUPS: Группы задач
-    TASKS: Задачи
-    USERS: Пользователи
-    DOCUMENTS: Документы
-    REPORTING_DOCUMENT: Отчёты
-    data: DATA
-    diffs: История действий
-    dispositions: Поручения
-    moves: Моб.задания
-    object_fields: Поля типов
-    object_layers: Слои объектов
-    object_resources: Ресурсы
-    objects: Организации и объекты
-    object_types: Типы организаций и объектов
-    points: Регламенты
-    positions: Должности
-    regulations: Шаблоны регламентов
-    reports: Донесения
-    sync_backup: Синхронизация БД
-    task_groups: Группы задач
-    tasks: Задачи
-    users: Пользователи
-    documents: Документы
-    reporting_document: Отчёты
-  module:
-    OBJECTS_EDIT: Редактор паспорта организации
-    MOVES_MONITORING: Администратор
-    ROAD_DEFENSE: Прикрытие автомобильных дорог оборонного значения
-    RESOURCES_DELIVERY: Организация поставок сырья и продукции для нормированного
-      снабжения населения на годовой период военного времени
-    TERRITORIAL_DEFENSE: Формирование группировки сил и средств территориальной обороны
-      субъекта РФ
-    CIVIL_DEFENSE: Формирование группировки сил и средств гражданской обороны субъекта
-      РФ
-    REGULATIONS_CONTROL: Контроль исполнения поручений и регламенты работы должностных
-      лиц органов управления
-    TRANSPORT_MONITORING: Обеспеченность транспортом организаций, задействованных
-      в поставках сырья и продукции
-    MEDICINE: Здравоохранение
-    objects_edit: Редактор паспорта организации
-    moves_monitoring: Администратор
-    road_defense: Прикрытие автомобильных дорог оборонного значения
-    resources_delivery: Организация поставок сырья и продукции для нормированного
-      снабжения населения на годовой период военного времени
-    territorial_defense: Формирование группировки сил и средств территориальной обороны
-      субъекта РФ
-    civil_defense: Формирование группировки сил и средств гражданской обороны субъекта
-      РФ
-    regulations_control: Контроль исполнения поручений и регламенты работы должностных
-      лиц органов управления
-    transport_monitoring: Обеспеченность транспортом организаций, задействованных
-      в поставках сырья и продукции
-    medicine: Здравоохранение
-  new:
-    header: Новый пользователь
-dispositions:
-  statuses:
-    '10': Ожидает
-    '20': Выполняется
-    '30': Не выполнено
-    '40': Выполнено
-    DEFAULT: Ожидает
-    PROCESSING: Выполняется
-    FAILED: Не выполнено
-    DONE: Выполнено
-  points:
-    '10': Запущен
-    '20': Остановлен
-validator:
-  messages:
-    common:
-      string:
-        too_small: Слишком короткая строка
-      email:
-        invalid_string: Неверный формат Email
-    optional: Опциональное поле
-    email: Введите корректный адрес электронной почты
-    min: Минимальная длина строки {m0} символов
-    url: Строка не является интернет адресом
-    nonempty: Поле не может быть пустым
-resource:
-  measure:
-    WEIGHT: Вес
-    VOLUME: Объем
-    LENGTH: Длина
-    AREA: Площадь
-    ITEM_QUANTITY: Количество (шт)
-    ITEM_QUANTITY_2: Количество (ед)
-    HUMAN_QUANTITY: Количество (люди)
-    SET_QUANTITY: Количество (комплекты)
-    CURRENCY_RUB: Валюта(руб)
-    ENERGY: Электроэнергия
-    EMERGENCY_HEALTH_CARE: Скорая медицинская помощь
-    PRIMARY_HEALTH_CARE: Первичная медико-санитарная помощь
-    SPECIALIZED_MEDICAL_CARE: Специализированная медпомощь
-    PALLIATIVE_MEDICAL_CARE: Паллиативная мед. помощь
-    DOSE_QUANTITY: Количество (доза)
-    KIT_QUANTITY: Количество (набор)
-    SPECIMEN_QUANTITY: Колличество (экземпляр)
-    TIME: Время (часов в год)
-  type:
-    '20': Продукция и услуги
-    '30': Транспорт
-    '40': Людские ресурсы
-    '50': Оборудование
-    PRODUCTION: Продукция и услуги
-    TRANSPORT: Транспорт
-    HUMAN: Людские ресурсы
-    EQUIPMENT: Оборудование
-move:
-  type:
-    '10': Правительство РФ
-    '20': Министерства и ведомства РФ
-    '30': Правительство субъекта РФ
-    '40': Органы местного самоуправления
-    FEDERAL: Правительство РФ
-    REGIONAL: Министерства и ведомства РФ
-    MUNICIPAL: Правительство субъекта РФ
-    DISTRICT: Органы местного самоуправления
-document:
-  type:
-    act: Акты действий
-    region: Региональные документы
-    nogroup: Без группы
-icons:
-  folder:
-    uncategorized: Общие
-    medical: Здравоохранение
-    gro: Формирования гражданской обороны
-    tero: Формирования территориальной обороны
-    chs: Источники ЧС, очаги поражения
-    transport: Дорожные обозначения
-    connection: Связь
-    military: Военные обозначения
-    rzd: Железнодорожные обозначения
-    mvd: Внутренние войска и органы внутренних дел
-    sport: Спорт и отдых
-    other: Другие
-diffs:
-  types:
-    '10': Создание
-    '20': Изменение
-    '30': Удаление
-    SNAP: Создание
-    NORMAL: Изменение
-    REMOVE: Удаление
-  target:
-    types:
-      dispositions: Поручения
-      moves: Моб. задания
-      object_resources: Ресурсы
-      object_types: Типы организаций и объектов
-      objects: Организации и объекты
-      points: Исп. регламенты
-      positions: Должности
-      regulations: Регламенты
-      reports: Донесения
-      task_groups: Группы задач
-      tasks: Задачи
-      users: Пользователи
-      documents: Документы
+  title: Тест

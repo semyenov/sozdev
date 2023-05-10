@@ -25,7 +25,7 @@ export default defineNuxtModule<{}>({
 
     await addComponent({
       name: 'SimpleBar',
-      filePath: 'simplebar-vue',
+      filePath: 'simplebar-vue/dist/simplebar-vue.esm.js',
       global: true,
     })
 

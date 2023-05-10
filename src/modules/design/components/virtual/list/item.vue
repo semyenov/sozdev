@@ -15,7 +15,7 @@ const props = defineProps({
     default: false,
   },
   slotComponent: {
-    type: Function,
+    type: [Object, Function] as PropType<Component>,
   },
   estimateSize: {
     type: Number,
@@ -39,7 +39,7 @@ const props = defineProps({
     required: true,
   },
   dataComponent: {
-    type: [Object, Function],
+    type: [Object, Function] as PropType<Component>,
     required: false,
   },
 
@@ -115,13 +115,13 @@ function dispatchSizeChange() {
         :is="props.dataComponent"
         v-if="props.dataComponent"
         :key="`${props.dataKey}-listitem_component-${dataId}-${index}`"
-        :class="props.itemClass"
+        :class="props.itemClass || ''"
       />
       <Component
         :is="props.slotComponent"
         v-else-if="props.slotComponent"
         :key="`${props.dataKey}-listitem_slotcomponent-${dataId}-${index}`"
-        :class="props.itemClass"
+        :class="props.itemClass || ''"
       />
     </Component>
     <Component

@@ -1,5 +1,5 @@
 diff --git a/index.d.ts b/index.d.ts
-index 594559f8a1102334a39a37ef6df47417a07cce35..63dfe9282d866378e5a138d3b31513a908fdafa5 100755
+index 594559f8a1102334a39a37ef6df47417a07cce35..07bf252896907e8358f18445014fac8f707870dc 100755
 --- a/index.d.ts
 +++ b/index.d.ts
 @@ -21,7 +21,23 @@ interface WinBox {
@@ -43,7 +43,7 @@ index 594559f8a1102334a39a37ef6df47417a07cce35..63dfe9282d866378e5a138d3b31513a9
  declare namespace WinBox {
      interface WinBoxConstructor {
          (title: string, params?: Params): WinBox;
-@@ -51,66 +72,64 @@ declare namespace WinBox {
+@@ -51,66 +72,65 @@ declare namespace WinBox {
          new (params: Params): WinBox;
      }
  
@@ -84,6 +84,7 @@ index 594559f8a1102334a39a37ef6df47417a07cce35..63dfe9282d866378e5a138d3b31513a9
 +        index: number;
 +        id: string;
 +        root: HTMLElement;
++        template: HTMLElement;
 +        class: string[];
  
 -    interface Params {
