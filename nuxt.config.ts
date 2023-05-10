@@ -8,6 +8,7 @@ import {
   defaultLocale,
   locales,
 } from './src/i18n'
+import vueI18nOptions from './i18n.config'
 
 const rootDir = resolve(__dirname)
 const srcDir = resolve(rootDir, 'src')
@@ -111,7 +112,6 @@ export default defineNuxtConfig({
       ({ isDev }) => isDev && '@deck.gl/mapbox',
     ],
   },
-
   postcss: {
     plugins: {
       'postcss-nested': postcssNested(),
@@ -229,6 +229,7 @@ export default defineNuxtConfig({
       cookieKey: 'X-Locale',
       redirectOn: 'root',
     },
+    vueI18n: vueI18nOptions,
   },
 
   // https://content.nuxtjs.org/api/configuration

@@ -2,17 +2,23 @@
 
 // import { defineI18nConfig } from '@nuxtjs/i18n/dist/runtime/composables'
 
-import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from '~/i18n'
+import {
+  availableLocales,
+  datetimeFormats,
+  defaultLocale,
+  numberFormats,
+} from './src/i18n'
 
-export default defineI18nConfig(_nuxt => ({
+const vueI18nOptions = {
   legacy: false,
   locale: defaultLocale,
   fallbackLocale: defaultLocale,
   availableLocales,
   numberFormats,
   datetimeFormats,
-}),
-)
+}
+
+export default vueI18nOptions
 
 // export default defineI18nConfig(_nuxt => ({
 //   legacy: false,
