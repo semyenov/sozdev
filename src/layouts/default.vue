@@ -4,8 +4,6 @@ const keys = useMagicKeys()
 const tildaKey = keys['\\']
 
 watch(tildaKey, v => v && toggleDark())
-// const authorizationStore = useAuthorizationStore()
-// const backendStore = useBackendStore()
 </script>
 
 <template>
@@ -19,9 +17,10 @@ watch(tildaKey, v => v && toggleDark())
     <div class="w-full flex flex-col">
       <div class="z-300 h-45px flex flex-row items-center justify-between border-b border-warmGray-300 bg-warmGray-200/80 px-4 shadow-warmGray/20 shadow-xl backdrop-blur-10 backdrop-filter">
         <NuxtLoadingIndicator class="absolute z-100 w-full" />
-        <span class="text-xl font-extrabold">
+        <div class="text-xl font-extrabold">
           {{ $t(`${route.name}.title`) }}
-        </span>
+        </div>
+        <AuthorizationCurrent />
       </div>
       <div class="nuxt-page flex flex-grow">
         <NuxtPage />

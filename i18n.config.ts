@@ -1,6 +1,8 @@
 import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from './src/i18n'
 
-export default defineI18nConfig(_nuxt => ({
+import type { I18nOptions } from '@nuxtjs/i18n/dist/runtime/composables'
+
+export default {
   legacy: false,
   locale: defaultLocale,
   fallbackLocale: defaultLocale,
@@ -8,7 +10,7 @@ export default defineI18nConfig(_nuxt => ({
   numberFormats,
   datetimeFormats,
   pluralizationRules: {
-    ru: (choice, choicesLength, _orgRule) => {
+    ru: (choice: number, choicesLength: number) => {
       if (choice === 0)
         return 0
 
@@ -23,4 +25,4 @@ export default defineI18nConfig(_nuxt => ({
       return choicesLength < 4 ? 2 : 3
     },
   },
-}))
+} as I18nOptions

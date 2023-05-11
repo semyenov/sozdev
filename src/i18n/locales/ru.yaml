@@ -25,6 +25,7 @@ objects:
       parent: родитель
       demands: потребности
       resources: ресурсы
+      meta: мета
 
 users:
   title: Пользователи
@@ -42,6 +43,8 @@ users:
       role: роль
       email: эл. почта
       scopes: доступы
+      modules: модули
+      meta: мета
 
 help:
   title: Справка

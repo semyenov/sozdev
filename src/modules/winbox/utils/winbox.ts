@@ -163,8 +163,9 @@ export function winboxRegister(
       let height: number = ss.height
 
       const ws = getWindowSize()
-      // const ll = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tl && cur.index < ss.index) ? sum + cur.width : sum, 0)
-      // const lr = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tr && cur.index < ss.index) ? sum + cur.width : sum, 0)
+
+      // const ll = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tl && cur.index! < ss.index!) ? sum + 50 : sum, 0)
+      // const lr = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tr && cur.index! < ss.index!) ? sum + 50 : sum, 0)
 
       // calculate tether position
       if (params.tether) {

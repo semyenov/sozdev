@@ -40,7 +40,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
               <span class="min-w-auto self-start text-right font-bold">
                 <AChip
                   color="success"
-                  class="abosolute right-4 rounded text-xs shadow-sm"
+                  class="abosolute right-4 rounded text-xs"
                 >
                   {{ $t(`objects.item.fields.${field.key}`) }}
                 </AChip>

@@ -4,7 +4,8 @@ import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
-import jsonData from '../geojson/voronezh.json'
+import jsonData from '../geojson/tula.json'
+import { getImage } from '../utils'
 
 import type { IMove } from '~/types'
 
@@ -144,24 +145,24 @@ async function createMaplibreglMap() {
       },
     })
 
-    // maplibreglMap.addLayer({
-    //   id: 'clusters',
-    //   type: 'circle',
-    //   source: 'objects-source-layer',
-    //   filter: ['has', 'point_count'],
-    //   paint: {
-    //     'circle-color': [
-    //       'step',
-    //       ['get', 'point_count'],
-    //       '#51bbd6',
-    //       100,
-    //       '#f1f075',
-    //       750,
-    //       '#f28cb1',
-    //     ],
-    //     'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
-    //   },
-    // })
+    maplibreglMap.addLayer({
+      id: 'clusters',
+      type: 'circle',
+      source: 'objects-source-layer',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step',
+          ['get', 'point_count'],
+          '#51bbd6',
+          100,
+          '#f1f075',
+          750,
+          '#f28cb1',
+        ],
+        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+      },
+    })
 
     maplibreglPopup = new maplibregl.Popup({
       closeButton: false,
@@ -169,42 +170,42 @@ async function createMaplibreglMap() {
       className: 'custom-popup',
     })
 
-    // maplibreglMap.addLayer({
-    //   id: 'cluster-count',
-    //   type: 'symbol',
-    //   source: 'objects-source-layer',
-    //   filter: ['has', 'point_count'],
+    maplibreglMap.addLayer({
+      id: 'cluster-count',
+      type: 'symbol',
+      source: 'objects-source-layer',
+      filter: ['has', 'point_count'],
 
-    //   layout: {
-    //     'text-field': '{point_count_abbreviated}',
-    //     'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-    //     'text-size': 12,
-    //   },
-    // })
+      layout: {
+        'text-field': '{point_count_abbreviated}',
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+        'text-size': 12,
+      },
+    })
 
-    // maplibreglMap.addLayer({
-    //   id: 'unclustered-point',
-    //   type: 'circle',
-    //   source: 'objects-source-layer',
-    //   filter: ['!', ['has', 'point_count']],
-    //   paint: {
-    //     'circle-color': '#11b4da',
-    //     'circle-radius': 4,
-    //     'circle-stroke-width': 1,
-    //     'circle-stroke-color': '#fff',
-    //   },
-    // })
+    maplibreglMap.addLayer({
+      id: 'unclustered-point',
+      type: 'circle',
+      source: 'objects-source-layer',
+      filter: ['!', ['has', 'point_count']],
+      paint: {
+        'circle-color': '#11b4da',
+        'circle-radius': 4,
+        'circle-stroke-width': 1,
+        'circle-stroke-color': '#fff',
+      },
+    })
 
-    // const srcImg = '/logo1.png'
+    const srcImg = '/logo1.png'
 
-    // try {
-    //   const image = await getImage(srcImg)
+    try {
+      const image = await getImage(srcImg)
 
-    //   maplibreglMap.addImage('custom-image', image)
-    // }
-    // catch (e) {
-    //   logger.error(e)
-    // }
+      maplibreglMap.addImage('custom-image', image)
+    }
+    catch (e) {
+      logger.error(e)
+    }
 
     maplibreglMap.addLayer({
       id: 'objects',

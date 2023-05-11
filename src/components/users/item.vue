@@ -63,7 +63,7 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none spacing-80 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none text-sm spacing-80"
     :variant="winboxWindow ? 'fill' : 'light'"
     @click="handleOpen"
   >
@@ -76,7 +76,7 @@ function handleOpen() {
         </div>
         <ATypography
           class="flex-grow"
-          :title="`${item.info.first_name} ${item.info.last_name}`"
+          :title="[`${item.info.first_name} ${item.info.last_name}`, 'mb-1 leading-tight']"
           :subtitle="[item.email, 'break-all']"
         />
       </div>

@@ -9,6 +9,7 @@ import {
   defaultLocale,
   locales,
 } from './src/i18n'
+import i18nConfig from './i18n.config'
 
 const rootDir = resolve(__dirname)
 const srcDir = resolve(rootDir, 'src')
@@ -20,6 +21,8 @@ const componentsDir = resolve(srcDir, 'components')
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  ssr: false,
+
   srcDir,
   appDir,
   alias: {
@@ -33,10 +36,10 @@ export default defineNuxtConfig({
   telemetry: false,
 
   runtimeConfig: {
-    apiUri: 'http://localhost:3000/api',
+    apiUri: 'http://localhost:8080/api',
 
     public: {
-      apiUri: '/api',
+      apiUri: 'http://localhost:8080',
     },
   },
 
@@ -234,10 +237,11 @@ export default defineNuxtConfig({
   },
 
   i18n: {
+    vueI18n: i18nConfig,
+
     defaultLocale,
     locales,
-
-    lazy: true,
+    lazy: false,
     strategy: 'no_prefix',
     langDir: 'i18n/locales',
 

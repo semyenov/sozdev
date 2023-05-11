@@ -56,9 +56,9 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none shadow spacing-80 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none text-sm shadow spacing-80"
     :variant="winboxWindow ? 'fill' : 'light'"
-    :title="`${item.info.name}`"
+    :title="[`${item.info.name}`, 'mb-1 leading-tight']"
     :subtitle="item.info!.code"
     @click="handleOpen"
   >
@@ -70,7 +70,7 @@ function handleOpen() {
           variant="light"
           icon="i-ph:cards"
           icon-only
-          class="text"
+          class="text-base"
         />
       </div>
     </template>

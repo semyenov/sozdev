@@ -26,7 +26,18 @@ const route = useRoute('help')
         :scrollbar-max-size="300"
       >
         <div class="flex flex-col p-4">
-          <ContentList v-slot="{ list }" path="/">
+          <ContentList
+            v-slot="{
+              list,
+            }: {
+                list: Array<{
+                _id: string
+                title: string
+                description: string
+                _path: string
+              }>
+            }" path="/"
+          >
             <HelpLink v-for="article in list" :key="article._id" :item="article" />
           </ContentList>
         </div>

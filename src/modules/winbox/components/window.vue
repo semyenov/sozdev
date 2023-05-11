@@ -83,6 +83,7 @@ function openWindow() {
     background: 'rgba(255,255,255,0.80)',
 
     ...params.value,
+
     title: undefined,
   })
 
@@ -95,10 +96,10 @@ function updateWindowParams(p: WinBoxParams) {
   if (!winboxWindow.value || !winboxWindow.value.winbox)
     return
 
+  // if (p.title)
+  //   winboxWindow.value.winbox.setTitle(p.title)
   if (p.url)
     winboxWindow.value.winbox.setUrl(p.url)
-  if (p.title)
-    winboxWindow.value.winbox.setTitle(p.title)
   if (p.background)
     winboxWindow.value.winbox.setBackground(p.background)
 }
