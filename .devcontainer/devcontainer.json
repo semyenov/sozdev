@@ -5,6 +5,7 @@
   "onCreateCommand": "yarn",
 
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "runArgs": ["--network=tsc_devcontainer_backend_network"],
 
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {

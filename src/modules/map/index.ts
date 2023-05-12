@@ -5,21 +5,22 @@ import {
   defineNuxtModule,
 } from '@nuxt/kit'
 
-import { logger } from './utils'
+// import { logger } from './utils'
 
 export default defineNuxtModule({
   async setup(_options, _nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
-    logger.info('Adding composables')
+    console.log('Adding composables')
     try {
       addImportsDir(resolve('composables'))
     }
+
     catch (e) {
       logger.error('Failed to add composables', e)
     }
 
-    logger.info('Adding components')
+    console.log('Adding components')
     try {
       await addComponentsDir({
         path: resolve('components'),
@@ -28,7 +29,7 @@ export default defineNuxtModule({
       })
     }
     catch (e) {
-      logger.error('Failed to add components', e)
+      console.log('Failed to add components', e)
     }
   },
 })

@@ -21,7 +21,7 @@ const componentsDir = resolve(srcDir, 'components')
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  ssr: false,
+  // ssr: false,
 
   srcDir,
   appDir,
@@ -36,10 +36,10 @@ export default defineNuxtConfig({
   telemetry: false,
 
   runtimeConfig: {
-    apiUri: 'http://localhost:8080/api',
+    apiUri: 'http://tsc_devcontainer-app-1:8080/',
 
     public: {
-      apiUri: 'http://localhost:8080',
+      apiUri: 'http://localhost:8080/',
     },
   },
 

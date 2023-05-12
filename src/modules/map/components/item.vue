@@ -5,7 +5,6 @@ import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
 import jsonData from '../geojson/tula.json'
-import { getImage } from '../utils'
 
 import type { IMove } from '~/types'
 
@@ -114,8 +113,9 @@ async function createMaplibreglMap() {
       type: 'geojson',
       data: null,
 
-      // cluster: true,
-      // clusterMaxZoom: 8, // Max zoom to cluster points on
+      cluster: true,
+      clusterMaxZoom: 14, // Max zoom to cluster points on
+      clusterRadius: 50, // Max zoom to cluster points on
     })
 
     maplibreglMap.addLayer({
@@ -164,56 +164,47 @@ async function createMaplibreglMap() {
       },
     })
 
-    maplibreglPopup = new maplibregl.Popup({
-      closeButton: false,
-      closeOnClick: false,
-      className: 'custom-popup',
-    })
-
     maplibreglMap.addLayer({
-      id: 'cluster-count',
+      id: 'cluster-counts',
       type: 'symbol',
       source: 'objects-source-layer',
       filter: ['has', 'point_count'],
 
       layout: {
         'text-field': '{point_count_abbreviated}',
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-        'text-size': 12,
+        'text-font': ['Noto Sans Regular', 'Roboto Regular'],
+        'text-size': 25,
       },
     })
 
-    maplibreglMap.addLayer({
-      id: 'unclustered-point',
-      type: 'circle',
-      source: 'objects-source-layer',
-      filter: ['!', ['has', 'point_count']],
-      paint: {
-        'circle-color': '#11b4da',
-        'circle-radius': 4,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': '#fff',
-      },
+    maplibreglPopup = new maplibregl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      className: 'custom-popup',
     })
 
-    const srcImg = '/logo1.png'
-
-    try {
-      const image = await getImage(srcImg)
-
-      maplibreglMap.addImage('custom-image', image)
-    }
-    catch (e) {
-      logger.error(e)
-    }
+    // maplibreglMap.addLayer({
+    //   id: 'unclustered-point',
+    //   type: 'circle',
+    //   source: 'objects-source-layer',
+    //   filter: ['!', ['has', 'point_count']],
+    //   paint: {
+    //     'circle-color': '#11b4da',
+    //     'circle-radius': 4,
+    //     'circle-stroke-width': 1,
+    //     'circle-stroke-color': '#fff',
+    //   },
+    // })
 
     maplibreglMap.addLayer({
       id: 'objects',
       type: 'symbol',
       source: 'objects-source-layer',
+
+      filter: ['!', ['has', 'point_count']],
       layout: {
-        'icon-image': 'map-icons/mvd/7_mvd.svg',
-        // 'icon-size': 1,
+        'icon-image': 'map-icons/tero/1_tero.svg',
+        'icon-size': 0.5,
         // 'icon-allow-overlap': true,
       },
       // filter: ['!', ['has', 'point_count']],
@@ -303,6 +294,7 @@ async function createMaplibreglMap() {
 
         if (!source)
           return
+        console.log(source)
 
         source.setData(of)
       },

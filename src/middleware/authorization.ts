@@ -9,6 +9,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     password: '12345678',
   })
   if (userTokenData) {
+    logger.info('usertoken', userTokenData)
+
     authorizationStore.authorization = userTokenData.access_token || null
     await usersStore.getItems()
     const currentUser = await usersStore.getCurrent()
