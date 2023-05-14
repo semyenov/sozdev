@@ -13,7 +13,18 @@ const input = ref<string>('')
 const objectsStore = useObjectsStore()
 
 const objectGetter = objectsStore.itemGetter
-const objectsIds = asyncComputed(() => objectsStore.searchGetter ? objectsStore.searchGetter(input.value) : objectsStore.itemsGetter.then(r => r.value))
+const objectsIds = asyncComputed(() =>
+  objectsStore.search
+    ? objectsStore.search({
+      term: input.value,
+      limit: 10000,
+      properties: '*',
+    })
+      .then(results =>
+        results.hits.map(item => item.id),
+      )
+    : [] as string[],
+)
 
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 </script>
@@ -49,6 +60,7 @@ const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
         item-class="mb-3"
       >
         <template #header>
+          {{ objectsStore }}
           <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('objects.search.placeholder')" />
         </template>
       </UiVirtualList>

@@ -1,10 +1,10 @@
-import { create, insertMultiple, search } from '@orama/orama'
+import { create, insert, insertMultiple, search } from '@orama/orama'
 
 import { ApiClient } from '~/api/client'
 import type { IMetaScope } from '~/types'
 
 import type { Pinia, PiniaPlugin } from 'pinia'
-import type { Components, Document, Orama, Schema } from '@orama/orama'
+import type { Components, Document, Orama, Results, Schema, SearchParams } from '@orama/orama'
 
 declare module 'pinia' {
   // eslint-disable-next-line unused-imports/no-unused-vars
@@ -23,8 +23,16 @@ declare module 'pinia' {
       getters?: G
       actions?: A
     }
-    store: Orama
-    searchGetter?: (term: string) => Promise<string[]>
+
+    db: Orama
+
+    search?: (params: SearchParams) => Promise<Results>
+    insertMultiple?: (items: Document[]) => Promise<string[]>
+    insert?: (item: Document) => Promise<string>
+  }
+
+  export interface PiniaCustomStateProperties<S> {
+    ts: number
   }
 }
 
@@ -41,23 +49,30 @@ export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
 function createPlugin(client: ApiClient): PiniaPlugin {
   return function ({ store, options: { orama } }) {
     if (orama) {
+      store.$state.ts = 0
       create(orama)
-        .then((o) => {
-          store.store = markRaw(o)
-          store.searchGetter = term =>
-            search(store.store, {
-              term,
-              properties: '*',
-              limit: 100000,
-            })
-              .then((results) => {
-                return results.hits.map(item => item.id)
-              })
+        .then((db) => {
+          store.db = markRaw(db)
+
+          store.search = params =>
+            search(store.db, params)
+          store.insertMultiple = items =>
+            insertMultiple(store.db, items)
+          store.insert = item =>
+            insert(store.db, item)
 
           const uri = formatURI(store.$id as IMetaScope, 'items')
           client.request('get', uri).then((res) => {
-            if (res.data)
-              insertMultiple(store.store, res.data as Document[])
+            if (res.data) {
+              insertMultiple(store.db, res.data as Document[])
+                .then(() => {
+                  store.$patch((state) => {
+                    logger.log('hello')
+                    state.ts = Date.now()
+                    return state
+                  })
+                })
+            }
           })
         })
     }
@@ -67,6 +82,7 @@ function createPlugin(client: ApiClient): PiniaPlugin {
 export default defineNuxtPlugin((ctx) => {
   logger.info('context', ctx)
 
+  const pinia = ctx.$pinia as Pinia
   const client = new ApiClient({
     baseURL: getRuntimeConfigKey('apiUri'),
     onRequestError: (ctx) => {
@@ -74,8 +90,9 @@ export default defineNuxtPlugin((ctx) => {
     },
   })
 
-  const pinia = ctx.$pinia as Pinia
-  pinia.use(createPlugin(client))
+  ctx.hooks.hookOnce('app:beforeMount', async () => {
+    pinia.use(createPlugin(client))
+  })
 })
 
 function formatURI(scope: IMetaScope, ...args: string[]) {

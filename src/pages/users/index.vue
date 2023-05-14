@@ -13,7 +13,7 @@ const input = ref<string>('')
 const usersStore = useUsersStore()
 
 const userGetter = usersStore.itemGetter
-const usersIds = asyncComputed(() => usersStore.searchGetter ? usersStore.searchGetter(input.value) : usersStore.itemsGetter.then(r => r.value))
+const usersIds = asyncComputed(() => usersStore.search ? usersStore.search(input.value) : usersStore.itemsGetter.then(r => r.value))
 
 const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
 
