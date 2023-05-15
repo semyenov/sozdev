@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { UiVirtualList, UsersItem } from '#components'
 
+import type { IUser } from '~/types'
+
 definePageMeta({
   layout: 'default',
   middleware: 'authorization',
 })
 
 const route = useRoute('users')
+const usersStore = useUsersStore()
 
 const input = ref<string>('')
 
-const usersStore = useUsersStore()
 const usersGetter = await usersStore.itemsGetter
 const userSearchGetter = usersStore.searchGetter
 const usersIds = asyncComputed(() => userSearchGetter(input.value))
 const userGetter = usersStore.itemGetter
 
-const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
+const listComponent = ref<ReturnType<typeof UiVirtualList<IUser>> | null>(null)
 
 const listScrollStep = 10
 const listScrollIndex = ref(listScrollStep)
@@ -59,7 +61,6 @@ function scrollClickHandler() {
         ref="listComponent"
         key="page-users-index-virtuallist"
         :keeps="25"
-        :page-mode="false"
         :estimate-size="70"
         :data-ids="usersIds || usersGetter"
         :data-getter="userGetter"

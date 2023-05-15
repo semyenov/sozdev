@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import type { IObject } from '~/types'
 
-import type { PropType } from 'vue'
-
-const props = defineProps({
-  index: {
-    type: Number,
-    default: 0,
-  },
-  item: {
-    type: Object as PropType<IObject>,
-    required: true,
-  },
+const props = withDefaults(defineProps<{
+  index: number
+  item: IObject
+}>(), {
+  index: 0,
 })
 
 const item = toRef(props, 'item')
@@ -64,7 +58,10 @@ function handleOpen() {
   >
     <template v-if="winboxWindow" #header-right>
       <!-- Action buttons -->
-      <div v-if="winboxWindow?.winbox" class="ml-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 spacing-100">
+      <div
+        v-if="winboxWindow?.winbox"
+        class="ml-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 spacing-100"
+      >
         <ABtn
           color="info"
           variant="light"
