@@ -172,8 +172,8 @@ async function createMaplibreglMap() {
 
       layout: {
         'text-field': '{point_count_abbreviated}',
-        'text-font': ['Noto Sans Regular', 'Roboto Regular'],
-        'text-size': 25,
+        'text-font': ['Noto Sans Regular'],
+        'text-size': 12,
       },
     })
 

@@ -1,65 +1,26 @@
-<script setup lang="ts">
-import type { ComputedRef, PropType } from 'vue'
+<script setup lang="ts" generic="T extends { _id: string }">
+import { nanoid } from 'nanoid'
 
-const props = defineProps({
-  index: {
-    type: Number,
-    required: true,
-  },
-  tag: {
-    type: String,
-    default: 'div',
-  },
-  horizontal: {
-    type: Boolean,
-    default: false,
-  },
-  slotComponent: {
-    type: [Object, Function] as PropType<Component>,
-  },
-  estimateSize: {
-    type: Number,
-    default: 100,
-  },
+import type { ComputedRef } from 'vue'
 
-  dataId: {
-    type: String,
-    required: true,
-  },
-  dataKey: {
-    type: String,
-    default: '',
-  },
-  dataGetter: {
-    type: Function as PropType<
-      <T extends Record<string, any>>(
-        id: string
-      ) => Promise<ComputedRef<T> | undefined>
-    >,
-    required: true,
-  },
-  dataComponent: {
-    type: [Object, Function] as PropType<Component>,
-    required: false,
-  },
-
-  extraProps: {
-    type: Object as PropType<Record<string, any>>,
-  },
-  scopedSlots: {
-    type: Object,
-  },
-  itemClass: {
-    type: String,
-  },
-  onItemClick: {
-    type: Function,
-    default: () => {},
-  },
-  onItemHover: {
-    type: Function,
-    default: () => {},
-  },
+const props = withDefaults(defineProps<{
+  index: number
+  tag: string
+  horizontal: boolean
+  slotComponent?: Component
+  estimateSize: number
+  dataId: string
+  dataKey: string
+  dataGetter: (id: string) => Promise<ComputedRef<T | undefined>>
+  dataComponent?: Component<{ item: T; index: number }>
+  extraProps?: Record<string, any>
+  scopedSlots: any
+  itemClass: string
+}>(), {
+  tag: 'div',
+  horizontal: false,
+  estimateSize: 100,
+  dataKey: nanoid(),
 })
 
 const emit = defineEmits<{

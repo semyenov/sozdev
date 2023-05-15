@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ObjectsItem, UiVirtualList } from '#components'
 
+import type { IObject } from '~/types'
+
 definePageMeta({
   layout: 'default',
   middleware: 'authorization',
@@ -17,7 +19,7 @@ const objectSearchGetter = objectsStore.searchGetter
 const objectGetter = objectsStore.itemGetter
 
 const objectsIds = asyncComputed(() => objectSearchGetter(input.value))
-const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
+const listComponent = ref<ReturnType<typeof UiVirtualList<IObject>> | null>(null)
 </script>
 
 <template>

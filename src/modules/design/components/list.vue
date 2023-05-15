@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends { _id: string }">
 import type {
   UIColorVariants,
   UIRoundedVariants,
@@ -7,7 +7,7 @@ import type {
 
 const props = defineProps({
   items: {
-    type: Array as PropType<unknown[]>,
+    type: Array as PropType<T[]>,
     required: true,
   },
 

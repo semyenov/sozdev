@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends { _id: string }">
 import { clamp, objectPick } from '@antfu/utils'
 import { Document } from 'flexsearch'
 import { nanoid } from 'nanoid'
@@ -6,7 +6,6 @@ import { AInput } from 'anu-vue'
 
 import { UiVirtualList } from '#components'
 
-import type { IUser } from '~/types'
 import type {
   UIColorVariants,
   UIRoundedVariants,
@@ -41,12 +40,12 @@ const props = defineProps({
   },
 
   options: {
-    type: Array as PropType<Array<Record<string, any> & { _id: string }>>,
+    type: Array as PropType<Array<T>>,
     required: true,
   },
 
   dataComponent: {
-    type: [Object, Function] as PropType<Component>,
+    type: [Object, Function] as PropType<Component<{ item: T; index: number }>>,
     required: false,
   },
   dataKey: {
@@ -65,13 +64,13 @@ const [focusFlag, toggleFocused] = useToggle(false)
 const rootRef = ref<HTMLElement | null>(null)
 const inputEl = ref<HTMLInputElement | null>(null)
 const inputComponent = ref<InstanceType<typeof AInput> | null>(null)
-const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
+const listComponent = ref<ReturnType<typeof UiVirtualList<T>> | null>(null)
 
 const input = ref<string>('')
 
 const options = toRef(props, 'options')
 
-const index = new Document<IUser, true>({
+const index = new Document<T, true>({
   preset: 'performance',
 
   cache: true,
@@ -137,7 +136,7 @@ watch(
       return
 
     for (const item of options)
-      await index.addAsync(item._id, item as IUser)
+      await index.addAsync(item._id, item)
   },
   { immediate: true },
 )

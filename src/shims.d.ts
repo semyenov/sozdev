@@ -13,5 +13,11 @@ declare module '@vue/runtime-core' {
     [key: UnoCSSPropType]: any
   }
 }
+declare module 'vue' {
+  interface CSSProperties {
+    '@apply': string
+    [key: `--${string}`]: string
+  }
+}
 
 export {}

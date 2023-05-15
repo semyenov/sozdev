@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import { winboxRegister } from '../utils/winbox'
 
-import type { PropType } from 'vue'
 import type { WinBoxParams } from '../types'
 
-const props = defineProps({
-  params: {
-    type: Object as PropType<WinBoxParams>,
-    required: true,
-  },
-})
+const props = defineProps<{ params: WinBoxParams }>()
+const params = toRef(props, 'params')
 
 const disabled = ref(true)
-const params = toRef(props, 'params')
 const [showFlag, showToggle] = useToggle(false)
 
 const { winboxWindow } = useWinbox(params.value.id)

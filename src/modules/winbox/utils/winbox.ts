@@ -162,10 +162,20 @@ export function winboxRegister(
       let width: number = ss.width
       let height: number = ss.height
 
-      const ws = getWindowSize()
+      const ws = useWindowSize()
 
-      // const ll = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tl && cur.index! < ss.index!) ? sum + 50 : sum, 0)
-      // const lr = Array.from(winboxWindowsStateStorage.value!.values()).reduce((sum, cur) => (cur.tr && cur.index! < ss.index!) ? sum + 50 : sum, 0)
+      // const ll = Array
+      //   .from(winboxWindowsStateStorage
+      //     .value!
+      //     .values())
+      //   .reduce((sum, cur) =>
+      //     (cur.tl && cur.index! < ss.index!) ? sum + 50 : sum, 0)
+      // const lr = Array
+      //   .from(winboxWindowsStateStorage
+      //     .value!
+      //     .values())
+      //   .reduce((sum, cur) =>
+      //     (cur.tr && cur.index! < ss.index!) ? sum + 50 : sum, 0)
 
       // calculate tether position
       if (params.tether) {
@@ -176,13 +186,13 @@ export function winboxRegister(
           y = bb.top
 
         if (ss.tr) {
-          x = ws.width - bb.right - width
+          x = ws.width.value - bb.right - width
 
           if (ss.tl)
             width = bb.maxwidth
         }
         if (ss.tb) {
-          y = ws.width - bb.bottom - height
+          y = ws.width.value - bb.bottom - height
 
           if (ss.tt)
             height = bb.maxheight
@@ -195,12 +205,12 @@ export function winboxRegister(
       x = clamp(
         x,
         Math.max(0, bb.left),
-        Math.max(0, ws.width - bb.right - width),
+        Math.max(0, ws.width.value - bb.right - width),
       )
       y = clamp(
         y,
         Math.max(0, bb.top),
-        Math.max(0, ws.height - bb.bottom - height),
+        Math.max(0, ws.height.value - bb.bottom - height),
       )
 
       // update winbox params
@@ -222,7 +232,7 @@ export function winboxRegister(
 }
 
 function calcBBox(params: WinBoxParams): WinBoxBBox {
-  const ws = getWindowSize()
+  const ws = useWindowSize()
 
   return {
     left: convertUnits('width', params.left),
@@ -231,11 +241,11 @@ function calcBBox(params: WinBoxParams): WinBoxBBox {
     bottom: convertUnits('width', params.bottom),
 
     maxwidth:
-      ws.width
+      ws.width.value
       - convertUnits('width', params.left)
       - convertUnits('width', params.right),
     maxheight:
-      ws.height
+      ws.height.value
       - convertUnits('height', params.top)
       - convertUnits('height', params.bottom),
 
@@ -248,24 +258,15 @@ export function convertUnits(
   type: 'width' | 'height',
   value?: string | number,
 ) {
-  const ws = getWindowSize()
+  const ws = useWindowSize()
   return (typeof value === 'number'
     ? value
     : typeof value === 'string'
       ? value.endsWith('%')
         ? Math.floor(
           (parseFloat(value.slice(0, value.length - 1)) / 100)
-            * (type === 'width' ? ws.width : ws.height),
+            * (type === 'width' ? ws.width.value : ws.height.value),
         )
         : parseInt(value.slice(0, value.length - 2))
       : 0)
-}
-
-function getWindowSize() {
-  return {
-    width: window.innerWidth || document.documentElement.clientWidth
-  || document.body.clientWidth,
-    height: window.innerHeight || document.documentElement.clientHeight
-  || document.body.clientHeight,
-  }
 }

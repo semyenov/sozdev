@@ -45,6 +45,7 @@
     "qs": "^6.11.1",
     "random-points-on-polygon": "^0.0.4",
     "simplebar-core": "^1.2.4",
+    "vue-sonner": "^0.3.2",
     "winbox": "^0.2.6",
     "zod": "^3.21.4"
   },
@@ -108,7 +109,7 @@
     "typescript": "^5.0.4",
     "unocss": "^0.51.12",
     "unocss-preset-scrollbar": "^0.2.1",
-    "vue-tsc": "1.6.4"
+    "vue-tsc": "1.2.0"
   },
   "resolutions": {
     "flexsearch@^0.7.31": "patch:flexsearch@npm%3A0.7.31#./.yarn/patches/flexsearch-npm-0.7.31-f26cb98f08.patch",
