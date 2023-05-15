@@ -9,7 +9,7 @@ const params = toRef(props, 'params')
 const disabled = ref(true)
 const [showFlag, showToggle] = useToggle(false)
 
-const { winboxWindow } = useWinbox(params.value.id)
+const { winboxWindow } = useWinbox(params.value.id!)
 
 defineExpose({
   open: openWindow,
@@ -75,6 +75,10 @@ function openWindow() {
     hidden: false,
     template: templateEl,
     background: 'rgba(255,255,255,0.80)',
+    onclose(fl) {
+      showToggle(false)
+      return fl || false
+    },
 
     ...params.value,
 

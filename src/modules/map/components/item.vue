@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { clamp } from '@antfu/utils'
 import maplibregl from 'maplibre-gl'
 import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 import { ArcLayer } from '@deck.gl/layers/typed'
@@ -8,12 +9,9 @@ import jsonData from '../geojson/tula.json'
 
 import type { IMove } from '~/types'
 
+import type { LngLatLike } from 'maplibre-gl'
 import type { TMapboxDraw, TMapboxOverlay } from '../types'
-import type { FeatureCollection, Point } from 'geojson'
-
-let maplibreglMap: maplibregl.Map
-let maplibreglPopup: maplibregl.Popup
-let deckOverlay: TMapboxOverlay
+import type { Feature, FeatureCollection, Point } from 'geojson'
 
 const objectsStore = useObjectsStore()
 const movesStore = useMovesStore()
@@ -28,9 +26,10 @@ const moveFilter = ref<string>('')
 const hoveredStateId = ref<string | number >('')
 
 const objectsFeatures = computed<
-  FeatureCollection<Point, { color: [number, number, number] }>
+  FeatureCollection<Point, { id: string; label: string }>
 >(() => {
-  const features = objects.value.map(object => object.feature)
+  const features = objects.value.map(object => Object.assign(object.feature, { properties: { id: object._id, label: object.info.name } }))
+  logger.log(features)
 
   return {
     type: 'FeatureCollection',
@@ -45,12 +44,22 @@ const movesFiltered = computed<IMove[]>(() => {
   return moves.value.filter(move => move._id === moveFilter.value)
 })
 
+let maplibreglMap: maplibregl.Map
+let maplibreglPopup: maplibregl.Popup
+let deckOverlay: TMapboxOverlay
+
 onMounted(createMaplibreglMap)
 
+// // Objects reposition test
+// const backendStore = useBackendStore()
 // function handleClick() {
+//   const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)
+//   if (!objectsStoreMap)
+//     return
+
 //   backendStore.setStoreItems(
 //     IMetaScope.OBJECTS,
-//     objectsIds.value.map((id) => {
+//     objectsIds.value.filter(() => Math.random() > 0.5).map((id) => {
 //       const object = objectsStoreMap.get(id) as IObject
 
 //       object.feature.geometry.coordinates = [
@@ -62,21 +71,22 @@ onMounted(createMaplibreglMap)
 //     }),
 //   )
 // }
-
 // setInterval(handleClick, 5000)
 
 async function createMaplibreglMap() {
+  maplibregl.workerCount = 10
+
   maplibreglMap = new maplibregl.Map({
     container: 'mapContainer',
-    style:
-      '/map/styles/streets/style.json',
-    center: [42.9473373, 51.2672198], // starting position [lng, lat]
+    style: '/map/styles/streets/style.json',
+    center: [37.618399, 54.20877], // starting position [lng, lat]
     maxZoom: 18,
     minZoom: 0,
-    zoom: 6,
+    zoom: 18,
     attributionControl: false,
     trackResize: true,
     pixelRatio: 1.5,
+    localIdeographFontFamily: '\'Noto Sans Regular\', \'Roboto Regular\'',
   })
   // maplibreglMap.setStyle()
 
@@ -113,9 +123,10 @@ async function createMaplibreglMap() {
       type: 'geojson',
       data: null,
 
+      generateId: true,
       cluster: true,
-      clusterMaxZoom: 14, // Max zoom to cluster points on
-      clusterRadius: 50, // Max zoom to cluster points on
+      clusterMaxZoom: 18, // Max zoom to cluster points on
+      clusterRadius: 40, // Max zoom to cluster points on
     })
 
     maplibreglMap.addLayer({
@@ -128,7 +139,7 @@ async function createMaplibreglMap() {
         'fill-opacity': [
           'case',
           ['boolean', ['feature-state', 'hover'], false],
-          0.2,
+          0.1,
           settingsStore.districtBoundaries.fillOpacity,
         ],
       },
@@ -151,16 +162,23 @@ async function createMaplibreglMap() {
       source: 'objects-source-layer',
       filter: ['has', 'point_count'],
       paint: {
-        'circle-color': [
-          'step',
-          ['get', 'point_count'],
+        'circle-blur': 0.1,
+        'circle-opacity': 0.7,
+        'circle-pitch-scale': 'viewport',
+        'circle-color': ['step', ['get', 'point_count'],
           '#51bbd6',
           100,
           '#f1f075',
           750,
           '#f28cb1',
         ],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+        'circle-radius': ['step', ['get', 'point_count'],
+          20,
+          100,
+          30,
+          750,
+          40,
+        ],
       },
     })
 
@@ -169,11 +187,11 @@ async function createMaplibreglMap() {
       type: 'symbol',
       source: 'objects-source-layer',
       filter: ['has', 'point_count'],
-
       layout: {
-        'text-field': '{point_count_abbreviated}',
+        'text-field': ['get', 'point_count_abbreviated'],
         'text-font': ['Noto Sans Regular'],
         'text-size': 12,
+        'text-rotate': 0,
       },
     })
 
@@ -183,63 +201,121 @@ async function createMaplibreglMap() {
       className: 'custom-popup',
     })
 
-    // maplibreglMap.addLayer({
-    //   id: 'unclustered-point',
-    //   type: 'circle',
-    //   source: 'objects-source-layer',
-    //   filter: ['!', ['has', 'point_count']],
-    //   paint: {
-    //     'circle-color': '#11b4da',
-    //     'circle-radius': 4,
-    //     'circle-stroke-width': 1,
-    //     'circle-stroke-color': '#fff',
-    //   },
-    // })
-
     maplibreglMap.addLayer({
       id: 'objects',
       type: 'symbol',
       source: 'objects-source-layer',
-
       filter: ['!', ['has', 'point_count']],
       layout: {
+        'symbol-placement': 'point',
+        'symbol-avoid-edges': true,
         'icon-image': 'map-icons/tero/1_tero.svg',
+        'icon-anchor': 'bottom',
         'icon-size': 0.5,
-        // 'icon-allow-overlap': true,
+        'icon-allow-overlap': true,
+        'icon-pitch-alignment': 'viewport',
+        'icon-rotation-alignment': 'viewport',
+        'icon-ignore-placement': true,
+        'icon-overlap': 'never',
       },
-      // filter: ['!', ['has', 'point_count']],
     })
 
-    deckOverlay = new DeckOverlay({
-    }) as TMapboxOverlay
+    maplibreglMap.addLayer({
+      id: 'objects-labels',
+      type: 'symbol',
+      source: 'objects-source-layer',
+      paint: {
+        'text-opacity': 0.7,
+        'text-color': '#404040',
+      },
+      filter: ['!', ['has', 'point_count']],
+      layout: {
+        'text-field': '{label}',
+        'text-optional': true,
+        'text-font': ['Noto Sans Bold'],
+        'text-transform': 'uppercase',
+        'text-pitch-alignment': 'map',
+        'text-ignore-placement': true,
+        'text-size': 10,
+        'text-offset': [0, 1],
+        'text-anchor': 'top',
+        'text-overlap': 'never',
+      },
+    })
+
+    deckOverlay = new DeckOverlay({ effects: [] }) as TMapboxOverlay
 
     maplibreglMap.addControl(deckOverlay)
 
-    // maplibreglMap.on('click', 'clusters', (e) => {
-    //   const features = maplibreglMap.queryRenderedFeatures(e.point, {
-    //     layers: ['clusters'],
-    //   })
+    maplibreglMap.on('mouseenter', 'objects', (e) => {
+      maplibreglMap.getCanvas().style.cursor = 'pointer'
 
-    //   const clusterId = features[0].properties.cluster_id
-    //   const source = maplibreglMap.getSource(
-    //     'objects-source-layer',
-    //   ) as maplibregl.GeoJSONSource
+      const feature = e.features![0] as Feature<Point, { id: string; label: string }>
+      maplibreglPopup
+        .setLngLat(e.lngLat)
+        .setHTML(getObjectTooltip(feature.properties.label))
+        .trackPointer()
+        .addTo(maplibreglMap)
+    })
 
-    //   if (!source)
-    //     return
+    maplibreglMap.on('mouseleave', 'objects', (e) => {
+      maplibreglMap.getCanvas().style.cursor = 'default'
+      maplibreglPopup.remove()
+    })
 
-    //   source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-    //     if (err || !zoom)
-    //       return
+    maplibreglMap.on('click', 'objects', (e) => {
+      const feature = e.features![0] as Feature<Point, { id: string; label: string }>
+      const winboxId = `winbox-detail-${feature.properties.id}`
+      const winboxTitle = feature.properties.label
 
-    //     if (features[0].geometry.type === 'Point') {
-    //       maplibreglMap.easeTo({
-    //         center: features[0].geometry.coordinates as [number, number],
-    //         zoom,
-    //       })
-    //     }
-    //   })
-    // })
+      const { createWindow } = useWinbox(winboxId)
+
+      createWindow({
+        title: winboxTitle,
+        teleportId: 'teleport-layer--20',
+
+        dataComponent: 'WinboxObjectsDetailItem',
+        dataProps: {
+          id: feature.properties.id,
+        },
+
+        tether: ['top', 'right', 'bottom'],
+        class: [],
+
+        top: 44,
+        bottom: -1,
+        left: 44,
+        right: -1,
+      })
+    })
+
+    maplibreglMap.on('click', 'clusters', (e) => {
+      const features = maplibreglMap.queryRenderedFeatures(e.point, {
+        layers: ['clusters'],
+      })
+
+      const clusterId = features[0].properties.cluster_id
+      const source = maplibreglMap.getSource(
+        'objects-source-layer',
+      ) as maplibregl.GeoJSONSource
+
+      if (!source)
+        return
+
+      logger.info(source)
+
+      source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+        if (err || !zoom)
+          return
+
+        if (features[0].geometry.type === 'Point') {
+          maplibreglMap.easeTo({
+            center: features[0].geometry.coordinates as LngLatLike,
+            zoom: clamp(zoom + 2, maplibreglMap.getMinZoom(), maplibreglMap.getMaxZoom()),
+          })
+        }
+      })
+    })
 
     maplibreglMap.on('mouseenter', 'clusters', () => {
       maplibreglMap.getCanvas().style.cursor = 'pointer'
@@ -251,6 +327,7 @@ async function createMaplibreglMap() {
 
     maplibreglMap.on('mousemove', 'polygons', (e) => {
       maplibreglMap.getCanvas().style.cursor = 'pointer'
+
       if (!e.features || !e.features[0].id)
         return
 
@@ -294,7 +371,6 @@ async function createMaplibreglMap() {
 
         if (!source)
           return
-        console.log(source)
 
         source.setData(of)
       },
@@ -319,9 +395,11 @@ function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl
     id: 'deckgl-arc',
     data,
 
-    pickable: true,
     getWidth: 3,
+    pickable: true,
     greatCircle: true,
+    autoHighlight: true,
+
     getTilt: _d => (Math.random() < 0.5 ? -1 : 1) * Math.random() * 30,
     getSourcePosition: (d) => {
       const coordinates = d.feature.sender.geometry.coordinates
@@ -338,7 +416,6 @@ function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl
     getTargetColor: (d) => {
       return d.feature.receiver.properties.color
     },
-    autoHighlight: true,
     onClick(pickingInfo, _event) {
       if (!pickingInfo.object)
         return
@@ -353,6 +430,7 @@ function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl
 
       if (pickingInfo.object && pickingInfo.coordinate) {
         map.getCanvas().style.cursor = 'pointer'
+
         maplibreglPopup
           .setLngLat([pickingInfo.coordinate[0], pickingInfo.coordinate[1]])
           .setHTML(
@@ -380,7 +458,7 @@ function getMoveTooltip(
   to: string,
 ): string {
   return `
-  <div class="custom-tooltip custom-tooltip--move">
+  <div class="custom-tooltip custom-tooltip--move z-10 prose">
     <div class="custom-tooltip__header">
       <span>${res} - ${value}</span>
     </div>
@@ -394,30 +472,18 @@ function getMoveTooltip(
     </div>
   </div>`
 }
+function getObjectTooltip(
+  label: string,
+): string {
+  return `
+  <div class="custom-tooltip custom-tooltip--move z-10 prose">
+    <div class="custom-tooltip__header">
+      <span>${label}</span>
+    </div>
+  </div>`
+}
 </script>
 
 <template>
   <div id="mapContainer" class="layout-default__map z-0 h-full w-full" />
 </template>
-
-<style lang="postcss">
-.layout-default__map {
-  .custom-popup {
-    @apply z-10
-  }
-}
-
-/* .layout-default__map {
-  .maplibregl-canvas-container {
-    @apply flex-row;
-  }
-}
-
-.maplibregl-popup {
-  @apply flex-row;
-
-  div {
-    @apply flex-row;
-  }
-} */
-</style>

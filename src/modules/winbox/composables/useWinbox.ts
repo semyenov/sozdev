@@ -24,7 +24,7 @@ export function useWinbox(id: string) {
       }
     }),
     createWindow: (params: WinBoxParams) => {
-      winboxWindowsParamsStorage.value.set(id, params)
+      winboxWindowsParamsStorage.value.set(id, Object.assign(params, { id }))
     },
   }
 }
