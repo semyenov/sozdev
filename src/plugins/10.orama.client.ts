@@ -13,6 +13,7 @@ const logger = useLogger('plugins/orama')
 
 export default defineNuxtPlugin(({ hooks }) => {
   const backendStore = useBackendStore()
+
   hooks.hookOnce('app:mounted', () => {
     create({
       language: 'russian',

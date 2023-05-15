@@ -17,8 +17,8 @@ export function winboxRegister(
   mount: HTMLElement,
   params: WinBoxParams,
 ) {
-  if (!winboxWindowsStateStorage.value.get(params.id)) {
-    winboxWindowsStateStorage.value.set(params.id, {
+  if (!winboxWindowsStateStorage.value.get(params.id!)) {
+    winboxWindowsStateStorage.value.set(params.id!, {
       index: params.index,
       tt: params.tether?.includes('top'),
       tr: params.tether?.includes('right'),
@@ -36,9 +36,9 @@ export function winboxRegister(
   }
 
   const setState = (state: WinBoxState) =>
-    winboxWindowsStateStorage.value.set(params.id, state)
+    winboxWindowsStateStorage.value.set(params.id!, state)
   const getState = (): WinBoxState => ({
-    ...winboxWindowsStateStorage.value.get(params.id)!,
+    ...winboxWindowsStateStorage.value.get(params.id!)!,
   })
 
   const s = ref(getState())
@@ -78,8 +78,8 @@ export function winboxRegister(
     },
 
     onclose(forceFlag = false): boolean {
-      winboxWindowsParamsStorage.value.delete(params.id)
-      winboxWindowsStateStorage.value.delete(params.id)
+      winboxWindowsParamsStorage.value.delete(params.id!)
+      winboxWindowsStateStorage.value.delete(params.id!)
 
       window.removeEventListener('resize', resizeEventListener)
       window.removeEventListener('fullscreenchange', fullscreenEventListener)

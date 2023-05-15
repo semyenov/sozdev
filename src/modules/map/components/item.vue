@@ -23,12 +23,16 @@ const movesId = await movesStore.itemsGetter
 const moves = await movesStore.itemsGetterByIds(movesId.value)
 
 const moveFilter = ref<string>('')
-const hoveredStateId = ref<string | number >('')
+const hoveredStateId = ref<string | number>('')
 
 const objectsFeatures = computed<
   FeatureCollection<Point, { id: string; label: string }>
 >(() => {
-  const features = objects.value.map(object => Object.assign(object.feature, { properties: { id: object._id, label: object.info.name } }))
+  const features = objects.value.map(object =>
+    Object.assign(object.feature, {
+      properties: { id: object._id, label: object.info.name },
+    }),
+  )
   logger.log(features)
 
   return {
@@ -82,10 +86,9 @@ async function createMaplibreglMap() {
     center: [37.618399, 54.20877], // starting position [lng, lat]
     maxZoom: 18,
     minZoom: 0,
-    zoom: 18,
+    zoom: 10,
     attributionControl: false,
     trackResize: true,
-    pixelRatio: 1.5,
     localIdeographFontFamily: '\'Noto Sans Regular\', \'Roboto Regular\'',
   })
   // maplibreglMap.setStyle()
@@ -98,16 +101,21 @@ async function createMaplibreglMap() {
     'bottom-right',
   )
 
-  maplibreglMap.addControl(new maplibregl.FullscreenControl({}), 'bottom-right')
+  maplibreglMap.addControl(
+    new maplibregl.FullscreenControl({
+      container: document.getElementById('mapContainer') || undefined,
+    }),
+    'bottom-right',
+  )
 
   const drawControl = new MapboxDraw({
     controls: {
       point: true,
       line_string: true,
-      combine_features: false,
+      combine_features: true,
       polygon: false,
       uncombine_features: false,
-      trash: false,
+      trash: true,
     },
   }) as TMapboxDraw
 
@@ -165,20 +173,16 @@ async function createMaplibreglMap() {
         'circle-blur': 0.1,
         'circle-opacity': 0.7,
         'circle-pitch-scale': 'viewport',
-        'circle-color': ['step', ['get', 'point_count'],
+        'circle-color': [
+          'step',
+          ['get', 'point_count'],
           '#51bbd6',
           100,
           '#f1f075',
           750,
           '#f28cb1',
         ],
-        'circle-radius': ['step', ['get', 'point_count'],
-          20,
-          100,
-          30,
-          750,
-          40,
-        ],
+        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
       },
     })
 
@@ -230,12 +234,13 @@ async function createMaplibreglMap() {
       },
       filter: ['!', ['has', 'point_count']],
       layout: {
-        'text-field': '{label}',
+        'text-field': ['get', 'label'],
+        'text-padding': 4,
         'text-optional': true,
         'text-font': ['Noto Sans Bold'],
         'text-transform': 'uppercase',
-        'text-pitch-alignment': 'map',
-        'text-ignore-placement': true,
+        'text-pitch-alignment': 'viewport',
+        'text-ignore-placement': false,
         'text-size': 10,
         'text-offset': [0, 1],
         'text-anchor': 'top',
@@ -250,7 +255,10 @@ async function createMaplibreglMap() {
     maplibreglMap.on('mouseenter', 'objects', (e) => {
       maplibreglMap.getCanvas().style.cursor = 'pointer'
 
-      const feature = e.features![0] as Feature<Point, { id: string; label: string }>
+      const feature = e.features![0] as Feature<
+        Point,
+        { id: string; label: string }
+      >
       maplibreglPopup
         .setLngLat(e.lngLat)
         .setHTML(getObjectTooltip(feature.properties.label))
@@ -258,13 +266,16 @@ async function createMaplibreglMap() {
         .addTo(maplibreglMap)
     })
 
-    maplibreglMap.on('mouseleave', 'objects', (e) => {
+    maplibreglMap.on('mouseleave', 'objects', (_e) => {
       maplibreglMap.getCanvas().style.cursor = 'default'
       maplibreglPopup.remove()
     })
 
     maplibreglMap.on('click', 'objects', (e) => {
-      const feature = e.features![0] as Feature<Point, { id: string; label: string }>
+      const feature = e.features![0] as Feature<
+        Point,
+        { id: string; label: string }
+      >
       const winboxId = `winbox-detail-${feature.properties.id}`
       const winboxTitle = feature.properties.label
 
@@ -311,7 +322,11 @@ async function createMaplibreglMap() {
         if (features[0].geometry.type === 'Point') {
           maplibreglMap.easeTo({
             center: features[0].geometry.coordinates as LngLatLike,
-            zoom: clamp(zoom + 2, maplibreglMap.getMinZoom(), maplibreglMap.getMaxZoom()),
+            zoom: clamp(
+              zoom + 2,
+              maplibreglMap.getMinZoom(),
+              maplibreglMap.getMaxZoom(),
+            ),
           })
         }
       })
@@ -390,7 +405,13 @@ async function createMaplibreglMap() {
   })
 }
 
-function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl.Map | null }) {
+function getArcLayer({
+  data = [],
+  map = null,
+}: {
+  data: IMove[]
+  map: maplibregl.Map | null
+}) {
   return new ArcLayer<IMove>({
     id: 'deckgl-arc',
     data,
@@ -421,8 +442,7 @@ function getArcLayer({ data = [], map = null }: { data: IMove[]; map: maplibregl
         return
       if (moveFilter.value === pickingInfo.object._id)
         moveFilter.value = ''
-      else
-        moveFilter.value = pickingInfo.object._id
+      else moveFilter.value = pickingInfo.object._id
     },
     onHover(pickingInfo, _event) {
       if (!map)
@@ -458,7 +478,7 @@ function getMoveTooltip(
   to: string,
 ): string {
   return `
-  <div class="custom-tooltip custom-tooltip--move z-10 prose">
+  <div class="custom-tooltip custom-tooltip--move">
     <div class="custom-tooltip__header">
       <span>${res} - ${value}</span>
     </div>
@@ -472,13 +492,11 @@ function getMoveTooltip(
     </div>
   </div>`
 }
-function getObjectTooltip(
-  label: string,
-): string {
+function getObjectTooltip(label: string): string {
   return `
-  <div class="custom-tooltip custom-tooltip--move z-10 prose">
+  <div class="custom-tooltip custom-tooltip--object">
     <div class="custom-tooltip__header">
-      <span>${label}</span>
+      <h3>${label}</h3>
     </div>
   </div>`
 }

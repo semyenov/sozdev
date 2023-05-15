@@ -5,7 +5,7 @@ import type { IUserTokensData } from '~/types'
 
 export default defineEventHandler((_event) => {
   return sendData<IUserTokensData>({
-    access_token: 'jlksadjlksajdlk',
-    refresh_token: 'hsdjkhljshfdaljhdlkj',
+    access_token: '',
+    refresh_token: '',
   })
 })

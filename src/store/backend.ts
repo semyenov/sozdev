@@ -28,7 +28,6 @@ export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
 
 export const useBackendStore = defineStore(backendStoreKey, () => {
   const authorizationStore = useAuthorizationStore()
-  logger.info('backend-store')
 
   const client = new ApiClient({
     baseURL: getRuntimeConfigKey('apiUri'),
@@ -100,8 +99,6 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
-    logger.info('token', authorizationStore.authorization)
-
     const headers = formatHeaders(authorizationStore.authorization)
 
     const res = await client.request<T>('get', uri, {
@@ -181,7 +178,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
       if (hasOwnProperty(item, backendStoreIdentificator)) {
-        if (isClient)
+        if (isClient && window[scope])
           insert(window[scope], item)
 
         storeScopeMap.set(item[backendStoreIdentificator], copy(item))

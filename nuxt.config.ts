@@ -36,10 +36,10 @@ export default defineNuxtConfig({
   telemetry: false,
 
   runtimeConfig: {
-    apiUri: 'http://tsc_devcontainer-app-1:8080/',
+    apiUri: 'http://localhost:3000/api',
 
     public: {
-      apiUri: 'http://localhost:8080/',
+      apiUri: '/api',
     },
   },
 
@@ -231,7 +231,6 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: [
       'defineStore',
-      ['defineStore', 'definePiniaStore'],
       'storeToRefs',
     ],
   },
