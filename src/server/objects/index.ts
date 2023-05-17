@@ -2,8 +2,7 @@ import { range } from '@antfu/utils'
 import { faker } from '@faker-js/faker'
 import { bbox, randomPosition } from '@turf/turf'
 
-import jsonData from '../../modules/map/geojson/tula.json'
-
+import jsonData from '~/public/geojson/tula.json'
 import type { IObject } from '~/types'
 
 const fieldsIds = [

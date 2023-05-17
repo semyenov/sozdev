@@ -229,6 +229,62 @@ export const IObjectUpdateInputSchema = z.object({
 })
 export type IObjectUpdateInput = z.infer<typeof IObjectUpdateInputSchema>
 
+export const IObjectTypeInfoSchema = z.object({
+  code: z.string().optional(),
+  name: z.string(),
+  notes: z.string().optional(),
+})
+export type IObjectTypeInfo = z.infer<typeof IObjectTypeInfoSchema>
+
+export const IObjectTypeSchema = z.object({
+  _id: z.string(),
+  fields: z.string().array().nullable(),
+  icon: z.string().optional(),
+  info: IObjectTypeInfoSchema,
+  order: z.number(),
+  meta: IMetaSchema.optional().nullable(),
+})
+export type IObjectType = z.infer<typeof IObjectTypeSchema>
+
+export const IObjectTypeCreateInputSchema = z.object({
+  code: z.string().optional(),
+  fields: z.string().array().nullable(),
+  icon: z.string().optional(),
+  name: z.string(),
+  notes: z.string().optional(),
+  order: z.number(),
+})
+export type IObjectTypeCreateInput = z.infer<typeof IObjectTypeCreateInputSchema>
+
+export const IObjectTypeUpdateInputSchema = z.object({
+  code: z.string().optional(),
+  fields: z.string().array().nullable(),
+  icon: z.string().optional(),
+  name: z.string().optional(),
+  notes: z.string().optional(),
+  order: z.number().optional().nullable(),
+})
+export type IObjectTypeUpdateInput = z.infer<typeof IObjectTypeUpdateInputSchema>
+
+export const IObjectFieldInfoSchema = z.object({
+  name: z.string(),
+  notes: z.string().optional(),
+  group_name: z.string().optional(),
+})
+export type IObjectFieldInfo = z.infer<typeof IObjectFieldInfoSchema>
+
+export const IObjectFieldSchema = z.object({
+  _id: z.string(),
+  group: z.string(),
+  info: IObjectFieldInfoSchema,
+  public: z.boolean(),
+  mandate: z.number(),
+  type: IDataTypeSchema,
+  validation: z.string(),
+  values: z.record(z.string()).optional(),
+})
+export type IObjectField = z.infer<typeof IObjectFieldSchema>
+
 export const IMoveInfoSchema = z.object({
   code: z.string().optional(),
   name: z.string(),

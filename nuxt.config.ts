@@ -36,10 +36,10 @@ export default defineNuxtConfig({
   telemetry: false,
 
   runtimeConfig: {
-    apiUri: 'http://localhost:3000/api',
+    apiUri: 'http://tsc_devcontainer-app-1:8080/',
 
     public: {
-      apiUri: '/api',
+      apiUri: 'http://localhost:8080/',
     },
   },
 

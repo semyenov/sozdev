@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { clamp } from '@antfu/utils'
 import maplibregl from 'maplibre-gl'
 import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
-
-import jsonData from '../geojson/tula.json'
+import { clamp } from '@antfu/utils'
 
 import type { IMove } from '~/types'
 
@@ -15,9 +13,11 @@ import type { Feature, FeatureCollection, Point } from 'geojson'
 
 const objectsStore = useObjectsStore()
 const movesStore = useMovesStore()
-const settingsStore = useSettingsStore()
+const objectTypesStore = useObjectTypesStore()
 
 const objectsIds = await objectsStore.itemsGetter
+const objectTypesIds = await objectTypesStore.itemsGetter
+const objectTypes = await objectTypesStore.itemsGetterByIds(objectTypesIds.value)
 const objects = await objectsStore.itemsGetterByIds(objectsIds.value)
 const movesId = await movesStore.itemsGetter
 const moves = await movesStore.itemsGetterByIds(movesId.value)
@@ -30,7 +30,7 @@ const objectsFeatures = computed<
 >(() => {
   const features = objects.value.map(object =>
     Object.assign(object.feature, {
-      properties: { id: object._id, label: object.info.name },
+      properties: { id: object._id, label: object.info.name, type: object.type, icon: objectTypes.value.find(item => item._id === object.type)?.icon },
     }),
   )
   logger.log(features)
@@ -50,6 +50,7 @@ const movesFiltered = computed<IMove[]>(() => {
 
 let maplibreglMap: maplibregl.Map
 let maplibreglPopup: maplibregl.Popup
+let maplibreglMarker: maplibregl.Marker
 let deckOverlay: TMapboxOverlay
 
 onMounted(createMaplibreglMap)
@@ -121,12 +122,15 @@ async function createMaplibreglMap() {
 
   maplibreglMap.addControl(drawControl, 'bottom-right')
 
-  maplibreglMap.on('load', async () => {
-    maplibreglMap.addSource('polygons-source-layer', {
-      type: 'geojson',
-      data: jsonData,
-    })
+  maplibreglMarker = new maplibregl.Marker({ scale: 0.5 })
 
+  maplibreglPopup = new maplibregl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+    className: 'custom-popup',
+  })
+
+  maplibreglMap.on('load', async () => {
     maplibreglMap.addSource('objects-source-layer', {
       type: 'geojson',
       data: null,
@@ -135,33 +139,25 @@ async function createMaplibreglMap() {
       cluster: true,
       clusterMaxZoom: 18, // Max zoom to cluster points on
       clusterRadius: 40, // Max zoom to cluster points on
-    })
-
-    maplibreglMap.addLayer({
-      id: 'polygons',
-      type: 'fill',
-      source: 'polygons-source-layer',
-
-      paint: {
-        'fill-color': settingsStore.districtBoundaries.fillColor,
-        'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
-          0.1,
-          settingsStore.districtBoundaries.fillOpacity,
+      clusterProperties: {
+        icons: [
+          ['let', 'find', ['index-of', ['get', 'icon'], ['accumulated']],
+            ['case',
+              ['==', ['index-of', ':', ['accumulated']], -1],
+              ['case',
+                ['==', ['accumulated'], ['get', 'icon']],
+                ['concat', ['accumulated'], ['concat', ['literal', ':'], ['get', 'icon']]],
+                ['accumulated'],
+              ],
+              ['==', ['var', 'find'], -1],
+              ['concat', ['accumulated'], ['concat', ['literal', ':'], ['get', 'icon']]],
+              ['get', 'icon'],
+            ],
+          ],
+          ['get', 'icon'],
         ],
       },
-    })
-
-    maplibreglMap.addLayer({
-      id: 'polygons-lines',
-      type: 'line',
-      source: 'polygons-source-layer',
-      layout: {},
-      paint: {
-        'line-color': settingsStore.districtBoundaries.color,
-        'line-width': settingsStore.districtBoundaries.weight,
-      },
+      // clusterProperties: objectTypesIds.value.reduce((sum, cur) => Object.assign(sum, { [cur]: ['+', ['case', ['==', ['get', 'type'], cur], 1, 0]] }), {}),
     })
 
     maplibreglMap.addLayer({
@@ -199,12 +195,6 @@ async function createMaplibreglMap() {
       },
     })
 
-    maplibreglPopup = new maplibregl.Popup({
-      closeButton: false,
-      closeOnClick: false,
-      className: 'custom-popup',
-    })
-
     maplibreglMap.addLayer({
       id: 'objects',
       type: 'symbol',
@@ -213,7 +203,7 @@ async function createMaplibreglMap() {
       layout: {
         'symbol-placement': 'point',
         'symbol-avoid-edges': true,
-        'icon-image': 'map-icons/tero/1_tero.svg',
+        'icon-image': ['get', 'icon'],
         'icon-anchor': 'bottom',
         'icon-size': 0.5,
         'icon-allow-overlap': true,
@@ -249,7 +239,6 @@ async function createMaplibreglMap() {
     })
 
     deckOverlay = new DeckOverlay({ effects: [] }) as TMapboxOverlay
-
     maplibreglMap.addControl(deckOverlay)
 
     maplibreglMap.on('mouseenter', 'objects', (e) => {
@@ -304,6 +293,7 @@ async function createMaplibreglMap() {
       const features = maplibreglMap.queryRenderedFeatures(e.point, {
         layers: ['clusters'],
       })
+      logger.info('cluster:click', features, e.features)
 
       const clusterId = features[0].properties.cluster_id
       const source = maplibreglMap.getSource(
@@ -313,7 +303,7 @@ async function createMaplibreglMap() {
       if (!source)
         return
 
-      logger.info(source)
+      // logger.info(source)
 
       source.getClusterExpansionZoom(clusterId, (err, zoom) => {
         if (err || !zoom)

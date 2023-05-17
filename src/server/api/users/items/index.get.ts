@@ -1,11 +1,8 @@
 import { defineEventHandler } from 'h3'
 
 import { sendData } from '~/server'
-import type { IUserTokensData } from '~/types'
+import { items } from '~/server/users'
 
 export default defineEventHandler((_event) => {
-  return sendData<IUserTokensData>({
-    access_token: 'jlksadjlksajdlk',
-    refresh_token: 'hsdjkhljshfdaljhdlkj',
-  })
+  return sendData(items)
 })
