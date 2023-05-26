@@ -123,23 +123,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@anu-vue/nuxt@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "@anu-vue/nuxt@npm:0.14.0"
+"@anu-vue/nuxt@npm:0.13.1":
+  version: 0.13.1
+  resolution: "@anu-vue/nuxt@npm:0.13.1"
   dependencies:
-    "@anu-vue/preset-theme-default": 0.14.0
-    "@floating-ui/dom": ^1.2.8
+    "@anu-vue/preset-theme-default": 0.13.1
+    "@floating-ui/dom": ^1.1.1
     "@iconify-json/bx": latest
-    "@nuxt/kit": ^3.5.0
-    anu-vue: 0.14.0
-  checksum: 65cde8590cc8ca6f3b7ffa7da0ecacac06dce43ab3852365d7d9cea476dd2c7b0cee6e1b048de8beefdcd876a87dcac88f1ccb38b2a3d20b2965555219f29bfa
+    "@nuxt/kit": ^3.2.3
+    anu-vue: 0.13.1
+  checksum: 574eabbc669316098eaf622f461e529a95248fd4db2ebbda81f689e223965089a523b2b6b50b20f90ce5527f345cfde4671a98f60cf12ef5e0bc9263a8415fcc
   languageName: node
   linkType: hard
 
-"@anu-vue/preset-theme-default@npm:0.14.0, @anu-vue/preset-theme-default@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "@anu-vue/preset-theme-default@npm:0.14.0"
-  checksum: ec6cfdecc72537b616159a97dd66b568b7f39056839301460b60701ffc3731b0b2e038fb79b44302e0e34c7683e05d45ff2ba810850d6e6d50b71f3119ee26ad
+"@anu-vue/preset-theme-default@npm:0.13.1":
+  version: 0.13.1
+  resolution: "@anu-vue/preset-theme-default@npm:0.13.1"
+  checksum: b0fdf2b922f4ac82c606e33e2be7117a4f172b6805c2e67c80d70a032863d397cb9272cb822022ac840d56f53aa69783775dfb3416a6b72cda0fbecee71eee56
   languageName: node
   linkType: hard
 
@@ -1203,7 +1203,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/dom@npm:^1.2.7, @floating-ui/dom@npm:^1.2.8":
+"@floating-ui/dom@npm:^1.1.1, @floating-ui/dom@npm:^1.2.1":
   version: 1.2.8
   resolution: "@floating-ui/dom@npm:1.2.8"
   dependencies:
@@ -1212,11 +1212,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/vue@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@floating-ui/vue@npm:1.0.0"
+"@floating-ui/vue@npm:^0.2.0":
+  version: 0.2.1
+  resolution: "@floating-ui/vue@npm:0.2.1"
   dependencies:
-    "@floating-ui/dom": ^1.2.7
+    "@floating-ui/dom": ^1.2.1
     vue-demi: ^0.13.11
   peerDependencies:
     "@vue/composition-api": ^1.0.0-rc.1
@@ -1224,7 +1224,7 @@ __metadata:
   peerDependenciesMeta:
     "@vue/composition-api":
       optional: true
-  checksum: edf7b47257fe52c848ec1dcbc7e214d59fc6e7912b3e5469228bcf05273dbd8eb0b375b88baee64410181b4c7e85cce36ebd4570b966fdf59fae2cc3fac5c724
+  checksum: 7af868ae47a4ddcc88428b751dfeca757ed86065c33ac51805955a2af7b33e5d0fdc364cf55efef6d4e4afca09a803be2eaf4103510d863bc0a01e7418cf0cae
   languageName: node
   linkType: hard
 
@@ -2344,7 +2344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:3.5.1, @nuxt/kit@npm:^3.4.0, @nuxt/kit@npm:^3.4.1, @nuxt/kit@npm:^3.5.0, @nuxt/kit@npm:^3.5.1":
+"@nuxt/kit@npm:3.5.1, @nuxt/kit@npm:^3.2.3, @nuxt/kit@npm:^3.4.0, @nuxt/kit@npm:^3.4.1, @nuxt/kit@npm:^3.5.0, @nuxt/kit@npm:^3.5.1":
   version: 3.5.1
   resolution: "@nuxt/kit@npm:3.5.1"
   dependencies:
@@ -6221,19 +6221,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"anu-vue@npm:0.14.0, anu-vue@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "anu-vue@npm:0.14.0"
+"anu-vue@npm:0.13.1":
+  version: 0.13.1
+  resolution: "anu-vue@npm:0.13.1"
   dependencies:
-    "@floating-ui/vue": ^1.0.0
+    "@floating-ui/vue": ^0.2.0
     colord: ^2.9.3
     defu: ^6.1.2
-    vue: 3.3.4
+    vue: ^3.2.47
   peerDependencies:
     "@unocss/reset": ^0.41.1
     "@vueuse/core": ^9.6.0
     vue-router: 4
-  checksum: bd8f69086eea5b2392ea69576cca4dfa95524c662df3fca9d5ac2384114cc12c4552dfaddc4fcb588d143c35d034f17090a600419ea0368b137189bb9a4b4589
+  checksum: 0d26d1268271c085c65f2f5ca1402bbd14ac4e8e98e758272d24c3015165b780a690ff74935930e5c54c314c0e78ad82f520c73b1aef04faae425827a2ad3d21
   languageName: node
   linkType: hard
 
@@ -15780,8 +15780,8 @@ __metadata:
   dependencies:
     "@antfu/eslint-config": ^0.39.3
     "@antfu/utils": ^0.7.2
-    "@anu-vue/nuxt": ^0.14.0
-    "@anu-vue/preset-theme-default": ^0.14.0
+    "@anu-vue/nuxt": 0.13.1
+    "@anu-vue/preset-theme-default": 0.13.1
     "@deck.gl/core": ^8.9.16
     "@deck.gl/layers": ^8.9.16
     "@deck.gl/mapbox": ^8.9.16
@@ -15819,7 +15819,7 @@ __metadata:
     "@vueuse/core": ^10.1.2
     "@vueuse/motion": ^2.0.0
     "@vueuse/nuxt": ^10.1.2
-    anu-vue: ^0.14.0
+    anu-vue: 0.13.1
     chroma-js: ^2.4.2
     consola: ^3.1.0
     eslint: ^8.41.0
@@ -18771,19 +18771,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:3.3.4, vue@npm:^3.3.4":
-  version: 3.3.4
-  resolution: "vue@npm:3.3.4"
-  dependencies:
-    "@vue/compiler-dom": 3.3.4
-    "@vue/compiler-sfc": 3.3.4
-    "@vue/runtime-dom": 3.3.4
-    "@vue/server-renderer": 3.3.4
-    "@vue/shared": 3.3.4
-  checksum: 58b6c62a66a375ce5df460fcb7ba41b37c8637c635faf06ef472ae4197f412cf9ad83586cd8e3f66c486404fbe8550e694f90ff724a571d1ba78830791099c59
-  languageName: node
-  linkType: hard
-
 "vue@npm:^3.2.47":
   version: 3.2.47
   resolution: "vue@npm:3.2.47"
@@ -18794,6 +18781,19 @@ __metadata:
     "@vue/server-renderer": 3.2.47
     "@vue/shared": 3.2.47
   checksum: 3b586f61fd2cdfdd24459a946a2831c0f164056993cc005badde4fea10d53e430f1cedf1b62d52a6992b58fe656fc5fc67b32f594a2832dfe440c6db46d6f158
+  languageName: node
+  linkType: hard
+
+"vue@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "vue@npm:3.3.4"
+  dependencies:
+    "@vue/compiler-dom": 3.3.4
+    "@vue/compiler-sfc": 3.3.4
+    "@vue/runtime-dom": 3.3.4
+    "@vue/server-renderer": 3.3.4
+    "@vue/shared": 3.3.4
+  checksum: 58b6c62a66a375ce5df460fcb7ba41b37c8637c635faf06ef472ae4197f412cf9ad83586cd8e3f66c486404fbe8550e694f90ff724a571d1ba78830791099c59
   languageName: node
   linkType: hard
 

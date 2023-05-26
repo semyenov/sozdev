@@ -10,6 +10,8 @@ definePageMeta({
 
 const route = useRoute('objects')
 
+const { t } = useI18n()
+
 const input = ref<string>('')
 
 const objectsStore = useObjectsStore()
@@ -28,7 +30,7 @@ const listComponent = ref<ReturnType<typeof UiVirtualList<IObject>> | null>(null
       :params="{
         id: 'page-objects',
         teleportId: 'teleport-layer--10',
-        title: $t('objects.title'),
+        title: t('objects.title'),
         class: ['no-header'],
         border: 0,
         top: 44,
@@ -53,7 +55,7 @@ const listComponent = ref<ReturnType<typeof UiVirtualList<IObject>> | null>(null
         item-class="mb-3"
       >
         <template #header>
-          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('objects.search.placeholder')" />
+          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="t('objects.search.placeholder')" />
         </template>
       </UiVirtualList>
     </WinboxWindow>

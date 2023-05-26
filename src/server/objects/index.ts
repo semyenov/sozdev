@@ -31,10 +31,13 @@ export const items = range(0, 10000).map((_i) => {
         type: 'Point',
         coordinates: randomPosition(lineBBox),
       },
+      state: {},
       properties: {
-        color: Array.from({ length: 3 }, () =>
-          faker.number.float({ min: 0, max: 255 }),
-        ) as [number, number, number],
+        label: faker.string.alpha(3),
+        id: faker.string.uuid(),
+        // color: Array.from({ length: 3 }, () =>
+        //   faker.number.float({ min: 0, max: 255 }),
+        // ) as [number, number, number],
 
         icon: 'map-icons/medical/plus_empty/7.svg',
       },

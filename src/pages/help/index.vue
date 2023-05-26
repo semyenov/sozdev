@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const route = useRoute('help')
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -8,7 +10,7 @@ const route = useRoute('help')
       :params="{
         id: 'page-help',
         teleportId: 'teleport-layer--10',
-        title: $t('help.title'),
+        title: t('help.title'),
         class: ['no-header'],
         border: 0,
         top: 44,

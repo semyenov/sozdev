@@ -11,6 +11,8 @@ definePageMeta({
 const route = useRoute('users')
 const usersStore = useUsersStore()
 
+const { t } = useI18n()
+
 const input = ref<string>('')
 
 const usersGetter = await usersStore.itemsGetter
@@ -45,7 +47,7 @@ function scrollClickHandler() {
       :params="{
         id: 'page-users',
         teleportId: 'teleport-layer--10',
-        title: $t('users.title'),
+        title: t('users.title'),
         class: ['no-header'],
         border: 0,
         top: 44,
@@ -70,7 +72,7 @@ function scrollClickHandler() {
         item-class="mb-3"
       >
         <template #header>
-          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('users.search.placeholder')" />
+          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="t('users.search.placeholder')" />
         </template>
       </UiVirtualList>
     </WinboxWindow>

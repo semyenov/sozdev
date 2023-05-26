@@ -18,6 +18,8 @@ const { data } = await useFetch('/api/test', {
     name: 'Alexander',
   },
 })
+
+const { t } = useI18n()
 // const { themes, activeThemeName, activeTheme } = useAnu()
 </script>
 
@@ -27,7 +29,7 @@ const { data } = await useFetch('/api/test', {
       :params="{
         id: 'page-index',
         teleportId: 'teleport-layer--10',
-        title: $t('index.title'),
+        title: t('index.title'),
         class: ['no-header'],
         index: 10,
         border: 0,
@@ -94,7 +96,7 @@ const { data } = await useFetch('/api/test', {
           <div class="flex flex-row justify-center gap-2 text-3xl">
             <i class="i-logos:vue text-8xl" />
             <div
-              class="i-twemoji:grinning-face-with-smiling-eyes hover:i-twemoji:face-with-tears-of-joy text-7xl"
+              class="i-twemoji:grinning-face-with-smiling-eyes text-7xl hover:i-twemoji:face-with-tears-of-joy"
             />
             <i
               class="i-mdi:alarm text-6xl text-orange-400"

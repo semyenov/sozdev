@@ -12,6 +12,7 @@ import type {
 
 const route = useRoute('test')
 
+const { t } = useI18n()
 const uiSizeVariants: UISizeVariants[] = ['xs', 'sm', 'md', 'lg', 'xl']
 
 const uiColorVariants: UIColorVariants[] = [
@@ -110,7 +111,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
       :params="{
         id: 'page-test',
         teleportId: 'teleport-layer--10',
-        title: $t('test.title'),
+        title: t('test.title'),
         class: ['no-header'],
         index: 10,
         border: 0,
