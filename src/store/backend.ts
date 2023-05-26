@@ -180,8 +180,12 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
       if (hasOwnProperty(item, backendStoreIdentificator)) {
-        if (isClient && window[scope])
-          insert(window[scope], item)
+        if (isClient && window[scope]) {
+          try {
+            insert(window[scope], item)
+          }
+          catch (e) { console.log(e) }
+        }
 
         storeScopeMap.set(item[backendStoreIdentificator], copy(item))
       }
@@ -219,6 +223,6 @@ function formatHeaders(authorization: string | null): HeadersInit {
 
 function formatURI(scope: IMetaScope, ...args: string[]) {
   return [...(backendScopeTypesMap[scope] || scope), ...args]
-    .filter(item => !!item && item !== '')
+    .filter(item => `${item}`)
     .join('/')
 }
