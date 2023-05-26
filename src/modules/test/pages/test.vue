@@ -10,7 +10,6 @@ import type {
   UISizeVariants,
 } from '~/types/ui'
 
-const { t, d } = useI18n()
 const route = useRoute('test')
 
 const uiSizeVariants: UISizeVariants[] = ['xs', 'sm', 'md', 'lg', 'xl']
@@ -47,9 +46,9 @@ const usersOptions = (
 const input = ref<string | undefined>(undefined)
 const inputTab = ref<number>(0)
 
-const inputDatePicker = ref<Date | string>(
-  d(new Date().toISOString(), 'medium'),
-)
+// const inputDatePicker = ref<Date | string>(
+//   d(new Date().toISOString(), 'medium'),
+// )
 const tabs = [
   {
     title: 'Account',
@@ -111,22 +110,20 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
       :params="{
         id: 'page-test',
         teleportId: 'teleport-layer--10',
-        title: t('test.title'),
-        class: ['wb-left', 'no-close', 'border-none'],
+        title: $t('test.title'),
+        class: ['no-header'],
         index: 10,
         border: 0,
-        top: 0,
-        left: 45,
-        bottom: 0,
-        right: '50%',
-        height: '100%',
-        minheight: '100%',
-        width: 550,
-        minwidth: 500,
+        top: 44,
+        left: 44,
+        bottom: -1,
+        right: -1,
+        width: 400,
+        minwidth: 300,
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <SimpleBar
+      <UiSimplebar
         class="overflow-auto"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
@@ -426,7 +423,7 @@ const { ready: btnLoaded, start: startBtnLoading } = useTimeout(1500, { controls
             </template>
           </PageProse>
         </div>
-      </SimpleBar>
+      </UiSimplebar>
     </WinboxWindow>
   </div>
 </template>

@@ -2,8 +2,7 @@ import { range } from '@antfu/utils'
 import { faker } from '@faker-js/faker'
 import { bbox, randomPosition } from '@turf/turf'
 
-import jsonData from '../../modules/map/geojson/voronezh.json'
-
+import jsonData from '~/public/geojson/tula.json'
 import type { IObject } from '~/types'
 
 const fieldsIds = [
@@ -14,9 +13,11 @@ const fieldsIds = [
   'b65d673a-c71b-4ea0-9b7f-80a78f344a8b',
 ]
 
-const lineBBox = bbox(jsonData.features[0])
+const lineBBox = bbox(jsonData.features.find((item) => {
+  return item.id === 4775559
+}))
 
-export const items = range(0, 1000).map((_i) => {
+export const items = range(0, 10000).map((_i) => {
   const item: IObject = {
     _id: faker.datatype.uuid(),
     info: {

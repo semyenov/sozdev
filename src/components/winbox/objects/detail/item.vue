@@ -17,31 +17,30 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
   <AList
     v-if="fields"
     :items="fields"
-    class="grid-rows-[auto_1fr_auto] m-0 h-full"
+    class="grid-rows-[auto_1fr_auto] my-0 h-full"
   >
-    <!-- 👉 Slot: Before -->
     <template #before>
-      <AInput v-model="input" class="border-b py-0" append-inner-icon="i-carbon:search" input-wrapper-classes="rounded-0 border-none" :placeholder="$t('objects.item.search.placeholder')" />
+      <AInput v-model="input" color="primary" class="border-b spacing-95" append-inner-icon="i-ph:magnifying-glass" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="$t('objects.item.search.placeholder')" />
     </template>
 
     <template #default>
-      <SimpleBar
-        class="overflow-auto"
+      <UiSimplebar
+        class="overflow-auto py-2"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
       >
-        <div class="flex flex-grow flex-col">
+        <div class="divide-y divide-dashed">
           <AListItem
             v-for="field in fields"
             :key="field.key"
             :text="[field.val, 'text-sm']"
-            class="items-start border-b border-b-dashed"
+            class="items-start"
           >
             <template #append>
-              <span class="min-w-20% self-start text-right font-bold">
+              <span class="min-w-auto self-start text-right font-bold">
                 <AChip
                   color="success"
-                  class="rounded text-xs"
+                  class="abosolute right-4 rounded text-xs"
                 >
                   {{ $t(`objects.item.fields.${field.key}`) }}
                 </AChip>
@@ -49,15 +48,14 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
             </template>
           </AListItem>
         </div>
-      </SimpleBar>
+      </UiSimplebar>
     </template>
 
     <!-- 👉 Slot: After -->
     <template #after>
-      <hr class="mt-2">
       <AListItem
-        :subtitle="`${fields.length} fields found`"
-        class="opacity-75"
+        :subtitle="$t('objects.item.search.status', fields.length)"
+        class="border-t bg-white"
       />
     </template>
   </AList>

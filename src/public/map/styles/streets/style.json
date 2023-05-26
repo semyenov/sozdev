@@ -7,9 +7,13 @@
     "openmaptiles": {
       "type": "vector",
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=jSJRPdUXEsNgteCkgfs4"
+    },
+    "polygons-source-layer": {
+      "type": "geojson",
+      "data": "/geojson/tula.json"
     }
   },
-  "sprite": "http://localhost:3000/map/styles/streets/old/sprite",
+  "sprite": "http://localhost:3000/map/styles/streets/new/sprite",
   "glyphs": "http://localhost:3000/map/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
@@ -2912,7 +2916,7 @@
       "id": "water_name_line",
       "layout": {
         "symbol-placement": "line",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-max-width": 5,
         "text-size": 12,
@@ -2933,7 +2937,7 @@
       "filter": ["all", ["==", "$type", "Point"], ["!=", "class", "ocean"]],
       "id": "water_name_point",
       "layout": {
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-max-width": 5,
         "text-size": 12,
@@ -2955,7 +2959,7 @@
       "filter": ["all", ["==", "$type", "Point"], ["==", "class", "ocean"]],
       "id": "water_ocean_name_point",
       "layout": {
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-max-width": 5,
         "text-size": 12,
@@ -3000,7 +3004,7 @@
       "layout": {
         "icon-image": "{subclass}_11",
         "text-anchor": "top",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 9,
         "text-offset": [0, 0.6],
@@ -3048,7 +3052,7 @@
       "layout": {
         "icon-image": "{class}_11",
         "text-anchor": "top",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 9,
         "text-offset": [0, 0.6],
@@ -3080,13 +3084,13 @@
       "layout": {
         "icon-image": "{class}_11",
         "text-anchor": "top",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 9,
         "text-offset": [0, 0.6],
         "text-padding": 2,
         "text-size": 12,
-        "visibility": "visible"
+        "visibility": "none"
       },
       "metadata": {},
       "minzoom": 15,
@@ -3112,7 +3116,7 @@
         "icon-image": "{class}_11",
         "icon-size": 0.9,
         "text-anchor": "top",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 9,
         "text-offset": [0, 0.6],
@@ -3143,7 +3147,7 @@
         "icon-image": "{class}_11",
         "icon-size": 0.9,
         "text-anchor": "left",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 9,
         "text-offset": [0.9, 0],
@@ -3248,7 +3252,7 @@
       "layout": {
         "symbol-placement": "line",
         "text-anchor": "center",
-        "text-field": "{name:latin} {name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-offset": [0, 0.15],
         "text-size": {
@@ -3407,7 +3411,7 @@
         "icon-image": "airport_11",
         "icon-size": 1,
         "text-anchor": "top",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-max-width": 9,
         "text-offset": [0, 0.6],
@@ -3457,7 +3461,7 @@
       ],
       "id": "place_other",
       "layout": {
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-letter-spacing": 0.1,
         "text-max-width": 9,
@@ -3486,7 +3490,7 @@
       "filter": ["all", ["==", "class", "village"]],
       "id": "place_village",
       "layout": {
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-max-width": 8,
         "text-size": {
@@ -3520,7 +3524,7 @@
           ]
         },
         "text-anchor": "bottom",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-max-width": 8,
         "text-offset": [0, 0],
@@ -3557,7 +3561,7 @@
         },
         "icon-optional": false,
         "text-anchor": "bottom",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-max-width": 8,
         "text-offset": [0, 0],
@@ -3565,7 +3569,7 @@
           "base": 1.2,
           "stops": [
             [7, 14],
-            [11, 24]
+            [11, 18]
           ]
         }
       },
@@ -3584,7 +3588,7 @@
       "filter": ["all", ["==", "class", "state"]],
       "id": "place_state",
       "layout": {
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Regular"],
         "text-letter-spacing": 0.1,
         "text-padding": 2,
@@ -3612,7 +3616,7 @@
       "filter": ["all", ["==", "class", "country"], ["!has", "iso_a2"]],
       "id": "country_other",
       "layout": {
-        "text-field": "{name:latin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 6.25,
         "text-size": {
@@ -3643,7 +3647,7 @@
       ],
       "id": "country_3",
       "layout": {
-        "text-field": "{name:latin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 6.25,
         "text-size": {
@@ -3674,7 +3678,7 @@
       ],
       "id": "country_2",
       "layout": {
-        "text-field": "{name:latin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 6.25,
         "text-size": {
@@ -3705,7 +3709,7 @@
       ],
       "id": "country_1",
       "layout": {
-        "text-field": "{name:latin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 6.25,
         "text-size": {
@@ -3732,7 +3736,7 @@
       "filter": ["all", ["==", "class", "continent"]],
       "id": "continent",
       "layout": {
-        "text-field": "{name:latin}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-justify": "center",
         "text-size": 13,
@@ -3771,7 +3775,7 @@
         "icon-image": "{class}_11",
         "icon-size": 0.9,
         "text-anchor": "left",
-        "text-field": "{name}",
+        "text-field": "{name:ru}",
         "text-font": ["Noto Sans Italic"],
         "text-max-width": 9,
         "text-offset": [0.9, 0],
@@ -3791,6 +3795,31 @@
       "source": "openmaptiles",
       "source-layer": "poi",
       "type": "symbol"
+    },
+    {
+      "id": "polygons",
+      "type": "fill",
+      "source": "polygons-source-layer",
+
+      "paint": {
+        "fill-color": "#cccccc",
+        "fill-opacity": [
+          "case",
+          ["boolean", ["feature-state", "hover"], false],
+          0.3,
+          0
+        ]
+      }
+    },
+    {
+      "id": "polygons-lines",
+      "type": "line",
+      "source": "polygons-source-layer",
+      "layout": {},
+      "paint": {
+        "line-color": "#aaaaaa",
+        "line-width": 1
+      }
     }
   ],
   "metadata": {

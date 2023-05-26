@@ -3,13 +3,18 @@
     back: Назад
   text:
     not-found: Страница не найдена
+
 index:
   title: Добро пожаловать
+
 objects:
   title: Объекты
+  search:
+    placeholder: поиск по объектам
   item:
     search:
       placeholder: поиск по данным объекта
+      status: 0 полей | {n} поле | {n} поля | {n} полей
     fields:
       _id: идентификатор
       info: информация
@@ -20,13 +25,16 @@ objects:
       parent: родитель
       demands: потребности
       resources: ресурсы
-  search:
-    placeholder: поиск по объектам
+      meta: мета
+
 users:
   title: Пользователи
+  search:
+    placeholder: поиск по пользователям
   item:
     search:
       placeholder: поиск по данным пользователя
+      status: 0 полей | {n} полe | {n} поля | {n} полей
     fields:
       _id: идентификатор
       info: информация
@@ -35,7 +43,11 @@ users:
       role: роль
       email: эл. почта
       scopes: доступы
-content:
+      modules: модули
+      meta: мета
+
+help:
   title: Справка
+
 test:
   title: Тест

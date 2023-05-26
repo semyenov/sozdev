@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import { UiVirtualList, UsersItem } from '#components'
 
+import type { IUser } from '~/types'
+
 definePageMeta({
   layout: 'default',
   middleware: 'authorization',
 })
 
-const { t } = useI18n()
 const route = useRoute('users')
-
 const usersStore = useUsersStore()
-const usersIds = await usersStore.itemsGetter
-const usersGetter = usersStore.itemGetter
 
-const listComponent = ref<InstanceType<typeof UiVirtualList> | null>(null)
+const input = ref<string>('')
+
+const usersGetter = await usersStore.itemsGetter
+const userSearchGetter = usersStore.searchGetter
+const usersIds = asyncComputed(() => userSearchGetter(input.value))
+const userGetter = usersStore.itemGetter
+
+const listComponent = ref<ReturnType<typeof UiVirtualList<IUser>> | null>(null)
 
 const listScrollStep = 10
 const listScrollIndex = ref(listScrollStep)
@@ -40,34 +45,34 @@ function scrollClickHandler() {
       :params="{
         id: 'page-users',
         teleportId: 'teleport-layer--10',
-        title: t('users.title'),
-        class: ['wb-left', 'no-close'],
+        title: $t('users.title'),
+        class: ['no-header'],
         border: 0,
-        top: 0,
-        left: 45,
-        bottom: 0,
-        right: '50%',
-        height: '100%',
-        minheight: '100%',
-        width: 550,
-        minwidth: 500,
+        top: 44,
+        left: 44,
+        bottom: -1,
+        right: -1,
+        width: 400,
+        minwidth: 300,
         tether: ['left', 'top', 'bottom'],
       }"
     >
       <UiVirtualList
         ref="listComponent"
         key="page-users-index-virtuallist"
-        :keeps="50"
-        :page-mode="false"
-        :data-ids="usersIds"
-        :data-getter="usersGetter"
+        :keeps="25"
+        :estimate-size="70"
+        :data-ids="usersIds || usersGetter"
+        :data-getter="userGetter"
         :data-component="UsersItem"
         data-key="page-users-index-virtuallist"
-        wrap-class="flex flex-col w-full"
-        class="flex flex-grow flex-col items-center gap-6 overflow-auto p-4"
-        :estimate-size="70"
-        item-class="mb-4"
-      />
+        class="overflow-auto p-4"
+        item-class="mb-3"
+      >
+        <template #header>
+          <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="$t('users.search.placeholder')" />
+        </template>
+      </UiVirtualList>
     </WinboxWindow>
 
     <div class="absolute bottom-8 right-8 z-10 flex flex-col gap-4">

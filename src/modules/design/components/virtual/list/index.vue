@@ -1,129 +1,61 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends { _id: string }">
 import { range } from '@antfu/utils'
+import { nanoid } from 'nanoid'
 
-import { SimpleBar } from '#components'
+import { UiSimplebar } from '#components'
 
 import type { VirtualRange } from '~/utils'
 
-import type { ComputedRef, PropType } from 'vue'
+import type { ComputedRef } from 'vue'
 
-const props = defineProps({
-  dataIds: {
-    type: Array as PropType<string[]>,
-    default: () => [] as string[],
-  },
-  dataGetter: {
-    type: Function as PropType<(id: string) => Promise<ComputedRef>>,
-    required: true,
-  },
-  dataComponent: {
-    type: [Object, Function] as PropType<Component>,
-    required: false,
-  },
-  dataKey: {
-    type: String,
-    default: '',
-  },
-  dataCursor: {
-    type: Number,
-    default: () => 0,
-  },
-
-  keeps: {
-    type: Number,
-    default: 30,
-  },
-  extraProps: {
-    type: Object,
-  },
-  estimateSize: {
-    type: Number,
-    default: 100,
-  },
-
-  direction: {
-    type: String,
-    default: 'vertical', // the other value is horizontal
-  },
-  start: {
-    type: Number,
-    default: 0,
-  },
-  offset: {
-    type: Number,
-    default: 0,
-  },
-  topThreshold: {
-    type: Number,
-    default: 0,
-  },
-  bottomThreshold: {
-    type: Number,
-    default: 0,
-  },
-  pageMode: {
-    type: Boolean,
-    default: false,
-  },
-  rootTag: {
-    type: String,
-    default: 'div',
-  },
-  wrapTag: {
-    type: String,
-    default: 'div',
-  },
-  wrapClass: {
-    type: [String, Array] as PropType<string | string[]>,
-    default: '',
-  },
-  wrapStyle: {
-    type: Object,
-    default: () => ({}),
-  },
-  itemWrapTag: {
-    type: String,
-    default: 'div',
-  },
-  itemTag: {
-    type: String,
-    default: 'div',
-  },
-  itemClass: {
-    type: [String, Array] as PropType<string | string[]>,
-    default: '',
-  },
-  itemClassAdd: {
-    type: Function as PropType<(i: number) => string>,
-  },
-  itemStyle: {
-    type: Object,
-  },
-  headerTag: {
-    type: String,
-    default: 'div',
-  },
-  headerClass: {
-    type: String,
-    default: '',
-  },
-  headerStyle: {
-    type: Object,
-  },
-  footerTag: {
-    type: String,
-    default: 'div',
-  },
-  footerClass: {
-    type: String,
-    default: '',
-  },
-  footerStyle: {
-    type: Object,
-  },
-  itemScopedSlots: {
-    type: Object,
-  },
+const props = withDefaults(defineProps<{
+  dataIds: string[]
+  dataGetter: (id: string) => Promise<ComputedRef<T | undefined>>
+  dataComponent?: Component<{ item: T; index: number }>
+  dataKey: string
+  dataCursor?: number
+  keeps?: number
+  extraProps?: Record<string, any>
+  estimateSize?: number
+  direction?: 'vertical' | 'horizontal'
+  start?: number
+  offset?: number
+  topThreshold?: number
+  bottomThreshold?: number
+  pageMode?: boolean
+  rootTag?: string
+  wrapTag?: string
+  wrapClass?: string | string[]
+  wrapStyle?: Record<string, any>
+  itemWrapTag?: string
+  itemTag?: string
+  itemClass?: string | string[]
+  itemClassAdd?: (i: number) => string
+  itemStyle?: Record<string, any>
+  headerTag?: string
+  headerClass?: string
+  headerStyle?: Record<string, any>
+  footerTag?: string
+  footerClass?: string
+  footerStyle?: Record<string, any>
+  itemScopedSlots?: Record<string, any>
+}>(), {
+  dataKey: nanoid(),
+  dataCursor: 0,
+  keeps: 30,
+  estimateSize: 100,
+  direction: 'vertical', // the other value is horizontal
+  start: 0,
+  offset: 0,
+  topThreshold: 0,
+  bottomThreshold: 0,
+  pageMode: false,
+  rootTag: 'div',
+  wrapTag: 'div',
+  itemWrapTag: 'div',
+  itemTag: 'div',
+  headerTag: 'div',
+  footerTag: 'div',
 })
 
 const emit = defineEmits<{
@@ -137,7 +69,7 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 
-const rootRef = ref<InstanceType<typeof SimpleBar> | null>(null)
+const rootRef = ref<InstanceType<typeof UiSimplebar> | null>(null)
 const scrollRef = ref<HTMLElement | null>(null)
 
 const shepherdRef = ref<HTMLElement | null>(null)
@@ -196,10 +128,7 @@ onMounted(() => {
     return
   }
 
-  scrollRef.value = rootRef.value?.$refs.scrollElement as HTMLElement
-  scrollRef.value?.addEventListener('scroll', onScroll, {
-    passive: false,
-  })
+  scrollRef.value = rootRef.value!.$refs.scrollRef as HTMLElement
 })
 
 onUnmounted(() => {
@@ -242,15 +171,11 @@ watch(
 )
 watch(
   () => props.start,
-  (start) => {
-    scrollToIndex(start)
-  },
+  scrollToIndex,
 )
 watch(
   () => props.offset,
-  (offset) => {
-    scrollToOffset(offset)
-  },
+  scrollToOffset,
 )
 
 function onScroll(evt: Event) {
@@ -400,12 +325,13 @@ function getWrapperStyle(
 </script>
 
 <template>
-  <SimpleBar
+  <UiSimplebar
     ref="rootRef"
     :key="`${props.dataKey}-list_root`"
     :scrollbar-min-size="100"
     :scrollbar-max-size="300"
     role="list"
+    @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)"
   >
     <!-- @scroll="(evt: UIEvent) => !props.pageMode && onScroll(evt)" -->
     <UiVirtualListSlot
@@ -466,5 +392,5 @@ function getWrapperStyle(
     >
       <slot name="footer" />
     </UiVirtualListSlot>
-  </SimpleBar>
+  </UiSimplebar>
 </template>

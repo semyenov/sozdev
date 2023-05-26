@@ -4,7 +4,7 @@ import type { NuxtComponentMetaNames } from '#nuxt-component-meta/types'
 export type WinBoxParamsTether = 'right' | 'left' | 'top' | 'bottom'
 
 export interface WinBoxParams extends WinBox.Params {
-  id: string
+  id?: string
   teleportId: string
 
   dataComponent?: NuxtComponentMetaNames
@@ -26,6 +26,13 @@ export interface WinBoxBBox {
 }
 
 export interface WinBoxState {
+  index?: number
+
+  tt?: boolean
+  tr?: boolean
+  tb?: boolean
+  tl?: boolean
+
   max: boolean
   min: boolean
   full: boolean

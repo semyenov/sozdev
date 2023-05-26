@@ -1,4 +1,4 @@
-import { addComponent, addComponentsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponentsDir, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 export default defineNuxtModule<{}>({
   meta: {
@@ -23,11 +23,11 @@ export default defineNuxtModule<{}>({
 
     nuxt.options.css.push(resolve('assets/styles/simplebar.postcss'))
 
-    await addComponent({
-      name: 'SimpleBar',
-      filePath: 'simplebar-vue/dist/simplebar-vue.esm.js',
-      global: true,
-    })
+    // await addComponent({
+    //   name: 'SimpleBar',
+    //   filePath: 'simplebar-vue/dist/simplebar-vue.esm.js',
+    //   global: true,
+    // })
 
     await addComponentsDir({
       path: resolve('components'),

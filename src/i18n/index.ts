@@ -1,6 +1,8 @@
 import type { DateTimeFormat } from '@intlify/core-base'
 import type { LocaleObject } from 'vue-i18n-routing'
 
+export const defaultLocale = 'ru'
+
 const localesList: {
   [key: string]: LocaleObject
 } = {
@@ -110,8 +112,6 @@ const numberFormat = {
   },
 }
 
-export const defaultLocale = 'ru'
-
 export const availableLocales = [
   ...Object.keys(localesList).filter(item => localesList[item].available),
 ]
@@ -135,7 +135,3 @@ export const numberFormats = Object.freeze({
     {},
   ),
 })
-
-export function onLanguageSwitched() {
-  return window.location.reload()
-}

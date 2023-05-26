@@ -18,6 +18,7 @@ const { data } = await useFetch('/api/test', {
     name: 'Alexander',
   },
 })
+// const { themes, activeThemeName, activeTheme } = useAnu()
 </script>
 
 <template>
@@ -27,21 +28,19 @@ const { data } = await useFetch('/api/test', {
         id: 'page-index',
         teleportId: 'teleport-layer--10',
         title: $t('index.title'),
-        class: ['wb-left', 'no-close'],
+        class: ['no-header'],
         index: 10,
         border: 0,
-        top: 0,
-        left: 45,
-        bottom: 0,
-        right: '50%',
-        height: '100%',
-        minheight: '100%',
-        width: 550,
-        minwidth: 400,
+        top: 44,
+        left: 44,
+        bottom: -1,
+        right: -1,
+        width: 400,
+        minwidth: 300,
         tether: ['left', 'top', 'bottom'],
       }"
     >
-      <SimpleBar
+      <UiSimplebar
         class="chroma-linear-3-lab-blue-100-red-100 chroma-shape-[to_bottom] overflow-auto"
         :scrollbar-min-size="100"
         :scrollbar-max-size="300"
@@ -65,6 +64,7 @@ const { data } = await useFetch('/api/test', {
             {{ data.text }}
           </PageProse>
 
+          <!-- {{ themes }} -->
           <!-- <PageProse
             v-if="data"
             v-motion
@@ -110,7 +110,7 @@ const { data } = await useFetch('/api/test', {
             />
           </div>
         </div>
-      </SimpleBar>
+      </UiSimplebar>
     </WinboxWindow>
   </div>
 </template>

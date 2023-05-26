@@ -1,7 +1,7 @@
 /* @import url('winbox/dist/css/winbox.min.css'); */
 
 .winbox {
-  @apply flex flex-col border shadow-none rounded-none fixed backdrop-filter backdrop-blur-10 bg-white/85;
+  @apply flex flex-col border border-warmGray-300 shadow-warmGray/40 shadow-md rounded-none fixed backdrop-filter backdrop-blur-20;
 
   transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
   transition-timing-function: cubic-bezier(0.3, 1, 0.3, 1);
@@ -21,19 +21,19 @@
   }
 
   .wb-e {
-    @apply -right-3 top-0 bottom-0 w-3 border-l rounded-l-none! cursor-e-resize;
+    @apply -right-2.5 top-0 bottom-0 w-2.5 border-l rounded-l-none! cursor-e-resize;
   }
 
   .wb-w {
-    @apply -left-3 top-0 bottom-0 w-3 border-r rounded-r-none! cursor-w-resize;
+    @apply -left-2.5 top-0 bottom-0 w-2.5 border-r rounded-r-none! cursor-w-resize;
   }
 
   .wb-n {
-    @apply -top-3 right-0 left-0 h-3 border-b rounded-b-none! cursor-n-resize;
+    @apply -top-2.5 right-0 left-0 h-2.5 border-b rounded-b-none! cursor-n-resize;
   }
 
   .wb-s {
-    @apply -bottom-3 right-0 left-0 h-3 border-t rounded-t-none! cursor-s-resize;
+    @apply -bottom-2.5 right-0 left-0 h-2.5 border-t rounded-t-none! cursor-s-resize;
   }
 
   .wb-e,
@@ -43,7 +43,7 @@
     @apply absolute bg-transparent border-transparent rounded-full;
 
     &:hover {
-      @apply dark:bg-gray-700 bg-gray-300/50 border-gray-300 transition-all duration-500;
+      @apply dark:bg-gray-700 bg-warmGray-300/50 border-warmGray-400/50 transition-all duration-1000;
     }
   }
 
@@ -87,19 +87,21 @@
     z-index: 2;
   }
 
+
+
   .wb-header {
-    @apply flex flex-row px-0 py-0 dark:text-default-400 text-gray-500 justify-center relative bg-gray-50 border-b;
+    @apply flex flex-row px-0 py-0 dark:text-default-400 text-gray-500 justify-center relative bg-warmGray-100 border-b;
 
     .wb-drag {
       @apply flex flex-grow overflow-hidden p-0 justify-center items-center py-3 cursor-grab;
 
       .wb-title {
-        @apply inline text-xl font-extrabold font-sans w-full leading-none pl-4 pr-0 text-medium-emphasis text-truncate;
+        @apply inline text-lg font-extrabold font-sans w-full leading-none pl-4 pr-0 text-medium-emphasis text-truncate;
       }
     }
 
     .wb-control {
-      @apply flex flex-row gap-x-2 pl-0 pr-4 items-center justify-center;
+      @apply flex flex-row gap-x-1 pl-0 pr-4 items-center justify-center;
 
       & * {
         @apply cursor-pointer;
@@ -107,25 +109,32 @@
     }
   }
 
-  .wb-body {
-    @apply flex flex-grow w-full h-auto max-h-full overflow-inherit top-0! relative rounded-b-none;
+  &.no-header .wb-header {
+    @apply hidden!;
+  }
 
-    overflow: auto;
+  &.no-close .wb-close {
+    @apply hidden!;
+  }
+
+  .wb-body {
+    @apply flex flex-grow w-full h-auto max-h-full overflow-auto top-0! relative rounded-b-none [will-change:contents];
+
     -webkit-overflow-scrolling: touch;
 
     /* overflow-scrolling: touch; */
-    will-change: contents;
 
-    .wb-content {
+
+    .wb-wrapper {
       @apply top-0 left-0 w-full h-full m-0 absolute;
     }
   }
 
   &.focus {
-    @apply shadow-xl shadow-default dark:shadow-gray-800 border-gray-300;
+    @apply shadow shadow-warmGray/40 dark:shadow-gray-800 border-warmGray-300;
 
     .wb-header {
-      @apply flex flex-row bg-gray-100;
+      @apply flex flex-row bg-warmGray-100;
     }
   }
 
@@ -136,7 +145,7 @@
       @apply flex relative! border-b-none;
 
       .wb-control {
-        @apply px-2 py-2;
+        @apply py-2;
 
         * {
           @apply h-full;
@@ -150,7 +159,7 @@
 
       .wb-drag {
         .wb-title {
-          @apply text-base! pl-2;
+          @apply text-base!;
         }
       }
     }
@@ -184,6 +193,7 @@
     @apply border-r-none border-t-none border-b-none;
   }
 }
+
 
 body.wb-lock .winbox {
   will-change: left, top, width, height;

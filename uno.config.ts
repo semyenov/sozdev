@@ -18,6 +18,12 @@ export default defineConfig({
   // ...unoConfig,
 
   include: [/.*\/anu-vue\.js(.*)?$/, /^.*\.vue$/, /^.*\.md$/],
+  safelist: [
+    'i-carbon:screen',
+    'i-carbon:minimize',
+    'i-carbon:maximize',
+    'i-carbon:information-disabled',
+  ],
 
   presets: [
     presetIcons({

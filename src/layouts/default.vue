@@ -1,33 +1,31 @@
 <script setup lang="ts">
+const route = useRoute()
 const keys = useMagicKeys()
 const tildaKey = keys['\\']
-const { locale } = useI18n()
 
 watch(tildaKey, v => v && toggleDark())
-// const authorizationStore = useAuthorizationStore()
 </script>
 
 <template>
-  <div class="box-color__default--3 flex flex-grow">
-    <NuxtLoadingIndicator class="absolute z-100 h-4 w-full" />
-    <MapLibre />
-    <div
-      class="flex flex-grow flex-col items-start justify-items-stretch text-left"
-    >
-      <div class="flex flex-grow flex-row">
-        <PageSidebar class="z-30" />
-        <div class="flex flex-grow flex-col">
-          <NuxtPage />
-        </div>
-        <div class="fixed relative left-0 right-0 h-0 w-full flex flex-col">
-          <div id="teleport-layer--10" class="z-10" />
-          <div id="teleport-layer--20" class="z-20" />
-        </div>
+  <div class="h-full w-full flex flex-row">
+    <div id="teleport-layer--10" class="absolute left-0 right-0 z-100 h-0 w-full" />
+    <div id="teleport-layer--20" class="absolute left-0 right-0 z-200 h-0 w-full" />
+    <PageSidebar class="z-300 shadow-lg shadow-warmGray/40 backdrop-blur-20 backdrop-filter" />
 
-        <div class="flex flex-grow flex-col">
-          <WinboxRoot />
+    <MapLibre />
+
+    <div class="w-full flex flex-col">
+      <div class="z-300 h-45px flex flex-row items-center justify-between border-b border-warmGray-300 bg-warmGray-200/80 px-4 shadow-warmGray/20 shadow-xl backdrop-blur-10 backdrop-filter">
+        <NuxtLoadingIndicator class="absolute z-100 w-full" />
+        <div class="text-xl font-extrabold">
+          {{ $t(`${route.name}.title`) }}
         </div>
+        <AuthorizationCurrent />
       </div>
+      <div class="nuxt-page flex flex-grow">
+        <NuxtPage />
+      </div>
+      <WinboxRoot />
     </div>
   </div>
 </template>

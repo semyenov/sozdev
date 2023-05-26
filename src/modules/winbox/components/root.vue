@@ -23,9 +23,11 @@ const { vueApp } = useNuxtApp()
 
         <!-- loading state -->
         <template #fallback>
-          <div class="m-auto text-sm">
-            LOADING
-          </div>
+          <ALoader
+            class="[--a-loader-overlay-bg-c:var(--a-surface-c)]"
+          >
+            <i class="i-bx-bxs-heart animate-heart-beat animate-count-infinite text-6xl text-red-500" />
+          </ALoader>
         </template>
       </Suspense>
     </WinboxWindow>

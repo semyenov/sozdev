@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import type { IObject } from '~/types'
 
-import type { PropType } from 'vue'
-
-const props = defineProps({
-  index: {
-    type: Number,
-    default: 0,
-  },
-  item: {
-    type: Object as PropType<IObject>,
-    required: true,
-  },
+const props = withDefaults(defineProps<{
+  index: number
+  item: IObject
+}>(), {
+  index: 0,
 })
 
 const item = toRef(props, 'item')
 
 const winboxTitle = `${item.value.info.name}`
 const winboxId = `winbox-detail-${item.value._id}`
-
 const { winboxWindow, createWindow } = useWinbox(winboxId)
 
 function handleOpen() {
@@ -37,7 +30,12 @@ function handleOpen() {
       },
 
       tether: ['top', 'right', 'bottom'],
-      class: ['wb-right'],
+      class: [],
+
+      top: 44,
+      bottom: -1,
+      left: 44,
+      right: -1,
     })
 
     return
@@ -52,21 +50,24 @@ function handleOpen() {
 
 <template>
   <ACard
-    class="cursor-pointer select-none shadow spacing-70 [&_.a-title]:leading-tight"
+    class="cursor-pointer select-none text-sm shadow spacing-80"
     :variant="winboxWindow ? 'fill' : 'light'"
-    :title="`# ${item.info.name}`"
+    :title="[`${item.info.name}`, 'mb-1 leading-tight']"
     :subtitle="item.info!.code"
     @click="handleOpen"
   >
     <template v-if="winboxWindow" #header-right>
       <!-- Action buttons -->
-      <div v-if="winboxWindow?.winbox" class="flex flex-wrap gap-x-4 gap-y-2">
+      <div
+        v-if="winboxWindow?.winbox"
+        class="ml-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 spacing-100"
+      >
         <ABtn
-          class="inline-flex text-xl"
           color="info"
           variant="light"
-          icon="i-carbon:bring-to-front"
+          icon="i-ph:cards"
           icon-only
+          class="text-base"
         />
       </div>
     </template>

@@ -8,7 +8,7 @@ import {
   defaultLocale,
   locales,
 } from './src/i18n'
-import vueI18nOptions from './i18n.config'
+import i18nConfig from './i18n.config'
 
 const rootDir = resolve(__dirname)
 const srcDir = resolve(rootDir, 'src')
@@ -20,6 +20,8 @@ const componentsDir = resolve(srcDir, 'components')
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  // ssr: false,
+
   srcDir,
   appDir,
   alias: {
@@ -33,11 +35,10 @@ export default defineNuxtConfig({
   telemetry: false,
 
   runtimeConfig: {
-    apiUri: 'http://localhost:3000/api',
+    apiUri: 'http://tsc_devcontainer-app-1:8080/',
 
     public: {
-      test: 1,
-      apiUri: '/api',
+      apiUri: 'http://localhost:8080/',
     },
   },
 
@@ -45,7 +46,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       title: 'A Better Nuxt 3 Starter',
-      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
+      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=0',
       link: [
         {
           rel: 'icon',
@@ -146,25 +147,43 @@ export default defineNuxtConfig({
     '@vue-macros/nuxt',
     '@vueuse/motion/nuxt',
     'nuxt-typed-router',
-    'nuxt-component-meta',
+    // 'nuxt-component-meta',
 
     '@nuxt/devtools',
   ],
 
   // componentMeta: {
-  //   global: true,
+  //   globalsOnly: true,
   // },
 
   anu: {
     themes: {
       light: {
+        class: '',
         colors: {
           primary: '0, 0%, 60%',
+          success: '94.5, 100%, 39.6%',
+          info: '200.1, 100%, 54.3%',
+          warning: '42.4, 100%, 50%',
+          danger: '358.3, 100%, 64.9%',
+        },
+        cssVars: {
+          'body-bg-c': '0,4.8%,95.9%',
+          'surface-c': '0, 0%, 100%',
         },
       },
       dark: {
+        class: 'dark',
         colors: {
           primary: '0, 0%, 10%',
+          success: '94.5, 73%, 39.6%',
+          info: '200.1, 73%, 54.3%',
+          warning: '42.4, 73%, 50%',
+          danger: '358.3, 73%, 64.9%',
+        },
+        cssVars: {
+          'body-bg-c': 'var(--a-primary-hue), 15%, 5%',
+          'surface-c': 'var(--a-primary-hue), 7%, 10%',
         },
       },
     },
@@ -210,19 +229,18 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: [
       'defineStore',
-      ['defineStore', 'definePiniaStore'],
       'storeToRefs',
     ],
   },
 
   i18n: {
+    vueI18n: i18nConfig,
+
     defaultLocale,
     locales,
-
-    lazy: true,
+    lazy: false,
     strategy: 'no_prefix',
     langDir: 'i18n/locales',
-    // onLanguageSwitched,
 
     detectBrowserLanguage: {
       useCookie: true,
@@ -233,12 +251,14 @@ export default defineNuxtConfig({
   },
 
   // https://content.nuxtjs.org/api/configuration
-  content: {
-    api: { baseURL: '/_content' },
-  },
+  // content: {
+  //   api: {
+  //     baseURL: '/_content',
+  //   },
+  // },
 
   nuxtTypedRouter: {
-    // experimentalPathCheck: true,
+    // pathCheck: true,
     plugin: true,
 
     strict: {

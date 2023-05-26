@@ -3,13 +3,17 @@
     back: Back
   text:
     not-found: Page not found
+
 index:
   title: Welcome
+
 objects:
   title: Objects
+  search:
+    placeholder: search objects
   item:
     search:
-      placeholder: search for object data
+      placeholder: search object data
     fields:
       _id: identifier
       demands: needs
@@ -20,13 +24,14 @@ objects:
       parent: parent
       resources: resources
       type: type
-  search:
-    placeholder: search for objects
+
 users:
   title: Users
+  search:
+    placeholder: search users
   item:
     search:
-      placeholder: search for user data
+      placeholder: search user data
     fields:
       _id: identifier
       email: email
@@ -35,7 +40,9 @@ users:
       role: role
       scopes: accesses
       type: type
-content:
+
+help:
   title: Help
+
 test:
   title: Test
