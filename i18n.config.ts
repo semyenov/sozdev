@@ -1,8 +1,6 @@
 import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from './src/i18n'
 
-import type { I18nOptions } from '@nuxtjs/i18n/dist/runtime/composables'
-
-export default {
+export default defineI18nConfig(() => ({
   legacy: false,
   locale: defaultLocale,
   fallbackLocale: defaultLocale,
@@ -25,4 +23,4 @@ export default {
       return choicesLength < 4 ? 2 : 3
     },
   },
-} as I18nOptions
+}))

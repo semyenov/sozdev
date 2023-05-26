@@ -8,7 +8,6 @@ import {
   defaultLocale,
   locales,
 } from './src/i18n'
-import i18nConfig from './i18n.config'
 
 const rootDir = resolve(__dirname)
 const srcDir = resolve(rootDir, 'src')
@@ -234,7 +233,6 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    vueI18n: i18nConfig,
 
     defaultLocale,
     locales,

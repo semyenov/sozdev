@@ -19,13 +19,13 @@ const lineBBox = bbox(jsonData.features.find((item) => {
 
 export const items = range(0, 10000).map((_i) => {
   const item: IObject = {
-    _id: faker.datatype.uuid(),
+    _id: faker.string.uuid(),
     info: {
-      name: `${faker.address.street()}, ${faker.address.buildingNumber()}`,
-      code: `${faker.random.alpha(3)}-${faker.random.numeric()}`,
+      name: `${faker.location.street()}, ${faker.location.buildingNumber()}`,
+      code: `${faker.string.alpha(3)}-${faker.string.numeric()}`,
     },
     feature: {
-      id: faker.datatype.uuid(),
+      id: faker.string.uuid(),
       type: 'Feature',
       geometry: {
         type: 'Point',
@@ -33,28 +33,28 @@ export const items = range(0, 10000).map((_i) => {
       },
       properties: {
         color: Array.from({ length: 3 }, () =>
-          faker.datatype.number({ min: 0, max: 255 }),
+          faker.number.float({ min: 0, max: 255 }),
         ) as [number, number, number],
 
         icon: 'map-icons/medical/plus_empty/7.svg',
       },
     },
     type: 'test',
-    level: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
+    level: faker.number.float({ min: 0, max: 1000, precision: 100 }),
     fields: fieldsIds.reduce((prev, id) => ({ [id]: faker.internet.domainName(), ...prev }), {}),
     parent: null,
     demands: {
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
     },
     resources: {
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
-      [faker.datatype.uuid()]: faker.datatype.number({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
+      [faker.string.uuid()]: faker.number.float({ min: 0, max: 1000, precision: 100 }),
     },
   }
 

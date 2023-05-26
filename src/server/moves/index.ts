@@ -7,19 +7,19 @@ import type { IMove, IMoveType } from '~/types/'
 
 export const items = range(0, 10).map((_i) => {
   const receiver
-    = objects[faker.datatype.number({ min: 0, max: objects.length - 1 })]
+    = objects[faker.number.float({ min: 0, max: objects.length - 1 })]
   const sender
-    = objects[faker.datatype.number({ min: 0, max: objects.length - 1 })]
+    = objects[faker.number.float({ min: 0, max: objects.length - 1 })]
   const item: IMove = {
-    _id: faker.datatype.uuid(),
+    _id: faker.string.uuid(),
     info: {
-      name: `${faker.address.street()}, ${faker.address.buildingNumber()}`,
+      name: `${faker.location.street()}, ${faker.location.buildingNumber()}`,
     },
     receiver: receiver._id,
     sender: sender._id,
     resource: 'oil',
-    value: faker.datatype.number({ min: 100, max: 1000 }),
-    type: faker.datatype.number({
+    value: faker.number.float({ min: 100, max: 1000 }),
+    type: faker.number.float({
       min: 10,
       max: 40,
       precision: 10,
