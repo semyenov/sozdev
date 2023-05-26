@@ -247,7 +247,6 @@ export default defineNuxtConfig({
       cookieKey: 'X-Locale',
       redirectOn: 'root',
     },
-    vueI18n: vueI18nOptions,
   },
 
   // https://content.nuxtjs.org/api/configuration
