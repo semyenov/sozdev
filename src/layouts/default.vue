@@ -2,6 +2,7 @@
 const route = useRoute()
 const keys = useMagicKeys()
 const tildaKey = keys['\\']
+const { t } = useI18n()
 
 watch(tildaKey, v => v && toggleDark())
 </script>
@@ -18,7 +19,7 @@ watch(tildaKey, v => v && toggleDark())
       <div class="z-300 h-45px flex flex-row items-center justify-between border-b border-warmGray-300 bg-warmGray-200/80 px-4 shadow-warmGray/20 shadow-xl backdrop-blur-10 backdrop-filter">
         <NuxtLoadingIndicator class="absolute z-100 w-full" />
         <div class="text-xl font-extrabold">
-          {{ $t(`${route.name}.title`) }}
+          {{ t(`${route.name}.title`) }}
         </div>
         <AuthorizationCurrent />
       </div>

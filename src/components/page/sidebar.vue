@@ -3,7 +3,7 @@
 // const router = useRouter()
 
 const localePath = useLocalePath()
-const { setLocale, locale } = useI18n()
+const { setLocale, locale, t } = useI18n()
 
 // const activeTab = ref(0)
 // const tabs: {
@@ -89,7 +89,7 @@ const { setLocale, locale } = useI18n()
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('index.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="t('index.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -104,7 +104,7 @@ const { setLocale, locale } = useI18n()
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('objects.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="t('objects.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -120,7 +120,7 @@ const { setLocale, locale } = useI18n()
             :variant="isActive ? 'fill' : 'text'"
             @click="navigate"
           >
-            <ATooltip placement="right" transition="scroll-x" :text="$t('users.title')" />
+            <ATooltip placement="right" transition="scroll-x" :text="t('users.title')" />
           </ABtn>
         </ABadge>
       </NuxtLink>
@@ -136,7 +136,7 @@ const { setLocale, locale } = useI18n()
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip placement="right" transition="scroll-x" :text="$t('help.title')" />
+          <ATooltip placement="right" transition="scroll-x" :text="t('help.title')" />
         </ABtn>
       </NuxtLink>
       <NuxtLink
@@ -151,7 +151,7 @@ const { setLocale, locale } = useI18n()
           :variant="isActive ? 'fill' : 'text'"
           @click="navigate"
         >
-          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="scroll-x" :text="$t('test.title')" />
+          <ATooltip class="[&_.a-tooltip]:(bg-danger px-4)" placement="right" transition="scroll-x" :text="t('test.title')" />
         </ABtn>
       </NuxtLink>
     </div>

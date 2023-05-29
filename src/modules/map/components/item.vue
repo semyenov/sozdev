@@ -318,10 +318,11 @@ async function createMaplibreglMap() {
     maplibreglMap.on('mouseenter', 'objects', (e) => {
       maplibreglMap.getCanvas().style.cursor = 'pointer'
 
-      const feature = e.features![0] as Feature<
+      const feature = e.features![0] as unknown as Feature<
         Point,
         { id: string; label: string }
       > & { state: { hidden: boolean } }
+
       if (feature.state.hidden)
         return
 
@@ -340,7 +341,7 @@ async function createMaplibreglMap() {
     maplibreglMap.on('mouseenter', 'objects-uncluster', (e) => {
       maplibreglMap.getCanvas().style.cursor = 'pointer'
 
-      const feature = e.features![0] as Feature<
+      const feature = e.features![0] as unknown as Feature<
         Point,
         { id: string; label: string }
       >
@@ -357,7 +358,7 @@ async function createMaplibreglMap() {
     })
 
     maplibreglMap.on('click', 'objects-uncluster', (e) => {
-      const feature = e.features![0] as Feature<
+      const feature = e.features![0] as unknown as Feature<
         Point,
         { id: string; label: string }
       >
@@ -386,7 +387,7 @@ async function createMaplibreglMap() {
     })
 
     maplibreglMap.on('click', 'objects', (e) => {
-      const feature = e.features![0] as Feature<
+      const feature = e.features![0] as unknown as Feature<
         Point,
         { id: string; label: string }
       > & { state: { hidden?: boolean } }

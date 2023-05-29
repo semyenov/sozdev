@@ -95,6 +95,11 @@ export default defineNuxtConfig({
     shim: false,
     strict: true,
     typeCheck: true,
+    // tsConfig: {
+    //   compilerOptions: {
+    //     moduleResolution: 'bundler',
+    //   },
+    // },
   },
 
   vue: {
@@ -107,7 +112,7 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
-      ({ isDev }) => !isDev && 'flexsearch',
+      // ({ isDev }) => !isDev && 'flexsearch',
       ({ isDev }) => isDev && '@deck.gl/layers',
       ({ isDev }) => isDev && '@deck.gl/mapbox',
     ],

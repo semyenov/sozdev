@@ -9,6 +9,8 @@ const props = defineProps({
 const objectsStore = useObjectsStore()
 const item = await objectsStore.itemGetter(props.id)
 
+const { t } = useI18n()
+
 const input = ref('')
 const fields = computed(() => item.value && Object.entries(item.value).filter(([key, val]) => (input.value === '' || key.concat(' ', JSON.stringify(val)).includes(input.value)) && val !== undefined).map(([key, val]) => ({ key, val })))
 </script>
@@ -20,7 +22,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
     class="grid-rows-[auto_1fr_auto] my-0 h-full"
   >
     <template #before>
-      <AInput v-model="input" color="primary" class="border-b spacing-95" append-inner-icon="i-ph:magnifying-glass" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="$t('objects.item.search.placeholder')" />
+      <AInput v-model="input" color="primary" class="border-b spacing-95" append-inner-icon="i-ph:magnifying-glass" input-wrapper-classes="rounded-0 border-none  bg-white" :placeholder="t('objects.item.search.placeholder')" />
     </template>
 
     <template #default>
@@ -42,7 +44,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
                   color="success"
                   class="abosolute right-4 rounded text-xs"
                 >
-                  {{ $t(`objects.item.fields.${field.key}`) }}
+                  {{ t(`objects.item.fields.${field.key}`) }}
                 </AChip>
               </span>
             </template>
@@ -54,7 +56,7 @@ const fields = computed(() => item.value && Object.entries(item.value).filter(([
     <!-- 👉 Slot: After -->
     <template #after>
       <AListItem
-        :subtitle="$t('objects.item.search.status', fields.length)"
+        :subtitle="t('objects.item.search.status', fields.length)"
         class="border-t bg-white"
       />
     </template>
