@@ -16,11 +16,11 @@
   "sprite": [
     {
       "id": "default",
-      "url": "http://localhost:3000/map/styles/streets/old/sprite"
+      "url": "http://localhost:3000/map/styles/streets/default/sprite"
     },
     {
-      "id": "icon",
-      "url": "http://localhost:3000/map/styles/streets/new/sprite"
+      "id": "custom",
+      "url": "http://localhost:3000/map/styles/streets/custom/sprite"
     }
   ],
   "glyphs": "http://localhost:3000/map/fonts/{fontstack}/{range}.pbf",

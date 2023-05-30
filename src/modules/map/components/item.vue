@@ -64,35 +64,10 @@ let maplibreglMarker: maplibregl.Marker
 let deckOverlay: TMapboxOverlay
 
 const distancePixelsAnimation = ref<number>(100)
-const stepsAnimation = ref<number>(35)
+const stepsAnimation = ref<number>(40)
 const unclusteredId = ref<number>(0)
 
-const manualAddedImages = ref<string[]>([])
-
 onMounted(createMaplibreglMap)
-
-// // Objects reposition test
-// const backendStore = useBackendStore()
-// function handleClick() {
-//   const objectsStoreMap = backendStore.store.get(IMetaScope.OBJECTS)
-//   if (!objectsStoreMap)
-//     return
-
-//   backendStore.setStoreItems(
-//     IMetaScope.OBJECTS,
-//     objectsIds.value.filter(() => Math.random() > 0.5).map((id) => {
-//       const object = objectsStoreMap.get(id) as IObject
-
-//       object.feature.geometry.coordinates = [
-//         object.feature.geometry.coordinates[0] + (Math.random() - 0.5),
-//         object.feature.geometry.coordinates[1] + (Math.random() - 0.5),
-//       ]
-
-//       return object
-//     }),
-//   )
-// }
-// setInterval(handleClick, 5000)
 
 async function createMaplibreglMap() {
   maplibregl.workerCount = 10
@@ -202,7 +177,7 @@ async function createMaplibreglMap() {
       layout: {
         'symbol-placement': 'point',
         'symbol-avoid-edges': true,
-        'icon-image': 'icon:{icon}',
+        'icon-image': 'custom:{icon}',
         'icon-anchor': 'bottom',
         'icon-size': 0.5,
         'icon-allow-overlap': true,
@@ -252,7 +227,7 @@ async function createMaplibreglMap() {
       layout: {
         'symbol-placement': 'point',
         'symbol-avoid-edges': true,
-        'icon-image': 'icon:tero/18_tero',
+        'icon-image': 'custom:tero/18_tero',
         'icon-anchor': 'bottom',
         'icon-size': 0.5,
         'icon-pitch-alignment': 'viewport',
@@ -266,7 +241,7 @@ async function createMaplibreglMap() {
         'text-font': ['Noto Sans Bold'],
         'text-transform': 'uppercase',
         'text-pitch-alignment': 'viewport',
-        'text-ignore-placement': true,
+        'text-ignore-placement': false,
         'text-size': 10,
         'text-offset': [0, 1],
         'text-anchor': 'top',
@@ -294,7 +269,6 @@ async function createMaplibreglMap() {
           '#f28cb1',
         ],
         'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
-        // 'circle-opacity': ['case', ['==', ['get', 'cluster_id'], unclusteredId.value], 0, 1],
       },
     })
 
@@ -448,6 +422,7 @@ async function createMaplibreglMap() {
             center: features[0].geometry.coordinates as LngLatLike,
             zoom: nextZoom,
           })
+
           if (maxZoom !== oldZoom)
             return
 
@@ -527,10 +502,12 @@ async function createMaplibreglMap() {
 
     maplibreglMap.on('styleimagemissing', (e) => {
       const id = e.id
-      const image = maplibreglMap.getImage('icon:default/icon')
-      const regexpIcon = /^icon:([^/]+)/
+      const regexpIcon = /^custom:([^/]+)/
+      if (!regexpIcon.test(id))
+        return
 
-      if (image.data && regexpIcon.test(id)) {
+      const image = maplibreglMap.getImage('custom:default/icon')
+      if (image.data) {
         maplibreglMap.addImage(id, image.data)
         logger.success('edited on default:', id)
       }
@@ -614,20 +591,21 @@ async function geChildrenOfCluster(source: maplibregl.GeoJSONSource, arr: Featur
   if (!arr)
     return features
 
-  for (const f of arr) {
-    if (!f.properties?.cluster) {
-      features.push(f)
-      continue
-    }
+  const clusterChildren = await Promise.all(arr.map(async (f) => {
+    if (!f.properties?.cluster)
+      return f
     const children = await new Promise<Feature<Geometry, GeoJsonProperties>[] | null | undefined>((resolve, _reject) => {
       source.getClusterChildren(f.properties?.cluster_id, (_err, arr) => {
         resolve(arr)
       })
     })
     if (!children)
-      continue
-    features = [...features, ...(await geChildrenOfCluster(source, children))]
-  }
+      return []
+
+    return await geChildrenOfCluster(source, children)
+  }))
+
+  features = [...features, ...clusterChildren.flat()]
 
   return features
 }
@@ -640,7 +618,7 @@ function getDirectionAngle(count: number, index: number) {
 function convertDistancePixelToMeters(map: maplibregl.Map, lat: number, pixels: number) {
   const tileSize = map.getSource('openmaptiles')?.tileSize || 512
   const eqMetersOnPixel = 40075.016686 * 1000 / tileSize
-  const zoom = map.getMaxZoom()
+  const zoom = map.getZoom()
   const resolution = eqMetersOnPixel * Math.cos(lat * (Math.PI / 180)) / (2 ** zoom)
 
   return resolution * pixels
@@ -650,22 +628,21 @@ function animateClusterFeature(features: FeatureCollection<Point>, linesFC: Feat
   if (currentDistance >= distance)
     return
 
-  const newFeatures = { ...features }
-  const newFeaturesLines = { ...linesFC }
   const options: { units: Units } = { units: 'meters' }
 
   currentDistance = currentDistance + distance / steps
 
-  newFeatures.features.forEach((f, i) => {
-    const newCoordinates = along(lineString([f.geometry.coordinates, transformTranslate(f, distance / steps, getDirectionAngle(newFeatures.features.length, i), options).geometry.coordinates]), currentDistance, options).geometry.coordinates
-    newFeatures.features[i].geometry.coordinates = newCoordinates
-    newFeaturesLines.features[i].geometry.coordinates[1] = newCoordinates
+  features.features = features.features.map((f, i) => {
+    const newCoordinates = along(lineString([f.geometry.coordinates, transformTranslate(f, distance / steps, getDirectionAngle(features.features.length, i), options).geometry.coordinates]), currentDistance, options).geometry.coordinates
+    f.geometry.coordinates = newCoordinates
+    linesFC.features[i].geometry.coordinates[1] = newCoordinates
+    return f
   })
 
-  source.setData(newFeatures)
+  source.setData(features)
   sourceLines.setData(linesFC)
 
-  requestAnimationFrame(() => animateClusterFeature(newFeatures, linesFC, source, sourceLines, steps, currentDistance, distance))
+  requestAnimationFrame(() => animateClusterFeature(features, linesFC, source, sourceLines, steps, currentDistance, distance))
 }
 
 function getArcLayer({
