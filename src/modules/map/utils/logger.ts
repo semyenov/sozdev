@@ -1,1 +1,1 @@
-export const logger = useLogger('modules/mapLibre')
+export const logger = useConsola('modules/mapLibre')

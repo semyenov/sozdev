@@ -1,7 +1,6 @@
 import postcssCurrentSelector from 'postcss-current-selector'
 import postcssNestedAncestors from 'postcss-nested-ancestors'
 import postcssNested from 'postcss-nested'
-import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import { resolve } from 'pathe'
 
 import {
@@ -23,15 +22,18 @@ export default defineNuxtConfig({
 
   srcDir,
   appDir,
-  alias: {
-    'assets': assetsDir,
-    'public': publicDir,
 
-    '~': srcDir,
-    '~~': rootDir,
-  },
+  // alias: {
+  //   'assets': assetsDir,
+  //   'public': publicDir,
 
-  telemetry: false,
+  //   '~': srcDir,
+  //   '~~': rootDir,
+  // },
+
+  // telemetry: {
+  //   enabled: false,
+  // },
 
   runtimeConfig: {
     apiUri: 'http://tsc_devcontainer-app-1:8080/',
@@ -55,10 +57,10 @@ export default defineNuxtConfig({
       ],
     },
 
-    pageTransition: {
-      name: 'page',
-      mode: 'out-in',
-    },
+    // pageTransition: {
+    //   name: 'page',
+    //   mode: 'out-in',
+    // },
   },
 
   components: {
@@ -84,11 +86,11 @@ export default defineNuxtConfig({
 
   imports: {
     dirs: ['store', 'composables', 'utils'],
-    collectMeta: true,
+    // collectMeta: true,
 
-    addons: {
-      vueTemplate: true,
-    },
+    // addons: {
+    //   vueTemplate: true,
+    // },
   },
 
   typescript: {
@@ -102,13 +104,13 @@ export default defineNuxtConfig({
     // },
   },
 
-  vue: {
-    compilerOptions: {
-      nodeTransforms: [
-        transformShortVmodel({ prefix: '::' }),
-      ],
-    },
-  },
+  // vue: {
+  //   compilerOptions: {
+  //     nodeTransforms: [
+  //       transformShortVmodel({ prefix: '::' }),
+  //     ],
+  //   },
+  // },
 
   build: {
     transpile: [
@@ -134,21 +136,21 @@ export default defineNuxtConfig({
   // Modules configuration
 
   modules: [
-    // '~/modules/test/index',
+    '~/modules/test/index',
     '~/modules/winbox/index',
     '~/modules/map/index',
     '~/modules/design/index',
 
     '@anu-vue/nuxt',
     '@unocss/nuxt',
-    '@nuxt/image-edge',
+    // '@nuxt/image-edge',
     '@nuxt/content',
-    'magic-regexp/nuxt',
+    // 'magic-regexp/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@pinia/nuxt',
-    '@nuxtjs/emotion',
-    '@vue-macros/nuxt',
+    // '@nuxtjs/emotion',
+    // '@vue-macros/nuxt',
     '@vueuse/motion/nuxt',
     'nuxt-typed-router',
     // 'nuxt-component-meta',
@@ -193,42 +195,42 @@ export default defineNuxtConfig({
     },
   },
 
-  image: {
-    provider: 'unsplash',
-    unsplash: {
-      // baseURL: 'https://source.unsplash.com',
-      // preset: 'default',
-      modifiers: {
-        width: (value: number) => `w:${value}`,
-        height: (value: number) => `h:${value}`,
-        format: (value: string) => `fm:${value}`,
-        quality: (value: number) => `q:${value}`,
-        fit: (value: string) => `fit:${value}`,
-        dpr: (value: number) => `dpr:${value}`,
-      },
-    },
-    screens: {
-      'xs': 320,
-      'sm': 640,
-      'md': 768,
-      'lg': 1024,
-      'xl': 1280,
-      'xxl': 1536,
-      '2xl': 1536,
-    },
-    // presets: {
-    //   default: {
-    //     modifiers: {
-    //       width: 500,
-    //       height: 500,
-    //       format: 'jpg',
-    //       quality: 75,
-    //       fit: 'cover',
-    //       dpr: 2,
-    //     },
-    //   },
-    // },
-  },
+  // image: {
+  //   provider: 'unsplash',
+  //   unsplash: {
+  //     // baseURL: 'https://source.unsplash.com',
+  //     // preset: 'default',
+  //     modifiers: {
+  //       width: (value: number) => `w:${value}`,
+  //       height: (value: number) => `h:${value}`,
+  //       format: (value: string) => `fm:${value}`,
+  //       quality: (value: number) => `q:${value}`,
+  //       fit: (value: string) => `fit:${value}`,
+  //       dpr: (value: number) => `dpr:${value}`,
+  //     },
+  //   },
+  //   screens: {
+  //     'xs': 320,
+  //     'sm': 640,
+  //     'md': 768,
+  //     'lg': 1024,
+  //     'xl': 1280,
+  //     'xxl': 1536,
+  //     '2xl': 1536,
+  //   },
+  //   // presets: {
+  //   //   default: {
+  //   //     modifiers: {
+  //   //       width: 500,
+  //   //       height: 500,
+  //   //       format: 'jpg',
+  //   //       quality: 75,
+  //   //       fit: 'cover',
+  //   //       dpr: 2,
+  //   //     },
+  //   //   },
+  //   // },
+  // },
 
   pinia: {
     autoImports: [

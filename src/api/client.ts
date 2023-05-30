@@ -62,7 +62,7 @@ export class ApiResponse<T> implements IResponse<T> {
   }
 }
 
-const logger = useLogger('api/client')
+const logger = useConsola('api/client')
 
 /**
  * Creates an API client that can be used to make requests to the API.

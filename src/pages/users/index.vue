@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { UiVirtualList, UsersItem } from '#components'
 
-import type { IUser } from '~/types'
-
 definePageMeta({
   layout: 'default',
   middleware: 'authorization',
@@ -15,12 +13,17 @@ const { t } = useI18n()
 
 const input = ref<string>('')
 
+// export type ComponentExposed<T> =
+// T extends new () => infer E ? E :
+//  T extends (props: any, ctx: { expose(exposed: infer E): any }, ...args: any) => any ? NonNullable<E> :
+//   {}
+
 const usersGetter = await usersStore.itemsGetter
 const userSearchGetter = usersStore.searchGetter
 const usersIds = asyncComputed(() => userSearchGetter(input.value))
 const userGetter = usersStore.itemGetter
 
-const listComponent = ref<ReturnType<typeof UiVirtualList<IUser>> | null>(null)
+const listComponent = ref<ReturnType<typeof UiVirtualList> | null>(null)
 
 const listScrollStep = 10
 const listScrollIndex = ref(listScrollStep)

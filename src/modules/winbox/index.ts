@@ -4,10 +4,10 @@ import {
   addPlugin,
   createResolver,
   defineNuxtModule,
-  useLogger,
+  // useLogger,
 } from '@nuxt/kit'
 
-const logger = useLogger('modules/winbox')
+// const logger = useLogger('modules/winbox')
 
 export default defineNuxtModule({
   async setup(_options, nuxt) {
@@ -15,7 +15,7 @@ export default defineNuxtModule({
 
     nuxt.options.css.push(resolve('assets/styles/winbox.postcss'))
 
-    logger.info('Adding plugin')
+    // logger.info('Adding plugin')
     try {
       addPlugin({
         src: resolve('plugins/winbox.ts'),
@@ -23,18 +23,18 @@ export default defineNuxtModule({
       })
     }
     catch (e) {
-      logger.error('Failed to add plugin', e)
+      // logger.error('Failed to add plugin', e)
     }
 
-    logger.info('Adding composables')
+    // logger.info('Adding composables')
     try {
       addImportsDir(resolve('composables'))
     }
     catch (e) {
-      logger.error('Failed to add composables', e)
+      // logger.error('Failed to add composables', e)
     }
 
-    logger.info('Adding components')
+    // logger.info('Adding components')
     try {
       await addComponentsDir({
         path: resolve('components'),
@@ -43,7 +43,7 @@ export default defineNuxtModule({
       })
     }
     catch (e) {
-      logger.error('Failed to add components', e)
+      // logger.error('Failed to add components', e)
     }
   },
 })

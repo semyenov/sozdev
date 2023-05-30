@@ -7,9 +7,9 @@ import type { IMove, IMoveType } from '~/types/'
 
 export const items = range(0, 10).map((_i) => {
   const receiver
-    = objects[faker.number.float({ min: 0, max: objects.length - 1 })]
+    = objects[faker.number.int({ min: 0, max: objects.length - 1 })]
   const sender
-    = objects[faker.number.float({ min: 0, max: objects.length - 1 })]
+    = objects[faker.number.int({ min: 0, max: objects.length - 1 })]
   const item: IMove = {
     _id: faker.string.uuid(),
     info: {

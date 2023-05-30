@@ -259,19 +259,21 @@ async function createMaplibreglMap() {
         'icon-size': 0.5,
         'icon-pitch-alignment': 'viewport',
         'icon-rotation-alignment': 'viewport',
-        'icon-ignore-placement': false,
+        'icon-ignore-placement': true,
         'icon-overlap': 'always',
+        'icon-allow-overlap': true,
         'text-field': ['get', 'label'],
         'text-padding': 4,
         'text-optional': true,
         'text-font': ['Noto Sans Bold'],
         'text-transform': 'uppercase',
         'text-pitch-alignment': 'viewport',
-        'text-ignore-placement': false,
+        'text-ignore-placement': true,
         'text-size': 10,
         'text-offset': [0, 1],
         'text-anchor': 'top',
         'text-overlap': 'never',
+
       },
     })
 

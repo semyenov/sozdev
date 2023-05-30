@@ -1,34 +1,34 @@
-import type { AllowedComponentProps, VNode, VNodeProps } from 'vue'
+// import type { AllowedComponentProps, VNode, VNodeProps } from 'vue'
 
-export type ComponentProps<C extends Component> = C extends new (
-  ...args: any
-) => any
-  ? Omit<
-      InstanceType<C>['$props'],
-      keyof VNodeProps | keyof AllowedComponentProps
-    >
-  : never
+// export type ComponentProps<C extends Component> = C extends new (
+//   ...args: any
+// ) => any
+//   ? Omit<
+//       InstanceType<C>['$props'],
+//       keyof VNodeProps | keyof AllowedComponentProps
+//     >
+//   : never
 
-interface GenericSlots<T> {
-  props: T
-}
+// interface GenericSlots<T> {
+//   props: T
+// }
 
-export function useGenericComponent<T = unknown>(
-  BaseGenericComponent: Component,
-) {
-  const wrapper = defineComponent(
-    (props: ComponentProps<typeof BaseGenericComponent>, { slots }) => {
-      return () => {
-        return h(BaseGenericComponent, props, slots)
-      }
-    },
-  )
+// export function useGenericComponent<T = unknown>(
+//   BaseGenericComponent: Component,
+// ) {
+//   const wrapper = defineComponent(
+//     (props: ComponentProps<typeof BaseGenericComponent>, { slots }) => {
+//       return () => {
+//         return h(BaseGenericComponent, props, slots)
+//       }
+//     },
+//   )
 
-  return wrapper as typeof wrapper & {
-    new (): {
-      $slots: {
-        default: (arg: GenericSlots<T>) => VNode[]
-      }
-    }
-  }
-}
+//   return wrapper as typeof wrapper & {
+//     new (): {
+//       $slots: {
+//         default: (arg: GenericSlots<T>) => VNode[]
+//       }
+//     }
+//   }
+// }

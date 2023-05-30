@@ -9,7 +9,7 @@ declare global {
   interface Window extends Record<IMetaScope, Orama> {}
 }
 
-const logger = useLogger('plugins/orama')
+const logger = useConsola('plugins/orama')
 
 export default defineNuxtPlugin(({ hooks }) => {
   const backendStore = useBackendStore()

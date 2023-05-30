@@ -11,7 +11,7 @@ import type { FetchOptions, SearchParameters } from 'ofetch'
 export const backendStoreIdentificator = '_id' as const
 export const backendStoreKey = 'backend' as const
 
-const logger = useLogger(`store/${backendStoreKey}`)
+const logger = useConsola(`store/${backendStoreKey}`)
 
 export const backendScopeTypes: IMetaScope[] = [
   IMetaScope.OBJECTS,
