@@ -13,7 +13,16 @@
       "data": "/geojson/tula.json"
     }
   },
-  "sprite": "http://localhost:3000/map/styles/streets/new/sprite",
+  "sprite": [
+    {
+      "id": "default",
+      "url": "http://localhost:3000/map/styles/streets/old/sprite"
+    },
+    {
+      "id": "icon",
+      "url": "http://localhost:3000/map/styles/streets/new/sprite"
+    }
+  ],
   "glyphs": "http://localhost:3000/map/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {

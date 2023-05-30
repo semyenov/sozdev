@@ -60,9 +60,9 @@
   "i18n-ally.keystyle": "nested",
 
   "remote.extensionKind": {
-    "amazonwebservices.aws-toolkit-vscode": ["ui", "workspace"],
-    "GitHub.copilot": ["ui", "workspace"],
-    "GitHub.copilot-labs": ["ui", "workspace"]
+    "amazonwebservices.aws-toolkit-vscode": ["ui", "workspace"]
+    // "GitHub.copilot": ["ui", "workspace"],
+    // "GitHub.copilot-labs": ["ui", "workspace"]
   },
 
   "explorer.fileNesting.patterns": {

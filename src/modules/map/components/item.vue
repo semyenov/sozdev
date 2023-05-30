@@ -10,8 +10,6 @@ import transformTranslate from '@turf/transform-translate'
 
 // import ellipse from '@turf/ellipse'
 
-import { getImage } from '../utils'
-
 import type { IMove } from '~/types'
 
 import type { LngLatLike } from 'maplibre-gl'
@@ -65,8 +63,8 @@ let maplibreglPopup: maplibregl.Popup
 let maplibreglMarker: maplibregl.Marker
 let deckOverlay: TMapboxOverlay
 
-const distanceAnimation = ref<number>(20)
-const stepsAnimation = ref<number>(50)
+const distancePixelsAnimation = ref<number>(100)
+const stepsAnimation = ref<number>(35)
 const unclusteredId = ref<number>(0)
 
 const manualAddedImages = ref<string[]>([])
@@ -204,7 +202,7 @@ async function createMaplibreglMap() {
       layout: {
         'symbol-placement': 'point',
         'symbol-avoid-edges': true,
-        'icon-image': ['get', 'icon'],
+        'icon-image': 'icon:{icon}',
         'icon-anchor': 'bottom',
         'icon-size': 0.5,
         'icon-allow-overlap': true,
@@ -254,7 +252,7 @@ async function createMaplibreglMap() {
       layout: {
         'symbol-placement': 'point',
         'symbol-avoid-edges': true,
-        'icon-image': 'tero/18_tero',
+        'icon-image': 'icon:tero/18_tero',
         'icon-anchor': 'bottom',
         'icon-size': 0.5,
         'icon-pitch-alignment': 'viewport',
@@ -479,7 +477,7 @@ async function createMaplibreglMap() {
               features: [],
             } as FeatureCollection<LineString>
 
-            const distance = convertDistancePixelToMeters(maplibreglMap, cluster.geometry.coordinates[1], 100)
+            const distance = convertDistancePixelToMeters(maplibreglMap, cluster.geometry.coordinates[1], distancePixelsAnimation.value)
 
             if (unclusteredId.value) {
               const prevFeatures = maplibreglMap.querySourceFeatures('objects-source-uncluster') as Feature<Point>[]
@@ -529,16 +527,13 @@ async function createMaplibreglMap() {
 
     maplibreglMap.on('styleimagemissing', (e) => {
       const id = e.id
+      const image = maplibreglMap.getImage('icon:default/icon')
+      const regexpIcon = /^icon:([^/]+)/
 
-      getImage('/logo.png').then((image) => {
-        if (maplibreglMap.hasImage(id) || !id.includes('/'))
-          return
-
-        maplibreglMap.addImage(id, image)
-        manualAddedImages.value.push(id)
-
+      if (image.data && regexpIcon.test(id)) {
+        maplibreglMap.addImage(id, image.data)
         logger.success('edited on default:', id)
-      })
+      }
     })
 
     maplibreglMap.on('mouseenter', 'clusters', () => {
