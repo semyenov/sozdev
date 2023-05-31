@@ -35,6 +35,15 @@ export default defineNuxtPlugin(({ hooks }) => {
         getDocumentIndexId(doc: IObject) {
           return doc._id
         },
+
+        // required if schema is valid return undefined to skip validation
+        // validateSchema(doc, schema) {
+        //   if (typeof doc._id !== schema._id)
+        //     return '_id'
+
+        //   return undefined
+        // },
+
       },
     }).then((index) => {
       logger.info(`Create window[${IMetaScope.OBJECTS}] index`)
@@ -48,6 +57,7 @@ export default defineNuxtPlugin(({ hooks }) => {
 
     create({
       schema: {
+        _id: 'string',
         email: 'string',
         info: {
           first_name: 'string',

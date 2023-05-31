@@ -1906,7 +1906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@maplibre/maplibre-gl-style-spec@npm:^19.2.0":
+"@maplibre/maplibre-gl-style-spec@npm:^19.2.1":
   version: 19.2.1
   resolution: "@maplibre/maplibre-gl-style-spec@npm:19.2.1"
   dependencies:
@@ -2501,7 +2501,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@orama/orama@npm:^1.0.1":
+"@orama/orama@npm:^1.0.2":
   version: 1.0.2
   resolution: "@orama/orama@npm:1.0.2"
   checksum: 68f9fa4e8f3aea581072274c39218a1f137f26b05a897acd3c6a4b4883e695867feaf2441e2c32515c9fe2b164597c88ea6b2a2025b6217bb00c0446f25e1ee0
@@ -12525,9 +12525,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"maplibre-gl@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "maplibre-gl@npm:3.0.0"
+"maplibre-gl@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "maplibre-gl@npm:3.0.1"
   dependencies:
     "@mapbox/geojson-rewind": ^0.5.2
     "@mapbox/jsonlint-lines-primitives": ^2.0.2
@@ -12536,7 +12536,7 @@ __metadata:
     "@mapbox/unitbezier": ^0.0.1
     "@mapbox/vector-tile": ^1.3.1
     "@mapbox/whoots-js": ^3.1.0
-    "@maplibre/maplibre-gl-style-spec": ^19.2.0
+    "@maplibre/maplibre-gl-style-spec": ^19.2.1
     "@types/geojson": ^7946.0.10
     "@types/mapbox__point-geometry": ^0.1.2
     "@types/mapbox__vector-tile": ^1.3.0
@@ -12553,7 +12553,7 @@ __metadata:
     supercluster: ^8.0.1
     tinyqueue: ^2.0.3
     vt-pbf: ^3.1.3
-  checksum: 6b8fc665e40af43fce31080602c3237805c18499531fef389ebca1cdccd66756846d02b9a42cd6c0105c005a7e83beaf71b709b349c0a76057bf6dca52cbd6e2
+  checksum: 490b58cc1100aef3bc608850f1d33c24ac9988984878ce553a7b8fbfad7f90c65f480664660027fb24603ed758681bcfdb22cf364b616f64ef2c4fce62906f5a
   languageName: node
   linkType: hard
 
@@ -16143,7 +16143,7 @@ __metadata:
     "@nuxtjs/eslint-config": ^12.0.0
     "@nuxtjs/eslint-config-typescript": ^12.0.0
     "@nuxtjs/i18n": 8.0.0-beta.12
-    "@orama/orama": ^1.0.1
+    "@orama/orama": ^1.0.2
     "@pinia/nuxt": ^0.4.11
     "@turf/turf": ^6.5.0
     "@types/chroma-js": ^2.4.0
@@ -16180,7 +16180,7 @@ __metadata:
     husky: ^8.0.3
     lint-staged: ^13.2.2
     magic-regexp: ^0.7.0
-    maplibre-gl: ^3.0.0
+    maplibre-gl: ^3.0.1
     nanoid: ^4.0.2
     nuxt: ^3.5.2
     nuxt-typed-router: ^3.2.2

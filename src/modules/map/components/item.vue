@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import maplibregl from 'maplibre-gl'
 import { clamp } from '@antfu/utils'
-import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { lineString } from '@turf/helpers'
 import along from '@turf/along'
 import transformTranslate from '@turf/transform-translate'
-
-// import ellipse from '@turf/ellipse'
+import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
 
 import type { IMove } from '~/types'
 
@@ -57,7 +55,6 @@ const movesFiltered = computed<IMove[]>(() => {
 
   return moves.value.filter(move => move._id === moveFilter.value)
 })
-
 let maplibreglMap: maplibregl.Map
 let maplibreglPopup: maplibregl.Popup
 let maplibreglMarker: maplibregl.Marker

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { UiVirtualList, UsersItem } from '#components'
 
+import type { IUser } from '~/types'
+
 definePageMeta({
   layout: 'default',
   middleware: 'authorization',
@@ -23,7 +25,7 @@ const userSearchGetter = usersStore.searchGetter
 const usersIds = asyncComputed(() => userSearchGetter(input.value))
 const userGetter = usersStore.itemGetter
 
-const listComponent = ref<ReturnType<typeof UiVirtualList> | null>(null)
+const listComponent = ref<ReturnType<typeof UiVirtualList<IUser>> | null>(null)
 
 const listScrollStep = 10
 const listScrollIndex = ref(listScrollStep)
@@ -33,12 +35,14 @@ function scrollClickHandler() {
     return
 
   if (listScrollIndex.value > usersIds.value.length) {
+    // @ts-expect-error FIXME: Generic Components
     listComponent.value.scrollToBottom()
     listScrollIndex.value = 0
 
     return
   }
 
+  // @ts-expect-error FIXME: Generic Components
   listComponent.value.scrollToIndex(listScrollIndex.value)
   listScrollIndex.value += listScrollStep
 }

@@ -147,6 +147,7 @@ watch(dataIds, () => {
   if (!listComponent.value)
     return
 
+  // @ts-expect-error FIXME: Generic Components
   listComponent.value.scrollToIndex(0)
 })
 
@@ -154,6 +155,7 @@ watch(input, (i) => {
   if (!listComponent.value)
     return
 
+  // @ts-expect-error FIXME: Generic Components
   listComponent.value.scrollToIndex(0)
   cursor.value = -1
 
@@ -189,6 +191,8 @@ onKeyStroke('ArrowUp', (event) => {
 
   cursor.value = clamp(cursor.value - 1, 0, dataIds.value.length - 1)
   if (listComponent.value)
+
+    // @ts-expect-error FIXME: Generic Components
     listComponent.value.scrollToIndex(cursor.value)
 })
 
@@ -200,6 +204,8 @@ onKeyStroke('ArrowDown', (event) => {
 
   cursor.value = clamp(cursor.value + 1, 0, dataIds.value.length - 1)
   if (listComponent.value)
+
+    // @ts-expect-error FIXME: Generic Components
     listComponent.value.scrollToIndex(cursor.value)
 })
 

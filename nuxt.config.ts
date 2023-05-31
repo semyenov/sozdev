@@ -99,7 +99,9 @@ export default defineNuxtConfig({
     typeCheck: true,
     // tsConfig: {
     //   compilerOptions: {
-    //     moduleResolution: 'bundler',
+
+    //     // moduleResolution: 'bundler',
+    //     // skipLibCheck: true,
     //   },
     // },
   },
