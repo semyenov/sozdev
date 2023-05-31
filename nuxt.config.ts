@@ -97,13 +97,14 @@ export default defineNuxtConfig({
     shim: false,
     strict: true,
     typeCheck: true,
-    // tsConfig: {
-    //   compilerOptions: {
+    tsConfig: {
+      compilerOptions: {
 
-    //     // moduleResolution: 'bundler',
-    //     // skipLibCheck: true,
-    //   },
-    // },
+        esModuleInterop: true,
+        // moduleResolution: 'bundler',
+        // skipLibCheck: true,
+      },
+    },
   },
 
   // vue: {

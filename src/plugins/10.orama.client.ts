@@ -37,12 +37,12 @@ export default defineNuxtPlugin(({ hooks }) => {
         },
 
         // required if schema is valid return undefined to skip validation
-        // validateSchema(doc, schema) {
-        //   if (typeof doc._id !== schema._id)
-        //     return '_id'
+        validateSchema(doc, schema) {
+          if (typeof doc._id !== schema._id)
+            return '_id'
 
-        //   return undefined
-        // },
+          return undefined
+        },
 
       },
     }).then((index) => {
