@@ -22,14 +22,13 @@ export default defineNuxtConfig({
 
   srcDir,
   appDir,
+  alias: {
+    // 'assets': assetsDir,
+    // 'public': publicDir,
 
-  // alias: {
-  //   'assets': assetsDir,
-  //   'public': publicDir,
-
-  //   '~': srcDir,
-  //   '~~': rootDir,
-  // },
+    // '~': srcDir,
+    // '~~': rootDir,
+  },
 
   // telemetry: {
   //   enabled: false,
@@ -100,7 +99,15 @@ export default defineNuxtConfig({
     tsConfig: {
       compilerOptions: {
 
+        target: 'es5',
         esModuleInterop: true,
+        allowJs: true,
+        skipLibCheck: true,
+        moduleResolution: 'node',
+        resolveJsonModule: true,
+        allowSyntheticDefaultImports: true,
+        noEmit: true,
+        module: 'esnext',
         // moduleResolution: 'bundler',
         // skipLibCheck: true,
       },
@@ -114,14 +121,34 @@ export default defineNuxtConfig({
   //     ],
   //   },
   // },
-
   build: {
     transpile: [
       // ({ isDev }) => !isDev && 'flexsearch',
+      // ({ isDev }) => isDev && '@loaders.gl',
+      // ({ isDev }) => isDev && 'gl-matrix',
       ({ isDev }) => isDev && '@deck.gl/layers',
       ({ isDev }) => isDev && '@deck.gl/mapbox',
+      // ({ isDev }) => isDev && '@deck.gl/core',
     ],
   },
+  vite: {
+    // resolve: {
+    //   alias: [{ find: /^@deck.gl\/layers$/, replacement: '@deck.gl/layers/dist/esm' }, { find: /^@deck.gl\/core$/, replacement: '@deck.gl/core/dist/esm' }, { find: /^@deck.gl\/mapbox$/, replacement: '@deck.gl/mapbox/dist/esm' }],
+    // },
+    optimizeDeps: {
+      // exclude: ['@deck.gl/layers', '@deck.gl/mapbox', '@deck.gl/core'],
+      // include: ['@deck.gl/layers', '@deck.gl/mapbox', '@deck.gl/core'],
+    },
+    build: {
+      rollupOptions: {
+
+        // '@deck.gl/layers': '@deck.gl/layers/dist/esm',
+        // '@deck.gl/mapbox': '@deck.gl/mapbox/dist/esm',
+        // '@deck.gl/core': '@deck.gl/core/dist/esm',
+      },
+    },
+  },
+
   postcss: {
     plugins: {
       'postcss-nested': postcssNested(),
@@ -137,13 +164,13 @@ export default defineNuxtConfig({
   ],
 
   // Modules configuration
-
   modules: [
     '~/modules/test/index',
     '~/modules/winbox/index',
     '~/modules/map/index',
     '~/modules/design/index',
 
+    '@sidebase/nuxt-auth',
     '@anu-vue/nuxt',
     '@unocss/nuxt',
     // '@nuxt/image-edge',
@@ -240,6 +267,12 @@ export default defineNuxtConfig({
       'defineStore',
       'storeToRefs',
     ],
+  },
+
+  auth: {
+    provider: {
+      type: 'local',
+    },
   },
 
   i18n: {

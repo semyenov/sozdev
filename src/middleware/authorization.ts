@@ -4,6 +4,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   logger.success(`Test global middleware ${from.fullPath} -> ${to.fullPath}`)
 
   const authorizationStore = useAuthorizationStore()
+  console.log(authorizationStore.current, authorizationStore.authorization)
 
   if (!authorizationStore.current) {
     const usersStore = useUsersStore()

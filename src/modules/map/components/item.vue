@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import maplibregl from 'maplibre-gl'
 import { clamp } from '@antfu/utils'
-import { ArcLayer } from '@deck.gl/layers/typed'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { lineString } from '@turf/helpers'
 import along from '@turf/along'
 import transformTranslate from '@turf/transform-translate'
 import { MapboxOverlay as DeckOverlay } from '@deck.gl/mapbox/typed'
+import { ArcLayer } from '@deck.gl/layers/typed'
+
+// import * as Layer from '@deck.gl/layers/dist/esm'
+// import * as MapBox from '@deck.gl/mapbox/dist/esm'
 
 import type { IMove } from '~/types'
 
@@ -15,6 +18,14 @@ import type { Units } from '@turf/helpers'
 import type { TMapboxDraw, TMapboxOverlay } from '../types'
 import type { Feature, FeatureCollection, GeoJsonProperties, Geometry, LineString, Point } from 'geojson'
 
+// console.log('MapBox', interopDefault(Layer))
+// DeckOverlay
+// console.log(Layer, MapBox)
+
+// const ArcLayer = Layer.ArcLayer
+// const DeckOverlay = MapBox.MapboxOverlay
+// const ArcLayer = null
+// const DeckOverlay = null
 const objectsStore = useObjectsStore()
 const movesStore = useMovesStore()
 const objectTypesStore = useObjectTypesStore()
@@ -64,7 +75,14 @@ const distancePixelsAnimation = ref<number>(100)
 const stepsAnimation = ref<number>(40)
 const unclusteredId = ref<number>(0)
 
-onMounted(createMaplibreglMap)
+onMounted(async () => {
+  // const Layer = await import('@deck.gl/layers')
+  // const MapBox = await import('@deck.gl/mapbox')
+  // const MapBox = await import('@deck.gl/core/dist/esm/index.js')
+  // ArcLayer = Layer.ArcLayer
+  // DeckOverlay = MapBox.MapboxOverlay
+  createMaplibreglMap()
+})
 
 async function createMaplibreglMap() {
   maplibregl.workerCount = 10

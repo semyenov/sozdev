@@ -2280,7 +2280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:3.5.2, @nuxt/kit@npm:^3.0.0-rc.11, @nuxt/kit@npm:^3.2.2, @nuxt/kit@npm:^3.2.3, @nuxt/kit@npm:^3.3.3, @nuxt/kit@npm:^3.4.0, @nuxt/kit@npm:^3.4.1, @nuxt/kit@npm:^3.4.3, @nuxt/kit@npm:^3.5.0, @nuxt/kit@npm:^3.5.1, @nuxt/kit@npm:^3.5.2":
+"@nuxt/kit@npm:3.5.2, @nuxt/kit@npm:^3.0.0-rc.11, @nuxt/kit@npm:^3.2.2, @nuxt/kit@npm:^3.2.3, @nuxt/kit@npm:^3.3.3, @nuxt/kit@npm:^3.4.0, @nuxt/kit@npm:^3.4.1, @nuxt/kit@npm:^3.4.2, @nuxt/kit@npm:^3.4.3, @nuxt/kit@npm:^3.5.0, @nuxt/kit@npm:^3.5.1, @nuxt/kit@npm:^3.5.2":
   version: 3.5.2
   resolution: "@nuxt/kit@npm:3.5.2"
   dependencies:
@@ -2750,6 +2750,24 @@ __metadata:
     rollup:
       optional: true
   checksum: edea15e543bebc7dcac3b0ac8bc7b8e8e6dbd46e2864dbe5dd28072de1fbd5b0e10d545a610c0edaa178e8a7ac432e2a2a52e547ece1308471412caba47db8ce
+  languageName: node
+  linkType: hard
+
+"@sidebase/nuxt-auth@npm:^0.6.0-beta.2":
+  version: 0.6.0-beta.2
+  resolution: "@sidebase/nuxt-auth@npm:0.6.0-beta.2"
+  dependencies:
+    "@nuxt/kit": ^3.4.2
+    "@vueuse/core": ^9.13.0
+    defu: ^6.1.2
+    h3: ^1.6.4
+    knitwork: ^1.0.0
+    nitropack: ^2.3.2
+    requrl: ^3.0.2
+    ufo: ^1.1.1
+  peerDependencies:
+    next-auth: ^4.21.1
+  checksum: 31504607a08ab680d7cf5da4f99489feb4f4e3f9bc1127de6164861100fa07cab707143205aa7bf2e5798fd71e4b6d90412fcfd7096a8d3ab41b6e3e2ec9eb8a
   languageName: node
   linkType: hard
 
@@ -4260,6 +4278,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/gl-matrix@npm:^3":
+  version: 3.2.0
+  resolution: "@types/gl-matrix@npm:3.2.0"
+  dependencies:
+    gl-matrix: "*"
+  checksum: 1baa16f2eef299c9379e91f883b121fce97fb84975f6cf790365fb74edd2168ee06aa0cbf25425acbd63970f2b3eb6857a85fa8aa756613dcbe331b64b65e6c1
+  languageName: node
+  linkType: hard
+
 "@types/hammerjs@npm:^2.0.41":
   version: 2.0.41
   resolution: "@types/hammerjs@npm:2.0.41"
@@ -4505,6 +4532,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/web-bluetooth@npm:^0.0.16":
+  version: 0.0.16
+  resolution: "@types/web-bluetooth@npm:0.0.16"
+  checksum: f68a630d062202a25c46d48686ebae1cf429dc70b4578fcf13b8357b2db63e4aedfb6f6d752bd388366be46ebd19c1c9de45f8a15c2631bb79e904fdfc454f94
   languageName: node
   linkType: hard
 
@@ -5638,10 +5672,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vueuse/core@npm:^9.13.0":
+  version: 9.13.0
+  resolution: "@vueuse/core@npm:9.13.0"
+  dependencies:
+    "@types/web-bluetooth": ^0.0.16
+    "@vueuse/metadata": 9.13.0
+    "@vueuse/shared": 9.13.0
+    vue-demi: "*"
+  checksum: 2b19d8ec4305f6c65650813c0fa9c15af6b322fc253ad656eb1c4bc8d7617a2ddd46a46d7ea359c4cdc5a5724aa5fc152fa7a3816ed6ebeaec4f7e58defb7153
+  languageName: node
+  linkType: hard
+
 "@vueuse/metadata@npm:10.1.2":
   version: 10.1.2
   resolution: "@vueuse/metadata@npm:10.1.2"
   checksum: b72470776ec6aeb88a21b4a60b6b365ad22559c965b7038ae8c68a6a2942631748f3beb4b715bdde3d8adb1dac06a5ebeb41255f24d60c8f28f19ac6fa3bc152
+  languageName: node
+  linkType: hard
+
+"@vueuse/metadata@npm:9.13.0":
+  version: 9.13.0
+  resolution: "@vueuse/metadata@npm:9.13.0"
+  checksum: 91e137bf2fb1406587b523edae26b58b315d3a59797c9f2ed5dde9cb707026aa740b86da5955ea7f9662a93ce92249d0b3af763c65449b4a843bbd0725eb67f6
   languageName: node
   linkType: hard
 
@@ -5687,6 +5740,15 @@ __metadata:
   dependencies:
     vue-demi: ">=0.14.0"
   checksum: a134cc254bfef28ceca2c48c7532a4f1e2231dbb75304e43f896b41771f3d51b93897cc9a16bbd98c7aa6163fc44e001319bbf2478408382ef4d9788875301f2
+  languageName: node
+  linkType: hard
+
+"@vueuse/shared@npm:9.13.0":
+  version: 9.13.0
+  resolution: "@vueuse/shared@npm:9.13.0"
+  dependencies:
+    vue-demi: "*"
+  checksum: e53e7312bdd2030b7970afcf4d3dc3f9a47f7721a92ccb51c364d23246233cb54758f7ddacbdb9ac63d1e86ec82e97d06cb53b05a4b8d43be877d16ab61dd9bb
   languageName: node
   linkType: hard
 
@@ -10133,7 +10195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gl-matrix@npm:^3.0.0, gl-matrix@npm:^3.4.0, gl-matrix@npm:^3.4.3":
+"gl-matrix@npm:*, gl-matrix@npm:^3.0.0, gl-matrix@npm:^3.4.0, gl-matrix@npm:^3.4.3":
   version: 3.4.3
   resolution: "gl-matrix@npm:3.4.3"
   checksum: c47830ba727f3d0fab635c48135af96aef66274079a3e0afd6f68b68c98eae9fc1bcfdc7312fe2301e4fd22dd24c5e0f1b5d025960a208e50d07101ed8d940f9
@@ -13648,7 +13710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nitropack@npm:^2.4.1":
+"nitropack@npm:^2.3.2, nitropack@npm:^2.4.1":
   version: 2.4.1
   resolution: "nitropack@npm:2.4.1"
   dependencies:
@@ -15951,6 +16013,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"requrl@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "requrl@npm:3.0.2"
+  checksum: 84fbaf4326050de145fdb6037b77416c649453fa1cce19df25776e13b5b89a119224213c2d786acda088b5724b9e085a41aa6d59bf9c3fa19345fc49c7902c7f
+  languageName: node
+  linkType: hard
+
 "resolve-alpn@npm:^1.0.0":
   version: 1.2.1
   resolution: "resolve-alpn@npm:1.2.1"
@@ -16145,10 +16214,12 @@ __metadata:
     "@nuxtjs/i18n": 8.0.0-beta.12
     "@orama/orama": ^1.0.2
     "@pinia/nuxt": ^0.4.11
+    "@sidebase/nuxt-auth": ^0.6.0-beta.2
     "@turf/turf": ^6.5.0
     "@types/chroma-js": ^2.4.0
     "@types/flexsearch": ^0.7.3
     "@types/geojson": ^7946.0.10
+    "@types/gl-matrix": ^3
     "@types/mapbox__mapbox-gl-draw": ^1.4.0
     "@types/qs": ^6.9.7
     "@types/winbox": ^0.2.1
@@ -16174,6 +16245,7 @@ __metadata:
     fast-copy: ^3.0.1
     fast-equals: ^5.0.1
     flexsearch: ^0.7.31
+    gl-matrix: ^3.4.3
     h3: ^1.6.6
     h3-zod: ^0.5.1
     histoire: ^0.16.1
@@ -18857,7 +18929,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-demi@npm:>=0.14.0, vue-demi@npm:>=0.14.5":
+"vue-demi@npm:*, vue-demi@npm:>=0.14.0, vue-demi@npm:>=0.14.5":
   version: 0.14.5
   resolution: "vue-demi@npm:0.14.5"
   peerDependencies:

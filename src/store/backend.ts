@@ -19,6 +19,7 @@ export const backendScopeTypes: IMetaScope[] = [
   IMetaScope.USERS,
   IMetaScope.MOVES,
 ]
+
 export const backendScopeTypesMap: Partial<Record<IMetaScope, string[]>> = {
   data: ['data'],
   objects: ['objects'],

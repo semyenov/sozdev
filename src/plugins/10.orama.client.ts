@@ -69,6 +69,12 @@ export default defineNuxtPlugin(({ hooks }) => {
         getDocumentIndexId(doc: IUser) {
           return doc._id
         },
+        validateSchema(doc, schema) {
+          if (typeof doc._id !== schema._id)
+            return '_id'
+
+          return undefined
+        },
       },
     }).then((index) => {
       logger.info(`Create window[${IMetaScope.USERS}] index`)
