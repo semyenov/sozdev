@@ -1,4 +1,5 @@
 export default eventHandler((_event) => {
-  // const logger = useLogger('server/middleware/test')
+
+  // const logger = useConsola('server/middleware/test')
   // logger.success('Test server middleware loaded')
 })

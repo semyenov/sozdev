@@ -11,10 +11,14 @@ declare global {
 
 const logger = useConsola('plugins/orama')
 
-export default defineNuxtPlugin(({ hooks }) => {
+export default defineNuxtPlugin((nuxtApp) => {
+  // nuxtApp.hooks.hook('')
+  console.log('nuxtApp.plugin', nuxtApp)
+  return
+
   const backendStore = useBackendStore()
 
-  hooks.hookOnce('app:mounted', () => {
+  nuxtApp.hooks.hookOnce('app:mounted', () => {
     create({
       language: 'russian',
       schema: {

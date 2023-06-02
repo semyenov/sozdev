@@ -4,21 +4,32 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   logger.success(`Test global middleware ${from.fullPath} -> ${to.fullPath}`)
 
   const authorizationStore = useAuthorizationStore()
-  console.log(authorizationStore.current, authorizationStore.authorization)
+  if (!authorizationStore.authorization) {
+    const { getToken } = useAuth()
+    const token = await getToken()
 
-  if (!authorizationStore.current) {
-    const usersStore = useUsersStore()
-    const userTokenData = await usersStore.postCurrent({
-      email: 'root@root.ru',
-      password: '12345678',
-    })
+    logger.info('token middleware', token.value)
 
-    if (userTokenData) {
-      authorizationStore.authorization = userTokenData.access_token || null
+    if (!token.value || !token.value.access_token)
+      return navigateTo('/login')
 
-      const currentUser = await usersStore.getCurrent()
-      if (currentUser)
-        authorizationStore.current = currentUser
-    }
+    authorizationStore.authorization = token.value.access_token
   }
+  // if (!authorizationStore.authorization)
+  //   return navigateTo('login')
+  // if (!authorizationStore.current) {
+  //   const usersStore = useUsersStore()
+  //   const userTokenData = await usersStore.postCurrent({
+  //     email: 'root@root.ru',
+  //     password: '12345678',
+  //   })
+
+  //   if (userTokenData) {
+  //     authorizationStore.authorization = userTokenData.access_token || null
+
+  //     const currentUser = await usersStore.getCurrent()
+  //     if (currentUser)
+  //       authorizationStore.current = currentUser
+  //   }
+  // }
 })

@@ -3,14 +3,10 @@
 
 definePageMeta({
   layout: 'default',
+  middleware: 'authorization',
 })
 
 const route = useRoute('index')
-
-// const specificComponentName = ref<NuxtComponentMetaNames>('WinboxObjectsDetailItem')
-
-// const specificComponentMeta = await useComponentMeta(specificComponentName)
-// const composableData = await useComponentMeta()
 
 const { data } = await useFetch('/api/test', {
   method: 'get',
@@ -19,8 +15,9 @@ const { data } = await useFetch('/api/test', {
   },
 })
 
+const objectsStore = useObjectsStore()
+
 const { t } = useI18n()
-// const { themes, activeThemeName, activeTheme } = useAnu()
 </script>
 
 <template>
@@ -65,7 +62,6 @@ const { t } = useI18n()
           >
             {{ data.text }}
           </PageProse>
-
           <!-- {{ themes }} -->
           <!-- <PageProse
             v-if="data"

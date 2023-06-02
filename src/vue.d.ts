@@ -19,5 +19,10 @@ declare module 'vue' {
     [key: `--${string}`]: string
   }
 }
+declare module '#auth' {
+  interface User {
+    name: string
+  }
+}
 
 export {}

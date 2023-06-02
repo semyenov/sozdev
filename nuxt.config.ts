@@ -22,17 +22,6 @@ export default defineNuxtConfig({
 
   srcDir,
   appDir,
-  alias: {
-    // 'assets': assetsDir,
-    // 'public': publicDir,
-
-    // '~': srcDir,
-    // '~~': rootDir,
-  },
-
-  // telemetry: {
-  //   enabled: false,
-  // },
 
   runtimeConfig: {
     apiUri: 'http://tsc_devcontainer-app-1:8080/',
@@ -85,50 +74,25 @@ export default defineNuxtConfig({
 
   imports: {
     dirs: ['store', 'composables', 'utils'],
-    // collectMeta: true,
-
-    // addons: {
-    //   vueTemplate: true,
-    // },
   },
 
   typescript: {
-    shim: false,
+    shim: true,
     strict: true,
     typeCheck: true,
     tsConfig: {
       compilerOptions: {
-
-        target: 'es5',
         esModuleInterop: true,
-        allowJs: true,
-        skipLibCheck: true,
-        moduleResolution: 'node',
-        resolveJsonModule: true,
-        allowSyntheticDefaultImports: true,
-        noEmit: true,
-        module: 'esnext',
-        // moduleResolution: 'bundler',
-        // skipLibCheck: true,
+
+        declaration: true,
       },
     },
   },
 
-  // vue: {
-  //   compilerOptions: {
-  //     nodeTransforms: [
-  //       transformShortVmodel({ prefix: '::' }),
-  //     ],
-  //   },
-  // },
   build: {
     transpile: [
-      // ({ isDev }) => !isDev && 'flexsearch',
-      // ({ isDev }) => isDev && '@loaders.gl',
-      // ({ isDev }) => isDev && 'gl-matrix',
       ({ isDev }) => isDev && '@deck.gl/layers',
       ({ isDev }) => isDev && '@deck.gl/mapbox',
-      // ({ isDev }) => isDev && '@deck.gl/core',
     ],
   },
   vite: {
@@ -170,27 +134,17 @@ export default defineNuxtConfig({
     '~/modules/map/index',
     '~/modules/design/index',
 
-    '@sidebase/nuxt-auth',
     '@anu-vue/nuxt',
     '@unocss/nuxt',
-    // '@nuxt/image-edge',
     '@nuxt/content',
-    // 'magic-regexp/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@pinia/nuxt',
-    // '@nuxtjs/emotion',
-    // '@vue-macros/nuxt',
     '@vueuse/motion/nuxt',
     'nuxt-typed-router',
-    // 'nuxt-component-meta',
 
     '@nuxt/devtools',
   ],
-
-  // componentMeta: {
-  //   globalsOnly: true,
-  // },
 
   anu: {
     themes: {
@@ -225,43 +179,6 @@ export default defineNuxtConfig({
     },
   },
 
-  // image: {
-  //   provider: 'unsplash',
-  //   unsplash: {
-  //     // baseURL: 'https://source.unsplash.com',
-  //     // preset: 'default',
-  //     modifiers: {
-  //       width: (value: number) => `w:${value}`,
-  //       height: (value: number) => `h:${value}`,
-  //       format: (value: string) => `fm:${value}`,
-  //       quality: (value: number) => `q:${value}`,
-  //       fit: (value: string) => `fit:${value}`,
-  //       dpr: (value: number) => `dpr:${value}`,
-  //     },
-  //   },
-  //   screens: {
-  //     'xs': 320,
-  //     'sm': 640,
-  //     'md': 768,
-  //     'lg': 1024,
-  //     'xl': 1280,
-  //     'xxl': 1536,
-  //     '2xl': 1536,
-  //   },
-  //   // presets: {
-  //   //   default: {
-  //   //     modifiers: {
-  //   //       width: 500,
-  //   //       height: 500,
-  //   //       format: 'jpg',
-  //   //       quality: 75,
-  //   //       fit: 'cover',
-  //   //       dpr: 2,
-  //   //     },
-  //   //   },
-  //   // },
-  // },
-
   pinia: {
     autoImports: [
       'defineStore',
@@ -269,11 +186,16 @@ export default defineNuxtConfig({
     ],
   },
 
-  auth: {
-    provider: {
-      type: 'local',
-    },
-  },
+  // auth: {
+  //   provider: {
+  //     type: 'local',
+
+  //   },
+  //   isEnabled: true,
+  //   baseURL: 'api/auth',
+  //   globalAppMiddleware: true,
+
+  // },
 
   i18n: {
 
