@@ -9,7 +9,7 @@ export function useAuth() {
 async function getToken() {
   const { data } = await useFetch<{ access_token: string }>('/api/auth/token')
 
-  return data
+  return data.value
 }
 
 async function login(body: { email: string; password: string }) {
@@ -17,7 +17,7 @@ async function login(body: { email: string; password: string }) {
     method: 'POST',
     body,
   })
-  return data
+  return data.value
 }
 
 async function refreshToken(refresh_token: string) {
@@ -25,5 +25,5 @@ async function refreshToken(refresh_token: string) {
     method: 'POST',
     body: { refresh_token },
   })
-  return data
+  return data.value
 }

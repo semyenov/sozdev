@@ -4,16 +4,20 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   logger.success(`Test global middleware ${from.fullPath} -> ${to.fullPath}`)
 
   const authorizationStore = useAuthorizationStore()
+  const usersStore = useUsersStore()
   if (!authorizationStore.authorization) {
     const { getToken } = useAuth()
     const token = await getToken()
 
-    logger.info('token middleware', token.value)
+    logger.info('token middleware', token)
 
-    if (!token.value || !token.value.access_token)
+    if (!token || !token.access_token)
       return navigateTo('/login')
 
-    authorizationStore.authorization = token.value.access_token
+    authorizationStore.authorization = token.access_token
+    const currentUser = await usersStore.getCurrent()
+    if (currentUser)
+      authorizationStore.current = currentUser
   }
   // if (!authorizationStore.authorization)
   //   return navigateTo('login')

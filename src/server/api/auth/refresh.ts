@@ -7,12 +7,16 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await ofetch<{ data: IUserTokensData }>('http://tsc_devcontainer-app-1:8080/users/current', {
     method: 'POST',
-    body,
+    body: {
+      email: 'root@root.ru',
+      password: '12345678',
+    },
   })
-  console.log('login response', data)
+  // console.log('login response', data)
 
   if (!data || !data.refresh_token || !data.access_token)
     return null
+
   setCookie(event, 'X-Refresh-Token', data.refresh_token, {
     httpOnly: true,
   })

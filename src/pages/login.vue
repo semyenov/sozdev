@@ -10,7 +10,10 @@ async function login() {
     email: Email.value,
     password: Password.value,
   }
-  const user = await login(body)
+  const tokens = await login(body)
+
+  if (tokens?.access_token)
+    await navigateTo('/')
 }
 </script>
 

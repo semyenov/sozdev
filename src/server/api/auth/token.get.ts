@@ -1,9 +1,9 @@
 export default defineEventHandler(async (event) => {
-  console.log('auth.event')
+  console.log('auth.token.event')
   const cookie = parseCookies(event)
 
   const access_token = getCookie(event, 'X-Access-Token')
-  console.log('cookie', access_token)
+  // console.log('cookie', access_token)
 
   if (!access_token)
     return null

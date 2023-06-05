@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     method: 'POST',
     body,
   })
-  console.log('login response', data)
+  // console.log('login response', data)
 
   if (!data || !data.refresh_token || !data.access_token)
     return null

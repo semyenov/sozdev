@@ -1,4 +1,4 @@
-import { ofetch } from 'ofetch'
+import { $fetch } from 'ofetch'
 
 import type { $Fetch, FetchOptions, FetchResponse } from 'ofetch'
 
@@ -72,7 +72,7 @@ export class ApiClient {
   private _ofetch: $Fetch
 
   constructor(options: FetchOptions<'json'>) {
-    this._ofetch = ofetch.create(options)
+    this._ofetch = $fetch.create(options)
   }
 
   public async request<T>(
