@@ -41,65 +41,41 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
         ...ctx.options.headers,
         // Authorization: `Bearer ${tokens?.access_token}`,
       }
-      console.log('onRequest', ctx.options.headers)
     },
     onResponseError: async (ctx) => {
-      const { refreshToken, getToken } = useAuth()
-      const tokens = await getToken()
-      // console.log('response error tokens')
+      if (ctx.response.status === 401) {
+        const { refreshToken, getToken } = useAuth()
+        const tokens = await getToken()
 
-      if (tokens) {
-        // console.log('before refreshed')
-
-        const refreshedTokens = await refreshToken(tokens.access_token)
-        if (refreshedTokens) {
-          const options = {
-            ...ctx.options,
-            headers: {
+        if (tokens) {
+          const refreshedTokens = await refreshToken(tokens.access_token)
+          if (refreshedTokens) {
+            const options = {
+              ...ctx.options,
+              headers: {
               // ...ctx.options.headers,
 
-              Authorization: `Bearer ${refreshedTokens.access_token}`,
-              TEST: 'test',
+                Authorization: `Bearer ${refreshedTokens.access_token}`,
+                TEST: 'test',
 
-            },
-          } as FetchOptions<'json'>
-          //  as NitroFetchOptions<RequestInfo, 'get' >
-          console.log('response error request', ctx.request)
-          // const response = await new Promise((resolve, reject) => {
-          //   $fetch.raw(ctx.request, {
-          //     ...options,
-          //     onResponse: (context) => {
-          //       resolve(context.response)
-          //     },
-          //   })
-          // })
-          const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
-            headers: options.headers,
-            onResponse(ctx) {
-              resolve(ctx.response)
-            },
-          }))
-          // const res = await
-          // console.log('raw response', res.data.length)
+              },
+            } as FetchOptions<'json'>
+            const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
+              headers: options.headers,
+              onResponse(ctx) {
+                resolve(ctx.response)
+              },
+            }))
+            ctx.response = response
 
-          // const res = await client.request(method, url, options) as unknown as FetchResponse<'json'>
-
-          ctx.response = response
-          ctx.error = undefined
+            ctx.error = undefined
+          }
         }
       }
-
-      // ctx.error.
     },
-    onResponse: async (ctx) => {
-      // console.log('onResponse error', ctx.response)
-      console.log('onResponse error', ctx.options.headers, ctx.request, ctx.response.status)
-
-      // console.log('onResponse', ctx.response)
+    onResponse: async (_ctx) => {
     },
     onRequestError: (ctx) => {
-      // console.log('error request', ctx.error)
-
       logger.error(JSON.stringify(ctx, null, 2))
     },
   })

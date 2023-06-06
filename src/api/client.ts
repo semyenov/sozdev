@@ -88,7 +88,10 @@ export class ApiClient {
 
       return new ApiResponse<T>('success', res)
     }
-    catch (err) {
+    catch (err: any) {
+      if (err.status === 200)
+        return new ApiResponse('success', err.response)
+
       logger.error(err)
 
       return new ApiResponse('fail', undefined, err as Error)
