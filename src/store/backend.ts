@@ -34,44 +34,53 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   const client = new ApiClient({
     baseURL: getRuntimeConfigKey('apiUri'),
     onRequest: async (ctx) => {
-      const { getToken } = useAuth()
-      const tokens = await getToken()
-
-      ctx.options.headers = {
-        ...ctx.options.headers,
-        Authorization: `Bearer ${tokens?.access_token}`,
+      // const { getToken } = useAuth()
+      // const tokens = await getToken()
+      if (authorizationStore.authorization) {
+        ctx.options.headers = {
+          ...ctx.options.headers,
+          Authorization: `Bearer ${authorizationStore.authorization}`,
+        }
       }
     },
     onResponseError: async (ctx) => {
       if (ctx.response.status === 401) {
-        const { refreshToken, getToken } = useAuth()
-        const tokens = await getToken()
+        if (!authorizationStore.refresh_token)
+          navigateTo('/login')
 
-        if (tokens) {
-          const refreshedTokens = await refreshToken(tokens.access_token)
-          if (refreshedTokens) {
-            const options = {
-              ...ctx.options,
-              headers: {
-              // ...ctx.options.headers,
+        const usersStore = useUsersStore()
+        const userTokenData = await usersStore.postCurrent({
+          email: 'root@root.ru',
+          password: '12345678',
+        })
 
-                Authorization: `Bearer ${refreshedTokens.access_token}`,
-                TEST: 'test',
+        if (!userTokenData)
+          navigateTo('/login')
 
-              },
-            } as FetchOptions<'json'>
-            const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
-              headers: options.headers,
-              onResponse(ctx) {
-                resolve(ctx.response)
-              },
-            }))
+        authorizationStore.authorization = userTokenData?.access_token || null
 
-            ctx.response = response
+        const currentUser = await usersStore.getCurrent()
+        if (currentUser)
+          authorizationStore.current = currentUser
 
-            // ctx.error = undefinedазрешая
-          }
-        }
+        const options = {
+          ...ctx.options,
+          headers: {
+            // ...ctx.options.headers,
+
+            Authorization: `Bearer ${authorizationStore.authorization}`,
+            TEST: 'test',
+
+          },
+        } as FetchOptions<'json'>
+        const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
+          headers: options.headers,
+          onResponse(ctx) {
+            resolve(ctx.response)
+          },
+        }))
+
+        ctx.response = response
       }
     },
     onResponse: async (_ctx) => {

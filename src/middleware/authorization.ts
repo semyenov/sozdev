@@ -6,34 +6,24 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const authorizationStore = useAuthorizationStore()
   const usersStore = useUsersStore()
   if (!authorizationStore.authorization) {
-    const { getToken } = useAuth()
-    const token = await getToken()
+    // const { getToken } = useAuth()
+    // const token = await getToken()
 
-    logger.info('token middleware', token)
+    // refresh method
+    const userTokenData = await usersStore.postCurrent({
+      email: 'root@root.ru',
+      password: '12345678',
+    })
 
-    if (!token || !token.access_token)
+    authorizationStore.setCookie(userTokenData)
+
+    if (!userTokenData)
       return navigateTo('/login')
 
-    authorizationStore.authorization = token.access_token
+    authorizationStore.authorization = userTokenData.access_token || null
+
     const currentUser = await usersStore.getCurrent()
     if (currentUser)
       authorizationStore.current = currentUser
   }
-  // if (!authorizationStore.authorization)
-  //   return navigateTo('login')
-  // if (!authorizationStore.current) {
-  //   const usersStore = useUsersStore()
-  //   const userTokenData = await usersStore.postCurrent({
-  //     email: 'root@root.ru',
-  //     password: '12345678',
-  //   })
-
-  //   if (userTokenData) {
-  //     authorizationStore.authorization = userTokenData.access_token || null
-
-  //     const currentUser = await usersStore.getCurrent()
-  //     if (currentUser)
-  //       authorizationStore.current = currentUser
-  //   }
-  // }
 })
