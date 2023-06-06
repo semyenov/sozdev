@@ -12,11 +12,9 @@ declare global {
 const logger = useConsola('plugins/orama')
 
 export default defineNuxtPlugin((nuxtApp) => {
-  // nuxtApp.hooks.hook('')
-  console.log('nuxtApp.plugin', nuxtApp)
-  return
-
   const backendStore = useBackendStore()
+  // if (true)
+  //   return
 
   nuxtApp.hooks.hookOnce('app:mounted', () => {
     create({
@@ -55,7 +53,9 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       logger.info(`Insert window[${IMetaScope.OBJECTS}] data`)
       backendStore.itemsGetter<IObject>(IMetaScope.OBJECTS).then((items) => {
-        insertMultiple(index, items.value)
+        insertMultiple(index, items.value).catch((e) => {
+          logger.info('error insert', e.message)
+        })
       })
     })
 

@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
   setCookie(event, 'X-Access-Token', data.access_token, {
     httpOnly: true,
   })
-  event.context.access_token = data.access_token
+  // event.context.access_token = data.access_token
 
   return data
 })

@@ -15,7 +15,10 @@ const props = defineProps({
 })
 
 const item = toRef(props, 'item')
-const avatarText = computed(() => [item.value.info.first_name, item.value.info.last_name].map(str => str[0]).join(''))
+
+const avatarText = computed(() => {
+  return [item.value.info.first_name, item.value.info.last_name].map(str => str[0]).join('')
+})
 
 const winboxTitle = `${item.value.info.first_name} ${item.value.info.last_name}`
 const winboxId = `winbox-detail-${item.value._id}`

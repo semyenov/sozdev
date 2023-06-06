@@ -30,7 +30,7 @@ const emit = defineEmits<{
 const index = toRef(props, 'index')
 const dataId = toRef(props, 'dataId')
 
-const { data: item } = useAsyncData(() => props.dataGetter(dataId.value))
+const item = asyncComputed(() => props.dataGetter(dataId.value))
 
 const rootRef = ref<HTMLElement | null>(null)
 const horizontal = toRef(props, 'horizontal')

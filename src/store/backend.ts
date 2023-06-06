@@ -39,7 +39,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
 
       ctx.options.headers = {
         ...ctx.options.headers,
-        // Authorization: `Bearer ${tokens?.access_token}`,
+        Authorization: `Bearer ${tokens?.access_token}`,
       }
     },
     onResponseError: async (ctx) => {
@@ -66,9 +66,10 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
                 resolve(ctx.response)
               },
             }))
+
             ctx.response = response
 
-            ctx.error = undefined
+            // ctx.error = undefinedазрешая
           }
         }
       }
@@ -219,6 +220,9 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
 
   function setStoreItems<T>(scope: IMetaScope, items: T[]) {
     const storeScopeMap = store.value.get(scope)!
+    if (isClient)
+      console.log('window', window[scope])
+
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
       if (hasOwnProperty(item, backendStoreIdentificator)) {
