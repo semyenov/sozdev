@@ -1,12 +1,12 @@
 import { hasOwnProperty, toArray } from '@antfu/utils'
 import copy from 'fast-copy'
-import { insert, search } from '@orama/orama'
+import { insertMultiple, search } from '@orama/orama'
 import { isClient } from '@vueuse/core'
 
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
 
-import type { FetchOptions, SearchParameters } from 'ofetch'
+import type { FetchOptions, FetchResponse, SearchParameters } from 'ofetch'
 
 export const backendStoreIdentificator = '_id' as const
 export const backendStoreKey = 'backend' as const
@@ -34,8 +34,6 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   const client = new ApiClient({
     baseURL: getRuntimeConfigKey('apiUri'),
     onRequest: async (ctx) => {
-      // const { getToken } = useAuth()
-      // const tokens = await getToken()
       if (authorizationStore.authorization) {
         ctx.options.headers = {
           ...ctx.options.headers,
@@ -49,7 +47,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
           navigateTo('/login')
 
         const usersStore = useUsersStore()
-        const userTokenData = await usersStore.postCurrent({
+        const userTokenData = await usersStore.refreshCurrent({
           email: 'root@root.ru',
           password: '12345678',
         })
@@ -69,15 +67,14 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
 
           },
         } as FetchOptions<'json'>
-        // ctx.response. = 'test'
-        // const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
-        //   headers: options.headers,
-        //   onResponse(ctx) {
-        //     resolve(ctx.response)
-        //   },
-        // }))
+        const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
+          headers: options.headers,
+          onResponse(ctx) {
+            resolve(ctx.response)
+          },
+        }))
 
-        // ctx.response = response
+        ctx.response = response
       }
     },
     onResponse: async (_ctx) => {
@@ -224,23 +221,30 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     }
   }
 
-  function setStoreItems<T>(scope: IMetaScope, items: T[]) {
+  function setStoreItems<T>(
+    scope: IMetaScope,
+    items: T[],
+  ) {
     const storeScopeMap = store.value.get(scope)!
-    if (isClient)
-      console.log('window', window[scope])
 
+    if (isClient && window[scope]) {
+      try {
+        insertMultiple(window[scope], items as T & { [backendStoreIdentificator]: string }[])
+      }
+      catch (e) { console.log(e) }
+    }
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
-      if (hasOwnProperty(item, backendStoreIdentificator)) {
-        if (isClient && window[scope]) {
-          try {
-            insert(window[scope], item)
-          }
-          catch (e) { console.log(e) }
-        }
+      if (!hasOwnProperty(item, backendStoreIdentificator))
+        continue
+        // if (isClient && window[scope]) {
+        //   try {
+        //     insert(window[scope], item)
+        //   }
+        //   catch (e) { console.log(e) }
+        // }
 
-        storeScopeMap.set(item[backendStoreIdentificator], copy(item))
-      }
+      storeScopeMap.set(item[backendStoreIdentificator], copy(item))
     }
 
     return true

@@ -35,12 +35,12 @@ export default defineNuxtPlugin((nuxtApp) => {
         getDocumentIndexId(doc: IObject) {
           return doc._id
         },
-
         // required if schema is valid return undefined to skip validation
         validateSchema(doc, schema) {
-          if (typeof doc._id !== schema._id)
+          if (typeof doc._id !== schema._id) {
+            logger.warn('validateSchema', doc)
             return '_id'
-
+          }
           return undefined
         },
 

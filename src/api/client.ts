@@ -89,14 +89,14 @@ export class ApiClient {
       return new ApiResponse<T>('success', res)
     }
     catch (err: any) {
-      if (err.status === 401) {
-        logger.info('error test')
+      // if (err.status === 401) {
+      //   logger.info('error test')
 
-        logger.info(url, err.request, err.data)
-      }
+      //   logger.info(url, err.request, err.data)
+      // }
 
-      // if (err.status === 200)
-      //   return new ApiResponse('success', err.response)
+      if (err.status === 200)
+        return new ApiResponse('success', err.response)
 
       logger.error(err)
 
