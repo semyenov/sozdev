@@ -4,16 +4,18 @@ definePageMeta({
 })
 const Email = ref('root@root.ru')
 const Password = ref('12345678')
+const userStore = useUsersStore()
+const authorizationStore = useAuthorizationStore()
 async function login() {
-  const { login } = useAuth()
-  const body = {
+  const tokens = await userStore.postCurrent({
     email: Email.value,
     password: Password.value,
-  }
-  const tokens = await login(body)
+  })
 
-  if (tokens?.access_token)
+  if (tokens) {
+    authorizationStore.setCookie(tokens)
     await navigateTo('/')
+  }
 }
 </script>
 

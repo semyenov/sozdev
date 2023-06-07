@@ -6,7 +6,7 @@ import { isClient } from '@vueuse/core'
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'
 
-import type { FetchOptions, FetchResponse, SearchParameters } from 'ofetch'
+import type { FetchOptions, SearchParameters } from 'ofetch'
 
 export const backendStoreIdentificator = '_id' as const
 export const backendStoreKey = 'backend' as const
@@ -43,9 +43,9 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
         }
       }
     },
-    onResponseError: async (ctx) => {
+    async onResponseError(ctx) {
       if (ctx.response.status === 401) {
-        if (!authorizationStore.refresh_token)
+        if (!authorizationStore.refresh_authorization)
           navigateTo('/login')
 
         const usersStore = useUsersStore()
@@ -54,14 +54,10 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
           password: '12345678',
         })
 
+        authorizationStore.setCookie(userTokenData)
+
         if (!userTokenData)
           navigateTo('/login')
-
-        authorizationStore.authorization = userTokenData?.access_token || null
-
-        const currentUser = await usersStore.getCurrent()
-        if (currentUser)
-          authorizationStore.current = currentUser
 
         const options = {
           ...ctx.options,
@@ -73,14 +69,15 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
 
           },
         } as FetchOptions<'json'>
-        const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
-          headers: options.headers,
-          onResponse(ctx) {
-            resolve(ctx.response)
-          },
-        }))
+        // ctx.response. = 'test'
+        // const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
+        //   headers: options.headers,
+        //   onResponse(ctx) {
+        //     resolve(ctx.response)
+        //   },
+        // }))
 
-        ctx.response = response
+        // ctx.response = response
       }
     },
     onResponse: async (_ctx) => {

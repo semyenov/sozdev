@@ -79,7 +79,7 @@ export class ApiClient {
     method: ApiRequestMethod,
     url: string,
     options: FetchOptions<'json'> = {},
-  ): Promise<ApiResponse<T>> {
+  ): Promise<ApiResponse<T> > {
     try {
       const res = await this._ofetch.raw<IResponse<T>>(url, {
         method,
@@ -89,8 +89,14 @@ export class ApiClient {
       return new ApiResponse<T>('success', res)
     }
     catch (err: any) {
-      if (err.status === 200)
-        return new ApiResponse('success', err.response)
+      if (err.status === 401) {
+        logger.info('error test')
+
+        logger.info(url, err.request, err.data)
+      }
+
+      // if (err.status === 200)
+      //   return new ApiResponse('success', err.response)
 
       logger.error(err)
 

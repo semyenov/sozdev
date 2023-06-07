@@ -13,8 +13,6 @@ const logger = useConsola('plugins/orama')
 
 export default defineNuxtPlugin((nuxtApp) => {
   const backendStore = useBackendStore()
-  if (true)
-    return
 
   nuxtApp.hooks.hookOnce('app:mounted', () => {
     create({
