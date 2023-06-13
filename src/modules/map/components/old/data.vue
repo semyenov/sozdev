@@ -7,7 +7,7 @@ import maplibregl from 'maplibre-gl'
 
 import type { IMove } from '~/types'
 
-import type { TMapboxOverlay } from '../types'
+import type { TMapboxOverlay } from '../../types'
 import type { ShallowRef } from 'vue'
 import type { Feature, FeatureCollection, GeoJsonProperties, Geometry, LineString, Point } from 'geojson'
 import type { Units } from '@turf/turf'

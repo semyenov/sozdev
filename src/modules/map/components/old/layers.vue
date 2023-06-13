@@ -2,7 +2,7 @@
 import maplibregl from 'maplibre-gl'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
-import type { TMapboxDraw, TMapboxOverlay } from '../types'
+import type { TMapboxDraw, TMapboxOverlay } from '../../types'
 import type { ShallowRef } from 'nuxt/dist/app/compat/capi'
 
 const maplibreglMap = shallowRef<maplibregl.Map | null>()
