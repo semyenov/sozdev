@@ -15,13 +15,14 @@ export type TMapLibreRef = ShallowRef<maplibregl.Map | null>
 
 
 
-// export type TLayerEvent<T extends keyof MapLayerEventType  = unknown> = MapMouseEvent & {
-//   features?: MapGeoJSONFeature[] | undefined;
-// } | MapTouchEvent & {
-//   features?: MapGeoJSONFeature[] | undefined;
-// } & Object | MapLayerEventType[T] & {
-//   features?: MapGeoJSONFeature[] | undefined;
-// } & Object
+export type TLayerPayload<T extends keyof MapLayerEventType = unknown> = MapMouseEvent & {
+  features?: MapGeoJSONFeature[] | undefined;
+} | MapTouchEvent & {
+  features?: MapGeoJSONFeature[] | undefined;
+} & Object | MapLayerEventType[T] & {
+  features?: MapGeoJSONFeature[] | undefined;
+} & Object
+
 
 export type TLayerEvent = 'click' | 'dblclick' | 'mousedown' | 'mouseup' | 'mousemove' | 'mouseenter' | 'mouseleave' | 'mouseover' | 'mouseout' | 'contextmenu' | 'touchstart' | 'touchend' | 'touchcancel'
 

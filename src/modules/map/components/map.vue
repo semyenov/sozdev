@@ -67,7 +67,9 @@ function initializeMap() {
       const id = e.id
       const regexpIcon = /^custom:([^/]+)/
 
-      if (!regexpIcon.test(id) && !missingDefaultIds.value.includes(id)) {
+      if (!regexpIcon.test(id)) {
+        if (missingDefaultIds.value.includes(id))
+          return
         missingDefaultIds.value.push(id)
         logger.info('missing default icon:', id)
         return

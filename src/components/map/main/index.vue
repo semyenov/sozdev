@@ -4,7 +4,7 @@ import { clamp } from '@vueuse/core'
 import { MapLibrePopup } from '#components'
 
 import type { IMove } from '~/types'
-import type { TLayerEvent } from '~/modules/map/types'
+import type { TLayerPayload } from '~/modules/map/types'
 
 import type { Feature, FeatureCollection, LineString, Point } from 'geojson'
 import type { LngLatLike } from 'maplibre-gl'
@@ -22,7 +22,12 @@ const movesId = await movesStore.itemsGetter
 const moves = await movesStore.itemsGetterByIds(movesId.value)
 
 const moveFilter = ref<string>('')
-const hoveredStateId = ref<string | number>('')
+
+const popupType = shallowRef<string>('default')
+const popupRef = shallowRef<InstanceType<typeof MapLibrePopup> | null>(null)
+const popupContent = ref<Feature<Point, { id: string; label: string }> | null>(null)
+
+const popupTestContent = ref<Feature<Point> | null>(null)
 
 const objectsFeatures = computed<
     FeatureCollection<Point, { id: string; label: string }>
@@ -54,10 +59,7 @@ const distancePixelsAnimation = ref<number>(100)
 const stepsAnimation = ref<number>(40)
 const unclusteredId = ref<number>(0)
 
-const popupRef = shallowRef<InstanceType<typeof MapLibrePopup> | null>(null)
-
-function mouseClickObjects(e: TLayerEvent<'click'>) {
-  const map = e.target as maplibregl.Map
+function mouseClickObjects(e: TLayerPayload<'click'>) {
   const feature = e.features![0] as unknown as Feature<
         Point,
         { id: string; label: string }
@@ -90,7 +92,7 @@ function mouseClickObjects(e: TLayerEvent<'click'>) {
   })
 }
 
-function mouseEnterObjects(e: TLayerEvent<'mouseenter'>) {
+function mouseEnterObjects(e: TLayerPayload<'mouseenter'>) {
   if (!popupRef.value || !popupRef.value.popup)
     return
 
@@ -98,27 +100,55 @@ function mouseEnterObjects(e: TLayerEvent<'mouseenter'>) {
   map.getCanvas().style.cursor = 'pointer'
 
   const feature = e.features![0] as unknown as Feature<
-        Point,
-        { id: string; label: string }
-      > & { state: { hidden: boolean } }
+  Point,
+  { id: string; label: string }
+  > & { state: { hidden: boolean } }
 
+  popupContent.value = feature
+  popupType.value = 'default'
   if (feature.state.hidden)
     return
 
   popupRef.value.popup
     .setLngLat(e.lngLat)
-    .setHTML(getObjectTooltip(feature.properties.label))
     .trackPointer()
-    .addTo(map)
+
+  popupRef.value.setViewPopup(true)
+  // showPopup.value = true
 }
 
-function mouseLeaveObjects(_e: TLayerEvent<'mouseleave'>) {
+function mouseEnterCluster(e: TLayerPayload<'mouseenter'>) {
   if (!popupRef.value || !popupRef.value.popup)
     return
-  popupRef.value.popup.remove()
+
+  const map = e.target
+
+  const features = map.queryRenderedFeatures(e.point, {
+    layers: [MAP_LAYERS.CLUSTERS],
+  })
+
+  const cluster = features[0] as Feature<Point>
+  popupTestContent.value = cluster
+  map.getCanvas().style.cursor = 'pointer'
+
+  popupType.value = 'objects'
+  popupRef.value.popup
+    .setLngLat(e.lngLat)
+    .trackPointer()
+
+  popupRef.value.setViewPopup(true)
+  // showPopup.value = true
 }
 
-function mouseEnterObjcetsUnclustered(e: TLayerEvent<'mouseenter'>) {
+function mouseLeaveObjects(_e: TLayerPayload<'mouseleave'>) {
+  if (!popupRef.value || !popupRef.value.popup)
+    return
+
+  popupRef.value.setViewPopup(false)
+  // popupRef.value.popup.removeClassName('visible')
+}
+
+function mouseEnterObjcetsUnclustered(e: TLayerPayload<'mouseenter'>) {
   if (!popupRef.value || !popupRef.value.popup)
     return
   const map = e.target
@@ -127,18 +157,15 @@ function mouseEnterObjcetsUnclustered(e: TLayerEvent<'mouseenter'>) {
         Point,
         { id: string; label: string }
       >
-
   popupRef.value.popup
     .setLngLat(e.lngLat)
-    .setHTML(getObjectTooltip(feature.properties.label))
     .trackPointer()
-    .addTo(map)
 }
 
-function mouseClickCluster(e: TLayerEvent<'click'>) {
+function mouseClickCluster(e: TLayerPayload<'click'>) {
   const map = e.target as maplibregl.Map
   const features = map.queryRenderedFeatures(e.point, {
-    layers: ['cluster'],
+    layers: [MAP_LAYERS.CLUSTERS],
   })
   const cluster = features[0] as Feature<Point>
   const clusterId = features[0].properties.cluster_id
@@ -218,7 +245,6 @@ function mouseClickCluster(e: TLayerEvent<'click'>) {
             return
           }
         }
-        console.log('test')
 
         clusterFC.features = await geChildrenOfCluster(source, arr) as Feature<Point>[]
 
@@ -266,7 +292,8 @@ function getMoveTooltip(
         <span>Получатель:</span> ${to}
       </div>
     </div>
-  </div>`
+  </div>
+  `
 }
 
 function getObjectTooltip(label: string): string {
@@ -282,7 +309,14 @@ function getObjectTooltip(label: string): string {
 <template>
   <ClientOnly>
     <MapLibreMap :map-options="{ container: 'mapContainer' }">
-      <MapLibrePopup ref="popupRef" />
+      <MapLibrePopup ref="popupRef" :slot-name="popupType">
+        <template #objects>
+          <MapPopupTest v-if="popupTestContent" :content="popupTestContent" />
+        </template>
+        <template #default>
+          <MapPopupObject v-if="popupContent" :content="popupContent" />
+        </template>
+      </MapLibrePopup>
       <MapLibreSource
         :source-id="MAP_SOURCES.OBJECTS"
         source-template="cluster"
@@ -310,12 +344,30 @@ function getObjectTooltip(label: string): string {
             <MapLibreLayer
               layer-template="object"
               :layers-options="{
+                id: MAP_LAYERS.LINES_UNCLUSTER,
+                type: 'line',
+                source: MAP_SOURCES.LINES_UNCLUSTER,
+
+                layout: {
+                  'line-cap': 'round',
+                  'line-join': 'round',
+                },
+                paint: {
+                  'line-color': '#51bbd6',
+                  'line-width': 2,
+                  'line-opacity': 0.5,
+                },
+              }"
+            />
+            <MapLibreLayer
+              layer-template="object"
+              :layers-options="{
                 id: MAP_LAYERS.OBJECTS,
                 type: 'symbol',
                 source: MAP_SOURCES.OBJECTS,
                 filter: ['!', ['has', 'point_count']],
               }"
-              @click.prevent="mouseClickObjects"
+              @click="mouseClickObjects"
               @mouseenter="mouseEnterObjects"
               @mouseleave="mouseLeaveObjects"
             />
@@ -328,30 +380,7 @@ function getObjectTooltip(label: string): string {
                 source: MAP_SOURCES.OBJECTS_UNCLUSTER,
                 filter: ['!', ['has', 'point_count']],
               }"
-              @click.prevent="mouseClickObjects"
-              @mouseenter="mouseEnterObjects"
-              @mouseleave="mouseLeaveObjects"
-            />
-
-            <MapLibreLayer
-              layer-template="object"
-              :layers-options="{
-                id: MAP_LAYERS.LINES_UNCLUSTER,
-                type: 'line',
-                source: MAP_SOURCES.LINES_UNCLUSTER,
-
-                layout: {
-                  'line-cap': 'round',
-                  'line-join': 'round',
-
-                },
-                paint: {
-                  'line-color': '#51bbd6',
-                  'line-width': 2,
-                  'line-opacity': 0.5,
-                },
-              }"
-              @click.prevent="mouseClickObjects"
+              @click="mouseClickObjects"
               @mouseenter="mouseEnterObjects"
               @mouseleave="mouseLeaveObjects"
             />
@@ -359,17 +388,19 @@ function getObjectTooltip(label: string): string {
             <MapLibreLayer
               layer-template="cluster"
               :layers-options="{
-                id: 'cluster',
+                id: MAP_LAYERS.CLUSTERS,
                 type: 'circle',
                 source: MAP_SOURCES.OBJECTS,
                 filter: ['has', 'point_count'],
               }"
+              @mouseenter="mouseEnterCluster"
+              @mouseleave="mouseLeaveObjects"
               @click="mouseClickCluster"
             />
 
             <MapLibreLayer
               :layers-options="{
-                id: 'cluster-count',
+                id: MAP_LAYERS.CLUSTERS_COUNTS,
                 type: 'symbol',
                 source: MAP_SOURCES.OBJECTS,
                 filter: ['has', 'point_count'],

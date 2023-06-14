@@ -1,3 +1,4 @@
+import type { TLayerEvent } from '../types'
 import type { MapEventType } from 'maplibre-gl'
 
 export const mapEvents: Array<keyof MapEventType> = [
@@ -49,7 +50,7 @@ export const mapEvents: Array<keyof MapEventType> = [
   'wheel',
 ]
 
-export const layerEvents: Array<keyof maplibregl.MapLayerEventType> = [
+export const layerEvents: Array<TLayerEvent> = [
   'click',
   'contextmenu',
   'dblclick',
