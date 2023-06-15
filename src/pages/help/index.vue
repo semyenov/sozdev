@@ -2,8 +2,8 @@
 const route = useRoute('help')
 
 const { t } = useI18n()
-const { data: list } = await useAsyncData('equal', () => {
-  return queryContent('/').find()
+const { data: list } = await useAsyncData('help-list', () => {
+  return queryContent().find()
 })
 </script>
 

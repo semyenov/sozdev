@@ -9,17 +9,22 @@ const props = withDefaults(defineProps<{
   sourceId: string
   sourceTemplate?: TSourceTemplate
   sourceOptions: SourceSpecification
-}>(), {
-})
+}>(), {})
 
-const map = inject('map-key') as ShallowRef<Map>
-const initialized = shallowRef<boolean>(false)
+const map: ShallowRef<Map> | undefined = inject('map-key')
+const initialized = ref<boolean>(false)
 const sourceOptions = Object.assign(getSourceTemplate(props.sourceTemplate), props.sourceOptions)
 
 onMounted(() => initializeLayer())
+
 function initializeLayer() {
-  map.value.addSource(`${props.sourceId}`,
-    sourceOptions)
+  if (!map)
+    return
+
+  map.value.addSource(
+    props.sourceId,
+    sourceOptions,
+  )
   initialized.value = true
 }
 </script>

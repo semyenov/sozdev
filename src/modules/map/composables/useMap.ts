@@ -9,8 +9,6 @@ const maplibreglMarker = shallowRef<maplibregl.Marker | null>(null)
 const maplibreglPopup = shallowRef<maplibregl.Popup | null>(null)
 const isLoaded = shallowRef<boolean>(false)
 
-const testRef = ref(null)
-
 export function useMap() {
   return {
     initializeMap,

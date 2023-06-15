@@ -11,23 +11,27 @@ const props = withDefaults(defineProps<{
 })
 
 const popup = shallowRef<Popup | null>(null)
-const showFlag = shallowRef<boolean>(false)
-const disabled = ref(true)
-const initialized = shallowRef<boolean>(false)
-const map = inject('map-key') as ShallowRef<maplibregl.Map>
+const disabledFlag = ref(true)
+const showFlag = ref(false)
+const initialized = ref(false)
+const map: ShallowRef<maplibregl.Map> | undefined = inject('map-key')
 
 defineExpose<{
   popup: ShallowRef<Popup | null>
-  setViewPopup: (shouldVisible: boolean) => void }>
+  toggleVisibility: (shouldVisible: boolean) => void }>
     ({
       popup,
-      setViewPopup,
+      toggleVisibility,
     })
-const slots = defineSlots()
+
+// const slots = defineSlots()
 onMounted(() => initializePopup())
-console.log(slots)
+onScopeDispose(() => popup.value?.remove())
 
 function initializePopup() {
+  if (!map)
+    return
+
   popup.value = new maplibregl.Popup({
     closeButton: false,
     closeOnClick: false,
@@ -40,33 +44,28 @@ function initializePopup() {
     .trackPointer()
 
   initialized.value = true
-  disabled.value = false
+  disabledFlag.value = false
 }
-function setViewPopup(shouldVisible: boolean) {
+function toggleVisibility(flag: boolean) {
   if (!popup.value)
     return
-  showFlag.value = shouldVisible
-  if (shouldVisible) {
+
+  showFlag.value = flag
+
+  if (flag) {
     popup.value.removeClassName('invisible')
     popup.value.addClassName('visible')
+
     return
   }
+
   popup.value.removeClassName('visible')
   popup.value.addClassName('invisible')
 }
 </script>
 
 <template>
-  <Teleport v-if="initialized" :disabled="disabled" to=".custom-popup #teleport-popup">
+  <Teleport v-if="initialized" :disabled="disabledFlag" to=".custom-popup #teleport-popup">
     <slot :name="props.slotName || 'default'" />
-    <!-- <slot name="objects" /> -->
-    <!-- <slot /> -->
-    <!-- test-teleport -->
   </Teleport>
 </template>
-
-<style lang="postcss">
-/* .custom-popup {
-  @apply
-} */
-</style>

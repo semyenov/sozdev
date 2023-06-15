@@ -238,7 +238,16 @@ export default defineNuxtConfig({
     },
   },
 
+  nitro: {
+    storage: {
+      cache: {
+        driver: 'redis',
+        /* redis connector options */
+      },
+    },
+  },
+
   devtools: {
-    enabled: true,
+    enabled: false,
   },
 })

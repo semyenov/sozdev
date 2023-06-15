@@ -2,21 +2,17 @@
   "editor.tabCompletion": "off",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-
   "editor.wrappingStrategy": "advanced",
   "editor.wordWrap": "bounded",
   "editor.wordWrapColumn": 80,
   "editor.wrappingIndent": "deepIndent",
-
   "where-am-i.icon": "home",
   "where-am-i.template": "{icon} {project-name}",
   "where-am-i.colorful": true,
   "where-am-i.color": "#fff",
   // "where-am-i": false,
-
   "typescript.tsdk": "node_modules/typescript/lib",
   "volar.takeOverMode.extension": "Vue.volar",
-
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
   "eslint.packageManager": "yarn",
@@ -27,7 +23,6 @@
     "typescriptreact",
     "vue"
   ],
-
   "stylelint.packageManager": "yarn",
   "stylelint.validate": [
     "css",
@@ -35,15 +30,14 @@
     "postcss",
     "vue" // necessary for stylelint diagnostics in .vue <style> tag
   ],
-
   "browse-lite.startUrl": "http://localhost:3000",
   "browse-lite.chromeExecutable": "/usr/bin/chromium",
-
-  "i18n-ally.localesPaths": ["src/i18n/locales"],
+  "i18n-ally.localesPaths": [
+    "src/i18n/locales"
+  ],
   "i18n-ally.displayLanguage": "ru",
   "i18n-ally.sourceLanguage": "ru",
   "i18n-ally.keystyle": "nested",
-
   "explorer.fileNesting.patterns": {
     "nuxt.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, contentlayer.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, histoire.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, rspack.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, uno.config.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*, i18n.config.*"
   },
@@ -52,38 +46,29 @@
   "fileNestingUpdater.promptOnAutoUpdate": true,
   "fileNestingUpdater.upstreamRepo": "antfu/vscode-file-nesting-config",
   "fileNestingUpdater.upstreamBranch": "main",
-
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-
   "[typescript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-
   "[yaml]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-
   "[markdown]": {
     "editor.formatOnSave": false
   },
-
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-
   "[postcss]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
   },
-
   "references.preferredLocation": "peek"
 }

@@ -307,115 +307,113 @@ function getObjectTooltip(label: string): string {
 </script>
 
 <template>
-  <ClientOnly>
-    <MapLibreMap :map-options="{ container: 'mapContainer' }">
-      <MapLibrePopup ref="popupRef" :slot-name="popupType">
-        <template #objects>
-          <MapPopupTest v-if="popupTestContent" :content="popupTestContent" />
-        </template>
-        <template #default>
-          <MapPopupObject v-if="popupContent" :content="popupContent" />
-        </template>
-      </MapLibrePopup>
+  <MapLibreMap>
+    <MapLibrePopup ref="popupRef" :slot-name="popupType">
+      <template #objects>
+        <MapPopupTest v-if="popupTestContent" :content="popupTestContent" />
+      </template>
+      <template #default>
+        <MapPopupObject v-if="popupContent" :content="popupContent" />
+      </template>
+    </MapLibrePopup>
+    <MapLibreSource
+      :source-id="MAP_SOURCES.OBJECTS"
+      source-template="cluster"
+      :source-options="{
+        type: 'geojson',
+        data: objectsFeatures,
+      }"
+    >
       <MapLibreSource
-        :source-id="MAP_SOURCES.OBJECTS"
-        source-template="cluster"
+        :source-id="MAP_SOURCES.OBJECTS_UNCLUSTER"
+        source-template="object"
         :source-options="{
           type: 'geojson',
-          data: objectsFeatures,
+          data: null,
         }"
       >
         <MapLibreSource
-          :source-id="MAP_SOURCES.OBJECTS_UNCLUSTER"
+          :source-id="MAP_SOURCES.LINES_UNCLUSTER"
           source-template="object"
           :source-options="{
             type: 'geojson',
             data: null,
           }"
         >
-          <MapLibreSource
-            :source-id="MAP_SOURCES.LINES_UNCLUSTER"
-            source-template="object"
-            :source-options="{
-              type: 'geojson',
-              data: null,
+          <MapLibreLayer
+            layer-template="object"
+            :layers-options="{
+              id: MAP_LAYERS.LINES_UNCLUSTER,
+              type: 'line',
+              source: MAP_SOURCES.LINES_UNCLUSTER,
+
+              layout: {
+                'line-cap': 'round',
+                'line-join': 'round',
+              },
+              paint: {
+                'line-color': '#51bbd6',
+                'line-width': 2,
+                'line-opacity': 0.5,
+              },
             }"
-          >
-            <MapLibreLayer
-              layer-template="object"
-              :layers-options="{
-                id: MAP_LAYERS.LINES_UNCLUSTER,
-                type: 'line',
-                source: MAP_SOURCES.LINES_UNCLUSTER,
+          />
+          <MapLibreLayer
+            layer-template="object"
+            :layers-options="{
+              id: MAP_LAYERS.OBJECTS,
+              type: 'symbol',
+              source: MAP_SOURCES.OBJECTS,
+              filter: ['!', ['has', 'point_count']],
+            }"
+            @click="mouseClickObjects"
+            @mouseenter="mouseEnterObjects"
+            @mouseleave="mouseLeaveObjects"
+          />
 
-                layout: {
-                  'line-cap': 'round',
-                  'line-join': 'round',
-                },
-                paint: {
-                  'line-color': '#51bbd6',
-                  'line-width': 2,
-                  'line-opacity': 0.5,
-                },
-              }"
-            />
-            <MapLibreLayer
-              layer-template="object"
-              :layers-options="{
-                id: MAP_LAYERS.OBJECTS,
-                type: 'symbol',
-                source: MAP_SOURCES.OBJECTS,
-                filter: ['!', ['has', 'point_count']],
-              }"
-              @click="mouseClickObjects"
-              @mouseenter="mouseEnterObjects"
-              @mouseleave="mouseLeaveObjects"
-            />
+          <MapLibreLayer
+            layer-template="object"
+            :layers-options="{
+              id: MAP_LAYERS.OBJECTS_UNCLUSTER,
+              type: 'symbol',
+              source: MAP_SOURCES.OBJECTS_UNCLUSTER,
+              filter: ['!', ['has', 'point_count']],
+            }"
+            @click="mouseClickObjects"
+            @mouseenter="mouseEnterObjects"
+            @mouseleave="mouseLeaveObjects"
+          />
 
-            <MapLibreLayer
-              layer-template="object"
-              :layers-options="{
-                id: MAP_LAYERS.OBJECTS_UNCLUSTER,
-                type: 'symbol',
-                source: MAP_SOURCES.OBJECTS_UNCLUSTER,
-                filter: ['!', ['has', 'point_count']],
-              }"
-              @click="mouseClickObjects"
-              @mouseenter="mouseEnterObjects"
-              @mouseleave="mouseLeaveObjects"
-            />
+          <MapLibreLayer
+            layer-template="cluster"
+            :layers-options="{
+              id: MAP_LAYERS.CLUSTERS,
+              type: 'circle',
+              source: MAP_SOURCES.OBJECTS,
+              filter: ['has', 'point_count'],
+            }"
+            @mouseenter="mouseEnterCluster"
+            @mouseleave="mouseLeaveObjects"
+            @click="mouseClickCluster"
+          />
 
-            <MapLibreLayer
-              layer-template="cluster"
-              :layers-options="{
-                id: MAP_LAYERS.CLUSTERS,
-                type: 'circle',
-                source: MAP_SOURCES.OBJECTS,
-                filter: ['has', 'point_count'],
-              }"
-              @mouseenter="mouseEnterCluster"
-              @mouseleave="mouseLeaveObjects"
-              @click="mouseClickCluster"
-            />
-
-            <MapLibreLayer
-              :layers-options="{
-                id: MAP_LAYERS.CLUSTERS_COUNTS,
-                type: 'symbol',
-                source: MAP_SOURCES.OBJECTS,
-                filter: ['has', 'point_count'],
-                layout: {
-                  'text-field': ['get', 'point_count_abbreviated'],
-                  'text-font': ['Noto Sans Regular'],
-                  'text-size': 12,
-                  'text-rotate': 0,
-                  'text-overlap': 'always',
-                },
-              }"
-            />
-          </MapLibreSource>
+          <MapLibreLayer
+            :layers-options="{
+              id: MAP_LAYERS.CLUSTERS_COUNTS,
+              type: 'symbol',
+              source: MAP_SOURCES.OBJECTS,
+              filter: ['has', 'point_count'],
+              layout: {
+                'text-field': ['get', 'point_count_abbreviated'],
+                'text-font': ['Noto Sans Regular'],
+                'text-size': 12,
+                'text-rotate': 0,
+                'text-overlap': 'always',
+              },
+            }"
+          />
         </MapLibreSource>
       </MapLibreSource>
-    </MapLibreMap>
-  </ClientOnly>
+    </MapLibreSource>
+  </MapLibreMap>
 </template>

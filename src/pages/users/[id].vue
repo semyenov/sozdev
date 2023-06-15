@@ -1,7 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
   layout: 'default',
-  middleware: 'authorization',
   validate: r => (r.name === 'users-id' ? validateUuid(r.params.id) : false),
 })
 

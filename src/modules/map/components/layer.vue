@@ -16,12 +16,15 @@ const emits = defineEmits<{
   (event: TLayerEvent, payload: TLayerPayload<TLayerEvent>): void
 }>()
 
-const map = inject('map-key') as ShallowRef<Map>
+const map: ShallowRef<Map> | undefined = inject('map-key')
 const layersOptions = Object.assign(getLayerTemplate(props.layerTemplate), props.layersOptions)
 
 onMounted(() => initializeLayer())
 function initializeLayer() {
-  map.value.addLayer({ ...layersOptions })
+  if (!map)
+    return
+
+  map.value.addLayer(layersOptions)
   layerEvents.forEach(event =>
     map.value.on(event, props.layersOptions.id, e => emits(event, e)),
   )

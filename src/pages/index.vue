@@ -3,7 +3,6 @@
 
 definePageMeta({
   layout: 'default',
-  middleware: 'authorization',
 })
 
 const route = useRoute('index')
