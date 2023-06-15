@@ -40,7 +40,7 @@ export class ApiResponse<T> implements IResponse<T> {
 
     this._ts
       = res?.headers.has('x-timestamp')
-        ? parseInt(res.headers.get('x-timestamp')!)
+        ? Number.parseInt(res.headers.get('x-timestamp')!)
         : -1
     this._status = status
     this._statusCode = _statusCode
@@ -79,7 +79,7 @@ export class ApiClient {
     method: ApiRequestMethod,
     url: string,
     options: FetchOptions<'json'> = {},
-  ): Promise<ApiResponse<T> > {
+  ): Promise<ApiResponse<T>> {
     try {
       const res = await this._ofetch.raw<IResponse<T>>(url, {
         method,

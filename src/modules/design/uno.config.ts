@@ -1,5 +1,6 @@
-import chroma from 'chroma-js'
 import { objectMap, range } from '@antfu/utils'
+import transformerCompileClass from '@unocss/transformer-compile-class'
+import chroma from 'chroma-js'
 import {
   presetUno as createPresetUno,
   defineConfig,
@@ -10,7 +11,6 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import transformerCompileClass from '@unocss/transformer-compile-class'
 
 import type {
   UIColorVariants,

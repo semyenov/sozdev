@@ -1,5 +1,5 @@
-import { faker } from '@faker-js/faker'
 import { range } from '@antfu/utils'
+import { faker } from '@faker-js/faker'
 
 import { IMetaScope } from '~/types'
 import type { IUser } from '~/types'

@@ -5,7 +5,7 @@
   "onCreateCommand": "yarn",
 
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "runArgs": ["--network=tsc_devcontainer_backend_network"],
+  "runArgs": ["--network=host"],
 
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -55,7 +55,8 @@
         "arcanis.vscode-zipfs",
         "antfu.where-am-i",
         "vunguyentuan.vscode-postcss",
-        "antfu.file-nesting"
+        "antfu.file-nesting",
+        "Codeium.codeium"
       ]
     }
   }

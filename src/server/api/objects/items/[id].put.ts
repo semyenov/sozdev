@@ -1,9 +1,9 @@
-import z from 'zod'
-import { useSafeValidatedBody, useValidatedParams } from 'h3-zod'
 import { defineEventHandler } from 'h3'
+import { useSafeValidatedBody, useValidatedParams } from 'h3-zod'
+import z from 'zod'
 
-import { IObjectSchema } from '~/types'
 import { items } from '~/server/objects'
+import { IObjectSchema } from '~/types'
 
 export default defineEventHandler(async (event) => {
   const params = await useValidatedParams(event, z.object({ id: z.string() }))

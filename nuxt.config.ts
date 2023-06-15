@@ -1,7 +1,8 @@
-import postcssCurrentSelector from 'postcss-current-selector'
-import postcssNestedAncestors from 'postcss-nested-ancestors'
-import postcssNested from 'postcss-nested'
+import { defineNuxtConfig } from 'nuxt/config'
 import { resolve } from 'pathe'
+import postcssCurrentSelector from 'postcss-current-selector'
+import postcssNested from 'postcss-nested'
+import postcssNestedAncestors from 'postcss-nested-ancestors'
 
 import {
   defaultLocale,

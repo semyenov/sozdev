@@ -264,9 +264,9 @@ export function convertUnits(
     : typeof value === 'string'
       ? value.endsWith('%')
         ? Math.floor(
-          (parseFloat(value.slice(0, value.length - 1)) / 100)
-            * (type === 'width' ? ws.width.value : ws.height.value),
+          (Number.parseFloat(value.slice(0, value.length - 1)) / 100)
+          * (type === 'width' ? ws.width.value : ws.height.value),
         )
-        : parseInt(value.slice(0, value.length - 2))
+        : Number.parseInt(value.slice(0, value.length - 2))
       : 0)
 }

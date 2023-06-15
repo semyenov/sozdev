@@ -1,8 +1,8 @@
 <script setup lang="ts" generic="T extends { _id: string }">
 import { clamp, objectPick } from '@antfu/utils'
+import { AInput } from 'anu-vue'
 import { Document } from 'flexsearch'
 import { nanoid } from 'nanoid'
-import { AInput } from 'anu-vue'
 
 import { UiVirtualList } from '#components'
 

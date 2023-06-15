@@ -1,7 +1,9 @@
 root: true
 
 env:
+  es6: true
   node: true
+  browser: true
 
 parser: vue-eslint-parser
 
@@ -26,6 +28,8 @@ extends:
   - '@unocss'
 
 settings:
+  'import/parsers':
+
   'import/resolver':
     typescript: true
     node: true
@@ -62,3 +66,6 @@ rules:
           'position': 'after'
       'distinctGroup': true
       'newlines-between': 'always'
+      'alphabetize':
+        'order': 'asc'
+        'caseInsensitive': true

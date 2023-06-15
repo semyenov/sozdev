@@ -1,7 +1,7 @@
 import { hasOwnProperty, toArray } from '@antfu/utils'
-import copy from 'fast-copy'
 import { insertMultiple, search } from '@orama/orama'
 import { isClient } from '@vueuse/core'
+import copy from 'fast-copy'
 
 import { ApiClient } from '~/api/client'
 import { IMetaScope } from '~/types'

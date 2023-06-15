@@ -1,6 +1,6 @@
-import { validateOptions } from './validate'
-import { appendStylesheet } from './styles'
 import renderToast from './render'
+import { appendStylesheet } from './styles'
+import { validateOptions } from './validate'
 
 import type { Options, TRenderFunction } from './toast.d'
 

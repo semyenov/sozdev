@@ -1,6 +1,6 @@
-import { escapeRegExp } from 'unocss'
 import { parseColor } from '@unocss/preset-mini'
 import chroma from 'chroma-js'
+import { escapeRegExp } from 'unocss'
 
 import type { Preset } from 'unocss'
 
@@ -42,7 +42,7 @@ export function presetChroma(options: ChromaOptions = {}): Preset {
       [
         new RegExp(`^${prefix}(?:((?:linear|radial|conic))-)?(?:(\\d+)-)?(rgb|lab|hsl|lch)((?:-${colorsReStr}){2,})$`),
         ([, type = 'linear', precision, mode, body], { theme }) => {
-          let steps = parseInt(precision || '0', 10)
+          let steps = Number.parseInt(precision || '0', 10)
           if (Number.isNaN(steps) || steps < 1)
             steps = defaultSteps
           const stops = resolveStops(steps, mode as chroma.InterpolationMode, body, theme)
@@ -60,7 +60,7 @@ export function presetChroma(options: ChromaOptions = {}): Preset {
       [
         new RegExp(`^${prefix}stops-(?:(\\d+)-)?(rgb|lab|hsl|lch)((?:-${colorsReStr}){2,})$`),
         ([, precision, mode, body], { theme }) => {
-          let steps = parseInt(precision || '0', 10)
+          let steps = Number.parseInt(precision || '0', 10)
           if (Number.isNaN(steps) || steps < 1)
             steps = defaultSteps
           const stops = resolveStops(steps, mode as chroma.InterpolationMode, body, theme)

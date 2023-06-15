@@ -79,7 +79,7 @@
   },
 
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "Vue.volar"
   },
 
   "[shellscript]": {

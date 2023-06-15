@@ -1,3 +1,5 @@
+import { presetThemeDefault } from '@anu-vue/preset-theme-default'
+import { presetAnu } from 'anu-vue'
 import {
   defineConfig,
 
@@ -11,13 +13,15 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import { presetThemeDefault } from '@anu-vue/preset-theme-default'
-import { presetAnu } from 'anu-vue'
 
 export default defineConfig({
   // ...unoConfig,
+  content: {
+    pipeline: {
+      include: [/.*\/anu-vue\.js(.*)?$/, /^.*\.vue$/, /^.*\.md$/],
+    },
+  },
 
-  include: [/.*\/anu-vue\.js(.*)?$/, /^.*\.vue$/, /^.*\.md$/],
   safelist: [
     'i-carbon:screen',
     'i-carbon:minimize',
