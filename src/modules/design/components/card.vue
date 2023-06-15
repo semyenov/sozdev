@@ -1,21 +1,14 @@
 <script setup lang="ts">
 import type { UIColorVariants, UIRoundedVariants } from '~/types/ui'
 
-import type { PropType } from 'vue'
-
-const props = defineProps({
-  color: {
-    type: String as PropType<UIColorVariants>,
-    default: 'primary',
-  },
-  rounded: {
-    type: String as PropType<UIRoundedVariants>,
-    default: 'md',
-  },
-  dashed: {
-    type: Boolean,
-    default: false,
-  },
+const props = withDefaults(defineProps<{
+  color: UIColorVariants
+  rounded: UIRoundedVariants
+  dashed: boolean
+}>(), {
+  color: 'primary',
+  rounded: 'md',
+  dashed: false,
 })
 const slots = useSlots()
 </script>

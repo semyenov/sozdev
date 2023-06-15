@@ -1,12 +1,13 @@
 {
   "name": "Nuxt",
-
-  "forwardPorts": [3000],
+  "forwardPorts": [
+    3000
+  ],
   "onCreateCommand": "yarn",
-
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "runArgs": ["--network=host"],
-
+  "runArgs": [
+    "--network=host"
+  ],
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
@@ -22,7 +23,6 @@
       "version": "latest"
     }
   },
-
   "customizations": {
     "vscode": {
       "settings": {
@@ -57,8 +57,20 @@
         "vunguyentuan.vscode-postcss",
         "antfu.file-nesting",
         "Codeium.codeium",
-        "yoavbls.pretty-ts-errors"
+        "yoavbls.pretty-ts-errors",
+        "Vue.volar",
+        "formulahendry.auto-rename-tag",
+        "formulahendry.auto-close-tag",
+        "christian-kohler.path-intellisense",
+        "hollowtree.vue-snippets",
+        "pranaygp.vscode-css-peek",
+        "quicktype.quicktype"
       ]
     }
-  }
+},
+"portsAttributes": {
+	"3000": {
+		"label": "tsc"
+	}
+}
 }

@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { ParsedContent } from '@nuxt/content/dist/runtime/types'
 
-const props = defineProps({
-  item: {
-    type: Object as PropType<{
-      title: string
-      description: string
-      _path: string
-    }>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  item: ParsedContent
+}>()
 const item = toRef(props, 'item')
 
 const winboxTitle = `${item.value.title}`
