@@ -2,13 +2,10 @@ import { presetThemeDefault } from '@anu-vue/preset-theme-default'
 import { presetAnu } from 'anu-vue'
 import {
   defineConfig,
-
   presetAttributify,
   presetIcons,
   presetTypography,
   presetUno,
-  presetWebFonts,
-
   transformerCompileClass,
   transformerDirectives,
   transformerVariantGroup,
@@ -23,10 +20,10 @@ export default defineConfig({
   },
 
   safelist: [
-    'i-carbon:screen',
-    'i-carbon:minimize',
-    'i-carbon:maximize',
-    'i-carbon:information-disabled',
+    'i-ph:minus',
+    'i-ph:plus',
+    'i-ph:browser',
+    'i-ph:x',
   ],
 
   presets: [
@@ -37,12 +34,12 @@ export default defineConfig({
     }),
     presetAttributify(),
     presetTypography(),
-    presetWebFonts({
-      provider: 'google',
-      fonts: {
-        lato: 'Lato',
-      },
-    }),
+    // presetWebFonts({
+    //   provider: 'google',
+    //   fonts: {
+    //     lato: 'Lato',
+    //   },
+    // }),
     presetUno(),
     presetAnu(),
     presetThemeDefault(),

@@ -125,8 +125,5 @@
     "flexsearch@^0.7.31": "patch:flexsearch@npm%3A0.7.31#./.yarn/patches/flexsearch-npm-0.7.31-f26cb98f08.patch",
     "winbox@^0.2.6": "patch:winbox@npm%3A0.2.6#./.yarn/patches/winbox-npm-0.2.6-437212b13a.patch",
     "@types/winbox@^0.2.1": "patch:@types/winbox@npm%3A0.2.1#./.yarn/patches/@types-winbox-npm-0.2.1-37c4030f07.patch"
-  },
-  "peerDependencies": {
-    "vue-tsc": "*"
   }
 }

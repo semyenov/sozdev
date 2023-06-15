@@ -15,22 +15,7 @@
   // "where-am-i": false,
 
   "typescript.tsdk": "node_modules/typescript/lib",
-  "extensions.disabled": ["vscode.typescript-language-features"],
-  "vscode.typescript-language-features": null,
   "volar.takeOverMode.extension": "Vue.volar",
-  "volar.vueserver.petiteVue.processHtmlFile": true,
-  "volar.completion.normalizeComponentImportName": true,
-  "volar.completion.preferredTagNameCase": "pascal",
-  "volar.completion.preferredAttrNameCase": "kebab",
-  "volar.inlayHints.missingRequiredProps": true,
-  "volar.inlayHints.eventArgumentInInlineHandlers": true,
-  "volar.vueserver.fullCompletionList": true,
-  "volar.vueserver.reverseConfigFilePriority": true,
-  "volar.codeLens.references": true,
-  "volar.doctor.checkVueTsc": true,
-  "volar.doctor.statusBarItem": true,
-  "volar.addSpaceBetweenDoubleCurlyBrackets": true,
-  "volar.autoWrapParentheses": true,
 
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
@@ -59,12 +44,6 @@
   "i18n-ally.sourceLanguage": "ru",
   "i18n-ally.keystyle": "nested",
 
-  "remote.extensionKind": {
-    "amazonwebservices.aws-toolkit-vscode": ["ui", "workspace"]
-    // "GitHub.copilot": ["ui", "workspace"],
-    // "GitHub.copilot-labs": ["ui", "workspace"]
-  },
-
   "explorer.fileNesting.patterns": {
     "nuxt.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, contentlayer.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, histoire.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, rspack.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, uno.config.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*, i18n.config.*"
   },
@@ -79,7 +58,11 @@
   },
 
   "[typescript]": {
-    "editor.defaultFormatter": "Vue.volar"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
 
   "[shellscript]": {
@@ -98,8 +81,9 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
 
-  "cSpell.words": ["Nuxt", "Winbox"],
   "[postcss]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  }
+  },
+
+  "references.preferredLocation": "peek"
 }
