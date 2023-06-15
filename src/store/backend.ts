@@ -73,7 +73,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
       }
     },
     onResponse: async (ctx) => {
-      logger.success(JSON.stringify(ctx, null, 2))
+      // logger.success(JSON.stringify(ctx, null, 2))
     },
     onRequestError: (ctx) => {
       logger.error(JSON.stringify(ctx, null, 2))

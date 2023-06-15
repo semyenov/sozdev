@@ -3,7 +3,10 @@ import {
   addImportsDir,
   createResolver,
   defineNuxtModule,
+  useLogger,
 } from '@nuxt/kit'
+
+const logger = useLogger('modules/map')
 
 export default defineNuxtModule({
   async setup(_options, _nuxt) {
