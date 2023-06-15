@@ -1,2 +1,6 @@
 export * from './image'
 export * from './logger'
+export * from './map/dataMap'
+export * from './map/layersMap'
+export * from './map/constants'
+export * from './templates'

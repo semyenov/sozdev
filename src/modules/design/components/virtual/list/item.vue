@@ -16,6 +16,9 @@ const props = withDefaults(defineProps<{
   extraProps?: Record<string, any>
   scopedSlots: any
   itemClass: string
+  test: {
+    test1: string
+  }
 }>(), {
   tag: 'div',
   horizontal: false,

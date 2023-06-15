@@ -3,6 +3,7 @@ import { hasOwnProperty } from '@antfu/utils'
 import type { PublicRuntimeConfig, RuntimeConfig } from 'nuxt/schema'
 
 export * from './virtual'
+export * from './map'
 
 export const logger = useConsola()
 
