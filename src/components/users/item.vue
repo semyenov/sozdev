@@ -79,7 +79,7 @@ function handleOpen() {
         </div>
         <ATypography
           class="flex-grow"
-          :title="[`${item.info.first_name} ${item.info.last_name}`, 'mb-1 leading-tight']"
+          :title="[`${item.info.first_name} ${item.info.last_name}`, 'mb-1 leading-tight overflow-hidden text-ellipsis']"
           :subtitle="[item.email, 'break-all']"
         />
       </div>

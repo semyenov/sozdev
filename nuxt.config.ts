@@ -12,8 +12,8 @@ const rootDir = resolve(__dirname)
 const srcDir = resolve(rootDir, 'src')
 
 const appDir = resolve(srcDir, 'app')
-const assetsDir = resolve(srcDir, 'assets')
-const publicDir = resolve(srcDir, 'public')
+// const assetsDir = resolve(srcDir, 'assets')
+// const publicDir = resolve(srcDir, 'public')
 const componentsDir = resolve(srcDir, 'components')
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   appDir,
 
   runtimeConfig: {
-    apiUri: 'http://tsc_devcontainer-app-1:8080/',
+    apiUri: 'http://localhost:8080/',
 
     public: {
       apiUri: 'http://localhost:8080/',
@@ -91,6 +91,7 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
+      'trpc-nuxt',
       ({ isDev }) => isDev && '@deck.gl/layers',
       ({ isDev }) => isDev && '@deck.gl/mapbox',
     ],
@@ -142,6 +143,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vueuse/motion/nuxt',
     'nuxt-typed-router',
+    // 'trpc-nuxt',
 
     '@nuxt/devtools',
   ],
