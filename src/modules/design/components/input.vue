@@ -27,7 +27,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', val: string): void
+  'update:modelValue': [value: string]
 }>()
 const attrs = useAttrs()
 const rootRef = ref<HTMLInputElement | null>(null)
