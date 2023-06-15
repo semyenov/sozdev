@@ -1,31 +1,17 @@
 <script setup lang="ts">
+import MapLibreGlDirections from '@maplibre/maplibre-gl-directions'
 import maplibregl from 'maplibre-gl'
 
 import type { MapOptions } from 'maplibre-gl'
 
 const props = withDefaults(defineProps<{
-  mapOptions: Partial<MapOptions> & {
-    container: string
-  }
+  mapOptions: Partial<MapOptions>
   workerCount?: number
 }>(), {
-  // mapOptions: () => ({
-  //   container: 'mapContainer',
-  //   style: '/map/styles/streets/style.json',
-  //   maxZoom: 18,
-  //   minZoom: 0,
-  //   center: [37.61199474334717, 54.198741669025175],
-  //   zoom: 14,
-  //   attributionControl: false,
-  //   trackResize: true,
-  //   localIdeographFontFamily: '\'Noto Sans Regular\', \'Roboto Regular\'',
-  // }),
   workerCount: 10,
 })
 
-// const emits = defineEmits<{
-//   (e: keyof maplibregl.MapEventType, mapEvent: maplibregl.MapEvent): void
-// }>()
+const mapRef = shallowRef<HTMLElement | null>(null)
 
 const maplibreMap = shallowRef<maplibregl.Map>()
 const initialized = shallowRef<boolean>(false)
@@ -36,32 +22,39 @@ const hoveredStateId = ref<string | number>('')
 
 provide('map-key', maplibreMap)
 
-const mapOptions = Object.assign({
-  container: 'mapContainer',
-  style: '/map/styles/streets/style.json',
-  maxZoom: 18,
-  minZoom: 0,
-  center: [37.61199474334717, 54.198741669025175],
-  zoom: 14,
-  attributionControl: false,
-  trackResize: true,
-  localIdeographFontFamily: '\'Noto Sans Regular\', \'Roboto Regular\'',
-} as MapOptions, props.mapOptions)
-
 onMounted(() => initializeMap())
 onScopeDispose(() => maplibreMap.value?.remove())
 function initializeMap() {
   if (process.server)
     return
 
-  maplibregl.workerCount = props.workerCount
+  const mapOptions = Object.assign({
+    container: mapRef.value,
+    style: '/map/styles/streets/style.json',
+    maxZoom: 18,
+    minZoom: 0,
+    center: [37.61199474334717, 54.198741669025175],
+    zoom: 14,
+    attributionControl: false,
+    trackResize: true,
+    localIdeographFontFamily: '\'Noto Sans Regular\', \'Roboto Regular\'',
+  } as MapOptions, props.mapOptions)
 
+  maplibregl.workerCount = props.workerCount
   const map = new maplibregl.Map(mapOptions)
 
   map.on('load', async () => {
-    // mapEvents.forEach(event => map.on(event, e => emits(event, e)))
     maplibreMap.value = map
     initialized.value = true
+
+    const directions = new MapLibreGlDirections(map, {
+      api: 'http://localhost:5000/route/v1',
+      profile: 'driving',
+      requestOptions: {
+        alternatives: 'true',
+      },
+    })
+    directions.interactive = true
 
     map.on('styleimagemissing', (e) => {
       const id = e.id
@@ -126,7 +119,7 @@ function initializeMap() {
   <div
     class="layout-default__map fixed left-0 top-0 h-full w-full flex flex-grow"
   >
-    <div :id="props.mapOptions.container" class="layout-default__map z-0 h-full w-full" />
+    <div ref="mapRef" class="layout-default__map z-0 h-full w-full" />
     <slot v-if="initialized" />
   </div>
 </template>
