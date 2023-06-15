@@ -5,7 +5,6 @@ import type { IUser } from '~/types'
 
 definePageMeta({
   layout: 'default',
-  middleware: 'authorization',
 })
 
 const route = useRoute('users')

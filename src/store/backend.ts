@@ -34,50 +34,46 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
   const client = new ApiClient({
     baseURL: getRuntimeConfigKey('apiUri'),
     onRequest: async (ctx) => {
-      if (authorizationStore.authorization) {
-        ctx.options.headers = {
-          ...ctx.options.headers,
-          Authorization: `Bearer ${authorizationStore.authorization}`,
-        }
+      if (authorizationStore.access_token) {
+        const headers = formatHeaders(authorizationStore.access_token)
+
+        ctx.options.headers = Object.assign(
+          ctx.options.headers || {},
+          headers)
       }
     },
     async onResponseError(ctx) {
       if (ctx.response.status === 401) {
-        if (!authorizationStore.refresh_authorization)
+        if (!authorizationStore.refresh_token) {
           navigateTo('/login')
+          return
+        }
 
         const usersStore = useUsersStore()
-        const userTokenData = await usersStore.refreshCurrent({
-          email: 'root@root.ru',
-          password: '12345678',
-        })
+        const userTokenData = await usersStore.refreshCurrent()
+        if (!userTokenData) {
+          navigateTo('/login')
+          return
+        }
 
         authorizationStore.setCookie(userTokenData)
 
-        if (!userTokenData)
-          navigateTo('/login')
-
-        const options = {
-          ...ctx.options,
-          headers: {
-            // ...ctx.options.headers,
-
-            Authorization: `Bearer ${authorizationStore.authorization}`,
-            TEST: 'test',
-
-          },
-        } as FetchOptions<'json'>
-        const response: FetchResponse<'json'> = await new Promise((resolve, _reject) => $fetch(ctx.request, {
-          headers: options.headers,
-          onResponse(ctx) {
-            resolve(ctx.response)
-          },
-        }))
+        const headers = formatHeaders(authorizationStore.access_token)
+        const response: FetchResponse<'json'> = await new Promise(
+          (resolve, _reject) =>
+            $fetch(ctx.request, {
+              headers,
+              onResponse(ctx) {
+                resolve(ctx.response)
+              },
+            }),
+        )
 
         ctx.response = response
       }
     },
-    onResponse: async (_ctx) => {
+    onResponse: async (ctx) => {
+      logger.success(JSON.stringify(ctx, null, 2))
     },
     onRequestError: (ctx) => {
       logger.error(JSON.stringify(ctx, null, 2))
@@ -147,7 +143,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
-    const headers = formatHeaders(authorizationStore.authorization)
+    const headers = formatHeaders(authorizationStore.access_token)
 
     const res = await client.request<T>('get', uri, {
       query,
@@ -167,7 +163,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
-    const headers = formatHeaders(authorizationStore.authorization)
+    const headers = formatHeaders(authorizationStore.access_token)
 
     const res = await client.request<T>('post', uri, {
       body,
@@ -187,7 +183,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
-    const headers = formatHeaders(authorizationStore.authorization)
+    const headers = formatHeaders(authorizationStore.access_token)
 
     const res = await client.request<T>('put', uri, {
       body,
@@ -207,7 +203,7 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
     opts?: FetchOptions<'json'>,
   ): Promise<T | undefined> {
     const uri = formatURI(scope, command, ...params)
-    const headers = formatHeaders(authorizationStore.authorization)
+    const headers = formatHeaders(authorizationStore.access_token)
 
     const res = await client.request<T>('patch', uri, {
       body,

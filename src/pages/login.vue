@@ -13,7 +13,7 @@ const userLoginInput = reactive<IUserLoginInput>({
   password: '12345678',
 })
 
-async function login() {
+async function handleUserStorePostCurrent() {
   const userTokens = await userStore.postCurrent(userLoginInput)
 
   if (userTokens) {
@@ -28,7 +28,7 @@ async function login() {
     <div class="m-auto w-auto flex flex-col gap-4">
       <AInput v-model="userLoginInput.email" placeholder="Email" />
       <AInput v-model="userLoginInput.password" placeholder="Password" />
-      <ABtn @click="login">
+      <ABtn @click="handleUserStorePostCurrent">
         Login
       </ABtn>
     </div>

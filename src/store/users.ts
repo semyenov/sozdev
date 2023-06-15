@@ -53,10 +53,9 @@ export const useUsersStore = defineStore(usersStoreKey, () => {
       body,
     )
 
-  const refreshCurrent = (body: IUserLoginInput) =>
-    backendStore.post<IUserTokensData, IUserLoginInput>(
-      [IMetaScope.USERS, 'current'],
-      body,
+  const refreshCurrent = () =>
+    backendStore.get<IUserTokensData, IUserLoginInput>(
+      [IMetaScope.USERS, 'current', 'refresh_token'],
     )
 
   return {

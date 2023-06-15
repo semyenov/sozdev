@@ -1,4 +1,4 @@
-import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from './src/i18n'
+import { availableLocales, datetimeFormats, defaultLocale, numberFormats } from '~/i18n'
 
 export default defineI18nConfig(() => ({
   legacy: false,

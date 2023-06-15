@@ -36,20 +36,24 @@ const hoveredStateId = ref<string | number>('')
 
 provide('map-key', maplibreMap)
 
-const mapOptions = Object.assign({
-  container: 'mapContainer',
-  style: '/map/styles/streets/style.json',
-  maxZoom: 18,
-  minZoom: 0,
-  center: [37.61199474334717, 54.198741669025175],
-  zoom: 14,
-  attributionControl: false,
-  trackResize: true,
-  localIdeographFontFamily: '\'Noto Sans Regular\', \'Roboto Regular\'',
-} as MapOptions, props.mapOptions)
+const mapOptions = Object.assign<MapOptions, Partial<MapOptions>>(
+  {
+    container: 'mapContainer',
+    style: '/map/styles/streets/style.json',
+    maxZoom: 18,
+    minZoom: 0,
+    center: [37.61199474334717, 54.198741669025175],
+    zoom: 14,
+    attributionControl: false,
+    trackResize: true,
+    localIdeographFontFamily: '\'Noto Sans Regular\', \'Roboto Regular\'',
+  },
+  props.mapOptions,
+)
 
 onMounted(() => initializeMap())
 onScopeDispose(() => maplibreMap.value?.remove())
+
 function initializeMap() {
   if (process.server)
     return
@@ -62,62 +66,62 @@ function initializeMap() {
     // mapEvents.forEach(event => map.on(event, e => emits(event, e)))
     maplibreMap.value = map
     initialized.value = true
+  })
 
-    map.on('styleimagemissing', (e) => {
-      const id = e.id
-      const regexpIcon = /^custom:([^/]+)/
+  map.on('styleimagemissing', (e) => {
+    const id = e.id
+    const regexpIcon = /^custom:([^/]+)/
 
-      if (!regexpIcon.test(id)) {
-        if (missingDefaultIds.value.includes(id))
-          return
-        missingDefaultIds.value.push(id)
-        logger.info('missing default icon:', id)
+    if (!regexpIcon.test(id)) {
+      if (missingDefaultIds.value.includes(id))
         return
-      }
+      missingDefaultIds.value.push(id)
+      logger.info('missing default icon:', id)
+      return
+    }
 
-      const image = map.getImage('custom:default/icon')
-      if (image.data) {
-        map.addImage(id, image.data)
-        logger.success('edited icon:', id)
-      }
-    })
+    const image = map.getImage('custom:default/icon')
+    if (image.data) {
+      map.addImage(id, image.data)
+      logger.success('edited icon:', id)
+    }
+  })
 
-    map.on('mousemove', 'polygons', (e) => {
-      map.getCanvas().style.cursor = 'pointer'
+  map.on('mousemove', 'polygons', (e) => {
+    map.getCanvas().style.cursor = 'pointer'
 
-      if (!e.features || !e.features[0].id)
-        return
+    if (!e.features || !e.features[0].id)
+      return
 
-      // Do nothing if the feature has not changed
-      if (hoveredStateId.value === e.features[0].id)
-        return
+    // Do nothing if the feature has not changed
+    if (hoveredStateId.value === e.features[0].id)
+      return
 
-      // Change hover state prev feature
+    // Change hover state prev feature
+    map.setFeatureState(
+      { source: 'polygons-source-layer', id: hoveredStateId.value },
+      { hover: false },
+    )
+
+    // Change hover state on current feature
+    map.setFeatureState(
+      { source: 'polygons-source-layer', id: e.features[0].id },
+      { hover: true },
+    )
+
+    hoveredStateId.value = e.features[0].id
+  })
+
+  map.on('mouseleave', 'polygons', (_e) => {
+    if (hoveredStateId.value) {
       map.setFeatureState(
         { source: 'polygons-source-layer', id: hoveredStateId.value },
         { hover: false },
       )
+      hoveredStateId.value = ''
 
-      // Change hover state on current feature
-      map.setFeatureState(
-        { source: 'polygons-source-layer', id: e.features[0].id },
-        { hover: true },
-      )
-
-      hoveredStateId.value = e.features[0].id
-    })
-
-    map.on('mouseleave', 'polygons', (_e) => {
-      if (hoveredStateId.value) {
-        map.setFeatureState(
-          { source: 'polygons-source-layer', id: hoveredStateId.value },
-          { hover: false },
-        )
-        hoveredStateId.value = ''
-
-        map.getCanvas().style.cursor = 'default'
-      }
-    })
+      map.getCanvas().style.cursor = 'default'
+    }
   })
 }
 </script>
