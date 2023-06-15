@@ -56,7 +56,8 @@
         "antfu.where-am-i",
         "vunguyentuan.vscode-postcss",
         "antfu.file-nesting",
-        "Codeium.codeium"
+        "Codeium.codeium",
+        "yoavbls.pretty-ts-errors"
       ]
     }
   }
