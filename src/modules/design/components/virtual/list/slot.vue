@@ -23,7 +23,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-  (event: 'resize', id: string, size: number, init: boolean): void
+  resize: [id: string, size: number, init: boolean]
 }>()
 
 const slots = useSlots()

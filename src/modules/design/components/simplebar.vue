@@ -11,7 +11,7 @@ const props = defineProps({
 })
 
 const emits = defineEmits<{
-  (event: 'scroll', e: UIEvent): void
+  'scroll': [event: UIEvent]
 }>()
 
 const sb = ref<Simplebar>()

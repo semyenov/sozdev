@@ -59,12 +59,12 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'scroll', evt: UIEvent, r: VirtualRange): void
-  (event: 'resized', id: string, size: number): void
-  (event: 'totop'): void
-  (event: 'tobottom'): void
-  (event: 'itemHover', n: number): void
-  (event: 'itemClick', n: number): void
+  'scroll': [evt: UIEvent, r: VirtualRange]
+  'resized': [id: string, size: number]
+  'totop': []
+  'tobottom': []
+  'itemHover': [n: number]
+  'itemClick': [n: number]
 }>()
 
 const slots = useSlots()
