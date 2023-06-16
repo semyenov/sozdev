@@ -6,14 +6,13 @@ import type { IObject, IUser } from '~/types'
 import type { Orama } from '@orama/orama'
 
 declare global {
-  interface Window extends Record<IMetaScope, Orama> {}
+  interface Window extends Record<IMetaScope, Orama> { }
 }
 
 const logger = useConsola('plugins/orama')
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(async (nuxtApp) => {
   const backendStore = useBackendStore()
-
   nuxtApp.hooks.hookOnce('app:mounted', () => {
     create({
       language: 'russian',
@@ -43,6 +42,14 @@ export default defineNuxtPlugin((nuxtApp) => {
           }
           return undefined
         },
+        beforeMultipleInsert() {
+          console.time('time')
+          logger.info('beforeMultipleInsert')
+        },
+        afterMultipleInsert() {
+          console.timeEnd('time')
+          logger.info('afterMultipleInsert')
+        },
 
       },
     }).then((index) => {
@@ -51,7 +58,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       logger.info(`Insert window[${IMetaScope.OBJECTS}] data`)
       backendStore.itemsGetter<IObject>(IMetaScope.OBJECTS).then((items) => {
-        insertMultiple(index, items.value).catch((e) => {
+        insertMultiple(index, items.value, 10).catch((e) => {
           logger.info('error insert', e.message)
         })
       })
@@ -84,7 +91,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       logger.info(`Insert window[${IMetaScope.USERS}] data`)
       backendStore.itemsGetter<IUser>(IMetaScope.USERS).then((items) => {
-        insertMultiple(index, items.value)
+        insertMultiple(index, items.value, 10)
       })
     })
   })

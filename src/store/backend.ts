@@ -231,18 +231,20 @@ export const useBackendStore = defineStore(backendStoreKey, () => {
       try {
         insertMultiple(window[scope], items as T & { [backendStoreIdentificator]: string }[])
       }
-      catch (e) { console.log(e) }
+      catch (e) {
+        console.log(e)
+      }
     }
     for (const i in items) {
       const item = items[i] as T & { [backendStoreIdentificator]: string }
       if (!hasOwnProperty(item, backendStoreIdentificator))
         continue
-        // if (isClient && window[scope]) {
-        //   try {
-        //     insert(window[scope], item)
-        //   }
-        //   catch (e) { console.log(e) }
-        // }
+      // if (isClient && window[scope]) {
+      //   try {
+      //     insert(window[scope], item)
+      //   }
+      //   catch (e) { console.log(e) }
+      // }
 
       storeScopeMap.set(item[backendStoreIdentificator], copy(item))
     }
