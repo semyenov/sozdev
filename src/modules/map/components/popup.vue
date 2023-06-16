@@ -23,9 +23,8 @@ defineExpose<{
       popup,
       setViewPopup,
     })
-const slots = defineSlots()
+
 onMounted(() => initializePopup())
-console.log(slots)
 
 function initializePopup() {
   popup.value = new maplibregl.Popup({

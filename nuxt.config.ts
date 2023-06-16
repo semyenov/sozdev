@@ -23,9 +23,8 @@ export default defineNuxtConfig({
 
   srcDir,
   appDir,
-
   runtimeConfig: {
-    apiUri: 'http://localhost:8080/',
+    apiUri: 'http://tsc_devcontainer-app-1:8080/',
 
     public: {
       apiUri: 'http://localhost:8080/',

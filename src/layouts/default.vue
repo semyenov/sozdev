@@ -14,7 +14,7 @@ watch(tildaKey, v => v && toggleDark())
     <PageSidebar class="z-300 shadow-lg shadow-warmGray/40 backdrop-blur-20 backdrop-filter" />
 
     <!-- <LazyMapLibre /> -->
-    <LazyMapMain />
+    <MapMain />
 
     <div class="w-full flex flex-col">
       <div class="z-300 h-45px flex flex-row items-center justify-between border-b border-warmGray-300 bg-warmGray-200/80 px-4 shadow-warmGray/20 shadow-xl backdrop-blur-10 backdrop-filter">

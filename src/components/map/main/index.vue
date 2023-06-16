@@ -23,7 +23,7 @@ const moves = await movesStore.itemsGetterByIds(movesId.value)
 
 const moveFilter = ref<string>('')
 
-const popupType = shallowRef<string>('default')
+const popupType = ref<string>('default')
 const popupRef = shallowRef<InstanceType<typeof MapLibrePopup> | null>(null)
 const popupContent = ref<Feature<Point, { id: string; label: string }> | null>(null)
 
@@ -308,7 +308,7 @@ function getObjectTooltip(label: string): string {
 
 <template>
   <ClientOnly>
-    <MapLibreMap :map-options="{ }">
+    <MapLibre :map-options="{ }">
       <MapLibrePopup ref="popupRef" :slot-name="popupType">
         <template #objects>
           <MapPopupTest v-if="popupTestContent" :content="popupTestContent" />
@@ -317,6 +317,7 @@ function getObjectTooltip(label: string): string {
           <MapPopupObject v-if="popupContent" :content="popupContent" />
         </template>
       </MapLibrePopup>
+      <MapLibreDirections />
       <MapLibreSource
         :source-id="MAP_SOURCES.OBJECTS"
         source-template="cluster"
@@ -416,6 +417,6 @@ function getObjectTooltip(label: string): string {
           </MapLibreSource>
         </MapLibreSource>
       </MapLibreSource>
-    </MapLibreMap>
+    </MapLibre>
   </ClientOnly>
 </template>

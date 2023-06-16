@@ -12,7 +12,6 @@ const route = useRoute('objects')
 
 const { t } = useI18n()
 
-const { isLoaded } = useMap()
 const input = ref<string>('')
 
 const objectsStore = useObjectsStore()
@@ -56,7 +55,6 @@ const listComponent = ref<ReturnType<typeof UiVirtualList<IObject>> | null>(null
         item-class="mb-3"
       >
         <template #header>
-          map is loaded: {{ isLoaded }}
           <AInput v-model="input" color="primary" class="sticky mb-6" prepend-inner-icon="i-ph:magnifying-glass" :placeholder="t('objects.search.placeholder')" />
         </template>
       </UiVirtualList>
