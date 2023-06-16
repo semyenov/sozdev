@@ -101,6 +101,24 @@ function initializeMap() {
         map.getCanvas().style.cursor = 'default'
       }
     })
+    map.on('click', (e) => {
+      const source = map.getSource('openmaptiles') as maplibregl.VectorTileSource
+
+      // source.tileBounds = e.features[0].geometry
+      // const rendered = map.lay
+      console.log(source, e)
+    })
+
+    // map.on('data', (e) => {
+    //   const event = e as maplibregl.MapSourceDataEvent
+
+    //   console.log('data', e)
+
+    //   if (event.sourceId === 'openmaptiles' && event.sourceDataType === 'metadata')
+    //     console.log('Tile data:', event.tile)
+    // })
+
+    map.showTileBoundaries = true
   })
 }
 </script>

@@ -12681,6 +12681,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"maplibre-gl-inspect@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "maplibre-gl-inspect@npm:0.0.6"
+  dependencies:
+    randomcolor: ^0.6.2
+  peerDependencies:
+    maplibre-gl: ^2.4.0
+  checksum: 1b1aef96e68e1dfb63c1c17afd1d4f847d874e42d1be2ac094ea1e3d6df790d1ee5e831c5e6865097262b2c66b9a59b953cd10364a4448d58ad30f21afd8c123
+  languageName: node
+  linkType: hard
+
 "maplibre-gl@npm:^3.1.0":
   version: 3.1.0
   resolution: "maplibre-gl@npm:3.1.0"
@@ -15681,6 +15692,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"randomcolor@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "randomcolor@npm:0.6.2"
+  checksum: 539345c0289f7c52ffd8486e61231e19ccc40b1c4ab9c15594f20a2773b71a9317e0cc8b756160fc8a678ace9ed1e96a8ac90346b2c34c64dfd5acad91f9a73d
+  languageName: node
+  linkType: hard
+
 "range-parser@npm:~1.2.1":
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
@@ -16376,6 +16394,7 @@ __metadata:
     lint-staged: ^13.2.2
     magic-regexp: ^0.7.0
     maplibre-gl: ^3.1.0
+    maplibre-gl-inspect: ^0.0.6
     nanoid: ^4.0.2
     nuxt: ^3.5.3
     nuxt-typed-router: ^3.2.3

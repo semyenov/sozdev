@@ -309,6 +309,7 @@ function getObjectTooltip(label: string): string {
 <template>
   <ClientOnly>
     <MapLibre :map-options="{ }">
+      <MapLibreControl />
       <MapLibrePopup ref="popupRef" :slot-name="popupType">
         <template #objects>
           <MapPopupTest v-if="popupTestContent" :content="popupTestContent" />
