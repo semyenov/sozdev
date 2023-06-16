@@ -16,7 +16,6 @@ function initializeDirections() {
     requestOptions: {
       alternatives: 'true',
     },
-    sourceName: 'source-directions',
   })
   directions.interactive = true
   directionsRef.value = directions
